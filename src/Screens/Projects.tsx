@@ -8,7 +8,7 @@ type props = {
 const Projects: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
-      <CustomHeader title={'Project'} navigation={navigation} />
+      <CustomHeader title={'Projects'} navigation={navigation} />
       <Text>This is the Project componenet</Text>
     </View>
   );
