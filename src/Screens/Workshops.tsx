@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {View, Text, Platform, StyleSheet} from 'react-native';
+import CustomHeader from '../Components/CustomHeader';
 
-const Workshop = () => {
+type props = {
+  navigation: any;
+};
+const Workshop: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
+      <CustomHeader title={'Workshops'} navigation={navigation} />
       <Text>This is the Workshop componenet</Text>
     </View>
   );
@@ -12,7 +17,6 @@ const Workshop = () => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
 });
 export default Workshop;

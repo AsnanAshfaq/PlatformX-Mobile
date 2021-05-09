@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
+import CustomHeader from '../Components/CustomHeader';
 
-const Hackathons = () => {
+type props = {
+  navigation: any;
+};
+const Hackathons: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
+      <CustomHeader title={'Hackathon'} navigation={navigation} />
       <Text>This is the Hackathon componenet</Text>
     </View>
   );
@@ -12,7 +17,6 @@ const Hackathons = () => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
 });
 

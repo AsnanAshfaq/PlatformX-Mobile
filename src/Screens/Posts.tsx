@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
+import CustomHeader from '../Components/CustomHeader';
 
-const Posts = () => {
+type props = {
+  navigation: any;
+};
+const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
+      <CustomHeader title={'PlatFormX'} navigation={navigation} />
       <Text>This is the Post componenet</Text>
     </View>
   );
@@ -12,7 +17,6 @@ const Posts = () => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
   },
 });
 

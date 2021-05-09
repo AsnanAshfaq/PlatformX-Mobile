@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
 import CustomHeader from '../Components/CustomHeader';
 
-const Projects = () => {
+type props = {
+  navigation: any;
+};
+const Projects: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
-      <CustomHeader title={'Project'} />
+      <CustomHeader title={'Project'} navigation={navigation} />
       <Text>This is the Project componenet</Text>
     </View>
   );
