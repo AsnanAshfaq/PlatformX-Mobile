@@ -29,12 +29,13 @@ const CustomHeader: FunctionComponent<props> = ({navigation, title}) => {
   return (
     <View style={styles.parent}>
       {/* drawer navigation  or back button*/}
+
       <View style={styles.leftIconContainer}>
         <FontAwesome
           name={'navicon'}
-          color={darkColors.TEXT_COLOR}
+          color={darkColors.TAB_BAR_ACTIVE_COLOR}
           size={ICON_SIZE}
-          style={styles.iconpadding}
+          style={styles.iconPadding}
         />
       </View>
       {/* title of the screen  */}
@@ -46,14 +47,14 @@ const CustomHeader: FunctionComponent<props> = ({navigation, title}) => {
         <Ionicons
           name={'chatbubble-outline'}
           size={ICON_SIZE}
-          color={darkColors.TEXT_COLOR}
-          style={styles.iconpadding}
+          color={darkColors.TAB_BAR_ACTIVE_COLOR}
+          style={styles.iconPadding}
         />
         <Entypo
           name={'bell'}
           size={ICON_SIZE}
-          color={darkColors.TEXT_COLOR}
-          style={styles.iconpadding}
+          color={darkColors.TAB_BAR_ACTIVE_COLOR}
+          style={styles.iconPadding}
         />
       </View>
     </View>
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     flex: 0.25,
     flexDirection: 'row',
   },
-  iconpadding: {
+  iconPadding: {
     padding: 8,
   },
 });

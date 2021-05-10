@@ -36,18 +36,17 @@ const TabScreens = () => {
             iconName = focused ? 'ios-bulb-sharp' : 'ios-bulb-outline';
           }
           // You can return any component that you like here!
-          return (
-            <Ionicons
-              name={iconName}
-              size={ICON_SIZE}
-              color={darkColors.BACKGROUND_COLOR}
-            />
-          );
+          return <Ionicons name={iconName} size={ICON_SIZE} color={color} />;
         },
       })}
       tabBarOptions={{
-        activeTintColor: darkColors.BACKGROUND_COLOR,
-        inactiveTintColor: 'gray',
+        activeTintColor: darkColors.TAB_BAR_ACTIVE_COLOR,
+        inactiveTintColor: darkColors.TAB_BAR_INACTIVE_COLOR,
+        iconStyle: {color: darkColors.TAB_BAR_ICON_COLOR},
+        // activeBackgroundColor: darkColors.LIGHT_BACKGROUND,
+        style: {
+          backgroundColor: darkColors.BACKGROUND_COLOR,
+        },
       }}>
       <Tab.Screen name="Home" component={Post} />
       <Tab.Screen name="Hackathons" component={Hackathon} />
