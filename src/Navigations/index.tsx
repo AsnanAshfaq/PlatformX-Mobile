@@ -61,7 +61,15 @@ const DrawerScreens = () => {
     <Drawer.Navigator
       initialRouteName="Home"
       openByDefault={false}
-      drawerContent={props => <CustomDrawer {...props} />}>
+      drawerContent={props => <CustomDrawer {...props} />}
+      drawerStyle={{
+        backgroundColor: darkColors.DRAWER_BACKGROUND_COLOR,
+        width: Width * 0.65,
+        // borderBottomRightRadius: 30
+        // borderTopRightRadius: 30,
+        borderColor: darkColors.DRAWER_BACKGROUND_COLOR,
+      }}
+      drawerType={'slide'}>
       <Drawer.Screen name="Home" component={TabScreens} />
       <Drawer.Screen name="Workshop" component={Workshop} />
     </Drawer.Navigator>
@@ -75,13 +83,6 @@ const Navigation = () => {
         <Stack.Screen name="Main" component={DrawerScreens} />
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
       </Stack.Navigator>
-      {/* <Drawer.Navigator
-        initialRouteName="Post"
-        openByDefault={true}
-        drawerContent={props => <CustomDrawer {...props} />}>
-        <Drawer.Screen name="Post" component={Post} />
-        <Drawer.Screen name="Workshop" component={Workshop} />
-      </Drawer.Navigator> */}
     </NavigationContainer>
   );
 };

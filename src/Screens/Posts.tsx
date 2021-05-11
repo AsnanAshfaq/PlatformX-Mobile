@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
 import PostCard from '../Components/PostCard';
 import CustomHeader from '../Components/CustomHeader';
-import {postData} from '../Constants/sample';
+import {postData} from '../Constants/Sample';
 import {darkColors} from '../Constants/Colors';
 type props = {
   navigation: any;
@@ -10,7 +10,7 @@ type props = {
 const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
-      <CustomHeader title={'PlatFormX'} navigation={navigation} />
+      <CustomHeader title={'Home'} navigation={navigation} />
       <ScrollView>
         {postData.map(post => (
           <PostCard

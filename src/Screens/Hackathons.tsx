@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
 import CustomHeader from '../Components/CustomHeader';
 import PostCard from '../Components/PostCard';
-import {postData} from '../Constants/sample';
+import {postData} from '../Constants/Sample';
 import {darkColors} from '../Constants/Colors';
 
 type props = {

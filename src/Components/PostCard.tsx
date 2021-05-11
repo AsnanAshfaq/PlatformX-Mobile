@@ -10,18 +10,18 @@ const PostCardButtons: FC = () => {
     <View style={styles.buttonContainer}>
       <TouchableOpacity
         onPress={() => console.log('Pressed on like button')}
-        style={styles.HomeButton}>
-        <Text style={styles.HomeButtonText}>Like</Text>
+        style={styles.PostButton}>
+        <Text style={styles.PostButtonText}>Like</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => console.log('Pressed on comment button')}
-        style={styles.HomeButton}>
-        <Text style={styles.HomeButtonText}>Comment</Text>
+        style={styles.PostButton}>
+        <Text style={styles.PostButtonText}>Comment</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => console.log('Pressed on share button')}
-        style={styles.HomeButton}>
-        <Text style={styles.HomeButtonText}>Share</Text>
+        style={styles.PostButton}>
+        <Text style={styles.PostButtonText}>Share</Text>
       </TouchableOpacity>
     </View>
   );
@@ -42,7 +42,7 @@ const PostCard: FC<props> = ({image, date, user_name, description, screen}) => {
       {/* header  */}
       <View style={styles.headerContainer}>
         <View style={styles.headerImageContainer}>
-          <Image source={{uri: image}} style={styles.image} />
+          <Image source={{uri: image}} style={styles.userImage} />
         </View>
         <View style={styles.headerTextContainer}>
           <Text style={styles.username}>{user_name}</Text>
@@ -58,7 +58,7 @@ const PostCard: FC<props> = ({image, date, user_name, description, screen}) => {
         </Text>
       </View>
 
-      {/* buttons   */}
+      {/* post buttons   */}
       <PostCardButtons />
     </View>
   );
@@ -90,12 +90,10 @@ const styles = StyleSheet.create({
     // width: Width * 0.3,
     flex: 2,
   },
-  image: {
+  userImage: {
     height: Height * 0.07,
-    width: Width * 0.15,
-    backgroundColor: 'yellow',
-    // borderWidth: 6,
-    borderRadius: 30,
+    width: Width * 0.14,
+    borderRadius: 40,
   },
   headerTextContainer: {
     // width: Width * 0.6,
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: Height * 0.009,
   },
-  HomeButton: {
+  PostButton: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.008,
     borderRadius: 10,
   },
-  HomeButtonText: {
+  PostButtonText: {
     fontSize: Sizes.small,
     color: darkColors.TEXT_COLOR,
   },

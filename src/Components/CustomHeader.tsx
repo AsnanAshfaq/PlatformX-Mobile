@@ -6,7 +6,13 @@
 // notification icon
 
 import React, {FunctionComponent} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {Height, Width, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -31,12 +37,14 @@ const CustomHeader: FunctionComponent<props> = ({navigation, title}) => {
       {/* drawer navigation  or back button*/}
 
       <View style={styles.leftIconContainer}>
-        <FontAwesome
-          name={'navicon'}
-          color={darkColors.TAB_BAR_ACTIVE_COLOR}
-          size={ICON_SIZE}
-          style={styles.iconPadding}
-        />
+        <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+          <FontAwesome
+            name={'navicon'}
+            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            size={ICON_SIZE}
+            style={styles.iconPadding}
+          />
+        </TouchableWithoutFeedback>
       </View>
       {/* title of the screen  */}
       <View style={styles.headerContainer}>
