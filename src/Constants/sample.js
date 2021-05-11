@@ -23,3 +23,26 @@ export const postData = [
     image: 'https://reactnative.dev/img/tiny_logo.png',
   },
 ];
+
+export const drawerItems = [
+  {
+    id: 1,
+    label: 'My Activities',
+    icon_name: 'home-sharp',
+  },
+  {
+    id: 2,
+    label: 'Saved',
+    icon_name: 'bookmarks',
+  },
+  {
+    id: 3,
+    label: 'Settings',
+    icon_name: 'ios-settings-sharp',
+  },
+  {
+    id: 4,
+    label: 'Logout',
+    icon_name: 'md-log-out-outline',
+  },
+];

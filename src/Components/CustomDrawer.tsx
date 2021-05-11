@@ -8,10 +8,33 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
+import {drawerItems} from '../Constants/Sample';
+
+type Props = {
+  label: string;
+  icon_name: string;
+};
+
+const CustomDrawerItem: FC<Props> = ({label, icon_name}) => {
+  return (
+    <DrawerItem
+      label={({focused, color}) => (
+        <Text style={{color: darkColors.TEXT_COLOR, fontSize: Sizes.normal}}>
+          {label}
+        </Text>
+      )}
+      icon={({focused, color, size}) => (
+        <Ionicons name={icon_name} size={25} color={darkColors.TEXT_COLOR} />
+      )}
+      onPress={() => console.log('Pressed ')}
+    />
+  );
+};
 
 type props = {
   navigation?: any;
 };
+
 const CustomDrawer: FC<props> = (props: any) => {
   return (
     <DrawerContentScrollView {...props} style={styles.parent}>
@@ -35,56 +58,17 @@ const CustomDrawer: FC<props> = (props: any) => {
           <Text style={styles.profileButtonText}>View Profile</Text>
         </TouchableOpacity>
       </View>
-      <DrawerItem
-        label={({focused, color}) => (
-          <Text style={{color: darkColors.TEXT_COLOR, fontSize: Sizes.normal}}>
-            My Activities
-          </Text>
-        )}
-        icon={({focused, color, size}) => (
-          <Ionicons
-            name={'home-sharp'}
-            size={25}
-            color={darkColors.TEXT_COLOR}
-          />
-        )}
-        onPress={() => console.log('Pressed ')}
-      />
-      <DrawerItem
-        label={({focused, color}) => (
-          <Text style={{color: darkColors.TEXT_COLOR, fontSize: Sizes.normal}}>
-            Saved
-          </Text>
-        )}
-        icon={({focused, color, size}) => (
-          <Ionicons
-            name={'bookmarks'}
-            size={25}
-            color={darkColors.TEXT_COLOR}
-          />
-        )}
-        onPress={() => console.log('Pressed ')}
-      />
-      <DrawerItem
-        label={({focused, color}) => (
-          <Text style={{color: darkColors.TEXT_COLOR, fontSize: Sizes.normal}}>
-            Settings
-          </Text>
-        )}
-        icon={({focused, color, size}) => (
-          <Ionicons
-            name={'ios-settings-sharp'}
-            size={25}
-            color={darkColors.TEXT_COLOR}
-          />
-        )}
-        onPress={() => console.log('Pressed ')}
-      />
+      {/* drawer items list  */}
+      {drawerItems.map(item => (
+        <CustomDrawerItem
+          key={item.id}
+          icon_name={item.icon_name}
+          label={item.label}
+        />
+      ))}
     </DrawerContentScrollView>
   );
 };
-
-// md-log-out-outline
 
 const styles = StyleSheet.create({
   parent: {

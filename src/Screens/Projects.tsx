@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
 import CustomHeader from '../Components/CustomHeader';
+import CustomSearch from '../Components/Search';
 import PostCard from '../Components/PostCard';
 import {postData} from '../Constants/Sample';
 import {darkColors} from '../Constants/Colors';
@@ -12,6 +13,7 @@ const Project: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Projects'} navigation={navigation} />
+      <CustomSearch placeholder={'Search Projects'} />
       <ScrollView>
         {postData.map(post => (
           <PostCard

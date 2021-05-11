@@ -43,6 +43,7 @@ const TabScreens = () => {
         activeTintColor: darkColors.TAB_BAR_ACTIVE_COLOR,
         inactiveTintColor: darkColors.TAB_BAR_INACTIVE_COLOR,
         iconStyle: {color: darkColors.TAB_BAR_ICON_COLOR},
+        keyboardHidesTabBar: true,
         // activeBackgroundColor: darkColors.LIGHT_BACKGROUND,
         style: {
           backgroundColor: darkColors.BACKGROUND_COLOR,

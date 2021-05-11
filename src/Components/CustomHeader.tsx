@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   },
   leftIconContainer: {
     flex: 0.15,
+    paddingLeft: 5,
   },
   RightIconContainer: {
     flex: 0.25,
