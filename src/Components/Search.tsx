@@ -1,16 +1,26 @@
-import React, {FC, useState} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import React, {FC, useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import FilterModal from '../Modals/FilterModal';
 type props = {
   placeholder: string;
 };
 const Search: FC<props> = ({placeholder}) => {
   const [input, setinput] = useState('');
+  const [isModalOpen, setisModalOpen] = useState(false);
+
+  useEffect(() => {}, [isModalOpen]);
   return (
     <View style={styles.parent}>
+      <FilterModal isShow={isModalOpen} />
       <View style={styles.searchContainer}>
         <TextInput
           value={input}
@@ -18,6 +28,7 @@ const Search: FC<props> = ({placeholder}) => {
           placeholder={placeholder}
           style={styles.textInput}
           placeholderTextColor={darkColors.TEXT_COLOR}
+          maxLength={30}
         />
         <Ionicons
           name={'search'}
@@ -26,16 +37,19 @@ const Search: FC<props> = ({placeholder}) => {
         />
       </View>
       <View style={styles.filterContainer}>
-        <Ionicons
-          name={'ios-options-outline'}
-          size={Width * 0.07}
-          style={styles.filterIcon}
-        />
+        {/* filter icon -- ios-options-outline(dark theme) --ios-options-sharp(light-them) */}
+        <TouchableWithoutFeedback onPress={() => setisModalOpen(true)}>
+          <Ionicons
+            name={'ios-options-outline'}
+            size={Width * 0.07}
+            style={styles.filterIcon}
+          />
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );
 };
-// filter icon -- ios-options-outline(dark theme)  -- ios-options-sharp(light-them)
+
 export default Search;
 
 const styles = StyleSheet.create({

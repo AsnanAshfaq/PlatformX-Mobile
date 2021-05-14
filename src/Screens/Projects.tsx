@@ -13,8 +13,9 @@ const Project: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Projects'} navigation={navigation} />
-      <CustomSearch placeholder={'Search Projects'} />
+
       <ScrollView>
+        <CustomSearch placeholder={'Search Projects'} />
         {postData.map(post => (
           <PostCard
             key={post.id}
@@ -22,7 +23,7 @@ const Project: FC<props> = ({navigation}) => {
             date={post.date}
             description={post.description}
             image={post.image}
-            screen={'Home'}
+            screen={'Projects'}
           />
         ))}
       </ScrollView>

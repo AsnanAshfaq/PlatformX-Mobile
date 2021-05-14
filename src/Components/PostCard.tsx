@@ -7,7 +7,7 @@ const MAX_TEXT_LENGTH = 300;
 
 const PostCardButtons: FC = () => {
   return (
-    <View style={styles.buttonContainer}>
+    <View style={styles.postButtonContainer}>
       <TouchableOpacity
         onPress={() => console.log('Pressed on like button')}
         style={styles.PostButton}>
@@ -33,7 +33,6 @@ type props = {
   date: Date;
   description: string;
   screen: 'Home' | 'Hackathons' | 'Workshops' | 'Projects';
-  title?: string;
 };
 
 const PostCard: FC<props> = ({image, date, user_name, description, screen}) => {
@@ -59,7 +58,7 @@ const PostCard: FC<props> = ({image, date, user_name, description, screen}) => {
       </View>
 
       {/* post buttons   */}
-      <PostCardButtons />
+      {screen === 'Home' ? <PostCardButtons /> : <PostCardButtons />}
     </View>
   );
 };
@@ -119,9 +118,9 @@ const styles = StyleSheet.create({
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
-  buttonContainer: {
-    minHeight: Height * 0.07,
-    maxHeight: Height * 0.05,
+  postButtonContainer: {
+    minHeight: Height * 0.05,
+    maxHeight: Height * 0.07,
     flexDirection: 'row',
     marginVertical: Height * 0.009,
   },
@@ -140,6 +139,3 @@ const styles = StyleSheet.create({
 });
 
 export default PostCard;
-
-// 30 = 8 + 15 + 7
-// 40 = 15 + 20 + 5

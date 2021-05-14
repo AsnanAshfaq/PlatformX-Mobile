@@ -5,6 +5,7 @@ import CustomHeader from '../Components/CustomHeader';
 import CustomSearch from '../Components/Search';
 import {postData} from '../Constants/Sample';
 import {darkColors} from '../Constants/Colors';
+import FilterModal from '../Modals/FilterModal';
 type props = {
   navigation: any;
 };
@@ -12,8 +13,9 @@ const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} />
-      <CustomSearch placeholder={'Search here'} />
+
       <ScrollView>
+        <CustomSearch placeholder={'Search here'} />
         {postData.map(post => (
           <PostCard
             key={post.id}

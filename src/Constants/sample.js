@@ -24,6 +24,50 @@ export const postData = [
   },
 ];
 
+export const hackathonData = [
+  {
+    id: 1,
+    date: new Date(),
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ipsam error, quaerat autem doloremque nam rem ea illo natus cumque dignissimos fugiat vel eos, illum aut provident quisquam porro ipsum!.Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ipsam error, quaerat autem doloremque nam rem ea illo natus cumque dignissimos fugiat vel eos, illum aut provident quisquam porro ipsum!',
+    event_type: 'Online',
+    participants: 299,
+    prize: 15000,
+    thumbnail_image:
+      'https://www.founderpassion.org/wp-content/uploads/2017/09/hackathon-founderpassion-foundation.png',
+    user_image:
+      'https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    user_name: 'Sharp C',
+  },
+  {
+    id: 2,
+    date: new Date(),
+    description:
+      'llo natus cumque dignissimos fugiat vel eos, illum aut provident quisquam porro ipsum!',
+    event_type: 'On-Sight',
+    participants: 1399,
+    prize: 250000,
+    thumbnail_image:
+      'https://ied.eu/wp-content/uploads/2018/10/TTT-Hackathon@2x.png',
+    user_image:
+      'https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    user_name: 'Sharp C',
+  },
+  {
+    id: 3,
+    date: new Date(),
+    description:
+      'llo natus cumque dignissimos fugiat vel eos, illum aut provident quisquam porro ipsum!',
+    event_type: 'Online',
+    participants: 5399,
+    prize: 350000,
+    thumbnail_image:
+      'https://glider.ai/content/uploads/sites/6/2018/10/Hachathon.jpg',
+    user_image:
+      'https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    user_name: 'Sharp C',
+  },
+];
 export const drawerItems = [
   {
     id: 1,
