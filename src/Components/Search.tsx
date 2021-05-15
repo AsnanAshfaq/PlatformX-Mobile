@@ -17,10 +17,12 @@ const Search: FC<props> = ({placeholder}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
 
-  useEffect(() => {}, [isModalOpen]);
   return (
     <View style={styles.parent}>
-      <FilterModal isShow={isModalOpen} />
+      <FilterModal
+        isShow={isModalOpen}
+        toggleModal={() => setisModalOpen(!isModalOpen)}
+      />
       <View style={styles.searchContainer}>
         <TextInput
           value={input}

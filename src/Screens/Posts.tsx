@@ -12,7 +12,7 @@ type props = {
 const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
-      <CustomHeader title={'Home'} navigation={navigation} />
+      <CustomHeader title={'Home'} navigation={navigation} drawer />
 
       <ScrollView>
         <CustomSearch placeholder={'Search here'} />

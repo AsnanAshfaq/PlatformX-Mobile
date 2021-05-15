@@ -49,7 +49,16 @@ const TabScreens = () => {
           backgroundColor: darkColors.BACKGROUND_COLOR,
         },
       }}>
-      <Tab.Screen name="Home" component={Post} />
+      <Tab.Screen
+        name="Home"
+        component={Post}
+        // options={{
+        //   tabBarBadge: 1,
+        //   tabBarBadgeStyle: {
+        //     backgroundColor: darkColors.BADGE_COLOR,
+        //   },
+        // }}
+      />
       <Tab.Screen name="Hackathons" component={Hackathon} />
       <Tab.Screen name="Workshops" component={Workshop} />
       <Tab.Screen name="Projects" component={Project} />

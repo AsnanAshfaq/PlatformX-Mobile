@@ -32,28 +32,36 @@ type props = {
 
 const ICON_SIZE = Width * 0.07;
 
-const CustomHeader: FunctionComponent<props> = ({navigation, title}) => {
+const CustomHeader: FunctionComponent<props> = ({
+  navigation,
+  title,
+  back,
+  drawer,
+}) => {
   return (
     <View style={styles.parent}>
       {/* drawer navigation  or back button*/}
+      {drawer && (
+        <View style={styles.leftIconContainer}>
+          <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+            <FontAwesome
+              name={'navicon'}
+              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              size={ICON_SIZE}
+              style={styles.iconPadding}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+      )}
 
-      <View style={styles.leftIconContainer}>
-        <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-          <FontAwesome
-            name={'navicon'}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
-            size={ICON_SIZE}
-            style={styles.iconPadding}
-          />
-        </TouchableWithoutFeedback>
-      </View>
       {/* title of the screen  */}
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>{title}</Text>
       </View>
       {/* right icons  */}
       <View style={styles.RightIconContainer}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => console.log('Navigate to chat screen')}>
           <View style={{flexDirection: 'row'}}>
             <Ionicons
               name={'chatbubble-outline'}
@@ -66,7 +74,8 @@ const CustomHeader: FunctionComponent<props> = ({navigation, title}) => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => console.log('Navigate to notifications screen')}>
           <View style={{flexDirection: 'row'}}>
             <Entypo
               name={'bell'}

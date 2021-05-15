@@ -1,17 +1,14 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
 
-const FilterModal = ({isShow}) => {
-  const [isModalVisible, setModalVisible] = useState(isShow);
-  // console.log('Value of isShow', isShow);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
+type props = {
+  isShow: boolean;
+  toggleModal: () => void;
+};
+const FilterModal: FC<props> = ({isShow, toggleModal}) => {
   return (
-    <Modal isVisible={isModalVisible}>
+    <Modal isVisible={isShow}>
       <View style={{flex: 1}}>
         <Text>Hello!</Text>
 
