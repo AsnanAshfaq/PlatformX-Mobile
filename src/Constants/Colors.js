@@ -17,4 +17,6 @@ export const darkColors = {
   TAB_BAR_INACTIVE_COLOR: '#38475e',
   TAB_BAR_ICON_COLOR: '#99afd1',
   DRAWER_BACKGROUND_COLOR: '#111721',
+  BADGE_COLOR: '#ff4344',
+  BADGE_TEXT_COLOR: '#dcdee0',
 };

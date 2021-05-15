@@ -19,6 +19,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Badge} from 'react-native-elements';
 
 type props = {
   title: string;
@@ -52,18 +53,32 @@ const CustomHeader: FunctionComponent<props> = ({navigation, title}) => {
       </View>
       {/* right icons  */}
       <View style={styles.RightIconContainer}>
-        <Ionicons
-          name={'chatbubble-outline'}
-          size={ICON_SIZE}
-          color={darkColors.TAB_BAR_ACTIVE_COLOR}
-          style={styles.iconPadding}
-        />
-        <Entypo
-          name={'bell'}
-          size={ICON_SIZE}
-          color={darkColors.TAB_BAR_ACTIVE_COLOR}
-          style={styles.iconPadding}
-        />
+        <TouchableWithoutFeedback>
+          <View style={{flexDirection: 'row'}}>
+            <Ionicons
+              name={'chatbubble-outline'}
+              size={ICON_SIZE}
+              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              style={styles.iconPadding}
+            />
+            <View style={styles.badgeStyle}>
+              <Text style={styles.badgeText}>5</Text>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback>
+          <View style={{flexDirection: 'row'}}>
+            <Entypo
+              name={'bell'}
+              size={ICON_SIZE}
+              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              style={styles.iconPadding}
+            />
+            <View style={styles.badgeStyle}>
+              <Text style={styles.badgeText}>2</Text>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );
@@ -96,5 +111,21 @@ const styles = StyleSheet.create({
   },
   iconPadding: {
     padding: 8,
+  },
+  badgeStyle: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 21,
+    height: 21,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: darkColors.BADGE_COLOR,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: darkColors.BADGE_COLOR,
+  },
+  badgeText: {
+    color: darkColors.BADGE_TEXT_COLOR,
   },
 });
