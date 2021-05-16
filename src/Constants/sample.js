@@ -68,6 +68,36 @@ export const hackathonData = [
     user_name: 'Sharp C',
   },
 ];
+
+export const hackathonFilterData = [
+  {
+    id: 'location',
+    tag: 'Location',
+    subtag: ['Online', 'Onsight'],
+  },
+  {
+    id: 'status',
+    tag: 'Status',
+    subtag: ['Upcoming', 'Open', 'Ended'],
+  },
+  {
+    id: 'interest tags',
+    tag: 'Interest tags',
+    subtag: [
+      'Social Good',
+      'Machine Learning/AI',
+      'COVID - 19',
+      'Productivity',
+      'Blockchain',
+    ],
+  },
+  {
+    id: 'Length',
+    tag: 'Length',
+    subtag: ['1-6 days', '1-4 Weeks', '1+ Month'],
+  },
+];
+
 export const drawerItems = [
   {
     id: 1,

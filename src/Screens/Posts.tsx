@@ -15,7 +15,7 @@ const Posts: FC<props> = ({navigation}) => {
       <CustomHeader title={'Home'} navigation={navigation} drawer />
 
       <ScrollView>
-        <CustomSearch placeholder={'Search here'} />
+        <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
         {postData.map(post => (
           <PostCard
             key={post.id}

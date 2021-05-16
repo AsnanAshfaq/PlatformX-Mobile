@@ -12,11 +12,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../Modals/FilterModal';
 type props = {
   placeholder: string;
+  showFilterIcon?: boolean;
 };
-const Search: FC<props> = ({placeholder}) => {
+const Search: FC<props> = ({placeholder, showFilterIcon}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
 
+  console.log('Value of show filter icon is ', showFilterIcon);
   return (
     <View style={styles.parent}>
       <FilterModal
@@ -38,16 +40,18 @@ const Search: FC<props> = ({placeholder}) => {
           style={styles.searchIcon}
         />
       </View>
-      <View style={styles.filterContainer}>
-        {/* filter icon -- ios-options-outline(dark theme) --ios-options-sharp(light-them) */}
-        <TouchableWithoutFeedback onPress={() => setisModalOpen(true)}>
-          <Ionicons
-            name={'ios-options-outline'}
-            size={Width * 0.07}
-            style={styles.filterIcon}
-          />
-        </TouchableWithoutFeedback>
-      </View>
+      {showFilterIcon !== false && (
+        <View style={styles.filterContainer}>
+          {/* filter icon -- ios-options-outline(dark theme) --ios-options-sharp(light-them) */}
+          <TouchableWithoutFeedback onPress={() => setisModalOpen(true)}>
+            <Ionicons
+              name={'ios-options-outline'}
+              size={Width * 0.07}
+              style={styles.filterIcon}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+      )}
     </View>
   );
 };
