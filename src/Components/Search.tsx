@@ -18,7 +18,6 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
 
-  console.log('Value of show filter icon is ', showFilterIcon);
   return (
     <View style={styles.parent}>
       <FilterModal

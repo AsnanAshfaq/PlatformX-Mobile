@@ -48,9 +48,9 @@ const FilterModal: FC<props> = ({isShow, toggleModal}) => {
       isVisible={isShow}
       style={styles.Modalparent}
       animationIn={'slideInUp'}
-      animationInTiming={400}
+      animationInTiming={300}
       animationOut={'slideOutDown'}
-      animationOutTiming={400}
+      animationOutTiming={200}
       backdropColor={'#575959'}
       backdropOpacity={0.3}
       onBackdropPress={toggleModal}
@@ -63,12 +63,10 @@ const FilterModal: FC<props> = ({isShow, toggleModal}) => {
         </View>
         <ScrollView style={styles.scroll}>
           {hackathonFilterData.map((filterItem, index) => {
-            console.log(index);
-            console.log(hackathonFilterData.length);
             return (
-              <View>
+              <View key={filterItem.id}>
                 {/* label of the filter  */}
-                <Text key={filterItem.id} style={[styles.tag, styles.divider]}>
+                <Text style={[styles.tag, styles.divider]}>
                   {filterItem.tag}
                 </Text>
                 {/* list of subtags  */}

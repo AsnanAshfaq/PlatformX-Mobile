@@ -5,7 +5,7 @@
 // messaging screen icon
 // notification icon
 
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {
   Platform,
   StyleSheet,
@@ -20,6 +20,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Badge} from 'react-native-elements';
+import CustomBadge from './CustomBadge';
+import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   title: string;
@@ -38,15 +40,16 @@ const CustomHeader: FunctionComponent<props> = ({
   back,
   drawer,
 }) => {
+  const [{theme}, dispatch] = useStateValue();
   return (
-    <View style={styles.parent}>
+    <View style={[styles.parent, {backgroundColor: theme.BACKGROUND_COLOR}]}>
       {/* drawer navigation  or back button*/}
       {drawer && (
         <View style={styles.leftIconContainer}>
           <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
             <FontAwesome
               name={'navicon'}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              color={theme.TAB_BAR_ACTIVE_COLOR}
               size={ICON_SIZE}
               style={styles.iconPadding}
             />
@@ -56,22 +59,23 @@ const CustomHeader: FunctionComponent<props> = ({
 
       {/* title of the screen  */}
       <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>{title}</Text>
+        <Text style={[styles.headerTitle, {color: theme.TEXT_COLOR}]}>
+          {title}
+        </Text>
       </View>
       {/* right icons  */}
       <View style={styles.RightIconContainer}>
         <TouchableWithoutFeedback
-          onPress={() => console.log('Navigate to chat screen')}>
+          onPress={() => dispatch({type: 'TOGGLE_THEME'})}>
           <View style={{flexDirection: 'row'}}>
             <Ionicons
               name={'chatbubble-outline'}
               size={ICON_SIZE}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              color={theme.TAB_BAR_ACTIVE_COLOR}
               style={styles.iconPadding}
             />
-            <View style={styles.badgeStyle}>
-              <Text style={styles.badgeText}>5</Text>
-            </View>
+            {/* badge  */}
+            <CustomBadge value={5} />
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
@@ -80,12 +84,11 @@ const CustomHeader: FunctionComponent<props> = ({
             <Entypo
               name={'bell'}
               size={ICON_SIZE}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              color={theme.TAB_BAR_ACTIVE_COLOR}
               style={styles.iconPadding}
             />
-            <View style={styles.badgeStyle}>
-              <Text style={styles.badgeText}>2</Text>
-            </View>
+            {/* badge  */}
+            <CustomBadge />
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -98,7 +101,6 @@ export default CustomHeader;
 const styles = StyleSheet.create({
   parent: {
     height: Height * 0.09,
-    backgroundColor: darkColors.BACKGROUND_COLOR,
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -107,7 +109,6 @@ const styles = StyleSheet.create({
     // paddingLeft: 5,
   },
   headerTitle: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large * 1.2,
   },
   leftIconContainer: {
@@ -120,21 +121,5 @@ const styles = StyleSheet.create({
   },
   iconPadding: {
     padding: 8,
-  },
-  badgeStyle: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 21,
-    height: 21,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: darkColors.BADGE_COLOR,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: darkColors.BADGE_COLOR,
-  },
-  badgeText: {
-    color: darkColors.BADGE_TEXT_COLOR,
   },
 });
