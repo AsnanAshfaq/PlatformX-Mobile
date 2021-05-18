@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {drawerItems} from '../Constants/Sample';
+// import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
 type Props = {
   label: string;
@@ -36,6 +37,7 @@ type props = {
 };
 
 const CustomDrawer: FC<props> = (props: any) => {
+  const {navigation} = props;
   return (
     <DrawerContentScrollView {...props} style={styles.parent}>
       {/* <DrawerItemList {...props} /> */}
@@ -53,7 +55,10 @@ const CustomDrawer: FC<props> = (props: any) => {
         <Text style={styles.fullName}>Asnan Ashfaq</Text>
         <Text style={styles.userName}>@shanay_ash</Text>
         <TouchableOpacity
-          onPress={() => console.log('Pressed on profile button')}
+          onPress={() => {
+            // navigation.closeDrawer();
+            navigation.navigate('Profile_Home');
+          }}
           style={styles.profileButtonContainer}>
           <Text style={styles.profileButtonText}>View Profile</Text>
         </TouchableOpacity>

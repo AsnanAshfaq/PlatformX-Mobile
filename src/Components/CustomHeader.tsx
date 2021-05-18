@@ -39,6 +39,8 @@ const CustomHeader: FunctionComponent<props> = ({
   title,
   back,
   drawer,
+  chat,
+  bell,
 }) => {
   const [{theme}, dispatch] = useStateValue();
   return (
@@ -57,6 +59,19 @@ const CustomHeader: FunctionComponent<props> = ({
         </View>
       )}
 
+      {back && (
+        <View style={styles.leftIconContainer}>
+          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+            <FontAwesome
+              name={'arrow-left'}
+              color={theme.TAB_BAR_ACTIVE_COLOR}
+              size={ICON_SIZE}
+              style={styles.iconPadding}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+      )}
+
       {/* title of the screen  */}
       <View style={styles.headerContainer}>
         <Text style={[styles.headerTitle, {color: theme.TEXT_COLOR}]}>
@@ -65,32 +80,37 @@ const CustomHeader: FunctionComponent<props> = ({
       </View>
       {/* right icons  */}
       <View style={styles.RightIconContainer}>
-        <TouchableWithoutFeedback
-          onPress={() => dispatch({type: 'TOGGLE_THEME'})}>
-          <View style={{flexDirection: 'row'}}>
-            <Ionicons
-              name={'chatbubble-outline'}
-              size={ICON_SIZE}
-              color={theme.TAB_BAR_ACTIVE_COLOR}
-              style={styles.iconPadding}
-            />
-            {/* badge  */}
-            <CustomBadge value={5} />
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => console.log('Navigate to notifications screen')}>
-          <View style={{flexDirection: 'row'}}>
-            <Entypo
-              name={'bell'}
-              size={ICON_SIZE}
-              color={theme.TAB_BAR_ACTIVE_COLOR}
-              style={styles.iconPadding}
-            />
-            {/* badge  */}
-            <CustomBadge />
-          </View>
-        </TouchableWithoutFeedback>
+        {chat && (
+          <TouchableWithoutFeedback
+            onPress={() => dispatch({type: 'TOGGLE_THEME'})}>
+            <View style={{flexDirection: 'row'}}>
+              <Ionicons
+                name={'chatbubble-outline'}
+                size={ICON_SIZE}
+                color={theme.TAB_BAR_ACTIVE_COLOR}
+                style={styles.iconPadding}
+              />
+              {/* badge  */}
+              <CustomBadge value={5} />
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+
+        {bell && (
+          <TouchableWithoutFeedback
+            onPress={() => console.log('Navigate to notifications screen')}>
+            <View style={{flexDirection: 'row'}}>
+              <Entypo
+                name={'bell'}
+                size={ICON_SIZE}
+                color={theme.TAB_BAR_ACTIVE_COLOR}
+                style={styles.iconPadding}
+              />
+              {/* badge  */}
+              <CustomBadge />
+            </View>
+          </TouchableWithoutFeedback>
+        )}
       </View>
     </View>
   );

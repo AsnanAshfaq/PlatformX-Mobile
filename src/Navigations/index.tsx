@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -13,6 +16,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Width} from '../Constants/Size';
 import CustomDrawer from '../Components/CustomDrawer';
+import Home from '../Screens/Profile/Home';
+import {View} from 'react-native';
 // declaring navigators
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,8 +55,9 @@ const TabScreens = () => {
         },
       }}>
       <Tab.Screen
-        name="Home"
+        name="Post"
         component={Post}
+        options={{tabBarLabel: 'Home'}}
         // options={{
         //   tabBarBadge: 1,
         //   tabBarBadgeStyle: {
@@ -66,10 +72,33 @@ const TabScreens = () => {
   );
 };
 
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
+const ProfileScreens = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: () => null,
+      }}>
+      <Stack.Screen name="Home" component={Home} />
+    </Stack.Navigator>
+  );
+};
+
 const DrawerScreens = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="Tabs"
       openByDefault={false}
       drawerContent={props => <CustomDrawer {...props} />}
       drawerStyle={{
@@ -79,18 +108,36 @@ const DrawerScreens = () => {
         // borderTopRightRadius: 30,
         borderColor: darkColors.DRAWER_BACKGROUND_COLOR,
       }}
+      // overlayColor={'grey'}
       drawerType={'slide'}>
-      <Drawer.Screen name="Home" component={TabScreens} />
+      <Drawer.Screen name="Tabs" component={TabScreens} />
       <Drawer.Screen name="Workshop" component={Workshop} />
+      <Drawer.Screen name="Profile_Home" component={ProfileScreens} />
     </Drawer.Navigator>
   );
 };
 
 const Navigation = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{header: () => null}}>
-        <Stack.Screen name="Main" component={DrawerScreens} />
+    <NavigationContainer
+      theme={{
+        colors: {
+          background: darkColors.BACKGROUND_COLOR,
+          border: '#fff',
+          card: '#fff',
+          notification: '#fff',
+          primary: '#fff',
+          text: '#fff',
+        },
+        dark: false,
+      }}>
+      <Stack.Navigator
+        screenOptions={{
+          header: () => null,
+          animationEnabled: true,
+        }}>
+        {/* <Stack.Screen name="Main" component={DrawerScreens} options={{}} /> */}
+        <Stack.Screen component={ProfileScreens} name={'Profile'} />
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
       </Stack.Navigator>
     </NavigationContainer>
