@@ -129,6 +129,7 @@ export const profileData = {
   first_name: 'Asnan',
   last_name: 'Ashfaq',
   user_name: 'shanay_ash',
+  bio: 'React & React Native Enthusiast',
   followers: 20,
   following: 10,
   posts: 5,
