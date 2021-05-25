@@ -10,10 +10,12 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../Modals/FilterModal';
+
 type props = {
   placeholder: string;
   showFilterIcon?: boolean;
 };
+
 const Search: FC<props> = ({placeholder, showFilterIcon}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);

@@ -123,14 +123,28 @@ export const drawerItems = [
 
 export const profileData = {
   background_image:
-    'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95376918_2556677044590368_4590986135781507072_n.jpg?_nc_cat=109&ccb=1-3&_nc_sid=e3f864&_nc_eui2=AeGM5YNChbRViDsEJfN0XsfHtP-BrZWHKua0_4GtlYcq5pqshebp_WRax6VavY9kTODk1RZSvblLfDB0hVH7tyVK&_nc_ohc=pTp4TKZkEa8AX95G2Bb&_nc_ht=scontent.fuet1-1.fna&oh=806c2c71f4acedd639f3ac15b2b99861&oe=60C842EE',
+    'https://1stwebdesigner.com/wp-content/uploads/2019/07/css-background-effects-thumb.jpg',
   profile_image:
     'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
   first_name: 'Asnan',
   last_name: 'Ashfaq',
   user_name: 'shanay_ash',
+  gender: 'Male',
   bio: 'React & React Native Enthusiast',
   followers: 20,
   following: 10,
   posts: 5,
+  lives_in: 'Islamabad',
+  education: 'Comsats Islamabad, Pakistan',
+  skills: [
+    {
+      tag: 'React',
+      experience: '1 Year',
+    },
+    {
+      tag: 'React Native',
+      experience: '1 Year',
+    },
+  ],
+  interests: ['Front End Development', 'Back End Development', 'Gaming'],
 };

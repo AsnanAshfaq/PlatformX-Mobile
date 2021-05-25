@@ -5,14 +5,19 @@ import CustomHeader from '../Components/CustomHeader';
 import CustomSearch from '../Components/Search';
 import {postData} from '../Constants/Sample';
 import {darkColors} from '../Constants/Colors';
-import FilterModal from '../Modals/FilterModal';
+
 type props = {
   navigation: any;
 };
 const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
-      <CustomHeader title={'Home'} navigation={navigation} drawer />
+      <CustomHeader
+        title={'Home'}
+        navigation={navigation}
+        drawer
+        onBackPress={() => console.log('Pressed back')}
+      />
 
       <ScrollView>
         <CustomSearch placeholder={'Search here'} showFilterIcon={false} />

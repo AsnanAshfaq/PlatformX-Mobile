@@ -30,6 +30,7 @@ type props = {
   chat?: boolean;
   back?: boolean;
   drawer?: boolean;
+  onBackPress: () => void;
 };
 
 const ICON_SIZE = Width * 0.07;
@@ -41,6 +42,7 @@ const CustomHeader: FunctionComponent<props> = ({
   drawer,
   chat,
   bell,
+  onBackPress,
 }) => {
   const [{theme}, dispatch] = useStateValue();
   return (
@@ -61,7 +63,7 @@ const CustomHeader: FunctionComponent<props> = ({
 
       {back && (
         <View style={styles.leftIconContainer}>
-          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <TouchableWithoutFeedback onPress={onBackPress}>
             <FontAwesome
               name={'arrow-left'}
               color={theme.TAB_BAR_ACTIVE_COLOR}
