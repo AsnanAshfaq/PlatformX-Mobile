@@ -10,22 +10,30 @@
 // edit profile button
 
 import React, {FC, useRef, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  ImageBackground,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import CustomHeader from '../../Components/CustomHeader';
 import PostCard from '../../Components/PostCard';
 import {darkColors} from '../../Constants/Colors';
 import {postData, profileData} from '../../Constants/Sample';
 import {Height, Sizes, Width} from '../../Constants/Size';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
+const ICON_SIZE = Width * 0.06;
+
+const UserInfo = ({icon, label, value}) => {
+  return (
+    <View style={styles.userInfoContainer}>
+      <Ionicons name={icon} size={ICON_SIZE} color={darkColors.ICON_COLOR} />
+      <Text style={styles.label}>
+        {'  '}
+        {label}
+        {'  '}
+        <Text style={styles.value}>{value}</Text>
+      </Text>
+    </View>
+  );
+};
 type Props = {
   label: string;
   value: number;
@@ -33,7 +41,16 @@ type Props = {
 };
 const Card: FC<Props> = ({label, value, onPress}) => {
   return (
-    <View style={styles.keyValueContainer}>
+    <View
+      style={[
+        styles.keyValueContainer,
+        {
+          borderRightWidth: label === 'Posts' ? 2 : 0,
+          borderRightColor: label === 'Posts' ? darkColors.SHADOW_COLOR : '',
+          borderLeftWidth: label === 'Following' ? 2 : 0,
+          borderLeftColor: label === 'Following' ? darkColors.SHADOW_COLOR : '',
+        },
+      ]}>
       <TouchableOpacity onPress={onPress}>
         <View style={styles.center}>
           <Text style={styles.label}>{label}</Text>
@@ -64,15 +81,16 @@ const Home: FC<props> = ({navigation}) => {
       });
     }
   };
+
   return (
     <View style={styles.parent}>
       <CustomHeader
         title={`@${profileData.user_name}`}
         navigation={navigation}
         back
-        onBackPress={() => console.log('Pressed on back button')}
+        onBackPress={() => navigation.goBack()}
       />
-      <ScrollView ref={scrollViewRef}>
+      <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps="handled">
         {/* background and profile image section  */}
         <View style={styles.center}>
           <Image
@@ -105,60 +123,33 @@ const Home: FC<props> = ({navigation}) => {
           />
           <Card
             label={'Followers'}
-            value={profileData.followers}
-            onPress={() => console.log('Pressed')}
+            value={profileData.followers.length}
+            onPress={() => navigation.navigate('Followers')}
           />
           <Card
             label={'Following'}
-            value={profileData.following}
-            onPress={() => console.log('Pressed')}
+            value={profileData.following.length}
+            onPress={() => navigation.navigate('Following')}
           />
         </View>
 
-        {/* education-skills-interest section */}
-        <View style={{marginLeft: 10}}>
-          <Text style={styles.label}>
-            Lives in
-            <Text style={styles.value}>
-              {'  '}
-              {profileData.lives_in}{' '}
-            </Text>
-          </Text>
-          <Text style={styles.label}>
-            Education at
-            <Text style={styles.value}>
-              {'  '}
-              {profileData.education}{' '}
-            </Text>
-          </Text>
-          <Text style={styles.label}>
-            Gender
-            <Text style={styles.value}>
-              {'  '}
-              {profileData.gender}{' '}
-            </Text>
-          </Text>
-          {/* <View style={styles.column}>
-            <Text style={styles.label}>Skills </Text>
-            <View style={styles.column}>
-              {profileData.skills.map(skill => (
-                <View key={skill.tag} style={styles.row}>
-                  <Text style={styles.label}>{skill.tag}</Text>
-                  <Text style={styles.value}>{skill.experience}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.label}>Interests </Text>
-            <View style={styles.column}>
-              {profileData.interests.map(interest => (
-                <Text style={styles.value}>{interest}</Text>
-              ))}
-            </View>
-          </View> */}
-        </View>
+        {/* education-lives in-gender section */}
 
+        <UserInfo
+          icon={'location-outline'}
+          label={'Lives in'}
+          value={profileData.lives_in}
+        />
+        <UserInfo
+          icon={'book-outline'}
+          label={'Education'}
+          value={profileData.education}
+        />
+        <UserInfo
+          icon={'calendar-outline'}
+          label={'Date of Birth'}
+          value={profileData.date_of_birth}
+        />
         {/* view profile button  */}
         <TouchableOpacity
           style={styles.viewButtonContainer}
@@ -176,14 +167,7 @@ const Home: FC<props> = ({navigation}) => {
             <Text style={styles.myPostText}>My Posts</Text>
           </View>
           {postData.map(post => (
-            <PostCard
-              key={post.id}
-              user_name={post.user_name}
-              date={post.date}
-              description={post.description}
-              image={post.image}
-              screen={'Home'}
-            />
+            <PostCard key={post.id} postDetail={post} />
           ))}
         </View>
       </ScrollView>
@@ -264,6 +248,11 @@ const styles = StyleSheet.create({
     borderColor: darkColors.SHADOW_COLOR,
     margin: 2,
   },
+  userInfoContainer: {
+    marginHorizontal: Width * 0.04,
+    marginVertical: 5,
+    flexDirection: 'row',
+  },
   label: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
@@ -300,7 +289,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 5,
     paddingHorizontal: 10,
-    backgroundColor: darkColors.SHADOW_COLOR,
+    backgroundColor: darkColors.TOMATO_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',

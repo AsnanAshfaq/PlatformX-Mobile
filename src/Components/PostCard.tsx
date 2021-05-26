@@ -1,7 +1,8 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
+import PostModal from '../Modals/PostModel';
 
 const MAX_TEXT_LENGTH = 300;
 
@@ -28,37 +29,68 @@ const PostCardButtons: FC = () => {
 };
 
 type props = {
-  image: string;
-  user_name: string;
-  date: Date;
-  description: string;
-  screen: 'Home' | 'Hackathons' | 'Workshops' | 'Projects';
+  postDetail: any;
 };
 
-const PostCard: FC<props> = ({image, date, user_name, description, screen}) => {
+const PostCard: FC<props> = ({postDetail}) => {
+  const [isModalOpen, setisModalOpen] = useState(false);
+
   return (
     <View style={styles.parent}>
+      <PostModal
+        isShow={isModalOpen}
+        toggleModal={() => setisModalOpen(!isModalOpen)}
+        comments={postDetail.comments}
+      />
       {/* header  */}
       <View style={styles.headerContainer}>
         <View style={styles.headerImageContainer}>
-          <Image source={{uri: image}} style={styles.userImage} />
+          <Image source={{uri: postDetail.image}} style={styles.userImage} />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.username}>{user_name}</Text>
-          <Text style={styles.date}>{date.toUTCString().substring(0, 17)}</Text>
+          <Text style={styles.username}>{postDetail.user_name}</Text>
+          <Text style={styles.date}>
+            {postDetail.date.toUTCString().substring(0, 17)}
+          </Text>
         </View>
       </View>
       {/* content  */}
       <View style={styles.contentContainer}>
         <Text style={styles.descriptionText}>
-          {description.length > MAX_TEXT_LENGTH
-            ? description.substring(0, MAX_TEXT_LENGTH - 4) + '.... read more'
-            : description}
+          {postDetail.description.length > MAX_TEXT_LENGTH
+            ? postDetail.description.substring(0, MAX_TEXT_LENGTH - 4) +
+              '.... read more'
+            : postDetail.description}
         </Text>
       </View>
-
+      {/* image if any  */}
+      {postDetail.images && (
+        <View style={styles.imageContainer}>
+          <Image
+            source={{uri: postDetail.images}}
+            style={styles.postImage}
+            resizeMode={'center'}
+          />
+        </View>
+      )}
+      {/* like comment share details */}
+      <TouchableOpacity
+        style={styles.numberContainer}
+        onPress={() => setisModalOpen(true)}>
+        <View style={styles.likeContainer}>
+          <Text style={styles.PostButtonText}>{postDetail.likes} Likes</Text>
+        </View>
+        <View style={styles.commentConatiner}>
+          <Text style={styles.PostButtonText}>
+            {postDetail.comments.length} Comment
+          </Text>
+        </View>
+        <View style={styles.sharContainer}>
+          <Text style={styles.PostButtonText}>{postDetail.shares} Share</Text>
+        </View>
+      </TouchableOpacity>
       {/* post buttons   */}
-      {screen === 'Home' ? <PostCardButtons /> : <PostCardButtons />}
+      <PostCardButtons />
     </View>
   );
 };
@@ -68,7 +100,7 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.04,
     marginVertical: Width * 0.01,
     // minHeight: Height * 0.35,
-    maxHeight: Height * 0.4,
+    // maxHeight: Height * 0.4,
     borderRadius: 20,
     padding: 10,
     shadowColor: darkColors.SHADOW_COLOR,
@@ -117,6 +149,40 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
+  },
+  imageContainer: {
+    width: Width * 0.9,
+    minHeight: Height * 0.15,
+    maxHeight: Height * 0.2,
+    // flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  postImage: {
+    width: Width * 0.7,
+    height: Height * 0.2,
+  },
+  numberContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    // borderTopWidth: 2,
+    paddingVertical: 6,
+    borderColor: darkColors.SHADOW_COLOR,
+  },
+  likeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  commentConatiner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sharContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   postButtonContainer: {
     minHeight: Height * 0.05,

@@ -17,7 +17,10 @@ import {darkColors} from '../Constants/Colors';
 import {Width} from '../Constants/Size';
 import CustomDrawer from '../Components/CustomDrawer';
 import Home from '../Screens/Profile/Home';
+import TabView from '../Screens/Profile/TabView';
 import {View} from 'react-native';
+import Followers from '../Screens/Profile/Followers';
+import Following from '../Screens/Profile/Following';
 // declaring navigators
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,7 +34,7 @@ const TabScreens = () => {
           let iconName;
           const ICON_SIZE = Width * 0.07;
 
-          if (route.name === 'Home') {
+          if (route.name === 'Post') {
             iconName = focused ? 'home-sharp' : 'home-outline';
           } else if (route.name === 'Hackathons') {
             iconName = focused ? 'code-slash' : 'code-sharp';
@@ -90,7 +93,45 @@ const ProfileScreens = () => {
       screenOptions={{
         header: () => null,
       }}>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          animationEnabled: true,
+          gestureDirection: 'horizontal',
+          gestureEnabled: true,
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Followers"
+        component={Followers}
+        options={{
+          animationEnabled: true,
+          gestureDirection: 'horizontal',
+          gestureEnabled: true,
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Following"
+        component={Following}
+        options={{
+          gestureDirection: 'horizontal',
+          gestureEnabled: true,
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+        }}
+      />
+      {/* <Stack.Screen name="TabView" component={TabView} /> */}
     </Stack.Navigator>
   );
 };
@@ -136,7 +177,7 @@ const Navigation = () => {
           header: () => null,
           animationEnabled: true,
         }}>
-        {/* <Stack.Screen name="Main" component={DrawerScreens} options={{}} /> */}
+        <Stack.Screen name="Main" component={DrawerScreens} />
         <Stack.Screen component={ProfileScreens} name={'Profile'} />
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
       </Stack.Navigator>

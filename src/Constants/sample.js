@@ -5,6 +5,19 @@ export const postData = [
     date: new Date(),
     description: 'This is the little post',
     image: 'https://reactnative.dev/img/tiny_logo.png',
+    likes: 10,
+    images:
+      'https://www.founderpassion.org/wp-content/uploads/2017/09/hackathon-founderpassion-foundation.png',
+
+    comments: [
+      {
+        id: 1,
+        user_image: 'https://reactnative.dev/img/tiny_logo.png',
+        user_name: 'shana_ash',
+        text: 'The post is pretty old',
+      },
+    ],
+    shares: 1,
   },
   {
     id: 2,
@@ -13,6 +26,24 @@ export const postData = [
     description:
       'ptatem ex blanditiis eligendi rem!Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam nulla iusto magni odio, temporibus dicta quasi culpa, ratione id incidunt, porro delectus cupiditate architecto quaerat voluptatem ex blanditiis eligendi rem!',
     image: 'https://reactnative.dev/img/tiny_logo.png',
+    likes: 123,
+    comments: [
+      {
+        id: 1,
+        user_image: 'https://reactnative.dev/img/tiny_logo.png',
+        user_name: 'shana_ash',
+        text:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid ducimus harum doloribus veritatis architecto! Nostrum qui inventore alias assumenda numquam? Quidem, quo qui modi repudiandae non est consectetur odit nobis.',
+      },
+      {
+        id: 2,
+        user_image: 'https://reactnative.dev/img/tiny_logo.png',
+        user_name: 'asnan_ashfaq',
+        text:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid ducimus harum doloribus veritatis architecto! Nostrum qui inventore alias assumenda numquam? Quidem, quo qui modi repudiandae non est consectetur odit nobis.',
+      },
+    ],
+    shares: 14,
   },
   {
     id: 3,
@@ -20,7 +51,25 @@ export const postData = [
     date: new Date(),
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam nulla iusto magni odio, temporibus dicta quasi culpa, ratione id incidunt, porro delectus cupiditate architecto quaerat voluptatem ex blanditiis eligendi rem!Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam nulla iusto magni odio, temporibus dicta quasi culpa, ratione id incidunt, porro delectus cupiditate architecto quaerat voluptatem ex blanditiis eligendi rem!',
-    image: 'https://reactnative.dev/img/tiny_logo.png',
+    User_image: 'https://reactnative.dev/img/tiny_logo.png',
+    likes: 150,
+    comments: [
+      {
+        id: 1,
+        user_image: 'https://reactnative.dev/img/tiny_logo.png',
+        user_name: 'shana_ash',
+        text:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid ducimus harum doloribus veritatis architecto! Nostrum qui inventore alias assumenda numquam? Quidem, quo qui modi repudiandae non est consectetur odit nobis.',
+      },
+      {
+        id: 2,
+        user_image: 'https://reactnative.dev/img/tiny_logo.png',
+        user_name: 'asnan_ashfaq',
+        text:
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid ducimus harum doloribus veritatis architecto! Nostrum qui inventore alias assumenda numquam? Quidem, quo qui modi repudiandae non est consectetur odit nobis.',
+      },
+    ],
+    shares: 15,
   },
 ];
 
@@ -131,8 +180,83 @@ export const profileData = {
   user_name: 'shanay_ash',
   gender: 'Male',
   bio: 'React & React Native Enthusiast',
-  followers: 20,
-  following: 10,
+  date_of_birth: '2nd July, 1999',
+  followers: [
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'rcenticelop',
+      full_name: 'Rcentice',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'arymenco__',
+      full_name: 'Arymenco',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'sadsmali124',
+      full_name: 'Sadsmali',
+    },
+  ],
+  following: [
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'rcenticelop',
+      full_name: 'Rcentice',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'arymen__co',
+      full_name: 'Arymenco',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'sadsmali124',
+      full_name: 'Sadsmali',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'foereunfe',
+      full_name: 'aslsdadi',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'qwoinoin3',
+      full_name: 'asldkno2',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'asxasc',
+      full_name: 'akkasjd',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'aksdnkq',
+      full_name: 'qowioqiwf',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'askzca',
+      full_name: 'oqwiodq',
+    },
+    {
+      user_image:
+        'https://scontent.fuet1-1.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=jAumIADtQd4AX90JRFg&_nc_ht=scontent.fuet1-1.fna&oh=dfbd983bfd3cc5c21a5cc7e8095ae27e&oe=60CA9E24',
+      user_name: 'kjdnaksd',
+      full_name: 'qwqoiwqo',
+    },
+  ],
   posts: 5,
   lives_in: 'Islamabad',
   education: 'Comsats Islamabad, Pakistan',

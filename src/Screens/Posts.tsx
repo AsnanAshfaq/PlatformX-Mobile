@@ -12,24 +12,12 @@ type props = {
 const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
-      <CustomHeader
-        title={'Home'}
-        navigation={navigation}
-        drawer
-        onBackPress={() => console.log('Pressed back')}
-      />
+      <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
 
       <ScrollView>
         <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
         {postData.map(post => (
-          <PostCard
-            key={post.id}
-            user_name={post.user_name}
-            date={post.date}
-            description={post.description}
-            image={post.image}
-            screen={'Home'}
-          />
+          <PostCard key={post.id} postDetail={post} />
         ))}
       </ScrollView>
     </View>

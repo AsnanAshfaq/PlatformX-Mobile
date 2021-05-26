@@ -27,5 +27,6 @@ export const darkColors = {
   DRAWER_BACKGROUND_COLOR: '#111721',
   BADGE_COLOR: '#ff4344',
   BADGE_TEXT_COLOR: '#dcdee0',
-  TOMATO_COLOR: '#dcdee0',
+  TOMATO_COLOR: '#ff4344',
+  ICON_COLOR: '#99afd1',
 };

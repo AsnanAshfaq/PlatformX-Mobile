@@ -30,7 +30,7 @@ type props = {
   chat?: boolean;
   back?: boolean;
   drawer?: boolean;
-  onBackPress: () => void;
+  onBackPress?: () => void;
 };
 
 const ICON_SIZE = Width * 0.07;
