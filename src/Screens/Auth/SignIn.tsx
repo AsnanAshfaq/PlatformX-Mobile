@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,14 +6,24 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Platform,
+  TextInput,
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 
-const SignIn: FC = () => {
+type props = {
+  navigation: any;
+};
+
+const SignIn: FC<props> = ({navigation}) => {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    console.log('Clicked on Login ');
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -32,21 +42,33 @@ const SignIn: FC = () => {
           onChangeText={setEmail}
           textContentType={'emailAddress'}
         />
+        <TextInput style={{height: 1}} />
+
         {/* password field  */}
         <CustomTextField
           placeholder={'Password'}
           defaultValue={Password}
           onChangeText={setPassword}
           textContentType={'password'}
+          rightIcon
+          secureTextEntry={true}
         />
       </View>
+      {/* submit button container  */}
       <View style={styles.submitButtonContainer}>
-        <TouchableOpacity style={styles.submitButton}>
+        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.submitButtonText}>Login</Text>
         </TouchableOpacity>
+        {/* sign up container  */}
         <View style={styles.signUpContainer}>
           <Text style={styles.signUpText}>
-            Don't have an account? <Text style={styles.signUp}> Sign Up</Text>
+            Don't have an account?{' '}
+            <Text
+              style={styles.signUp}
+              onPress={() => navigation.navigate('SignUp')}>
+              {' '}
+              Sign Up
+            </Text>
             {'  '}
             Now
           </Text>

@@ -161,7 +161,9 @@ const DrawerScreens = () => {
 
 const AuthScreens = () => {
   return (
-    <Stack.Navigator screenOptions={{header: () => null}}>
+    <Stack.Navigator
+      screenOptions={{header: () => null}}
+      initialRouteName={'SignIn'}>
       <Stack.Screen name={'SignIn'} component={SignIn} />
       <Stack.Screen name={'SignUp'} component={SignUp} />
     </Stack.Navigator>
