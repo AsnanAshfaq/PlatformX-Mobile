@@ -15,7 +15,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import CustomHeader from '../../Components/CustomHeader';
 import PostCard from '../../Components/PostCard';
 import {darkColors} from '../../Constants/Colors';
-import {postData, profileData} from '../../Constants/Sample';
+import {postData, profileData} from '../../Constants/sample';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 

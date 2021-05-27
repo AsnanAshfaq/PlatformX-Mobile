@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
 import PostCard from '../Components/PostCard';
 import CustomHeader from '../Components/CustomHeader';
 import CustomSearch from '../Components/Search';
-import {postData} from '../Constants/Sample';
+import {postData} from '../Constants/sample';
 import {darkColors} from '../Constants/Colors';
 
 type props = {

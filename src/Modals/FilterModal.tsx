@@ -11,7 +11,7 @@ import Modal from 'react-native-modal';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
-import {hackathonFilterData} from '../Constants/Sample';
+import {hackathonFilterData} from '../Constants/sample';
 
 type Props = {
   list: Array<string>;

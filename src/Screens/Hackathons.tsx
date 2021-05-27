@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
 import CustomHeader from '../Components/CustomHeader';
 import CustomSearch from '../Components/Search';
-import {hackathonData} from '../Constants/Sample';
+import {hackathonData} from '../Constants/sample';
 import {darkColors} from '../Constants/Colors';
 import HackathonCard from '../Components/HackathonCard';
 

@@ -17,10 +17,12 @@ import {darkColors} from '../Constants/Colors';
 import {Width} from '../Constants/Size';
 import CustomDrawer from '../Components/CustomDrawer';
 import Home from '../Screens/Profile/Home';
-import TabView from '../Screens/Profile/TabView';
-import {View} from 'react-native';
 import Followers from '../Screens/Profile/Followers';
 import Following from '../Screens/Profile/Following';
+// Auth screens
+import SignIn from '../Screens/Auth/SignIn';
+import SignUp from '../Screens/Auth/SignUp';
+
 // declaring navigators
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -131,7 +133,6 @@ const ProfileScreens = () => {
           },
         }}
       />
-      {/* <Stack.Screen name="TabView" component={TabView} /> */}
     </Stack.Navigator>
   );
 };
@@ -158,6 +159,15 @@ const DrawerScreens = () => {
   );
 };
 
+const AuthScreens = () => {
+  return (
+    <Stack.Navigator screenOptions={{header: () => null}}>
+      <Stack.Screen name={'SignIn'} component={SignIn} />
+      <Stack.Screen name={'SignUp'} component={SignUp} />
+    </Stack.Navigator>
+  );
+};
+
 const Navigation = () => {
   return (
     <NavigationContainer
@@ -177,8 +187,9 @@ const Navigation = () => {
           header: () => null,
           animationEnabled: true,
         }}>
-        <Stack.Screen name="Main" component={DrawerScreens} />
-        <Stack.Screen component={ProfileScreens} name={'Profile'} />
+        {/* <Stack.Screen name="Main" component={DrawerScreens} />
+        <Stack.Screen component={ProfileScreens} name={'Profile'} /> */}
+        <Stack.Screen name="Auth" component={AuthScreens} />
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
       </Stack.Navigator>
     </NavigationContainer>

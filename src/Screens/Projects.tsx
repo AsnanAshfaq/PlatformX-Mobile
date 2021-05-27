@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
 import CustomHeader from '../Components/CustomHeader';
 import CustomSearch from '../Components/Search';
 import PostCard from '../Components/PostCard';
-import {postData} from '../Constants/Sample';
+import {postData} from '../Constants/sample';
 import {darkColors} from '../Constants/Colors';
 
 type props = {
@@ -23,14 +23,7 @@ const Project: FC<props> = ({navigation}) => {
       <ScrollView>
         <CustomSearch placeholder={'Search Projects'} />
         {postData.map(post => (
-          <PostCard
-            key={post.id}
-            user_name={post.user_name}
-            date={post.date}
-            description={post.description}
-            image={post.image}
-            screen={'Projects'}
-          />
+          <PostCard key={post.id} postDetail={post} />
         ))}
       </ScrollView>
     </View>

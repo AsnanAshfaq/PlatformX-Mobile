@@ -8,7 +8,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {drawerItems} from '../Constants/Sample';
+import {drawerItems} from '../Constants/sample';
 // import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
 type Props = {

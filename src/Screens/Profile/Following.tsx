@@ -6,7 +6,7 @@ import PostCard from '../../Components/PostCard';
 import Search from '../../Components/Search';
 import UserCard from '../../Components/UserCard';
 import {darkColors} from '../../Constants/Colors';
-import {postData, profileData} from '../../Constants/Sample';
+import {postData, profileData} from '../../Constants/sample';
 import {Sizes} from '../../Constants/Size';
 
 type props = {
