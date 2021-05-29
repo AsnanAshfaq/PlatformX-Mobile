@@ -13,6 +13,8 @@ type props = {
   textContentType: string;
   secureTextEntry?: boolean;
   rightIcon?: boolean;
+  maxLength?: number;
+  autoFocus?: boolean;
 };
 
 const ICON_SIZE = Width * 0.07;
@@ -25,6 +27,8 @@ const CustomTextField: FC<props> = ({
   textContentType,
   secureTextEntry,
   rightIcon,
+  maxLength,
+  autoFocus,
 }) => {
   const [Security, setSecurity] = useState(secureTextEntry);
 
@@ -38,6 +42,8 @@ const CustomTextField: FC<props> = ({
         placeholderTextColor={darkColors.TEXT_COLOR}
         textContentType={textContentType}
         secureTextEntry={Security === true ? Security : false}
+        maxLength={maxLength}
+        autoFocus={autoFocus}
       />
       {rightIcon && (
         <TouchableWithoutFeedback

@@ -13,30 +13,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type props = {
   navigations: any;
-  user_image: string;
-  user_name: string;
-  full_name: string;
+  user: any;
 };
 
 const ICON_SIZE = Width * 0.07;
 
-const UserCard: FC<props> = ({
-  navigations,
-  user_image,
-  user_name,
-  full_name,
-}) => {
+const UserCard: FC<props> = ({navigations, user}) => {
   return (
     <TouchableWithoutFeedback>
       <View style={styles.parent}>
         {/* image container */}
         <View style={styles.imageContainer}>
-          <Image source={{uri: user_image}} style={styles.image} />
+          <Image source={{uri: user.user_image}} style={styles.image} />
         </View>
         {/* name and user name container  */}
         <View style={styles.nameContainer}>
-          <Text style={styles.username}>{user_name}</Text>
-          <Text style={styles.fullname}>{full_name}</Text>
+          <Text style={styles.username}>{user.user_name}</Text>
+          <Text style={styles.fullname}>{user.full_name}</Text>
         </View>
         <View style={styles.optionContainer}>
           <TouchableOpacity>

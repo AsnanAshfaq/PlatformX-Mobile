@@ -21,7 +21,7 @@ const SignIn: FC<props> = ({navigation}) => {
   const [Password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log('Clicked on Login ');
+    console.log('pressed on sign in');
   };
 
   return (
@@ -30,9 +30,9 @@ const SignIn: FC<props> = ({navigation}) => {
       style={styles.parent}>
       {/* platformX logo  */}
       <View style={styles.logoContainer}>
-        <Text style={styles.bracket}>{'<  '}</Text>
+        <Text style={styles.bracket}>{'<'}</Text>
         <Text style={styles.logo}>PlatformX</Text>
-        <Text style={styles.bracket}>{' />'}</Text>
+        <Text style={styles.bracket}>{'/>'}</Text>
       </View>
       <View style={styles.fieldContainer}>
         {/* email field  */}
@@ -42,7 +42,6 @@ const SignIn: FC<props> = ({navigation}) => {
           onChangeText={setEmail}
           textContentType={'emailAddress'}
         />
-        <TextInput style={{height: 1}} />
 
         {/* password field  */}
         <CustomTextField
@@ -57,7 +56,7 @@ const SignIn: FC<props> = ({navigation}) => {
       {/* submit button container  */}
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-          <Text style={styles.submitButtonText}>Login</Text>
+          <Text style={styles.submitButtonText}>Sign In</Text>
         </TouchableOpacity>
         {/* sign up container  */}
         <View style={styles.signUpContainer}>
@@ -95,7 +94,8 @@ const styles = StyleSheet.create({
   },
   bracket: {
     fontSize: Sizes.large * 2,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'ComicNeue-Regular',
     color: darkColors.TEXT_COLOR,
   },
   logo: {

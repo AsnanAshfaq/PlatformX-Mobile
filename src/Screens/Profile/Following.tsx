@@ -27,9 +27,7 @@ const Following: FC<props> = ({navigation}) => {
         {profileData.following.map(profile => (
           <UserCard
             navigations={navigation}
-            full_name={profile.full_name}
-            user_image={profile.user_image}
-            user_name={profile.user_name}
+            user={profile}
             key={profile.user_name + profile.full_name}
           />
         ))}
