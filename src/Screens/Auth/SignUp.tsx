@@ -23,6 +23,7 @@ import {Height, Sizes, Width} from '../../Constants/Size';
 type props = {
   navigation: any;
 };
+
 const SignUp: FC<props> = ({navigation}) => {
   const [Registration, setRegistration] = useState({
     first_name: '',
@@ -36,6 +37,7 @@ const SignUp: FC<props> = ({navigation}) => {
   const handleSignUp = () => {
     console.log('pressed on sign up');
   };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

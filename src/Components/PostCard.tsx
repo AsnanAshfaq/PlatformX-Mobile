@@ -2,11 +2,16 @@ import React, {FC, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
-import PostModal from '../Modals/PostModel';
+import PostModal from '../Modals/CommentModal';
 
 const MAX_TEXT_LENGTH = 300;
+const RANDOM_IMAGE =
+  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
 
-const PostCardButtons: FC = () => {
+type Props = {
+  setisModalOpen: any;
+};
+const PostCardButtons: FC<Props> = ({setisModalOpen}) => {
   return (
     <View style={styles.postButtonContainer}>
       <TouchableOpacity
@@ -15,7 +20,7 @@ const PostCardButtons: FC = () => {
         <Text style={styles.PostButtonText}>Like</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => console.log('Pressed on comment button')}
+        onPress={() => setisModalOpen(true)}
         style={styles.PostButton}>
         <Text style={styles.PostButtonText}>Comment</Text>
       </TouchableOpacity>
@@ -34,7 +39,7 @@ type props = {
 
 const PostCard: FC<props> = ({postDetail}) => {
   const [isModalOpen, setisModalOpen] = useState(false);
-
+  const [ImageLoading, setImageLoading] = useState(true);
   return (
     <View style={styles.parent}>
       <PostModal
@@ -45,7 +50,11 @@ const PostCard: FC<props> = ({postDetail}) => {
       {/* header  */}
       <View style={styles.headerContainer}>
         <View style={styles.headerImageContainer}>
-          <Image source={{uri: postDetail.image}} style={styles.userImage} />
+          <Image
+            source={{uri: ImageLoading ? RANDOM_IMAGE : postDetail.image}}
+            style={styles.userImage}
+            onLoadEnd={() => setImageLoading(false)}
+          />
         </View>
         <View style={styles.headerTextContainer}>
           <Text style={styles.username}>{postDetail.user_name}</Text>
@@ -90,7 +99,7 @@ const PostCard: FC<props> = ({postDetail}) => {
         </View>
       </TouchableOpacity>
       {/* post buttons   */}
-      <PostCardButtons />
+      <PostCardButtons setisModalOpen={setisModalOpen} />
     </View>
   );
 };

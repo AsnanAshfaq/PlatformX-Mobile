@@ -6,7 +6,10 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
   Image,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -17,18 +20,22 @@ import {hackathonFilterData} from '../Constants/Sample';
 type Props = {
   comments: Array<any>;
 };
+
 const Comment: FC<Props> = ({comments}) => {
   return <View>{/* image-username-comment text - comment vote */}</View>;
 };
+
 type props = {
   isShow: boolean;
   toggleModal: () => void;
   comments: Array<any>;
 };
+
 const PostModal: FC<props> = ({isShow, toggleModal, comments}) => {
   const toggleHeight = (percent, gesture) => {
     console.log(percent);
   };
+
   return (
     <Modal
       isVisible={isShow}
@@ -38,7 +45,7 @@ const PostModal: FC<props> = ({isShow, toggleModal, comments}) => {
       animationOut={'slideOutDown'}
       animationOutTiming={300}
       backdropColor={'#575959'}
-      backdropOpacity={0.3}
+      backdropOpacity={0.4}
       onBackdropPress={toggleModal}
       onBackButtonPress={toggleModal}
       coverScreen={true}
@@ -55,10 +62,10 @@ const PostModal: FC<props> = ({isShow, toggleModal, comments}) => {
       useNativeDriverForBackdrop={true}>
       <>
         {/* show  comments and shares  */}
-        <View style={styles.headingContainer}>
+        <View style={[styles.headingContainer, styles.divider]}>
           <Text style={styles.heading}> {comments.length} Comments</Text>
         </View>
-        <ScrollView style={styles.scroll}>
+        <ScrollView style={styles.scroll} keyboardShouldPersistTaps="handled">
           {comments.map(comment => (
             <TouchableOpacity
               style={[styles.commentContainer, styles.divider]}
@@ -77,7 +84,20 @@ const PostModal: FC<props> = ({isShow, toggleModal, comments}) => {
             </TouchableOpacity>
           ))}
         </ScrollView>
+
         {/* comment text input container  */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          enabled
+          style={{flex: 1, flexDirection: 'column'}}>
+          <View style={styles.commentInputContainer}>
+            <TextInput
+              placeholder={'Write your comment here'}
+              style={styles.commentInputField}
+              placeholderTextColor={darkColors.TEXT_COLOR}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </>
     </Modal>
   );
@@ -88,13 +108,20 @@ const styles = StyleSheet.create({
     backgroundColor: darkColors.BACKGROUND_COLOR,
     justifyContent: 'flex-end',
     margin: 0,
-    marginTop: Height * 0.1,
+    marginTop: Height * 0.15,
     borderColor: 'transparent',
+    paddingTop: 5,
+    paddingHorizontal: 2,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    borderLeftWidth: 1,
+    borderTopWidth: 1,
   },
   headingContainer: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     margin: 5,
+    paddingHorizontal: 5,
   },
   heading: {
     fontSize: Sizes.normal * 1.2,
@@ -102,6 +129,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     // marginHorizontal: 20,
+    height: Height * 0.6,
   },
   divider: {
     borderBottomWidth: 1,
@@ -138,6 +166,13 @@ const styles = StyleSheet.create({
   commentVoteContainer: {
     flex: 0.1,
     justifyContent: 'center',
+  },
+  commentInputContainer: {
+    flex: 1,
+    backgroundColor: darkColors.SHADOW_COLOR,
+  },
+  commentInputField: {
+    margin: 10,
   },
 });
 export default PostModal;

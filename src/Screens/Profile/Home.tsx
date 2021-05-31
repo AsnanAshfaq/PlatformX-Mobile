@@ -9,7 +9,7 @@
 // user linedin link
 // edit profile button
 
-import React, {FC, useRef, useEffect} from 'react';
+import React, {FC, useRef, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import CustomHeader from '../../Components/CustomHeader';
@@ -34,11 +34,13 @@ const UserInfo = ({icon, label, value}) => {
     </View>
   );
 };
+
 type Props = {
   label: string;
   value: number;
   onPress: () => void;
 };
+
 const Card: FC<Props> = ({label, value, onPress}) => {
   return (
     <View
@@ -64,10 +66,18 @@ const Card: FC<Props> = ({label, value, onPress}) => {
 type props = {
   navigation: any;
 };
+const RANDOM_BACKGROUND_IMAGE =
+  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
+
+const RANDOM_PROFILE_IMAGE =
+  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
 
 const Home: FC<props> = ({navigation}) => {
   const scrollViewRef = useRef(null);
   const myPostRef = useRef(null);
+
+  const [BackgroundImageLoading, setBackgroundImageLoading] = useState(true);
+  const [ProfileImage, setProfileImage] = useState(true);
 
   // animate to post section
   const animteScrollView = () => {
@@ -94,14 +104,24 @@ const Home: FC<props> = ({navigation}) => {
         {/* background and profile image section  */}
         <View style={styles.center}>
           <Image
-            source={{uri: profileData.background_image}}
+            source={{
+              uri: BackgroundImageLoading
+                ? RANDOM_BACKGROUND_IMAGE
+                : profileData.background_image,
+            }}
             style={styles.background_image}
             resizeMode={'cover'}
+            onLoadEnd={() => setBackgroundImageLoading(false)}
           />
           <Image
-            source={{uri: profileData.profile_image}}
+            source={{
+              uri: ProfileImage
+                ? RANDOM_PROFILE_IMAGE
+                : profileData.profile_image,
+            }}
             style={styles.profile_image}
             resizeMode={'cover'}
+            onLoadEnd={() => setProfileImage(false)}
           />
         </View>
 

@@ -83,8 +83,7 @@ const CustomHeader: FunctionComponent<props> = ({
       {/* right icons  */}
       <View style={styles.RightIconContainer}>
         {chat && (
-          <TouchableWithoutFeedback
-            onPress={() => dispatch({type: 'TOGGLE_THEME'})}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('Chat')}>
             <View style={{flexDirection: 'row'}}>
               <Ionicons
                 name={'chatbubble-outline'}
@@ -100,7 +99,7 @@ const CustomHeader: FunctionComponent<props> = ({
 
         {bell && (
           <TouchableWithoutFeedback
-            onPress={() => console.log('Navigate to notifications screen')}>
+            onPress={() => navigation.navigate('Notification')}>
             <View style={{flexDirection: 'row'}}>
               <Entypo
                 name={'bell'}
@@ -140,6 +139,7 @@ const styles = StyleSheet.create({
   RightIconContainer: {
     flex: 0.25,
     flexDirection: 'row',
+    // marginHorizontal: 5,
   },
   iconPadding: {
     padding: 8,

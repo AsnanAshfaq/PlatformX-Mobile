@@ -10,6 +10,7 @@ type Props = {
   name: string;
   label: string | number;
 };
+
 const HackathonCardIcons: FC<Props> = ({name, label}) => {
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
@@ -22,6 +23,7 @@ const HackathonCardIcons: FC<Props> = ({name, label}) => {
     </View>
   );
 };
+
 type props = {
   thumbnail_image: string;
   user_name: string;
