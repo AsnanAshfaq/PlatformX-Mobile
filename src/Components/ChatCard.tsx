@@ -12,8 +12,9 @@ type props = {
 //icon size
 const ICON_SIZE = Width * 0.07;
 //random image
-const RANDOM_IMAGE =
-  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
+
+const RANDOM_PROFILE_IMAGE =
+  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 
 const ChatCard: FC<props> = ({navigation, chat}) => {
   const [ImageLoading, setImageLoading] = useState(true);
@@ -24,10 +25,10 @@ const ChatCard: FC<props> = ({navigation, chat}) => {
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: ImageLoading ? RANDOM_IMAGE : chat.user_image,
+              uri: ImageLoading ? RANDOM_PROFILE_IMAGE : chat.user_image,
             }}
             style={styles.image}
-            onLoadEnd={() => setImageLoading(false)}
+            onLoad={() => setImageLoading(false)}
           />
         </View>
         {/* name container  */}
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
   title: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
+    fontWeight: 'bold',
   },
   desc: {
     color: darkColors.TEXT_COLOR,

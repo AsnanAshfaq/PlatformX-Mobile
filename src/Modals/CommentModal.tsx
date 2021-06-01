@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  FlatList,
   KeyboardAvoidingView,
   Image,
   Platform,
@@ -37,35 +38,56 @@ const PostModal: FC<props> = ({isShow, toggleModal, comments}) => {
   };
 
   return (
-    <Modal
-      isVisible={isShow}
-      style={styles.Modalparent}
-      animationIn={'slideInUp'}
-      animationInTiming={300}
-      animationOut={'slideOutDown'}
-      animationOutTiming={300}
-      backdropColor={'#575959'}
-      backdropOpacity={0.4}
-      onBackdropPress={toggleModal}
-      onBackButtonPress={toggleModal}
-      coverScreen={true}
-      useNativeDriver={true}
-      swipeDirection={'right'}
-      swipeThreshold={200}
-      //   onSwipeComplete={toggleModal}
-
-      propagateSwipe
-      onSwipeComplete={params => console.log(params)}
-      onSwipeMove={toggleHeight}
-      deviceWidth={Width}
-      deviceHeight={Height}
-      useNativeDriverForBackdrop={true}>
-      <>
+    <>
+      <Modal
+        isVisible={isShow}
+        style={styles.Modalparent}
+        animationIn={'slideInUp'}
+        animationInTiming={300}
+        animationOut={'slideOutDown'}
+        animationOutTiming={300}
+        backdropColor={'#575959'}
+        backdropOpacity={0.4}
+        onBackdropPress={toggleModal}
+        onBackButtonPress={toggleModal}
+        coverScreen={true}
+        useNativeDriver={true}
+        swipeDirection={'right'}
+        swipeThreshold={200}
+        onSwipeComplete={toggleModal}
+        propagateSwipe
+        // onSwipeComplete={params => console.log(params)}
+        onSwipeMove={toggleHeight}
+        deviceWidth={Width}
+        deviceHeight={Height}
+        useNativeDriverForBackdrop={true}>
         {/* show  comments and shares  */}
-        <View style={[styles.headingContainer, styles.divider]}>
-          <Text style={styles.heading}> {comments.length} Comments</Text>
-        </View>
-        <ScrollView style={styles.scroll} keyboardShouldPersistTaps="handled">
+        <>
+          <View style={[styles.headingContainer, styles.divider]}>
+            <Text style={styles.heading}> {comments.length} Comments</Text>
+          </View>
+          <FlatList
+            data={comments}
+            style={{flex: 0.8}}
+            renderItem={({item, index}) => (
+              <TouchableOpacity
+                style={[styles.commentContainer, styles.divider]}
+                key={item.id}>
+                <View style={styles.commentImageContainer}>
+                  <Image
+                    style={styles.userImage}
+                    source={{uri: item.user_image}}
+                  />
+                </View>
+                <View style={styles.commentTextContainer}>
+                  <Text style={styles.commentText}>{item.text}</Text>
+                </View>
+                <View style={styles.commentVoteContainer}></View>
+                {/* list of subtags  */}
+              </TouchableOpacity>
+            )}
+          />
+          {/* <ScrollView style={styles.scroll} keyboardShouldPersistTaps="handled">
           {comments.map(comment => (
             <TouchableOpacity
               style={[styles.commentContainer, styles.divider]}
@@ -80,26 +102,29 @@ const PostModal: FC<props> = ({isShow, toggleModal, comments}) => {
                 <Text style={styles.commentText}>{comment.text}</Text>
               </View>
               <View style={styles.commentVoteContainer}></View>
-              {/* list of subtags  */}
             </TouchableOpacity>
           ))}
-        </ScrollView>
+        </ScrollView> */}
 
-        {/* comment text input container  */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          enabled
-          style={{flex: 1, flexDirection: 'column'}}>
-          <View style={styles.commentInputContainer}>
-            <TextInput
-              placeholder={'Write your comment here'}
-              style={styles.commentInputField}
-              placeholderTextColor={darkColors.TEXT_COLOR}
-            />
-          </View>
-        </KeyboardAvoidingView>
-      </>
-    </Modal>
+          {/* comment text input container  */}
+
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            enabled
+            style={{height: Height * 0.09}}>
+            <View style={styles.commentInputContainer}>
+              <TextInput
+                placeholder={'Write your comment here'}
+                style={styles.commentInputField}
+                placeholderTextColor={darkColors.TEXT_COLOR}
+              />
+            </View>
+          </KeyboardAvoidingView>
+        </>
+        {/* </KeyboardAvoidingView> */}
+      </Modal>
+      {/* // </KeyboardAvoidingView> */}
+    </>
   );
 };
 
@@ -170,6 +195,7 @@ const styles = StyleSheet.create({
   commentInputContainer: {
     flex: 1,
     backgroundColor: darkColors.SHADOW_COLOR,
+    padding: 0,
   },
   commentInputField: {
     margin: 10,

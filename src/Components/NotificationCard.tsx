@@ -19,7 +19,7 @@ type props = {
 const ICON_SIZE = Width * 0.07;
 
 const RANDOM_PROFILE_IMAGE =
-  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
+  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 
 const NotificationCard: FC<props> = ({navigation, notification}) => {
   const [ImageLoading, setImageLoading] = useState(true);
@@ -35,7 +35,7 @@ const NotificationCard: FC<props> = ({navigation, notification}) => {
                 : notification.user_image,
             }}
             style={styles.image}
-            onLoadEnd={() => setImageLoading(false)}
+            onLoad={() => setImageLoading(false)}
           />
         </View>
         {/* title container  */}

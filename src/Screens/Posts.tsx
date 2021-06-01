@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
 import PostCard from '../Components/PostCard';
 import CustomHeader from '../Components/CustomHeader';
@@ -10,6 +10,19 @@ type props = {
   navigation: any;
 };
 const Posts: FC<props> = ({navigation}) => {
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await fetch('http://127.0.0.1:8000/api/post/');
+        const result = await data.json();
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getData();
+  }, []);
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />

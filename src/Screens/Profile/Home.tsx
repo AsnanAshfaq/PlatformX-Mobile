@@ -67,10 +67,10 @@ type props = {
   navigation: any;
 };
 const RANDOM_BACKGROUND_IMAGE =
-  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
+  'https://images.unsplash.com/photo-1593371256584-ac70d0ab43d1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80';
 
 const RANDOM_PROFILE_IMAGE =
-  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
+  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 
 const Home: FC<props> = ({navigation}) => {
   const scrollViewRef = useRef(null);
@@ -111,7 +111,7 @@ const Home: FC<props> = ({navigation}) => {
             }}
             style={styles.background_image}
             resizeMode={'cover'}
-            onLoadEnd={() => setBackgroundImageLoading(false)}
+            onLoad={() => setBackgroundImageLoading(false)}
           />
           <Image
             source={{

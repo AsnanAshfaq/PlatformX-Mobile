@@ -84,7 +84,7 @@ const CustomHeader: FunctionComponent<props> = ({
       <View style={styles.RightIconContainer}>
         {chat && (
           <TouchableWithoutFeedback onPress={() => navigation.navigate('Chat')}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={styles.row}>
               <Ionicons
                 name={'chatbubble-outline'}
                 size={ICON_SIZE}
@@ -100,7 +100,7 @@ const CustomHeader: FunctionComponent<props> = ({
         {bell && (
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate('Notification')}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={styles.row}>
               <Entypo
                 name={'bell'}
                 size={ICON_SIZE}
@@ -143,5 +143,8 @@ const styles = StyleSheet.create({
   },
   iconPadding: {
     padding: 8,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });

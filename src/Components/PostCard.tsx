@@ -4,9 +4,9 @@ import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import PostModal from '../Modals/CommentModal';
 
-const MAX_TEXT_LENGTH = 300;
+const MAX_TEXT_LENGTH = 290;
 const RANDOM_IMAGE =
-  'https://lh3.googleusercontent.com/proxy/tu64Jl_mNuvLLr6OEumIlrD0Szi_dv16Itn951KkLuFMJWyJejolVMQX4UA11QFdAcxhI8ceE8suXAw173qO1iJiOVMQeVZPpdNd9MjvvmVf8B835E2n';
+  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 
 type Props = {
   setisModalOpen: any;
@@ -53,7 +53,7 @@ const PostCard: FC<props> = ({postDetail}) => {
           <Image
             source={{uri: ImageLoading ? RANDOM_IMAGE : postDetail.image}}
             style={styles.userImage}
-            onLoadEnd={() => setImageLoading(false)}
+            onLoad={() => setImageLoading(false)}
           />
         </View>
         <View style={styles.headerTextContainer}>
@@ -73,12 +73,12 @@ const PostCard: FC<props> = ({postDetail}) => {
         </Text>
       </View>
       {/* image if any  */}
-      {postDetail.images && (
+      {postDetail.post_image && (
         <View style={styles.imageContainer}>
           <Image
-            source={{uri: postDetail.images}}
+            source={{uri: postDetail.post_image}}
             style={styles.postImage}
-            resizeMode={'center'}
+            resizeMode={'contain'}
           />
         </View>
       )}
@@ -106,12 +106,12 @@ const PostCard: FC<props> = ({postDetail}) => {
 
 const styles = StyleSheet.create({
   parent: {
-    marginHorizontal: Width * 0.04,
+    marginHorizontal: Width * 0.02,
     marginVertical: Width * 0.01,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.4,
     borderRadius: 20,
-    padding: 10,
+    // padding: 5,
     shadowColor: darkColors.SHADOW_COLOR,
     backgroundColor: darkColors.LIGHT_BACKGROUND,
     shadowOpacity: 1,
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     borderBottomColor: darkColors.SHADOW_COLOR,
     borderBottomWidth: 2,
     flexDirection: 'row',
+    padding: 7,
   },
   headerImageContainer: {
     // width: Width * 0.3,
@@ -152,31 +153,51 @@ const styles = StyleSheet.create({
   contentContainer: {
     // minHeight: Height * 0.15,
     maxHeight: Height * 0.2,
-    paddingHorizontal: 5,
     marginVertical: 7,
+    // padding: 7,
+    paddingHorizontal: 7,
   },
   descriptionText: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   imageContainer: {
-    width: Width * 0.9,
-    minHeight: Height * 0.15,
-    maxHeight: Height * 0.2,
+    // width: Width * 0.961,
+    // minHeight: Height * 0.25,
+    // maxHeight: Height * 0.3,
+    // height: 'auto',
+    marginHorizontal: 0,
     // flex: 1,
-    justifyContent: 'center',
+    height: Width * (9 / 16),
+    // justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'red',
   },
   postImage: {
-    width: Width * 0.7,
-    height: Height * 0.2,
+    // width: Width * 0.7,
+    // minHeight: Height * 0.2,
+    // maxHeight: Height * 0.4,
+    // width: Width * 0.95,
+    // flex: 1,
+    // aspectRatio: 1,
+    width: Width * 0.95,
+    height: Width * (9 / 16),
+    // flex: 1,
+    // minHeight: Width,
+    // width: '100%',
+    // height: 'auto',
+    // height: Height * 0.3,
+    // aspectRatio: 1,
+    // maxHeight: Width,
   },
   numberContainer: {
     flexDirection: 'row',
     borderBottomWidth: 2,
     // borderTopWidth: 2,
+    padding: 5,
     paddingVertical: 6,
     borderColor: darkColors.SHADOW_COLOR,
+    // marginTop: 10,
   },
   likeContainer: {
     flex: 1,
@@ -194,10 +215,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   postButtonContainer: {
-    minHeight: Height * 0.05,
-    maxHeight: Height * 0.07,
+    height: Height * 0.06,
     flexDirection: 'row',
     marginVertical: Height * 0.009,
+    padding: 5,
   },
   PostButton: {
     flex: 1,

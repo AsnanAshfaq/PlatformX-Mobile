@@ -3,12 +3,11 @@ export const postData = [
     id: 1,
     user_name: 'Asnan Ashfaq',
     date: new Date(),
-    description: 'This is the little post',
+    description:
+      "It has been four weeks since we reached out to the Github community with a thoroughly reviewed gap analysis and list of issues to improve React Native's accessibility. With the help of the React Native community, we are already making great progress on improving accessibility. Community members have been helping contributors, reviewing tests, and bringing attention to prior accessibility issues. Since March 8th the community has closed six issues with four pull requests and seven other pull requests are in the pipeline for review.",
     image: 'https://reactnative.dev/img/tiny_logo.png',
     likes: 10,
-    images:
-      'https://www.founderpassion.org/wp-content/uploads/2017/09/hackathon-founderpassion-foundation.png',
-
+    post_image: 'https://miro.medium.com/max/1000/1*ub1DguhAtkCLvhUGuVGr6w.png',
     comments: [
       {
         id: 1,
@@ -24,8 +23,10 @@ export const postData = [
     user_name: 'Shanay ',
     date: new Date(),
     description:
-      'ptatem ex blanditiis eligendi rem!Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam nulla iusto magni odio, temporibus dicta quasi culpa, ratione id incidunt, porro delectus cupiditate architecto quaerat voluptatem ex blanditiis eligendi rem!',
+      'Today, moving fast isn’t just an edge for tech companies — rather, it’s essential. Enormous competition demands companies to move at a faster pace with greater stability. Managing three different frontend teams — Android, iOS, and web — for a single product is not easy for most companies. This isn’t costly just from a monetary perspective, it can also hinder the product’s pace. React Native allows teams to share up to 95 percent of their code across Android and iOS. This can be a huge benefit in the era of agile development.There is also a possibility of sharing a React Native codebase with web as well. We will discuss this in the next section.',
     image: 'https://reactnative.dev/img/tiny_logo.png',
+    post_image:
+      'https://sm.mashable.com/mashable_in/seo/1/13445/13445_5s8f.jpg',
     likes: 123,
     comments: [
       {
