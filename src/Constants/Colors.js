@@ -29,4 +29,6 @@ export const darkColors = {
   BADGE_TEXT_COLOR: '#dcdee0',
   TOMATO_COLOR: '#ff4344',
   ICON_COLOR: '#99afd1',
+  GREEN_COLOR: '#00bd23',
+  RED_COLOR: '#bd1600',
 };

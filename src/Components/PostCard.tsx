@@ -106,7 +106,7 @@ const PostCard: FC<props> = ({postDetail}) => {
 
 const styles = StyleSheet.create({
   parent: {
-    marginHorizontal: Width * 0.02,
+    marginHorizontal: Width * 0.04,
     marginVertical: Width * 0.01,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.4,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     // width: Width * 0.95,
     // flex: 1,
     // aspectRatio: 1,
-    width: Width * 0.95,
+    width: Width * 0.9,
     height: Width * (9 / 16),
     // flex: 1,
     // minHeight: Width,

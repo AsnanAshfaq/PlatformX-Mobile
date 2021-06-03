@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Keyboard,
   FlatList,
   KeyboardAvoidingView,
   Image,
@@ -16,14 +17,39 @@ import Modal from 'react-native-modal';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
-import {hackathonFilterData} from '../Constants/Sample';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = {
-  comments: Array<any>;
+  comment: any;
+  index: number;
 };
 
-const Comment: FC<Props> = ({comments}) => {
-  return <View>{/* image-username-comment text - comment vote */}</View>;
+const CommentView: FC<Props> = ({comment, index}) => {
+  return (
+    <View style={[styles.commentContainer, styles.divider]} key={comment.id}>
+      <View style={styles.commentImageContainer}>
+        <Image style={styles.userImage} source={{uri: comment.user_image}} />
+      </View>
+      <View style={styles.commentTextContainer}>
+        <Text style={styles.commentText}>{comment.text}</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.commentVoteContainer}
+        onPress={() => console.log('Pressed on vote')}>
+        {/* up and down arrows  */}
+        <Ionicons
+          name={'arrow-down-outline'}
+          size={ICON_SIZE * 0.85}
+          color={darkColors.GREEN_COLOR}
+        />
+        <Ionicons
+          name={'arrow-up-outline'}
+          size={ICON_SIZE * 0.85}
+          color={darkColors.RED_COLOR}
+        />
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 type props = {
@@ -32,99 +58,85 @@ type props = {
   comments: Array<any>;
 };
 
-const PostModal: FC<props> = ({isShow, toggleModal, comments}) => {
-  const toggleHeight = (percent, gesture) => {
-    console.log(percent);
-  };
+const ICON_SIZE = Width * 0.07;
 
+const CommentModal: FC<props> = ({isShow, toggleModal, comments}) => {
+  const [Comment, setComment] = useState('');
+  const textInput = useRef(null);
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', e => {
+      if (textInput.current) {
+        textInput?.current?.blur();
+      }
+    });
+  }, [textInput]);
   return (
-    <>
-      <Modal
-        isVisible={isShow}
-        style={styles.Modalparent}
-        animationIn={'slideInUp'}
-        animationInTiming={300}
-        animationOut={'slideOutDown'}
-        animationOutTiming={300}
-        backdropColor={'#575959'}
-        backdropOpacity={0.4}
-        onBackdropPress={toggleModal}
-        onBackButtonPress={toggleModal}
-        coverScreen={true}
-        useNativeDriver={true}
-        swipeDirection={'right'}
-        swipeThreshold={200}
-        onSwipeComplete={toggleModal}
-        propagateSwipe
-        // onSwipeComplete={params => console.log(params)}
-        onSwipeMove={toggleHeight}
-        deviceWidth={Width}
-        deviceHeight={Height}
-        useNativeDriverForBackdrop={true}>
-        {/* show  comments and shares  */}
-        <>
-          <View style={[styles.headingContainer, styles.divider]}>
-            <Text style={styles.heading}> {comments.length} Comments</Text>
-          </View>
-          <FlatList
-            data={comments}
-            style={{flex: 0.8}}
-            renderItem={({item, index}) => (
-              <TouchableOpacity
-                style={[styles.commentContainer, styles.divider]}
-                key={item.id}>
-                <View style={styles.commentImageContainer}>
-                  <Image
-                    style={styles.userImage}
-                    source={{uri: item.user_image}}
-                  />
-                </View>
-                <View style={styles.commentTextContainer}>
-                  <Text style={styles.commentText}>{item.text}</Text>
-                </View>
-                <View style={styles.commentVoteContainer}></View>
-                {/* list of subtags  */}
-              </TouchableOpacity>
-            )}
-          />
-          {/* <ScrollView style={styles.scroll} keyboardShouldPersistTaps="handled">
-          {comments.map(comment => (
-            <TouchableOpacity
-              style={[styles.commentContainer, styles.divider]}
-              key={comment.id}>
-              <View style={styles.commentImageContainer}>
-                <Image
-                  style={styles.userImage}
-                  source={{uri: comment.user_image}}
-                />
-              </View>
-              <View style={styles.commentTextContainer}>
-                <Text style={styles.commentText}>{comment.text}</Text>
-              </View>
-              <View style={styles.commentVoteContainer}></View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView> */}
+    <Modal
+      isVisible={isShow}
+      style={styles.Modalparent}
+      animationIn={'slideInUp'}
+      animationInTiming={300}
+      animationOut={'slideOutDown'}
+      animationOutTiming={300}
+      backdropColor={'#575959'}
+      backdropOpacity={0.4}
+      onBackdropPress={toggleModal}
+      onBackButtonPress={toggleModal}
+      coverScreen={true}
+      useNativeDriver={true}
+      swipeDirection={'down'}
+      swipeThreshold={200}
+      onSwipeComplete={toggleModal}
+      propagateSwipe
+      // onSwipeComplete={params => console.log(params)}
+      // onSwipeMove={toggleHeight}
+      deviceWidth={Width}
+      deviceHeight={Height}
+      useNativeDriverForBackdrop={true}>
+      <>
+        <View style={[styles.headingContainer, styles.divider]}>
+          <Text style={styles.heading}> {comments.length} Comments</Text>
+        </View>
+        <FlatList
+          data={comments}
+          style={{flex: 0.8}}
+          renderItem={({item, index}) => (
+            <CommentView comment={item} index={index} />
+          )}
+          // onEndReached={() => console.log('End of list')}
+        />
+        {/* comment text input container  */}
 
-          {/* comment text input container  */}
-
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            enabled
-            style={{height: Height * 0.09}}>
-            <View style={styles.commentInputContainer}>
-              <TextInput
-                placeholder={'Write your comment here'}
-                style={styles.commentInputField}
-                placeholderTextColor={darkColors.TEXT_COLOR}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          // enabled
+          style={styles.keyboardAvoidingView}>
+          <View style={styles.commentInputContainer}>
+            <TextInput
+              placeholder={'Write your comment here'}
+              style={styles.commentInputField}
+              ref={textInput}
+              placeholderTextColor={darkColors.TEXT_COLOR}
+              value={Comment.trim() === '' ? '' : Comment}
+              onChangeText={setComment}
+              // onFocus={e => console.log('on focus')}
+              // onBlur={e => console.log('on blur')}
+              multiline
+              autoFocus
+              scrollEnabled
+            />
+            <View style={styles.iconContainer}>
+              <Ionicons
+                name={'send-outline'}
+                size={ICON_SIZE}
+                color={darkColors.TOMATO_COLOR}
               />
             </View>
-          </KeyboardAvoidingView>
-        </>
-        {/* </KeyboardAvoidingView> */}
-      </Modal>
-      {/* // </KeyboardAvoidingView> */}
-    </>
+          </View>
+        </KeyboardAvoidingView>
+      </>
+    </Modal>
   );
 };
 
@@ -147,6 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     margin: 5,
     paddingHorizontal: 5,
+    paddingVertical: 10,
   },
   heading: {
     fontSize: Sizes.normal * 1.2,
@@ -166,7 +179,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 5,
   },
-
   commentImageContainer: {
     flex: 0.1,
     justifyContent: 'center',
@@ -191,14 +203,35 @@ const styles = StyleSheet.create({
   commentVoteContainer: {
     flex: 0.1,
     justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  keyboardAvoidingView: {
+    minHeight: Height * 0.09,
+    maxHeight: Height * 0.15,
   },
   commentInputContainer: {
-    flex: 1,
+    minHeight: Height * 0.09,
+    maxHeight: Height * 0.15,
     backgroundColor: darkColors.SHADOW_COLOR,
+    flexDirection: 'row',
     padding: 0,
   },
   commentInputField: {
-    margin: 10,
+    marginHorizontal: 10,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    flex: 0.9,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: darkColors.TOMATO_COLOR,
+    color: darkColors.TEXT_COLOR,
+  },
+  iconContainer: {
+    flex: 0.1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    // marginHorizontal: 5,
   },
 });
-export default PostModal;
+export default CommentModal;

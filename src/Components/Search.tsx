@@ -26,7 +26,11 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
         isShow={isModalOpen}
         toggleModal={() => setisModalOpen(!isModalOpen)}
       />
-      <View style={[styles.searchContainer]}>
+      <View
+        style={[
+          styles.searchContainer,
+          {width: showFilterIcon === false ? Width * 0.9 : Width * 0.77},
+        ]}>
         <TextInput
           value={input}
           onChangeText={text => setinput(text)}
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   searchContainer: {
-    width: Width * 0.77,
+    // width: Width * 0.77,
     marginHorizontal: Width * 0.05,
     marginVertical: Width * 0.02,
     backgroundColor: darkColors.SHADOW_COLOR,

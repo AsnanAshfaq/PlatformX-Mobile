@@ -20,9 +20,8 @@ const Posts: FC<props> = ({navigation}) => {
         console.log(error);
       }
     };
-
     getData();
-  }, []);
+  });
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
