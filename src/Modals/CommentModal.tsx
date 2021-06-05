@@ -17,6 +17,7 @@ import Modal from 'react-native-modal';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
+import {PROFILE_IMAGE} from '../Constants/sample';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = {
@@ -25,10 +26,19 @@ type Props = {
 };
 
 const CommentView: FC<Props> = ({comment, index}) => {
+  const [ImageLoading, setImageLoading] = useState(true);
   return (
     <View style={[styles.commentContainer, styles.divider]} key={comment.id}>
       <View style={styles.commentImageContainer}>
-        <Image style={styles.userImage} source={{uri: comment.user_image}} />
+        <Image
+          source={{
+            uri: ImageLoading
+              ? PROFILE_IMAGE
+              : 'http://127.0.0.1:8000' + comment.user.user_profile_image.path,
+          }}
+          style={styles.userImage}
+          onLoad={() => setImageLoading(false)}
+        />
       </View>
       <View style={styles.commentTextContainer}>
         <Text style={styles.commentText}>{comment.text}</Text>
@@ -56,11 +66,17 @@ type props = {
   isShow: boolean;
   toggleModal: () => void;
   comments: Array<any>;
+  focusTextInput: boolean;
 };
 
 const ICON_SIZE = Width * 0.07;
 
-const CommentModal: FC<props> = ({isShow, toggleModal, comments}) => {
+const CommentModal: FC<props> = ({
+  isShow,
+  toggleModal,
+  comments,
+  focusTextInput,
+}) => {
   const [Comment, setComment] = useState('');
   const textInput = useRef(null);
 
@@ -123,7 +139,7 @@ const CommentModal: FC<props> = ({isShow, toggleModal, comments}) => {
               // onFocus={e => console.log('on focus')}
               // onBlur={e => console.log('on blur')}
               multiline
-              autoFocus
+              autoFocus={focusTextInput}
               scrollEnabled
             />
             <View style={styles.iconContainer}>

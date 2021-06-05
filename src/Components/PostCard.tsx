@@ -2,16 +2,16 @@ import React, {FC, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
-import PostModal from '../Modals/CommentModal';
-
+import {PROFILE_IMAGE} from '../Constants/sample';
+import CommentModal from '../Modals/CommentModal';
+// @ts-ignore
+// import {DEVELOPMENT_URL} from '@types/react-native-dotenv';
 const MAX_TEXT_LENGTH = 290;
-const RANDOM_IMAGE =
-  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 
 type Props = {
-  setisModalOpen: any;
+  setModal: any;
 };
-const PostCardButtons: FC<Props> = ({setisModalOpen}) => {
+const PostCardButtons: FC<Props> = ({setModal}) => {
   return (
     <View style={styles.postButtonContainer}>
       <TouchableOpacity
@@ -20,7 +20,12 @@ const PostCardButtons: FC<Props> = ({setisModalOpen}) => {
         <Text style={styles.PostButtonText}>Like</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => setisModalOpen(true)}
+        onPress={() =>
+          setModal({
+            focusTextInput: true,
+            showModal: true,
+          })
+        }
         style={styles.PostButton}>
         <Text style={styles.PostButtonText}>Comment</Text>
       </TouchableOpacity>
@@ -38,45 +43,59 @@ type props = {
 };
 
 const PostCard: FC<props> = ({postDetail}) => {
-  const [isModalOpen, setisModalOpen] = useState(false);
+  const [Modal, setModal] = useState({
+    showModal: false,
+    focusTextInput: false,
+  });
   const [ImageLoading, setImageLoading] = useState(true);
   return (
     <View style={styles.parent}>
-      <PostModal
-        isShow={isModalOpen}
-        toggleModal={() => setisModalOpen(!isModalOpen)}
+      <CommentModal
+        isShow={Modal.showModal}
+        toggleModal={() =>
+          setModal(prev => ({
+            ...prev,
+            showModal: !prev.showModal,
+          }))
+        }
+        focusTextInput={Modal.focusTextInput}
         comments={postDetail.comments}
       />
       {/* header  */}
       <View style={styles.headerContainer}>
         <View style={styles.headerImageContainer}>
           <Image
-            source={{uri: ImageLoading ? RANDOM_IMAGE : postDetail.image}}
+            source={{
+              uri: ImageLoading
+                ? PROFILE_IMAGE
+                : 'http://127.0.0.1:8000' +
+                  postDetail.user.user_profile_image.path,
+            }}
             style={styles.userImage}
             onLoad={() => setImageLoading(false)}
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.username}>{postDetail.user_name}</Text>
+          <Text style={styles.username}>{postDetail?.user?.username}</Text>
           <Text style={styles.date}>
-            {postDetail.date.toUTCString().substring(0, 17)}
+            {/* {postDetail.date.toUTCString().substring(0, 17)} */}
           </Text>
         </View>
       </View>
       {/* content  */}
       <View style={styles.contentContainer}>
         <Text style={styles.descriptionText}>
-          {postDetail.description.length > MAX_TEXT_LENGTH
-            ? postDetail.description.substring(0, MAX_TEXT_LENGTH - 4) +
+          {postDetail.text.length > MAX_TEXT_LENGTH
+            ? postDetail.text.substring(0, MAX_TEXT_LENGTH - 4) +
               '.... read more'
-            : postDetail.description}
+            : postDetail.text}
         </Text>
       </View>
       {/* image if any  */}
-      {postDetail.post_image && (
+      {postDetail.images.length > 0 && (
         <View style={styles.imageContainer}>
           <Image
-            source={{uri: postDetail.post_image}}
+            source={{uri: 'http://127.0.0.1:8000' + postDetail.images[0].path}}
             style={styles.postImage}
             resizeMode={'contain'}
           />
@@ -85,9 +104,16 @@ const PostCard: FC<props> = ({postDetail}) => {
       {/* like comment share details */}
       <TouchableOpacity
         style={styles.numberContainer}
-        onPress={() => setisModalOpen(true)}>
+        onPress={() =>
+          setModal({
+            focusTextInput: false,
+            showModal: true,
+          })
+        }>
         <View style={styles.likeContainer}>
-          <Text style={styles.PostButtonText}>{postDetail.likes} Likes</Text>
+          <Text style={styles.PostButtonText}>
+            {postDetail.likes.length} Likes
+          </Text>
         </View>
         <View style={styles.commentConatiner}>
           <Text style={styles.PostButtonText}>
@@ -95,11 +121,11 @@ const PostCard: FC<props> = ({postDetail}) => {
           </Text>
         </View>
         <View style={styles.sharContainer}>
-          <Text style={styles.PostButtonText}>{postDetail.shares} Share</Text>
+          {/* <Text style={styles.PostButtonText}>{postDetail.shares} Share</Text> */}
         </View>
       </TouchableOpacity>
       {/* post buttons   */}
-      <PostCardButtons setisModalOpen={setisModalOpen} />
+      <PostCardButtons setModal={setModal} />
     </View>
   );
 };

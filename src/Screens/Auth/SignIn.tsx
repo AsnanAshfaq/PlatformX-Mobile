@@ -7,10 +7,13 @@ import {
   TouchableOpacity,
   Platform,
   TextInput,
+  Alert,
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
+// @ts-ignore
+import axios from 'react-native-axios';
 
 type props = {
   navigation: any;
@@ -22,6 +25,20 @@ const SignIn: FC<props> = ({navigation}) => {
 
   const handleLogin = () => {
     console.log('pressed on sign in');
+    axios
+      .post('http://127.0.0.1:8000/api/token/', {
+        email: '18asnan@gmail.com',
+        password: '@snan@shfaq18',
+      })
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
+        Alert.alert(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        // handle error
+        Alert.alert(error.message);
+      });
   };
 
   return (

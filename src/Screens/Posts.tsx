@@ -1,37 +1,60 @@
-import React, {FC, useEffect} from 'react';
-import {View, Text, StyleSheet, Platform, ScrollView} from 'react-native';
+import React, {FC, useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import PostCard from '../Components/PostCard';
 import CustomHeader from '../Components/CustomHeader';
 import CustomSearch from '../Components/Search';
 import {postData} from '../Constants/sample';
 import {darkColors} from '../Constants/Colors';
+import axios from '../../Utils/Axios';
 
 type props = {
   navigation: any;
 };
 const Posts: FC<props> = ({navigation}) => {
+  const [Post, setPost] = useState([]);
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await fetch('http://127.0.0.1:8000/api/post/');
-        const result = await data.json();
-        console.log(result);
+        axios.get('/api/post/').then(response => {
+          setPost(response.data);
+          console.log('Data is ');
+          console.log(response.data);
+        });
       } catch (error) {
-        console.log(error);
+        console.log('Error is', error);
       }
     };
     getData();
-  });
+  }, []);
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
-
-      <ScrollView>
-        <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
-        {postData.map(post => (
-          <PostCard key={post.id} postDetail={post} />
-        ))}
-      </ScrollView>
+      {/* {Post.length > 0 && (
+        <View style={{flex: 1}}>
+          <FlatList
+            // style={{flex: 1}}
+            data={Post}
+            renderItem={({item, index, sepeator}) => (
+              <PostCard key={index} postDetail={item} />
+            )}
+          />
+        </View>
+      )} */}
+      {Post.length > 0 && (
+        <ScrollView>
+          <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
+          {Post.map((post, index) => (
+            <PostCard key={post?.id} postDetail={post} />
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };

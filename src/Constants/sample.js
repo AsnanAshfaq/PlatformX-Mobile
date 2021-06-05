@@ -448,3 +448,6 @@ export const chatData = [
     little_desc: 'You sent an attachment',
   },
 ];
+
+export const PROFILE_IMAGE =
+  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
