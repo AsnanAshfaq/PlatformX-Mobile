@@ -8,7 +8,8 @@ import {
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 // importing screens
-import Post from '../Screens/Posts';
+import Post from '../Screens/Post/Index';
+import CreatePost from '../Screens/Post/CreatePost';
 import Hackathon from '../Screens/Hackathons';
 import Workshop from '../Screens/Workshops';
 import Project from '../Screens/Projects';
@@ -29,6 +30,18 @@ import Chat from '../Screens/Chat/Chat';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 
 const TabScreens = () => {
   return (
@@ -77,18 +90,6 @@ const TabScreens = () => {
       <Tab.Screen name="Projects" component={Project} />
     </Tab.Navigator>
   );
-};
-
-const config = {
-  animation: 'spring',
-  config: {
-    stiffness: 1000,
-    damping: 500,
-    mass: 3,
-    overshootClamping: true,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01,
-  },
 };
 
 const ProfileScreens = () => {
@@ -193,8 +194,8 @@ const Navigation = () => {
           header: () => null,
           animationEnabled: true,
         }}>
-        <Stack.Screen name="Main" component={DrawerScreens} />
-
+        {/* <Stack.Screen name="Main" component={DrawerScreens} /> */}
+        <Stack.Screen name="Create_Post" component={CreatePost} />
         {/* <Stack.Screen component={ProfileScreens} name={'Profile'} /> */}
         {/* <Stack.Screen name="Auth" component={AuthScreens} /> */}
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}

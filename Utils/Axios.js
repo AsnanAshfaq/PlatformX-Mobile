@@ -5,6 +5,6 @@ export default axios.create({
   timeout: 1000,
   headers: {
     Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIyOTQxMzQxLCJqdGkiOiIwYjYwYjJkNGI1M2Y0ZmFiODY2ZjExOTM5Yzc3ZjgxZSIsInVzZXJfaWQiOiIyNTMxMGM4OS00Y2I1LTQ1NTEtOGY5My1jN2UxZDhhMGFiOGYifQ.XD0H0FesQ16jEIqo-TpHQhe2pcwdF-s0yb8bgkXN0ZE',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIzMDMwMTQ0LCJqdGkiOiJiZmNlNjQxMDBhNWU0ODAwYTMzYzM0MDRjYmU0MDNjYSIsInVzZXJfaWQiOiIyNTMxMGM4OS00Y2I1LTQ1NTEtOGY5My1jN2UxZDhhMGFiOGYifQ.T7pcM_Svw5Y2vesfZeG2EXCjTljvWI6vvsokt46eFvw',
   },
 });

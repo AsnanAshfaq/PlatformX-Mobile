@@ -451,3 +451,12 @@ export const chatData = [
 
 export const PROFILE_IMAGE =
   'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
+
+export const POST_IMAGE = 'https://wallpaperaccess.com/full/1397755.jpg';
+
+export const POST_TYPE = [
+  'General',
+  'Seeking Assisstance',
+  'Seeking Help',
+  'Collaborate with me',
+];

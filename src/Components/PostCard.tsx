@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
-import {PROFILE_IMAGE} from '../Constants/sample';
+import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
 // @ts-ignore
 // import {DEVELOPMENT_URL} from '@types/react-native-dotenv';
@@ -44,10 +44,12 @@ type props = {
 
 const PostCard: FC<props> = ({postDetail}) => {
   const [Modal, setModal] = useState({
-    showModal: false,
-    focusTextInput: false,
+    showModal: false, // show modal or not
+    focusTextInput: false, // if true, set auto focus on comment modal text input field
   });
-  const [ImageLoading, setImageLoading] = useState(true);
+
+  const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
+  const [PostImageLoading, setPostImageLoading] = useState(true);
   return (
     <View style={styles.parent}>
       <CommentModal
@@ -66,13 +68,13 @@ const PostCard: FC<props> = ({postDetail}) => {
         <View style={styles.headerImageContainer}>
           <Image
             source={{
-              uri: ImageLoading
+              uri: ProfileImageLoading
                 ? PROFILE_IMAGE
                 : 'http://127.0.0.1:8000' +
                   postDetail.user.user_profile_image.path,
             }}
             style={styles.userImage}
-            onLoad={() => setImageLoading(false)}
+            onLoad={() => setProfileImageLoading(false)}
           />
         </View>
         <View style={styles.headerTextContainer}>
@@ -95,9 +97,14 @@ const PostCard: FC<props> = ({postDetail}) => {
       {postDetail.images.length > 0 && (
         <View style={styles.imageContainer}>
           <Image
-            source={{uri: 'http://127.0.0.1:8000' + postDetail.images[0].path}}
+            source={{
+              uri: PostImageLoading
+                ? POST_IMAGE
+                : 'http://127.0.0.1:8000' + postDetail.images[0].path,
+            }}
             style={styles.postImage}
             resizeMode={'contain'}
+            onLoad={() => setPostImageLoading(false)}
           />
         </View>
       )}
