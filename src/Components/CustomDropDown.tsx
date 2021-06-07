@@ -10,13 +10,19 @@ type props = {
   data: Array<string>;
   isShow?: boolean;
   toggleShow?: any;
+  Selected: string;
+  setSelected: (type: string) => void;
 };
 
 const ICON_SIZE = Width * 0.07;
 
-const CustomDropDown: FC<props> = ({data, isShow = false, toggleShow}) => {
-  const [Selected, setSelected] = useState('Select Post Type');
-
+const CustomDropDown: FC<props> = ({
+  data,
+  isShow = false,
+  toggleShow,
+  Selected,
+  setSelected,
+}) => {
   const toggle = () => toggleShow(!isShow);
   return (
     <View style={styles.parent}>

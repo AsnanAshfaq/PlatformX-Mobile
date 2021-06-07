@@ -26,6 +26,7 @@ type props = {
 const CreatePost: FC<props> = ({navigation}) => {
   const [text, settext] = useState('');
   const [toggleDropDown, settoggleDropDown] = useState(false);
+  const [Selected, setSelected] = useState('Select Post Type');
   const dropDownRef = useRef(null);
   const textInput = useRef(null);
 
@@ -35,7 +36,7 @@ const CreatePost: FC<props> = ({navigation}) => {
         mediaType: 'photo',
         maxWidth: 300,
         maxHeight: 300,
-        selectionLimit: 0,
+        selectionLimit: 19,
       },
       response => {
         console.log(response);
@@ -95,6 +96,8 @@ const CreatePost: FC<props> = ({navigation}) => {
           data={POST_TYPE}
           isShow={toggleDropDown}
           toggleShow={settoggleDropDown}
+          Selected={Selected}
+          setSelected={setSelected}
         />
 
         {/* post image view  */}
