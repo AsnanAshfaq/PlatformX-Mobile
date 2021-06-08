@@ -194,7 +194,7 @@ const Navigation = () => {
           header: () => null,
           animationEnabled: true,
         }}>
-        {/* <Stack.Screen name="Main" component={DrawerScreens} /> */}
+        <Stack.Screen name="Main" component={DrawerScreens} />
         <Stack.Screen name="Create_Post" component={CreatePost} />
         {/* <Stack.Screen component={ProfileScreens} name={'Profile'} /> */}
         {/* <Stack.Screen name="Auth" component={AuthScreens} /> */}

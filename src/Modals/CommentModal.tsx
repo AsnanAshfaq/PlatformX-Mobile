@@ -10,8 +10,10 @@ import {
   Keyboard,
   FlatList,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   Image,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -19,7 +21,7 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE} from '../Constants/sample';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import axios from '../Utils/Axios';
 type Props = {
   comment: any;
   index: number;
@@ -37,7 +39,7 @@ const CommentView: FC<Props> = ({comment, index}) => {
               : 'http://127.0.0.1:8000' + comment.user.user_profile_image.path,
           }}
           style={styles.userImage}
-          onLoad={() => setImageLoading(false)}
+          onLoadEnd={() => setImageLoading(false)}
         />
       </View>
       <View style={styles.commentTextContainer}>
@@ -65,7 +67,7 @@ const CommentView: FC<Props> = ({comment, index}) => {
 type props = {
   isShow: boolean;
   toggleModal: () => void;
-  comments: Array<any>;
+  postID: any;
   focusTextInput: boolean;
 };
 
@@ -74,19 +76,51 @@ const ICON_SIZE = Width * 0.07;
 const CommentModal: FC<props> = ({
   isShow,
   toggleModal,
-  comments,
+  postID,
   focusTextInput,
 }) => {
-  const [Comment, setComment] = useState('');
+  const [Comment, setComment] = useState([]);
+  const [Input, setInput] = useState('');
   const textInput = useRef(null);
 
+  const postComment = () => {
+    if (Input.trim() !== '') {
+      // post the comment
+      axios
+        .post('api/post/comment/create', {
+          post: postID,
+          text: Input,
+        })
+        .then(response => {
+          setInput('');
+          Keyboard.addListener('keyboardDidHide', e => {
+            if (textInput.current) {
+              textInput?.current?.blur();
+            }
+          });
+        })
+        .catch(error => ToastAndroid.show(error, 1500));
+    } else {
+      ToastAndroid.show('Comment is empty', 1500);
+    }
+  };
+  // useEffect(() => {
+  //   Keyboard.addListener('keyboardDidHide', e => {
+  //     if (textInput.current) {
+  //       textInput?.current?.blur();
+  //     }
+  //   });
+  // }, [textInput]);
+
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', e => {
-      if (textInput.current) {
-        textInput?.current?.blur();
-      }
-    });
-  }, [textInput]);
+    // get all the comments of a post
+    axios
+      .get(`api/post/${postID}/comment/`)
+      .then(response => {
+        setComment(response.data);
+      })
+      .catch(error => console.log(error));
+  }, []);
   return (
     <Modal
       isVisible={isShow}
@@ -111,46 +145,52 @@ const CommentModal: FC<props> = ({
       deviceHeight={Height}
       useNativeDriverForBackdrop={true}>
       <>
-        <View style={[styles.headingContainer, styles.divider]}>
-          <Text style={styles.heading}> {comments.length} Comments</Text>
-        </View>
-        <FlatList
-          data={comments}
-          style={{flex: 0.8}}
-          renderItem={({item, index}) => (
-            <CommentView comment={item} index={index} />
-          )}
-          // onEndReached={() => console.log('End of list')}
-        />
-        {/* comment text input container  */}
-
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          // enabled
-          style={styles.keyboardAvoidingView}>
-          <View style={styles.commentInputContainer}>
-            <TextInput
-              placeholder={'Write your comment here'}
-              style={styles.commentInputField}
-              ref={textInput}
-              placeholderTextColor={darkColors.TEXT_COLOR}
-              value={Comment.trim() === '' ? '' : Comment}
-              onChangeText={setComment}
-              // onFocus={e => console.log('on focus')}
-              // onBlur={e => console.log('on blur')}
-              multiline
-              autoFocus={focusTextInput}
-              scrollEnabled
-            />
-            <View style={styles.iconContainer}>
-              <Ionicons
-                name={'send-outline'}
-                size={ICON_SIZE}
-                color={darkColors.TOMATO_COLOR}
-              />
+        {Comment.length > 0 && (
+          <>
+            <View style={[styles.headingContainer, styles.divider]}>
+              <Text style={styles.heading}> {Comment.length} Comments</Text>
             </View>
-          </View>
-        </KeyboardAvoidingView>
+            <FlatList
+              data={Comment}
+              style={{flex: 0.8}}
+              renderItem={({item, index}) => (
+                <CommentView comment={item} index={index} />
+              )}
+              // onEndReached={() => console.log('End of list')}
+            />
+            {/* comment text input container  */}
+
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+              // enabled
+              style={styles.keyboardAvoidingView}>
+              <View style={styles.commentInputContainer}>
+                <TextInput
+                  placeholder={'Write your comment here'}
+                  style={styles.commentInputField}
+                  ref={textInput}
+                  placeholderTextColor={darkColors.TEXT_COLOR}
+                  value={Input.trim() === '' ? '' : Input}
+                  onChangeText={setInput}
+                  // onFocus={e => console.log('on focus')}
+                  // onBlur={e => console.log('on blur')}
+                  multiline
+                  autoFocus={focusTextInput}
+                  scrollEnabled
+                />
+                <View style={styles.iconContainer}>
+                  <TouchableWithoutFeedback onPress={() => postComment()}>
+                    <Ionicons
+                      name={'send-outline'}
+                      size={ICON_SIZE}
+                      color={darkColors.TOMATO_COLOR}
+                    />
+                  </TouchableWithoutFeedback>
+                </View>
+              </View>
+            </KeyboardAvoidingView>
+          </>
+        )}
       </>
     </Modal>
   );

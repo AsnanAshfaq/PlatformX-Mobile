@@ -8,9 +8,10 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
   Keyboard,
   Image,
+  ToastAndroid,
   TextInput,
   ScrollView,
 } from 'react-native';
@@ -18,13 +19,10 @@ import CustomHeader from '../../Components/CustomHeader';
 import CustomDropDown from '../../Components/CustomDropDown';
 import ImagePicker from 'react-native-image-crop-picker';
 import {POST_TYPE} from '../../Constants/sample';
-import {
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import {darkColors} from '../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from '../../Utils/Axios';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -45,12 +43,12 @@ const CreatePost: FC<props> = ({navigation}) => {
     ImagePicker.openPicker({
       multiple: true,
     }).then(images => {
-      setImages(prev => [...prev, ...images]);
+      setImages(prev => [...images, ...prev]);
     });
-  };
-  const onViewPressed = () => {
-    // console.log(dropDownRef);
-    // console.log('Pressed on view');
+    // first hide the drop down if it is open
+    if (textInput && textInput.current) {
+      settoggleDropDown(false);
+    }
   };
 
   const removeImage = (index: number) => {
@@ -60,9 +58,59 @@ const CreatePost: FC<props> = ({navigation}) => {
 
   const handlePost = () => {
     console.log('Clicked on post');
+    console.log(text);
+    var bodyFormData = new FormData();
+
+    if (text.trim() !== '') {
+      if (textPlacholder === 'Write your post . . .') {
+        // if we have images array
+        if (Images.length > 0) {
+          Images.forEach((image, index) => {
+            // append all the images in bodyFormData
+            bodyFormData.append('path', {
+              uri: image.path,
+              type: image.mime,
+              name: image.path.replace(
+                'file:///data/user/0/com.platformx/cache/react-native-image-crop-picker/', // replace path with empty string
+                '',
+              ),
+            });
+            bodyFormData.append(
+              'metadata',
+              image.path.replace(
+                'file:///data/user/0/com.platformx/cache/react-native-image-crop-picker/', // replace path with empty string
+                '',
+              ),
+            );
+          });
+        }
+
+        bodyFormData.append('text', text);
+
+        axios({
+          method: 'post',
+          url: 'http://127.0.0.1:8000/api/post/create/',
+          data: bodyFormData,
+          headers: {'Content-Type': 'multipart/form-data'},
+        })
+          .then(function (response) {
+            //handle success
+            console.log(response);
+          })
+          .catch(function (error) {
+            //handle error
+            if (error.response) {
+              ToastAndroid.show('Error is' + error.response.data, 1500);
+            }
+          });
+      } else {
+        ToastAndroid.show('Select Post Type', 1500);
+      }
+    } else {
+      ToastAndroid.show('Post is Empty', 1500);
+    }
   };
 
-  // console.log(Images.length);
   useEffect(() => {
     // make text input blur if keyboard is hidden
     Keyboard.addListener('keyboardDidHide', event => {
@@ -80,18 +128,15 @@ const CreatePost: FC<props> = ({navigation}) => {
     });
   }, [textInput]);
 
-  useEffect(() => {
-    console.log(Images);
-  }, [Images]);
   return (
-    <View onTouchStart={() => console.log('Tocuhed started')}>
-      <TouchableWithoutFeedback onPress={() => onViewPressed()}>
-        <CustomHeader
-          navigation={navigation}
-          title={'Create Post'}
-          back
-          onBackPress={() => navigation.goBack()}
-        />
+    <>
+      <CustomHeader
+        navigation={navigation}
+        title={'Create Post'}
+        back
+        onBackPress={() => navigation.goBack()}
+      />
+      <ScrollView>
         {/* post text view  */}
         <View style={styles.textInputContainer}>
           <TextInput
@@ -111,13 +156,15 @@ const CreatePost: FC<props> = ({navigation}) => {
           />
         </View>
         {/* custom drop down  */}
-        <CustomDropDown
-          data={POST_TYPE}
-          isShow={toggleDropDown}
-          toggleShow={settoggleDropDown}
-          Selected={Selected}
-          setSelected={setSelected}
-        />
+        <View style={{marginBottom: 20}}>
+          <CustomDropDown
+            data={POST_TYPE}
+            isShow={toggleDropDown}
+            toggleShow={settoggleDropDown}
+            Selected={Selected}
+            setSelected={setSelected}
+          />
+        </View>
         {/* show image view in a scrollview*/}
 
         {Images.length > 0 && (
@@ -171,8 +218,8 @@ const CreatePost: FC<props> = ({navigation}) => {
             <Text style={styles.postButtonText}>Post</Text>
           </TouchableOpacity>
         </View>
-      </TouchableWithoutFeedback>
-    </View>
+      </ScrollView>
+    </>
   );
 };
 
@@ -207,8 +254,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     margin: 0,
-    // flex: 1,
-    height: 300,
   },
   image: {
     width: Width * 0.9,

@@ -47,9 +47,9 @@ const PostCard: FC<props> = ({postDetail}) => {
     showModal: false, // show modal or not
     focusTextInput: false, // if true, set auto focus on comment modal text input field
   });
-
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
   const [PostImageLoading, setPostImageLoading] = useState(true);
+
   return (
     <View style={styles.parent}>
       <CommentModal
@@ -61,7 +61,7 @@ const PostCard: FC<props> = ({postDetail}) => {
           }))
         }
         focusTextInput={Modal.focusTextInput}
-        comments={postDetail.comments}
+        postID={postDetail.id}
       />
       {/* header  */}
       <View style={styles.headerContainer}>
@@ -74,7 +74,7 @@ const PostCard: FC<props> = ({postDetail}) => {
                   postDetail.user.user_profile_image.path,
             }}
             style={styles.userImage}
-            onLoad={() => setProfileImageLoading(false)}
+            onLoadEnd={() => setProfileImageLoading(false)}
           />
         </View>
         <View style={styles.headerTextContainer}>
@@ -95,16 +95,22 @@ const PostCard: FC<props> = ({postDetail}) => {
       </View>
       {/* image if any  */}
       {postDetail.images.length > 0 && (
-        <View style={styles.imageContainer}>
+        <View style={styles.postImageContainer}>
           <Image
             source={{
               uri: PostImageLoading
                 ? POST_IMAGE
                 : 'http://127.0.0.1:8000' + postDetail.images[0].path,
             }}
-            style={styles.postImage}
-            resizeMode={'contain'}
-            onLoad={() => setPostImageLoading(false)}
+            style={[
+              styles.postImage,
+              {
+                // width: 0,
+                // height: '100%',
+              },
+            ]}
+            resizeMode={'cover'}
+            onLoadEnd={() => setPostImageLoading(false)}
           />
         </View>
       )}
@@ -194,14 +200,14 @@ const styles = StyleSheet.create({
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
-  imageContainer: {
+  postImageContainer: {
     // width: Width * 0.961,
     // minHeight: Height * 0.25,
     // maxHeight: Height * 0.3,
     // height: 'auto',
     marginHorizontal: 0,
     // flex: 1,
-    height: Width * (9 / 16),
+    // height: Width * (9 / 16),
     // justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'red',
@@ -214,7 +220,8 @@ const styles = StyleSheet.create({
     // flex: 1,
     // aspectRatio: 1,
     width: Width * 0.9,
-    height: Width * (9 / 16),
+    minHeight: Height * 0.4,
+    maxHeight: Height * 0.6,
     // flex: 1,
     // minHeight: Width,
     // width: '100%',
@@ -228,7 +235,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     // borderTopWidth: 2,
     padding: 5,
-    paddingVertical: 6,
+    paddingVertical: 10,
     borderColor: darkColors.SHADOW_COLOR,
     // marginTop: 10,
   },
