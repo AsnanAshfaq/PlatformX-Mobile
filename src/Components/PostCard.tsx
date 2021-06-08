@@ -1,9 +1,10 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useRef, useEffect} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 // @ts-ignore
 // import {DEVELOPMENT_URL} from '@types/react-native-dotenv';
 const MAX_TEXT_LENGTH = 290;
@@ -42,11 +43,14 @@ type props = {
   postDetail: any;
 };
 
+const ICON_SIZE = Width * 0.07;
+
 const PostCard: FC<props> = ({postDetail}) => {
   const [Modal, setModal] = useState({
     showModal: false, // show modal or not
-    focusTextInput: false, // if true, set auto focus on comment modal text input field
+    focusTextInput: false, // if true, set auto focus on comment modal text input field to true
   });
+
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
   const [PostImageLoading, setPostImageLoading] = useState(true);
 
@@ -75,13 +79,24 @@ const PostCard: FC<props> = ({postDetail}) => {
             }}
             style={styles.userImage}
             onLoadEnd={() => setProfileImageLoading(false)}
+            // onProgress={() => setPostImageLoading(true)}
           />
         </View>
         <View style={styles.headerTextContainer}>
           <Text style={styles.username}>{postDetail?.user?.username}</Text>
           <Text style={styles.date}>
-            {/* {postDetail.date.toUTCString().substring(0, 17)} */}
+            {new Date(postDetail.created_at).toDateString()}
           </Text>
+        </View>
+        <View style={styles.headerIconContainer}>
+          <TouchableOpacity
+            onPress={() => console.log('Clicked on post option icon')}>
+            <Ionicons
+              name={'ellipsis-vertical'}
+              size={ICON_SIZE}
+              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       {/* content  */}
@@ -111,6 +126,7 @@ const PostCard: FC<props> = ({postDetail}) => {
             ]}
             resizeMode={'cover'}
             onLoadEnd={() => setPostImageLoading(false)}
+            // onProgress={() => setPostImageLoading(true)}
           />
         </View>
       )}
@@ -168,7 +184,7 @@ const styles = StyleSheet.create({
   },
   headerImageContainer: {
     // width: Width * 0.3,
-    flex: 2,
+    flex: 0.2,
   },
   userImage: {
     height: Height * 0.07,
@@ -177,7 +193,7 @@ const styles = StyleSheet.create({
   },
   headerTextContainer: {
     // width: Width * 0.6,
-    flex: 8,
+    flex: 0.7,
     flexDirection: 'column',
   },
   username: {
@@ -188,6 +204,10 @@ const styles = StyleSheet.create({
   date: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.75,
+  },
+  headerIconContainer: {
+    flex: 0.1,
+    justifyContent: 'center',
   },
   contentContainer: {
     // minHeight: Height * 0.15,

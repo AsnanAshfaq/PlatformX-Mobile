@@ -66,6 +66,8 @@ const CreatePost: FC<props> = ({navigation}) => {
         // if we have images array
         if (Images.length > 0) {
           Images.forEach((image, index) => {
+            console.log('Path is');
+            console.log(image.path);
             // append all the images in bodyFormData
             bodyFormData.append('path', {
               uri: image.path,
@@ -77,10 +79,12 @@ const CreatePost: FC<props> = ({navigation}) => {
             });
             bodyFormData.append(
               'metadata',
-              image.path.replace(
-                'file:///data/user/0/com.platformx/cache/react-native-image-crop-picker/', // replace path with empty string
-                '',
-              ),
+              image.path
+                .replace(
+                  'file:///data/user/0/com.platformx/cache/react-native-image-crop-picker/', // replace path with empty string
+                  '',
+                )
+                .substring(0, 20),
             );
           });
         }
@@ -95,7 +99,15 @@ const CreatePost: FC<props> = ({navigation}) => {
         })
           .then(function (response) {
             //handle success
-            console.log(response);
+            console.log(response.status);
+            // if the request status code is 201, then the post has been created
+            if (response.status === 201) {
+              ToastAndroid.show('Post has been created', 1500);
+              // navigate user to main screen
+              navigation.pop();
+            } else {
+              ToastAndroid.show('Error status code' + response.status, 1500);
+            }
           })
           .catch(function (error) {
             //handle error

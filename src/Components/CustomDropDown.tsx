@@ -23,10 +23,12 @@ const CustomDropDown: FC<props> = ({
   Selected,
   setSelected,
 }) => {
-  const toggle = () => toggleShow(!isShow);
+  const toggleDropDown = () => toggleShow(!isShow);
   return (
     <View style={styles.parent}>
-      <TouchableOpacity onPress={toggle} style={styles.dropDownBar}>
+      <TouchableOpacity
+        onPress={() => toggleDropDown()}
+        style={styles.dropDownBar}>
         <View style={{flexDirection: 'row'}}>
           <Text style={styles.selectedText}>{Selected}</Text>
           <Ionicons
@@ -44,7 +46,7 @@ const CustomDropDown: FC<props> = ({
           data.map(type => (
             <TouchableOpacity
               onPress={() => {
-                toggle();
+                toggleDropDown();
                 setSelected(type);
               }}
               key={type}>
