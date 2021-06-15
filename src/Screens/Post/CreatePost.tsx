@@ -66,8 +66,6 @@ const CreatePost: FC<props> = ({navigation}) => {
         // if we have images array
         if (Images.length > 0) {
           Images.forEach((image, index) => {
-            console.log('Path is');
-            console.log(image.path);
             // append all the images in bodyFormData
             bodyFormData.append('path', {
               uri: image.path,
@@ -90,7 +88,6 @@ const CreatePost: FC<props> = ({navigation}) => {
         }
 
         bodyFormData.append('text', text);
-
         axios({
           method: 'post',
           url: 'http://127.0.0.1:8000/api/post/create/',
@@ -99,7 +96,6 @@ const CreatePost: FC<props> = ({navigation}) => {
         })
           .then(function (response) {
             //handle success
-            console.log(response.status);
             // if the request status code is 201, then the post has been created
             if (response.status === 201) {
               ToastAndroid.show('Post has been created', 1500);

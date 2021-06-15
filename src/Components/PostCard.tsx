@@ -5,6 +5,7 @@ import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {BASE_URL} from 'react-native-dotenv';
 // @ts-ignore
 // import {DEVELOPMENT_URL} from '@types/react-native-dotenv';
 const MAX_TEXT_LENGTH = 290;
@@ -21,12 +22,13 @@ const PostCardButtons: FC<Props> = ({setModal}) => {
         <Text style={styles.PostButtonText}>Like</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() =>
+        onPress={() => {
           setModal({
             focusTextInput: true,
             showModal: true,
-          })
-        }
+          });
+          console.log('Clicked on comment');
+        }}
         style={styles.PostButton}>
         <Text style={styles.PostButtonText}>Comment</Text>
       </TouchableOpacity>
@@ -54,6 +56,12 @@ const PostCard: FC<props> = ({postDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
   const [PostImageLoading, setPostImageLoading] = useState(true);
 
+  // useEffect(() => {
+  // pre fetch image dimensions
+  // Image.getSize(BASE_URL + postDetail.images[0].path, (width, height) =>
+  //   console.log('Width is', width),
+  // );
+  // }, []);
   return (
     <View style={styles.parent}>
       <CommentModal
@@ -74,8 +82,7 @@ const PostCard: FC<props> = ({postDetail}) => {
             source={{
               uri: ProfileImageLoading
                 ? PROFILE_IMAGE
-                : 'http://127.0.0.1:8000' +
-                  postDetail.user.user_profile_image.path,
+                : BASE_URL + postDetail.user.user_profile_image.path,
             }}
             style={styles.userImage}
             onLoadEnd={() => setProfileImageLoading(false)}
@@ -115,7 +122,7 @@ const PostCard: FC<props> = ({postDetail}) => {
             source={{
               uri: PostImageLoading
                 ? POST_IMAGE
-                : 'http://127.0.0.1:8000' + postDetail.images[0].path,
+                : BASE_URL + postDetail.images[0].path,
             }}
             style={[
               styles.postImage,

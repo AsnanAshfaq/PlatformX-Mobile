@@ -1,10 +1,11 @@
 import axios from 'react-native-axios';
+import {BASE_URL} from 'react-native-dotenv';
 
 export default axios.create({
-  baseURL: 'http://127.0.0.1:8000/',
+  baseURL: BASE_URL,
   timeout: 1000,
   headers: {
     Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIzMjE5NjIwLCJqdGkiOiI3NTQ4YzE3ZTE0MTg0NzNjODdhMDY5ODUwMjQ0Y2M2OCIsInVzZXJfaWQiOiIyNTMxMGM4OS00Y2I1LTQ1NTEtOGY5My1jN2UxZDhhMGFiOGYifQ.SfbYNzvr3GErRlHVFel_6ZostPOQKT2wUVNoVVdE_f4',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjIzODcyMDE2LCJqdGkiOiI2ZmQ0NmQ1NDY3Yjk0NGQxOWNmMGNmZDkxYTVjODgxZCIsInVzZXJfaWQiOiIyNTMxMGM4OS00Y2I1LTQ1NTEtOGY5My1jN2UxZDhhMGFiOGYifQ._FaG9SF3JPBnkNSXz-Nc5zitRv5j1N4v1W88wBMo-A8',
   },
 });

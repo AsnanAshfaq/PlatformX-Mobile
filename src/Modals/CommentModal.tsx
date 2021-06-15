@@ -22,6 +22,8 @@ import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE} from '../Constants/sample';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from '../Utils/Axios';
+import {BASE_URL} from 'react-native-dotenv';
+
 type Props = {
   comment: any;
   index: number;
@@ -36,7 +38,7 @@ const CommentView: FC<Props> = ({comment, index}) => {
           source={{
             uri: ImageLoading
               ? PROFILE_IMAGE
-              : 'http://127.0.0.1:8000' + comment.user.user_profile_image.path,
+              : BASE_URL + comment.user.user_profile_image.path,
           }}
           style={styles.userImage}
           onLoadEnd={() => setImageLoading(false)}
@@ -82,22 +84,29 @@ const CommentModal: FC<props> = ({
   const [Comment, setComment] = useState([]);
   const [Input, setInput] = useState('');
   const textInput = useRef(null);
+  const [isCommentPosted, setisCommentPosted] = useState(false);
 
   const postComment = () => {
+    console.log('Input is ', Input);
     if (Input.trim() !== '') {
+      setInput('');
+      // Keyboard.addListener('keyboardDidHide', e => {
+      //   if (textInput.current) {
+      //     textInput?.current?.blur();
+      //   }
+      // });
+
       // post the comment
       axios
-        .post('api/post/comment/create', {
+        .post('/api/post/comment/create', {
           post: postID,
           text: Input,
         })
-        .then(response => {
-          setInput('');
-          Keyboard.addListener('keyboardDidHide', e => {
-            if (textInput.current) {
-              textInput?.current?.blur();
-            }
-          });
+        .then(() => {
+          // set the comment posted state to true
+          // to re-run the component
+          // and fetch newly added comment
+          setisCommentPosted(true);
         })
         .catch(error => ToastAndroid.show(error, 1500));
     } else {
@@ -107,13 +116,19 @@ const CommentModal: FC<props> = ({
 
   useEffect(() => {
     // get all the comments of a post
-    axios
-      .get(`api/post/${postID}/comment/`)
-      .then(response => {
-        setComment(response.data);
-      })
-      .catch(error => console.log(error));
-  }, []);
+    setisCommentPosted(false);
+    console.log('Use Effect');
+    if (!isCommentPosted) {
+      axios
+        .get(`/api/post/${postID}/comment/`)
+        .then(response => {
+          setComment(response.data);
+        })
+        .catch(error => console.log(error));
+    }
+    // if (textInput && textInput.current) textInput.current.onFocus();
+  }, [isCommentPosted]);
+
   return (
     <Modal
       isVisible={isShow}
@@ -131,7 +146,10 @@ const CommentModal: FC<props> = ({
       swipeDirection={'down'}
       swipeThreshold={200}
       onSwipeComplete={toggleModal}
-      propagateSwipe
+      // panResponderThreshold={6}
+      // scrollOffset={1}
+      // scrollOffsetMax={0}
+      propagateSwipe={true}
       // onSwipeComplete={params => console.log(params)}
       // onSwipeMove={toggleHeight}
       deviceWidth={Width}
@@ -140,17 +158,27 @@ const CommentModal: FC<props> = ({
       <>
         {Comment.length > 0 ? (
           <>
+            {/* <View style={{flex: 1}}> */}
+            {/* <ScrollView>
+              <View onStartShouldSetResponder={() => true}> */}
             <View style={[styles.headingContainer, styles.divider]}>
               <Text style={styles.heading}> {Comment.length} Comments</Text>
             </View>
+            {/* <ScrollView onScroll={event => console.log(event)}> */}
             <FlatList
               data={Comment}
-              style={{flex: 0.8}}
+              // style={{flex: 0.8}}
+              keyExtractor={(item, index) => `${index}`}
+              keyboardShouldPersistTaps="always"
               renderItem={({item, index}) => (
-                <CommentView comment={item} index={index} />
+                <CommentView comment={item} index={index} key={item.id} />
               )}
               // onEndReached={() => console.log('End of list')}
             />
+            {/* </ScrollView> */}
+            {/* </View>
+            </ScrollView> */}
+            {/* </View> */}
           </>
         ) : (
           <View
@@ -175,8 +203,9 @@ const CommentModal: FC<props> = ({
               // onFocus={e => console.log('on focus')}
               // onBlur={e => console.log('on blur')}
               multiline
-              autoFocus={focusTextInput}
+              autoFocus={true}
               scrollEnabled
+              showSoftInputOnFocus={focusTextInput ? true : false}
             />
             <View style={styles.iconContainer}>
               <TouchableOpacity onPress={() => postComment()}>

@@ -1,12 +1,26 @@
-import React, {useEffect} from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
-import {darkColors} from './src/Constants/Colors';
+import React, {useEffect, useState} from 'react';
 import Navigation from './src/Navigations';
+import {useStateValue} from './src/Store/StateProvider';
+import axios from './src/Utils/Axios';
 
 const App = () => {
-  return <Navigation />;
-};
+  const [Loading, setLoading] = useState(true);
+  const [state, dispatch] = useStateValue();
 
-const styles = StyleSheet.create({});
+  useEffect(() => {
+    // get user type and set it into global state
+    axios.get('/user/').then(result => {
+      if (result.data.student) {
+        dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+      } else {
+        dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  if (!Loading) return <Navigation />;
+  return null;
+};
 
 export default App;

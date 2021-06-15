@@ -28,23 +28,26 @@ const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
-
       <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
       {Post.length > 0 && (
-        <FlatList
-          data={Post}
-          renderItem={({item: Post, index}: any) => {
-            return <PostCard key={Post?.id} postDetail={Post} />;
-          }}
-        />
+        <>
+          <FlatList
+            data={Post}
+            // disableVirtualization
+            keyExtractor={(item, index) => `${item.id}-${index}`}
+            renderItem={({item: Post, index}: any) => {
+              return <PostCard key={Post?.id} postDetail={Post} />;
+            }}
+          />
+          {/* floating action button  */}
+          <View style={styles.floatingButtonContainer}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Create_Post')}>
+              <Text style={styles.plusText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </>
       )}
-
-      {/* floating action button  */}
-      <View style={styles.floatingButtonContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Create_Post')}>
-          <Text style={styles.plusText}>+</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

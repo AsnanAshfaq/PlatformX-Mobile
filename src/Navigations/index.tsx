@@ -17,7 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Width} from '../Constants/Size';
 import CustomDrawer from '../Components/CustomDrawer';
-import Home from '../Screens/Profile/Home';
+import MyProfile from '../Screens/Profile/Index';
 import Followers from '../Screens/Profile/Followers';
 import Following from '../Screens/Profile/Following';
 // Auth screens
@@ -100,7 +100,7 @@ const ProfileScreens = () => {
       }}>
       <Stack.Screen
         name="Home"
-        component={Home}
+        component={MyProfile}
         options={{
           animationEnabled: true,
           gestureDirection: 'horizontal',
