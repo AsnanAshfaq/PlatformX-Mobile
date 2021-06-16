@@ -158,13 +158,9 @@ const CommentModal: FC<props> = ({
       <>
         {Comment.length > 0 ? (
           <>
-            {/* <View style={{flex: 1}}> */}
-            {/* <ScrollView>
-              <View onStartShouldSetResponder={() => true}> */}
             <View style={[styles.headingContainer, styles.divider]}>
               <Text style={styles.heading}> {Comment.length} Comments</Text>
             </View>
-            {/* <ScrollView onScroll={event => console.log(event)}> */}
             <FlatList
               data={Comment}
               // style={{flex: 0.8}}
@@ -175,10 +171,6 @@ const CommentModal: FC<props> = ({
               )}
               // onEndReached={() => console.log('End of list')}
             />
-            {/* </ScrollView> */}
-            {/* </View>
-            </ScrollView> */}
-            {/* </View> */}
           </>
         ) : (
           <View
