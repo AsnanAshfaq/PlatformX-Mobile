@@ -5,6 +5,7 @@ import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+// @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 // @ts-ignore
 // import {DEVELOPMENT_URL} from '@types/react-native-dotenv';

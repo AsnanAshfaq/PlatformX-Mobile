@@ -47,14 +47,16 @@ const HackathonCard: FC<props> = ({hackathonDetail}) => {
               uri: ProfileImageLoading
                 ? PROFILE_IMAGE
                 : BASE_URL +
-                  hackathonDetail.user.organization.user_profile_image.path,
+                  hackathonDetail.organization.user.user_profile_image.path,
             }}
             onLoadEnd={() => setProfileImageLoading(false)}
             style={styles.userImage}
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.username}>Folio 3</Text>
+          <Text style={styles.username}>
+            {hackathonDetail.organization.name}
+          </Text>
           <Text style={styles.date}>
             {new Date(hackathonDetail.created_at).toDateString()}
           </Text>

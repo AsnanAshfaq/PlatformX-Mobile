@@ -22,6 +22,7 @@ import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE} from '../Constants/sample';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from '../Utils/Axios';
+// @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
 type Props = {

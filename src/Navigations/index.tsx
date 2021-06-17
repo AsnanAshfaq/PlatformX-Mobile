@@ -25,13 +25,14 @@ import SignIn from '../Screens/Auth/SignIn';
 import SignUp from '../Screens/Auth/SignUp';
 import Notification from '../Screens/Notification/Notification';
 import Chat from '../Screens/Chat/Chat';
+import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 
 // declaring navigators
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-const config = {
+const config: TransitionSpec = {
   animation: 'spring',
   config: {
     stiffness: 1000,

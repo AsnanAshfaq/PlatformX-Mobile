@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import CustomDropDown from '../../Components/CustomDropDown';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {POST_TYPE} from '../../Constants/sample';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import {darkColors} from '../../Constants/Colors';
@@ -35,7 +35,7 @@ const CreatePost: FC<props> = ({navigation}) => {
   const [textPlacholder, setTextPlacholder] = useState('Write your post . . .');
   const [toggleDropDown, settoggleDropDown] = useState(false);
   const [Selected, setSelected] = useState('Select Post Type');
-  const [Images, setImages] = useState([]);
+  const [Images, setImages] = useState<ImageOrVideo[]>([]);
   const dropDownRef = useRef(null);
   const textInput = useRef(null);
 
