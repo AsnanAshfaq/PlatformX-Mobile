@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
+  Keyboard,
 } from 'react-native';
 import PostCard from '../../Components/PostCard';
 import CustomHeader from '../../Components/CustomHeader';
@@ -24,12 +25,12 @@ const Posts: FC<props> = ({navigation}) => {
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      console.log('is focues', isFocuses);
-      // getData();
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // getData();
+  //   }, []),
+  // );
+
   const getData = async () => {
     try {
       axios.get('/api/posts/').then(response => {
@@ -50,6 +51,7 @@ const Posts: FC<props> = ({navigation}) => {
   useEffect(() => {
     getData();
   }, []);
+
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />

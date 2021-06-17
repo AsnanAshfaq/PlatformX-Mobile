@@ -127,10 +127,10 @@ const styles = StyleSheet.create({
   subtag: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
-    paddingVertical: 3,
+    paddingVertical: 5,
   },
   applyButtonContainer: {
-    minHeight: Height * 0.05,
+    // minHeight: Height * 0.05,
     // maxHeight: Height * 0.07,
     flexDirection: 'row',
     marginVertical: 10,
@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
   },
   applyButton: {
     width: Width * 0.35,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: darkColors.BADGE_COLOR,

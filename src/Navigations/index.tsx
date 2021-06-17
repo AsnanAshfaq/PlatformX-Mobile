@@ -77,6 +77,7 @@ const TabScreens = () => {
         style: {
           backgroundColor: darkColors.BACKGROUND_COLOR,
           borderTopColor: 'transparent',
+          // position: 'absolute',
         },
       }}>
       <Tab.Screen
