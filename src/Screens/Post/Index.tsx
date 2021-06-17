@@ -16,6 +16,7 @@ import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import PostSkeleton from '../../Skeleton/PostSkeleton';
 
 type props = {
   navigation: any;
@@ -113,6 +114,9 @@ const styles = StyleSheet.create({
   plusText: {
     fontSize: Sizes.large * 1.4,
     color: darkColors.TEXT_COLOR,
+  },
+  skeleton: {
+    // height: 10,
   },
 });
 
