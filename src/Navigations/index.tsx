@@ -10,12 +10,12 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 // importing screens
 import Post from '../Screens/Post/Index';
 import CreatePost from '../Screens/Post/CreatePost';
-import Hackathon from '../Screens/Hackathons';
+import Hackathon from '../Screens/Hackathon/Index';
 import Workshop from '../Screens/Workshops';
 import Project from '../Screens/Projects';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
-import {Width} from '../Constants/Size';
+import {Sizes, Width} from '../Constants/Size';
 import CustomDrawer from '../Components/CustomDrawer';
 import MyProfile from '../Screens/Profile/Index';
 import Followers from '../Screens/Profile/Followers';
@@ -67,11 +67,16 @@ const TabScreens = () => {
       tabBarOptions={{
         activeTintColor: darkColors.TAB_BAR_ACTIVE_COLOR,
         inactiveTintColor: darkColors.TAB_BAR_INACTIVE_COLOR,
-        iconStyle: {color: darkColors.TAB_BAR_ICON_COLOR},
+        iconStyle: {
+          color: darkColors.TAB_BAR_ICON_COLOR,
+          // fontSize: Sizes.normal * 10,
+        },
+        allowFontScaling: true,
         keyboardHidesTabBar: true,
         // activeBackgroundColor: darkColors.LIGHT_BACKGROUND,
         style: {
           backgroundColor: darkColors.BACKGROUND_COLOR,
+          borderTopColor: 'transparent',
         },
       }}>
       <Tab.Screen

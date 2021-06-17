@@ -1,8 +1,11 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+// import {PROFILE_IMAGE,} from '../Constants/sample';
+import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
+import {BASE_URL} from 'react-native-dotenv';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -25,68 +28,74 @@ const HackathonCardIcons: FC<Props> = ({name, label}) => {
 };
 
 type props = {
-  thumbnail_image: string;
-  user_name: string;
-  user_image: string;
-  date: Date;
-  description: string;
-  prize: number;
-  event_type: string;
-  participants: number;
+  hackathonDetail: any;
 };
 
 const MAX_TEXT_LENGTH = 250;
 
-const HackathonCard: FC<props> = ({
-  date,
-  description,
-  event_type,
-  participants,
-  prize,
-  thumbnail_image,
-  user_image,
-  user_name,
-}) => {
+const HackathonCard: FC<props> = ({hackathonDetail}) => {
+  const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
+  const [HackathonImageLoading, setHackathonImageLoading] = useState(true);
+
   return (
     <View style={styles.parent}>
       {/* header  */}
       <View style={styles.headerContainer}>
         <View style={styles.headerImageContainer}>
-          <Image source={{uri: user_image}} style={styles.userImage} />
+          <Image
+            source={{
+              uri: ProfileImageLoading
+                ? PROFILE_IMAGE
+                : BASE_URL +
+                  hackathonDetail.user.organization.user_profile_image.path,
+            }}
+            onLoadEnd={() => setProfileImageLoading(false)}
+            style={styles.userImage}
+          />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.username}>{user_name}</Text>
-          <Text style={styles.date}>{date.toUTCString().substring(0, 17)}</Text>
+          <Text style={styles.username}>Folio 3</Text>
+          <Text style={styles.date}>
+            {new Date(hackathonDetail.created_at).toDateString()}
+          </Text>
         </View>
       </View>
       {/* content  */}
       <View style={styles.contentContainer}>
+        {/* title  */}
+        <Text style={styles.titleText}>{hackathonDetail.title}</Text>
         <Text style={styles.descriptionText}>
-          {description.length > MAX_TEXT_LENGTH
-            ? description.substring(0, MAX_TEXT_LENGTH - 4) + '.... read more'
-            : description}
+          {hackathonDetail.description.length > MAX_TEXT_LENGTH
+            ? hackathonDetail.description.substring(0, MAX_TEXT_LENGTH - 4) +
+              '.... read more'
+            : hackathonDetail.description}
         </Text>
       </View>
       {/* hackathon image  */}
       <View style={styles.thumbnailContainer}>
         <Image
-          source={{uri: thumbnail_image}}
+          source={{
+            uri: HackathonImageLoading
+              ? GREY_IMAGE
+              : BASE_URL + hackathonDetail.thumbnail_image,
+          }}
+          onLoadEnd={() => setHackathonImageLoading(false)}
           style={styles.thumbnail}
-          resizeMode={'center'}
+          resizeMode={'cover'}
         />
       </View>
       {/* hackathon details  */}
       <View style={styles.iconsRowConatiner}>
         <View style={styles.iconsRow}>
-          <HackathonCardIcons name={'globe-outline'} label={event_type} />
+          <HackathonCardIcons name={'globe-outline'} label={'Online'} />
           <HackathonCardIcons
             name={'people-sharp'}
-            label={`${participants} Participants`}
+            label={`${12} Participants`}
           />
         </View>
         <View style={styles.iconsRow}>
           <HackathonCardIcons name={'time-outline'} label={'20 Days left'} />
-          <HackathonCardIcons name={'cash-outline'} label={prize} />
+          <HackathonCardIcons name={'cash-outline'} label={1500} />
         </View>
       </View>
       {/* apply now button  */}
@@ -108,7 +117,7 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.04,
     marginVertical: Width * 0.01,
     // minHeight: Height * 0.35,
-    maxHeight: Height * 0.8,
+    // maxHeight: Height * 0.8,
     borderRadius: 20,
     padding: 10,
     shadowColor: darkColors.SHADOW_COLOR,
@@ -150,9 +159,14 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     // minHeight: Height * 0.15,
-    maxHeight: Height * 0.2,
+    // maxHeight: Height * 0.2,
     paddingHorizontal: 5,
     marginVertical: 7,
+  },
+  titleText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal * 1.7,
+    fontFamily: 'Raleway-Light',
   },
   descriptionText: {
     color: darkColors.TEXT_COLOR,
@@ -160,18 +174,20 @@ const styles = StyleSheet.create({
   },
   thumbnailContainer: {
     width: Width * 0.9,
-    minHeight: Height * 0.15,
-    maxHeight: Height * 0.2,
+    minHeight: Height * 0.25,
+    maxHeight: Height * 0.3,
     // flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    // backgroundColor: 'red',
+    // marginRight: 20,
   },
   thumbnail: {
-    width: Width * 0.7,
-    height: Height * 0.2,
+    width: Width * 0.865,
+    height: Height * 0.25,
   },
   iconsRowConatiner: {
-    height: Height * 0.09,
+    // height: Height * 0.09,
     paddingHorizontal: 5,
     marginTop: Height * 0.02,
   },
@@ -185,14 +201,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   hackathonButtonContainer: {
-    minHeight: Height * 0.05,
-    maxHeight: Height * 0.07,
+    // minHeight: Height * 0.05,
+    // maxHeight: Height * 0.07,
     flexDirection: 'row',
     marginTop: Height * 0.02,
     justifyContent: 'flex-end',
   },
   hackathonButton: {
     // flex: 1,
+    padding: 9,
     width: Width * 0.35,
     justifyContent: 'center',
     alignItems: 'center',

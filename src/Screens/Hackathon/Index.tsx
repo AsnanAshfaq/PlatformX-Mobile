@@ -7,7 +7,7 @@ import {
   FlatList,
   RefreshControl,
 } from 'react-native';
-import PostCard from '../../Components/PostCard';
+import HackathonCard from '../../Components/HackathonCard';
 import CustomHeader from '../../Components/CustomHeader';
 import CustomSearch from '../../Components/Search';
 import {postData} from '../../Constants/sample';
@@ -19,8 +19,8 @@ import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 type props = {
   navigation: any;
 };
-const Posts: FC<props> = ({navigation}) => {
-  const [Post, setPost] = useState([]);
+const Hackathons: FC<props> = ({navigation}) => {
+  const [Hackathons, setHackathons] = useState([]);
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
 
@@ -32,8 +32,8 @@ const Posts: FC<props> = ({navigation}) => {
   );
   const getData = async () => {
     try {
-      axios.get('/api/posts/').then(response => {
-        setPost(response.data);
+      axios.get('/api/hackathons/').then(response => {
+        setHackathons(response.data);
       });
     } catch (error) {
       console.log('Error is', error);
@@ -53,15 +53,20 @@ const Posts: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
-      <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
-      {Post.length > 0 && (
+      <CustomSearch placeholder={'Search here'} showFilterIcon />
+      {Hackathons.length > 0 && (
         <>
           <FlatList
-            data={Post}
+            data={Hackathons}
             // disableVirtualization
             keyExtractor={(item, index) => `${item.id}-${index}`}
-            renderItem={({item: Post, index}: any) => {
-              return <PostCard key={Post?.id} postDetail={Post} />;
+            renderItem={({item: Hackathon, index}: any) => {
+              return (
+                <HackathonCard
+                  key={Hackathon?.id}
+                  hackathonDetail={Hackathon}
+                />
+              );
             }}
             // progressViewOffset={10}
             refreshControl={
@@ -74,16 +79,8 @@ const Posts: FC<props> = ({navigation}) => {
                 size={Sizes.large}
               />
             }
-            // inverted
-            contentOffset={{y: -300, x: 0}}
+            // contentOffset={{y: -300, x: 0}}
           />
-          {/* floating action button  */}
-          <View style={styles.floatingButtonContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Create_Post')}>
-              <Text style={styles.plusText}>+</Text>
-            </TouchableOpacity>
-          </View>
         </>
       )}
     </View>
@@ -114,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Posts;
+export default Hackathons;

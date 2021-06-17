@@ -282,13 +282,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   postButtonContainer: {
-    height: Height * 0.06,
+    // height: Height * 0.06,
     flexDirection: 'row',
     marginVertical: Height * 0.009,
     padding: 5,
   },
   PostButton: {
     flex: 1,
+    padding: 9,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: darkColors.SHADOW_COLOR,

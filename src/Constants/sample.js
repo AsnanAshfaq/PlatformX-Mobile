@@ -457,6 +457,7 @@ export const BACKGROUND_IMAGE =
 
 export const POST_IMAGE = 'https://wallpaperaccess.com/full/1397755.jpg';
 
+export const GREY_IMAGE = 'https://www.tilelook.com/system/tile_picture/resource/2336209/d3d_default_Pure_MA_Grey_60x60_FGYT660GR1.jpg';
 export const POST_TYPE = [
   'General',
   'Seeking Assisstance',
