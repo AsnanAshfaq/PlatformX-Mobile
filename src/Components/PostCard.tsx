@@ -218,7 +218,7 @@ const PostCard: FC<props> = ({postDetail}) => {
                 // height: undefined,
                 // aspectRatio: 0.6,
                 width: Width * 0.9,
-                height: Width * ImageAspectRatio.current,
+                height: Width * ImageAspectRatio.current * 0.9,
               },
             ]}
             resizeMode={'contain'}
@@ -228,7 +228,6 @@ const PostCard: FC<props> = ({postDetail}) => {
               Image.getSize(postDetail.images[0].path, (width, heigth) => {
                 // calculate aspect ratio of image
                 ImageAspectRatio.current = heigth / width;
-                console.log('Aspect ratio is', ImageAspectRatio.current);
               });
             }}
             // onProgress={() => setPostImageLoading(true)}
