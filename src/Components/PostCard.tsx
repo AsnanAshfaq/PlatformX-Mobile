@@ -79,7 +79,8 @@ const PopUpMenu: FC<prop> = ({isEditable}) => {
               borderRadius: 20,
               marginRight: 20,
               width: 140,
-              right: 0,
+              marginTop: 24,
+              marginLeft: -10,
               borderColor: 'transparent',
             },
             optionWrapper: {
@@ -151,14 +152,8 @@ const PostCard: FC<props> = ({postDetail}) => {
 
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
   const [PostImageLoading, setPostImageLoading] = useState(true);
+  const ImageAspectRatio = useRef(0);
 
-  // useEffect(() => {
-  // pre fetch image dimensions
-  // Image.getSize(BASE_URL + postDetail.images[0].path, (width, height) =>
-  //   console.log('Width is', width),
-  // );
-  // }, []);
-  // console.log(postDetail);
   return (
     <View style={styles.parent}>
       <CommentModal
@@ -216,14 +211,26 @@ const PostCard: FC<props> = ({postDetail}) => {
               uri: PostImageLoading ? POST_IMAGE : postDetail.images[0].path,
             }}
             style={[
-              styles.postImage,
+              // styles.postImage,
               {
-                // width: 0,
-                // height: '100%',
+                // flex: 1,
+                // width: undefined,
+                // height: undefined,
+                // aspectRatio: 0.6,
+                width: Width * 0.9,
+                height: Width * ImageAspectRatio.current,
               },
             ]}
-            resizeMode={'cover'}
-            onLoadEnd={() => setPostImageLoading(false)}
+            resizeMode={'contain'}
+            onLoadEnd={() => {
+              setPostImageLoading(false);
+              // get image width and height
+              Image.getSize(postDetail.images[0].path, (width, heigth) => {
+                // calculate aspect ratio of image
+                ImageAspectRatio.current = heigth / width;
+                console.log('Aspect ratio is', ImageAspectRatio.current);
+              });
+            }}
             // onProgress={() => setPostImageLoading(true)}
           />
         </View>
@@ -313,6 +320,7 @@ const styles = StyleSheet.create({
   menuOptionText: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
+    // fontFamily: 'Raleway-Medium',
   },
   contentContainer: {
     // minHeight: Height * 0.15,
