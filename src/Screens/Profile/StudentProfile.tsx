@@ -136,7 +136,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                 uri: LoadBackgroundImage
                   ? BACKGROUND_IMAGE
                   : ProfileData?.user_background_image
-                  ? BASE_URL + ProfileData?.user_background_image.path
+                  ? ProfileData?.user_background_image.path
                   : BACKGROUND_IMAGE,
               }}
               style={styles.background_image}

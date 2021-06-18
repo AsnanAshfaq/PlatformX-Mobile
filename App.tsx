@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Navigation from './src/Navigations';
 import {useStateValue} from './src/Store/StateProvider';
 import axios from './src/Utils/Axios';
+import {MenuProvider} from 'react-native-popup-menu';
 
 const App = () => {
   const [Loading, setLoading] = useState(true);
@@ -19,7 +20,12 @@ const App = () => {
     });
   }, []);
 
-  if (!Loading) return <Navigation />;
+  if (!Loading)
+    return (
+      <MenuProvider>
+        <Navigation />
+      </MenuProvider>
+    );
   return null;
 };
 

@@ -61,6 +61,16 @@ const HackathonCard: FC<props> = ({hackathonDetail}) => {
             {new Date(hackathonDetail.created_at).toDateString()}
           </Text>
         </View>
+        <View style={styles.headerIconContainer}>
+          <TouchableOpacity
+            onPress={() => console.log('Clicked on post option icon')}>
+            <Ionicons
+              name={'ellipsis-vertical'}
+              size={ICON_SIZE}
+              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       {/* content  */}
       <View style={styles.contentContainer}>
@@ -138,7 +148,7 @@ const styles = StyleSheet.create({
   },
   headerImageContainer: {
     // width: Width * 0.3,
-    flex: 2,
+    flex: 0.2,
   },
   userImage: {
     height: Height * 0.07,
@@ -147,8 +157,12 @@ const styles = StyleSheet.create({
   },
   headerTextContainer: {
     // width: Width * 0.6,
-    flex: 8,
+    flex: 0.7,
     flexDirection: 'column',
+  },
+  headerIconContainer: {
+    flex: 0.1,
+    justifyContent: 'center',
   },
   username: {
     color: darkColors.TEXT_COLOR,

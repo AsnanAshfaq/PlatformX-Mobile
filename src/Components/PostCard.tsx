@@ -1,5 +1,12 @@
 import React, {FC, useState, useRef, useEffect} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
@@ -7,10 +14,98 @@ import CommentModal from '../Modals/CommentModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers,
+} from 'react-native-popup-menu';
 // @ts-ignore
 // import {DEVELOPMENT_URL} from '@types/react-native-dotenv';
 const MAX_TEXT_LENGTH = 290;
 
+type prop = {
+  isEditable: boolean;
+};
+const PopUpMenu: FC<prop> = ({isEditable}) => {
+  return (
+    <Menu>
+      <MenuTrigger>
+        <View>
+          <Ionicons
+            name={'ellipsis-vertical'}
+            size={ICON_SIZE}
+            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+          />
+        </View>
+      </MenuTrigger>
+      {/* if the post is editable  */}
+      {isEditable ? (
+        <MenuOptions
+          customStyles={{
+            optionsContainer: {
+              backgroundColor: darkColors.SHADOW_COLOR,
+              borderWidth: 1,
+              borderRadius: 20,
+              width: 120,
+              borderColor: 'transparent',
+              marginTop: 24,
+              marginLeft: -10,
+              // marginRight: 30,
+            },
+            optionWrapper: {
+              height: 35,
+            },
+          }}>
+          <MenuOption onSelect={() => console.log('Clicked on edit')}>
+            <View style={styles.menuOptionContainer}>
+              <Text style={styles.menuOptionText}>Edit</Text>
+            </View>
+          </MenuOption>
+          <MenuOption onSelect={() => console.log('Clicked on delete')}>
+            <View style={styles.menuOptionContainer}>
+              <Text style={styles.menuOptionText}>Delete</Text>
+            </View>
+          </MenuOption>
+        </MenuOptions>
+      ) : (
+        // else report post
+        <MenuOptions
+          customStyles={{
+            optionsContainer: {
+              backgroundColor: darkColors.SHADOW_COLOR,
+              borderWidth: 1,
+              borderRadius: 20,
+              marginRight: 20,
+              width: 140,
+              right: 0,
+              borderColor: 'transparent',
+            },
+            optionWrapper: {
+              height: 35,
+            },
+          }}>
+          {/* <MenuOption onSelect={() => console.log('Clicked on edit')}>
+            <View style={styles.menuOptionContainer}>
+              <Text style={styles.menuOptionText}>Not Editable</Text>
+            </View>
+          </MenuOption> */}
+          <MenuOption onSelect={() => console.log('Clicked on save post')}>
+            <View style={styles.menuOptionContainer}>
+              <Text style={styles.menuOptionText}>Save Post</Text>
+            </View>
+          </MenuOption>
+          <MenuOption onSelect={() => console.log('Clicked on report')}>
+            <View style={styles.menuOptionContainer}>
+              <Text style={styles.menuOptionText}>Report</Text>
+            </View>
+          </MenuOption>
+        </MenuOptions>
+      )}
+    </Menu>
+  );
+};
 type Props = {
   setModal: any;
 };
@@ -63,6 +158,7 @@ const PostCard: FC<props> = ({postDetail}) => {
   //   console.log('Width is', width),
   // );
   // }, []);
+  // console.log(postDetail);
   return (
     <View style={styles.parent}>
       <CommentModal
@@ -83,7 +179,9 @@ const PostCard: FC<props> = ({postDetail}) => {
             source={{
               uri: ProfileImageLoading
                 ? PROFILE_IMAGE
-                : BASE_URL + postDetail.user.user_profile_image.path,
+                : postDetail?.user?.user_profile_image
+                ? postDetail?.user?.user_profile_image?.path
+                : PROFILE_IMAGE,
             }}
             style={styles.userImage}
             onLoadEnd={() => setProfileImageLoading(false)}
@@ -96,15 +194,9 @@ const PostCard: FC<props> = ({postDetail}) => {
             {new Date(postDetail.created_at).toDateString()}
           </Text>
         </View>
+        {/* icon container  */}
         <View style={styles.headerIconContainer}>
-          <TouchableOpacity
-            onPress={() => console.log('Clicked on post option icon')}>
-            <Ionicons
-              name={'ellipsis-vertical'}
-              size={ICON_SIZE}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
-            />
-          </TouchableOpacity>
+          <PopUpMenu isEditable={postDetail.is_editable} />
         </View>
       </View>
       {/* content  */}
@@ -121,9 +213,7 @@ const PostCard: FC<props> = ({postDetail}) => {
         <View style={styles.postImageContainer}>
           <Image
             source={{
-              uri: PostImageLoading
-                ? POST_IMAGE
-                : BASE_URL + postDetail.images[0].path,
+              uri: PostImageLoading ? POST_IMAGE : postDetail.images[0].path,
             }}
             style={[
               styles.postImage,
@@ -216,6 +306,13 @@ const styles = StyleSheet.create({
   headerIconContainer: {
     flex: 0.1,
     justifyContent: 'center',
+  },
+  menuOptionContainer: {
+    paddingHorizontal: 10,
+  },
+  menuOptionText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal,
   },
   contentContainer: {
     // minHeight: Height * 0.15,
