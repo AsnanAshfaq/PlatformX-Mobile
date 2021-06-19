@@ -152,7 +152,7 @@ const PostCard: FC<props> = ({postDetail}) => {
 
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
   const [PostImageLoading, setPostImageLoading] = useState(true);
-  const ImageAspectRatio = useRef(0);
+  const [ImageAspectRatio, setImageAspectRatio] = useState(0);
 
   return (
     <View style={styles.parent}>
@@ -208,7 +208,11 @@ const PostCard: FC<props> = ({postDetail}) => {
         <View style={styles.postImageContainer}>
           <Image
             source={{
-              uri: PostImageLoading ? POST_IMAGE : postDetail.images[0].path,
+              uri: PostImageLoading
+                ? POST_IMAGE
+                : // : ImageAspectRatio.current !== 0
+                  // ? POST_IMAGE
+                  postDetail.images[0].path,
             }}
             style={[
               // styles.postImage,
@@ -218,16 +222,17 @@ const PostCard: FC<props> = ({postDetail}) => {
                 // height: undefined,
                 // aspectRatio: 0.6,
                 width: Width * 0.9,
-                height: Width * ImageAspectRatio.current * 0.9,
+                height: Width * ImageAspectRatio * 0.9,
               },
             ]}
             resizeMode={'contain'}
             onLoadEnd={() => {
-              setPostImageLoading(false);
               // get image width and height
+              console.log('Image has been loaded');
               Image.getSize(postDetail.images[0].path, (width, heigth) => {
                 // calculate aspect ratio of image
-                ImageAspectRatio.current = heigth / width;
+                setImageAspectRatio(heigth / width);
+                setPostImageLoading(false);
               });
             }}
             // onProgress={() => setPostImageLoading(true)}

@@ -118,7 +118,6 @@ const CommentModal: FC<props> = ({
   useEffect(() => {
     // get all the comments of a post
     setisCommentPosted(false);
-    console.log('Use Effect');
     if (!isCommentPosted) {
       axios
         .get(`/api/post/${postID}/comment/`)

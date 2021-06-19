@@ -89,6 +89,7 @@ const Posts: FC<props> = ({navigation}) => {
           </View>
         </>
       ) : (
+        // show the post skeleton
         <PostSkeleton />
       )}
     </View>
