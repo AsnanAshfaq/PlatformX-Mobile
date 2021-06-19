@@ -25,6 +25,8 @@ import {
 // import {DEVELOPMENT_URL} from '@types/react-native-dotenv';
 const MAX_TEXT_LENGTH = 290;
 
+const ICON_SIZE = Width * 0.07;
+
 type prop = {
   isEditable: boolean;
 };
@@ -46,11 +48,11 @@ const PopUpMenu: FC<prop> = ({isEditable}) => {
           customStyles={{
             optionsContainer: {
               backgroundColor: darkColors.SHADOW_COLOR,
-              borderWidth: 1,
+              borderWidth: 5,
               borderRadius: 20,
-              width: 120,
+              width: 150,
               borderColor: 'transparent',
-              marginTop: 24,
+              marginTop: 20,
               marginLeft: -10,
               // marginRight: 30,
             },
@@ -141,8 +143,6 @@ const PostCardButtons: FC<Props> = ({setModal}) => {
 type props = {
   postDetail: any;
 };
-
-const ICON_SIZE = Width * 0.07;
 
 const PostCard: FC<props> = ({postDetail}) => {
   const [Modal, setModal] = useState({

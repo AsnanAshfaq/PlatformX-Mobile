@@ -196,7 +196,7 @@ const CommentModal: FC<props> = ({
               // onFocus={e => console.log('on focus')}
               // onBlur={e => console.log('on blur')}
               multiline
-              autoFocus={true}
+              autoFocus={focusTextInput ? true : false}
               scrollEnabled
               showSoftInputOnFocus={focusTextInput ? true : false}
             />
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     backgroundColor: darkColors.BACKGROUND_COLOR,
     justifyContent: 'flex-end',
     margin: 0,
-    marginTop: Height * 0.15,
+    marginTop: Height * 0.001,
     borderColor: 'transparent',
     paddingTop: 5,
     paddingHorizontal: 2,
@@ -302,6 +302,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: darkColors.TOMATO_COLOR,
     color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal,
   },
   iconContainer: {
     flex: 0.1,
