@@ -3,6 +3,7 @@ import Navigation from './src/Navigations';
 import {useStateValue} from './src/Store/StateProvider';
 import axios from './src/Utils/Axios';
 import {MenuProvider} from 'react-native-popup-menu';
+import PostSkeleton from './src/Skeleton/PostSkeleton';
 
 const App = () => {
   const [Loading, setLoading] = useState(true);

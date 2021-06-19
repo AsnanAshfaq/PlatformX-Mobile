@@ -57,7 +57,7 @@ const Posts: FC<props> = ({navigation}) => {
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
       <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
-      {Post.length > 0 && (
+      {Post.length > 0 ? (
         <>
           <FlatList
             data={Post}
@@ -88,6 +88,8 @@ const Posts: FC<props> = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </>
+      ) : (
+        <PostSkeleton />
       )}
     </View>
   );
