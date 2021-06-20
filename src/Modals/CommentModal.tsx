@@ -130,6 +130,14 @@ const CommentModal: FC<props> = ({
     // if (textInput && textInput.current) textInput.current.onFocus();
   }, [isCommentPosted]);
 
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', () => {
+      if (textInput.current && textInput) {
+        textInput?.current?.blur();
+      }
+    });
+  }, []);
+
   return (
     <Modal
       isVisible={isShow}
