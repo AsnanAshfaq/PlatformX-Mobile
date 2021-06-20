@@ -198,9 +198,14 @@ const Navigation = () => {
         dark: false,
       }}>
       <Stack.Navigator
-        screenOptions={{
-          header: () => null,
-          animationEnabled: true,
+        screenOptions={({navigation}) => {
+          return {
+            header: () => null,
+            animationEnabled: true,
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            detachPreviousScreen: !navigation.isFocused(),
+          };
         }}>
         <Stack.Screen name="Main" component={DrawerScreens} />
         <Stack.Screen name="Create_Post" component={CreatePost} />
