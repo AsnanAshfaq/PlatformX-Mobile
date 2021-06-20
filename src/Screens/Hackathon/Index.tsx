@@ -53,7 +53,13 @@ const Hackathons: FC<props> = ({navigation}) => {
   }, []);
   return (
     <View style={styles.parent}>
-      <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
+      <CustomHeader
+        title={'Hackathons'}
+        navigation={navigation}
+        drawer
+        chat
+        bell
+      />
       <CustomSearch placeholder={'Search here'} showFilterIcon />
       {Hackathons.length > 0 ? (
         <>
@@ -66,6 +72,7 @@ const Hackathons: FC<props> = ({navigation}) => {
                 <HackathonCard
                   key={Hackathon?.id}
                   hackathonDetail={Hackathon}
+                  navigation={navigation}
                 />
               );
             }}

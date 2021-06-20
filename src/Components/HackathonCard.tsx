@@ -30,12 +30,13 @@ const HackathonCardIcons: FC<Props> = ({name, label}) => {
 };
 
 type props = {
+  navigation: any;
   hackathonDetail: any;
 };
 
 const MAX_TEXT_LENGTH = 250;
 
-const HackathonCard: FC<props> = ({hackathonDetail}) => {
+const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
   const [HackathonImageLoading, setHackathonImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
@@ -131,9 +132,13 @@ const HackathonCard: FC<props> = ({hackathonDetail}) => {
       {/* apply now button  */}
       <View style={styles.hackathonButtonContainer}>
         <TouchableOpacity
-          onPress={() => console.log('Pressed on share button')}
+          onPress={() =>
+            navigation.navigate('View_Hackathon', {
+              ID: hackathonDetail.id,
+            })
+          }
           style={styles.hackathonButton}>
-          <Text style={styles.hackathonButtonText}>Apply </Text>
+          <Text style={styles.hackathonButtonText}>View Detail </Text>
         </TouchableOpacity>
       </View>
     </View>

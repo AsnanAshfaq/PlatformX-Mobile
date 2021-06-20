@@ -128,7 +128,7 @@ const CommentModal: FC<props> = ({
         .catch(error => console.log(error));
     }
     // if (textInput && textInput.current) textInput.current.onFocus();
-  }, [isCommentPosted]);
+  }, [isCommentPosted, postID]);
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidHide', () => {

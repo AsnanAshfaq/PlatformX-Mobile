@@ -26,6 +26,7 @@ import SignUp from '../Screens/Auth/SignUp';
 import Notification from '../Screens/Notification/Notification';
 import Chat from '../Screens/Chat/Chat';
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
+import ViewHackathon from '../Screens/Hackathon/ViewHackathon';
 
 // declaring navigators
 const Stack = createStackNavigator();
@@ -203,6 +204,7 @@ const Navigation = () => {
         }}>
         <Stack.Screen name="Main" component={DrawerScreens} />
         <Stack.Screen name="Create_Post" component={CreatePost} />
+        <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
         {/* <Stack.Screen component={ProfileScreens} name={'Profile'} /> */}
         {/* <Stack.Screen name="Auth" component={AuthScreens} /> */}
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
