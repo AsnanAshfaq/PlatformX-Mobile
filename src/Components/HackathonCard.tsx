@@ -5,7 +5,9 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import {PROFILE_IMAGE,} from '../Constants/sample';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
+// @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
+import {commaSeperator} from '../Utils/Numbers';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -36,6 +38,7 @@ const MAX_TEXT_LENGTH = 250;
 const HackathonCard: FC<props> = ({hackathonDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
   const [HackathonImageLoading, setHackathonImageLoading] = useState(true);
+  const [ImageAspectRatio, setImageAspectRatio] = useState(0);
 
   return (
     <View style={styles.parent}>
@@ -91,9 +94,21 @@ const HackathonCard: FC<props> = ({hackathonDetail}) => {
               ? GREY_IMAGE
               : BASE_URL + hackathonDetail.thumbnail_image,
           }}
-          onLoadEnd={() => setHackathonImageLoading(false)}
-          style={styles.thumbnail}
-          resizeMode={'cover'}
+          onLoadEnd={() => {
+            Image.getSize(
+              BASE_URL + hackathonDetail.thumbnail_image,
+              (width, heigth) => {
+                // calculate aspect ratio of image
+                setImageAspectRatio(heigth / width);
+                setHackathonImageLoading(false);
+              },
+            );
+          }}
+          style={{
+            width: Width * 0.87,
+            height: Width * ImageAspectRatio * 0.9,
+          }}
+          resizeMode={'contain'}
         />
       </View>
       {/* hackathon details  */}
@@ -107,7 +122,10 @@ const HackathonCard: FC<props> = ({hackathonDetail}) => {
         </View>
         <View style={styles.iconsRow}>
           <HackathonCardIcons name={'time-outline'} label={'20 Days left'} />
-          <HackathonCardIcons name={'cash-outline'} label={1500} />
+          <HackathonCardIcons
+            name={'cash-outline'}
+            label={commaSeperator(hackathonDetail.total_prize)}
+          />
         </View>
       </View>
       {/* apply now button  */}
@@ -189,18 +207,20 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal,
   },
   thumbnailContainer: {
-    width: Width * 0.9,
-    minHeight: Height * 0.25,
-    maxHeight: Height * 0.3,
-    // flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    // width: Width * 0.9,
+    // minHeight: Height * 0.25,
+    // maxHeight: Height * 0.3,
+    // // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'flex-start',
     // backgroundColor: 'red',
     // marginRight: 20,
+    // marginRight: 20,
+    marginHorizontal: 0,
   },
   thumbnail: {
-    width: Width * 0.865,
-    height: Height * 0.25,
+    // width: Width * 0.865,
+    // height: Height * 0.25,
   },
   iconsRowConatiner: {
     // height: Height * 0.09,

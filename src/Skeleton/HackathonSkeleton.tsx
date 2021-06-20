@@ -19,12 +19,12 @@ const Skeleton = () => {
       <Rect x="80" y="17" rx="4" ry="4" width="250" height="13" />
       <Rect x="80" y="40" rx="3" ry="3" width="150" height="10" />
       <Rect x="20" y="80" rx="3" ry="3" width="340" height="200" />
-      <Rect x="20" y="290" rx="3" ry="3" width="340" height="45" />
+      <Rect x="260" y="290" rx="3" ry="3" width="100" height="35" />
     </ContentLoader>
   );
 };
 
-const PostSkeleton = () => {
+const HackathonSkeleton = () => {
   return (
     <ScrollView>
       <>
@@ -35,5 +35,5 @@ const PostSkeleton = () => {
   );
 };
 
-export default PostSkeleton;
+export default HackathonSkeleton;
 const styles = StyleSheet.create({});

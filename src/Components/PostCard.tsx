@@ -21,8 +21,7 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-// @ts-ignore
-// import {DEVELOPMENT_URL} from '@types/react-native-dotenv';
+
 const MAX_TEXT_LENGTH = 290;
 
 const ICON_SIZE = Width * 0.07;
@@ -145,7 +144,7 @@ type props = {
 };
 
 const PostCard: FC<props> = ({postDetail}) => {
-  const [Modal, setModal] = useState({
+  const [Commentmodal, setCommentmodal] = useState({
     showModal: false, // show modal or not
     focusTextInput: false, // if true, set auto focus on comment modal text input field to true
   });
@@ -156,17 +155,19 @@ const PostCard: FC<props> = ({postDetail}) => {
 
   return (
     <View style={styles.parent}>
+      {/* comment modal  */}
       <CommentModal
-        isShow={Modal.showModal}
+        isShow={Commentmodal.showModal}
         toggleModal={() =>
-          setModal(prev => ({
+          setCommentmodal(prev => ({
             ...prev,
             showModal: !prev.showModal,
           }))
         }
-        focusTextInput={Modal.focusTextInput}
+        focusTextInput={Commentmodal.focusTextInput}
         postID={postDetail.id}
       />
+
       {/* header  */}
       <View style={styles.headerContainer}>
         <View style={styles.headerImageContainer}>
@@ -228,7 +229,6 @@ const PostCard: FC<props> = ({postDetail}) => {
             resizeMode={'contain'}
             onLoadEnd={() => {
               // get image width and height
-              console.log('Image has been loaded');
               Image.getSize(postDetail.images[0].path, (width, heigth) => {
                 // calculate aspect ratio of image
                 setImageAspectRatio(heigth / width);
@@ -243,7 +243,7 @@ const PostCard: FC<props> = ({postDetail}) => {
       <TouchableOpacity
         style={styles.numberContainer}
         onPress={() =>
-          setModal({
+          setCommentmodal({
             focusTextInput: false,
             showModal: true,
           })
@@ -253,17 +253,19 @@ const PostCard: FC<props> = ({postDetail}) => {
             {postDetail.likes.length} Likes
           </Text>
         </View>
+
         <View style={styles.commentConatiner}>
           <Text style={styles.PostButtonText}>
             {postDetail.comments.length} Comment
           </Text>
         </View>
+
         <View style={styles.sharContainer}>
           {/* <Text style={styles.PostButtonText}>{postDetail.shares} Share</Text> */}
         </View>
       </TouchableOpacity>
       {/* post buttons   */}
-      <PostCardButtons setModal={setModal} />
+      <PostCardButtons setModal={setCommentmodal} />
     </View>
   );
 };

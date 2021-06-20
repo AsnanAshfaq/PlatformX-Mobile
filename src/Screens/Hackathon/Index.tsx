@@ -15,6 +15,7 @@ import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import HackathonSkeleton from '../../Skeleton/HackathonSkeleton';
 
 type props = {
   navigation: any;
@@ -54,7 +55,7 @@ const Hackathons: FC<props> = ({navigation}) => {
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
       <CustomSearch placeholder={'Search here'} showFilterIcon />
-      {Hackathons.length > 0 && (
+      {Hackathons.length > 0 ? (
         <>
           <FlatList
             data={Hackathons}
@@ -82,6 +83,8 @@ const Hackathons: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
         </>
+      ) : (
+        <HackathonSkeleton />
       )}
     </View>
   );

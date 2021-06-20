@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Image,
+  BackHandler,
   Platform,
   ToastAndroid,
 } from 'react-native';
@@ -166,6 +167,7 @@ const CommentModal: FC<props> = ({
               // style={{flex: 0.8}}
               keyExtractor={(item, index) => `${index}`}
               keyboardShouldPersistTaps="always"
+              keyboardDismissMode={'interactive'}
               renderItem={({item, index}) => (
                 <CommentView comment={item} index={index} key={item.id} />
               )}
@@ -192,12 +194,17 @@ const CommentModal: FC<props> = ({
               placeholderTextColor={darkColors.TEXT_COLOR}
               value={Input.trim() === '' ? '' : Input}
               onChangeText={setInput}
-              // onFocus={e => console.log('on focus')}
-              // onBlur={e => console.log('on blur')}
+              onFocus={e => {
+                console.log('Text input focus');
+                // Keyboard.addListener('keyboardWillShow', () =>
+                //   console.log('Opening keyboard'),
+                // );
+              }}
+              onBlur={e => console.log('text input  blur')}
               multiline
               autoFocus={focusTextInput ? true : false}
               scrollEnabled
-              showSoftInputOnFocus={focusTextInput ? true : false}
+              showSoftInputOnFocus={true}
             />
             <View style={styles.iconContainer}>
               <TouchableOpacity onPress={() => postComment()}>
