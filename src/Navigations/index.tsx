@@ -166,8 +166,6 @@ const DrawerScreens = () => {
       <Drawer.Screen name="Tabs" component={TabScreens} />
       <Drawer.Screen name="Workshop" component={Workshop} />
       <Drawer.Screen name="Profile_Home" component={ProfileScreens} />
-      <Stack.Screen name="Notification" component={Notification} />
-      <Stack.Screen name="Chat" component={Chat} />
     </Drawer.Navigator>
   );
 };
@@ -210,6 +208,8 @@ const Navigation = () => {
         <Stack.Screen name="Main" component={DrawerScreens} />
         <Stack.Screen name="Create_Post" component={CreatePost} />
         <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
+        <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="Notification" component={Notification} />
         {/* <Stack.Screen component={ProfileScreens} name={'Profile'} /> */}
         {/* <Stack.Screen name="Auth" component={AuthScreens} /> */}
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}

@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 30,
     bottom: 20,
-    right: 5,
+    right: 12,
     borderColor: 'transparent',
     backgroundColor: darkColors.TOMATO_COLOR,
     justifyContent: 'center',

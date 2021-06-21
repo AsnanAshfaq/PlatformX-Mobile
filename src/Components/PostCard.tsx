@@ -5,7 +5,9 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  FlatList,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
@@ -206,38 +208,57 @@ const PostCard: FC<props> = ({postDetail}) => {
       </View>
       {/* image if any  */}
       {postDetail.images.length > 0 && (
-        <View style={styles.postImageContainer}>
-          <Image
-            source={{
-              uri: PostImageLoading
-                ? POST_IMAGE
-                : // : ImageAspectRatio.current !== 0
-                  // ? POST_IMAGE
-                  postDetail.images[0].path,
-            }}
-            style={[
-              // styles.postImage,
-              {
-                // flex: 1,
-                // width: undefined,
-                // height: undefined,
-                // aspectRatio: 0.6,
-                width: Width * 0.9,
-                height: Width * ImageAspectRatio * 0.9,
-              },
-            ]}
-            resizeMode={'contain'}
-            onLoadEnd={() => {
-              // get image width and height
-              Image.getSize(postDetail.images[0].path, (width, heigth) => {
-                // calculate aspect ratio of image
-                setImageAspectRatio(heigth / width);
-                setPostImageLoading(false);
-              });
-            }}
-            // onProgress={() => setPostImageLoading(true)}
-          />
-        </View>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          endFillColor="#000"
+          contentContainerStyle={{
+            // width: Width * 0.9,
+            marginHorizontal: Width * 0.01,
+            // backgroundColor: 'transparent',
+            // alignContent: 'space-around',
+            // alignItems: 'center',
+            // width: Width * 0.9,
+            height: Width * ImageAspectRatio * 0.9,
+            // flexGrow: 1,
+          }}
+          showsHorizontalScrollIndicator
+          decelerationRate="fast">
+          {postDetail.images.map(image => (
+            <View style={styles.postImageContainer} key={image.id}>
+              <Image
+                source={{
+                  uri: PostImageLoading
+                    ? POST_IMAGE
+                    : // : ImageAspectRatio.current !== 0
+                      // ? POST_IMAGE
+                      image.path,
+                }}
+                style={[
+                  // styles.postImage,
+                  {
+                    // flex: 1,
+                    // width: undefined,
+                    // height: undefined,
+                    // aspectRatio: 0.6,
+                    width: Width * 0.9,
+                    height: Width * ImageAspectRatio * 0.9,
+                  },
+                ]}
+                resizeMode={'contain'}
+                onLoadEnd={() => {
+                  // get image width and height
+                  Image.getSize(image.path, (width, heigth) => {
+                    // calculate aspect ratio of image
+                    setImageAspectRatio(heigth / width);
+                    setPostImageLoading(false);
+                  });
+                }}
+                // onProgress={() => setPostImageLoading(true)}
+              />
+            </View>
+          ))}
+        </ScrollView>
       )}
       {/* like comment share details */}
       <TouchableOpacity
@@ -344,7 +365,7 @@ const styles = StyleSheet.create({
     // minHeight: Height * 0.25,
     // maxHeight: Height * 0.3,
     // height: 'auto',
-    marginHorizontal: 0,
+    marginRight: 4,
     // flex: 1,
     // height: Width * (9 / 16),
     // justifyContent: 'center',
