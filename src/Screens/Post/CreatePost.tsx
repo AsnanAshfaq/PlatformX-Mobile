@@ -57,8 +57,6 @@ const CreatePost: FC<props> = ({navigation}) => {
   };
 
   const handlePost = () => {
-    console.log('Clicked on post');
-    console.log(text);
     var bodyFormData = new FormData();
 
     if (text.trim() !== '') {
@@ -102,6 +100,7 @@ const CreatePost: FC<props> = ({navigation}) => {
               // navigate user to main screen
               navigation.pop();
             } else {
+              ToastAndroid.show("Couldn't post", 1000);
               ToastAndroid.show('Error status code' + response.status, 1500);
             }
           })
@@ -137,7 +136,7 @@ const CreatePost: FC<props> = ({navigation}) => {
   }, [textInput]);
 
   return (
-    <>
+    <View style={styles.parent}>
       <CustomHeader
         navigation={navigation}
         title={'Create Post'}
@@ -227,13 +226,17 @@ const CreatePost: FC<props> = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 
 export default CreatePost;
 
 const styles = StyleSheet.create({
+  parent: {
+    flex: 1,
+    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
+  },
   textInputContainer: {
     marginVertical: 10,
     alignItems: 'center',

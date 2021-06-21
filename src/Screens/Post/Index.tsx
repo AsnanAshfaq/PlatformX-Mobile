@@ -16,7 +16,7 @@ import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import PostSkeleton from '../../Skeleton/PostSkeleton';
+import PostSkeleton from '../../Skeleton/PostCardSkeleton';
 
 type props = {
   navigation: any;

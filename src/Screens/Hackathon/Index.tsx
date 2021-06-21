@@ -15,7 +15,7 @@ import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import HackathonSkeleton from '../../Skeleton/HackathonSkeleton';
+import HackathonSkeleton from '../../Skeleton/HackathonCardSkeleton';
 
 type props = {
   navigation: any;
@@ -25,12 +25,13 @@ const Hackathons: FC<props> = ({navigation}) => {
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      console.log('is focues', isFocuses);
-      // getData();
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log('is focues', isFocuses);
+  //     // getData();
+  //   }, []),
+  // );
+
   const getData = async () => {
     try {
       axios.get('/api/hackathons/').then(response => {
