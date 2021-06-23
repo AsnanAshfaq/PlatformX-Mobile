@@ -112,7 +112,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           chat
           bell
         />
-        <ScrollView>
+        <ScrollView stickyHeaderIndices={[1, 2, 4, 6]} removeClippedSubviews>
           {/* background image  */}
           <View>
             <Image
@@ -140,6 +140,9 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           <View style={{alignItems: 'center'}}>
             <Text style={styles.titleText}>{HackathonData.title}</Text>
             <Text style={styles.tagLineText}>{HackathonData.tag_line}</Text>
+          </View>
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>Description</Text>
           </View>
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionText}>
@@ -275,6 +278,7 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal,
   },
   labelContainer: {
+    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
     marginHorizontal: Width * 0.02,
     marginVertical: 10,
     width: Width * 0.95,

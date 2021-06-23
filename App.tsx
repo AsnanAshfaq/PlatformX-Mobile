@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Navigation from './src/Navigations';
+import Navigation from './src/Navigations/Index';
 import {useStateValue} from './src/Store/StateProvider';
 import axios from './src/Utils/Axios';
 import {MenuProvider} from 'react-native-popup-menu';
