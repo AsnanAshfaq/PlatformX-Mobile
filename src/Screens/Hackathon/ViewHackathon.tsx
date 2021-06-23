@@ -10,52 +10,13 @@ import HackathonSkeleton from '../../Skeleton/HackathonCardSkeleton';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import {darkColors} from '../../Constants/Colors';
 
-type judgeProps = {
-  judge: any;
+type Props = {
+  component: 'judges' | 'sponsors';
+  details: any;
 };
-
-const Judge: FC<judgeProps> = ({judge}) => {
-  return (
-    <View style={styles.viewContainer}>
-      <View
-        style={{
-          marginHorizontal: Width * 0.01,
-          flex: 0.3,
-        }}>
-        <Image
-          style={{
-            width: Width * 0.25,
-            height: Width * 0.25,
-            borderRadius: 45,
-            borderWidth: 2,
-            borderColor: 'transparent',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          source={{
-            uri: BASE_URL + judge.photo,
-          }}
-          resizeMode="cover"
-        />
-      </View>
-      <View
-        style={{
-          marginHorizontal: Width * 0.09,
-          justifyContent: 'space-around',
-          flex: 0.7,
-        }}>
-        <Text style={styles.judgeNameText}>{judge.name}</Text>
-        <Text style={styles.judgeCompanyText}>{judge.company}</Text>
-      </View>
-    </View>
-  );
-};
-
-type sponsorProps = {
-  sponsor: any;
-};
-const Sponsor: FC<sponsorProps> = ({sponsor}) => {
+const CommonView: FC<Props> = ({component, details}) => {
   const [ImageLoading, setImageLoading] = useState(true);
+
   return (
     <View style={styles.viewContainer}>
       <View
@@ -75,7 +36,11 @@ const Sponsor: FC<sponsorProps> = ({sponsor}) => {
           }}
           resizeMode="cover"
           source={{
-            uri: ImageLoading ? PROFILE_IMAGE : BASE_URL + sponsor.logo,
+            uri: ImageLoading
+              ? PROFILE_IMAGE
+              : component === 'judges'
+              ? BASE_URL + details.photo
+              : BASE_URL + details.logo,
           }}
           onLoadEnd={() => setImageLoading(false)}
         />
@@ -86,8 +51,13 @@ const Sponsor: FC<sponsorProps> = ({sponsor}) => {
           justifyContent: 'space-around',
           flex: 0.7,
         }}>
-        <Text style={styles.sponsorNameText}>{sponsor.name}</Text>
-        <Text style={styles.sponsorURL}>{sponsor.url}</Text>
+        <Text style={styles.sponsorNameText}>{details.name}</Text>
+        {component === 'judges' && (
+          <Text style={styles.judgeCompanyText}>{details.company}</Text>
+        )}
+        {component === 'sponsors' && (
+          <Text style={styles.sponsorURL}>{details.url}</Text>
+        )}
       </View>
     </View>
   );
@@ -165,7 +135,9 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           {/* prizes  */}
           <View style={styles.prizeContainer}>
             {HackathonData.prizes.map(prize => (
-              <Text style={styles.prizeText}>{prize.value}</Text>
+              <Text style={styles.prizeText} key={prize.id}>
+                {prize.value}
+              </Text>
             ))}
           </View>
           {/* judges  */}
@@ -175,7 +147,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
                 <Text style={styles.label}>Judges</Text>
               </View>
               {HackathonData?.judges.map(judge => (
-                <Judge judge={judge} key={judge.id} />
+                <CommonView component="judges" details={judge} key={judge.id} />
               ))}
             </>
           )}
@@ -187,7 +159,11 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
                 <Text style={styles.label}>Sponsors</Text>
               </View>
               {HackathonData?.sponsors.map(sponsor => (
-                <Sponsor sponsor={sponsor} key={sponsor.id} />
+                <CommonView
+                  component="sponsors"
+                  details={sponsor}
+                  key={sponsor.id}
+                />
               ))}
             </>
           )}
