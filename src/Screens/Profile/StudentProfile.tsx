@@ -28,6 +28,7 @@ import {Height, Sizes, Width} from '../../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../Constants/sample';
 import axios from '../../Utils/Axios';
+// @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
 const ICON_SIZE = Width * 0.06;
@@ -79,14 +80,17 @@ type props = {
 };
 
 const StudentProfile: FC<props> = ({navigation}) => {
-  const scrollViewRef = useRef(null);
-  const myPostRef = useRef(null);
-  const [ProfileData, setProfileData] = useState(null);
+  // states
+  const [ProfileData, setProfileData] = useState<any>(null);
   const [Post, setPost] = useState([]);
   const [Loading, setLoading] = useState(true);
 
   const [LoadBackgroundImage, setLoadBackgroundImage] = useState(true);
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
+
+  // ref
+  const scrollViewRef = useRef<any>(null);
+  const myPostRef = useRef<any>(null);
 
   // animate to post section
   const animteView = () => {
@@ -249,7 +253,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   </View>
                 )}
                 nestedScrollEnabled
-                renderItem={({item: Post, index, separators}) => (
+                renderItem={({item: Post, index, separators}: any) => (
                   <PostCard key={Post.id} postDetail={Post} />
                 )}
               />

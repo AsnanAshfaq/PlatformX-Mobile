@@ -210,7 +210,7 @@ const Navigation = () => {
         <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Notification" component={Notification} />
-        {/* <Stack.Screen component={ProfileScreens} name={'Profile'} /> */}
+        <Stack.Screen name="Profile" component={ProfileScreens} />
         {/* <Stack.Screen name="Auth" component={AuthScreens} /> */}
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
       </Stack.Navigator>
