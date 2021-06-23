@@ -50,8 +50,14 @@ const Hackathons: FC<props> = ({navigation}) => {
     });
   };
   useEffect(() => {
+    let isCancelled = false;
     getData();
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
+
   return (
     <View style={styles.parent}>
       <CustomHeader
@@ -67,7 +73,7 @@ const Hackathons: FC<props> = ({navigation}) => {
           <FlatList
             data={Hackathons}
             // disableVirtualization
-            keyExtractor={(item, index) => `${item.id}-${index}`}
+            keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: Hackathon, index}: any) => {
               return (
                 <HackathonCard

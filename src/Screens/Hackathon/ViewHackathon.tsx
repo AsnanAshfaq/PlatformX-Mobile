@@ -1,39 +1,58 @@
 import React, {FC, useState, useEffect} from 'react';
-import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import axios from '../../Utils/Axios';
 import CustomHeader from '../../Components/CustomHeader';
 
 import {GREY_IMAGE, PROFILE_IMAGE} from '../../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import HackathonSkeleton from '../../Skeleton/HackathonCardSkeleton';
+import HackathonCardSkeleton from '../../Skeleton/HackathonCardSkeleton';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import {darkColors} from '../../Constants/Colors';
+import {commaSeperator} from '../../Utils/Numbers';
 
+type prize = {
+  prize: any;
+};
+const Prize: FC<prize> = ({prize}) => {
+  return (
+    <View style={styles.prizeContainer}>
+      {/* badge container  */}
+      <View style={styles.prizeBadgeContainer}>
+        <Image
+          source={require('../../../assets/images/badge.png')}
+          style={{width: Width * 0.15, height: Width * 0.15}}
+        />
+      </View>
+      <View style={styles.prizeDetailContainer}>
+        <Text style={styles.prizeTitleText}>{prize.title}</Text>
+        <Text style={styles.prizeValueText}>{commaSeperator(prize.value)}</Text>
+        <Text style={styles.prizeDescText}>{prize.description}</Text>
+      </View>
+    </View>
+  );
+};
 type Props = {
   component: 'judges' | 'sponsors';
   details: any;
 };
+// common view for showing judges and sponsors views
 const CommonView: FC<Props> = ({component, details}) => {
   const [ImageLoading, setImageLoading] = useState(true);
 
   return (
     <View style={styles.viewContainer}>
-      <View
-        style={{
-          marginHorizontal: Width * 0.01,
-          flex: 0.3,
-        }}>
+      <View style={styles.viewImageContainer}>
         <Image
-          style={{
-            width: Width * 0.25,
-            height: Width * 0.25,
-            borderRadius: 45,
-            borderWidth: 2,
-            borderColor: 'transparent',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+          style={styles.commonViewImage}
           resizeMode="cover"
           source={{
             uri: ImageLoading
@@ -45,15 +64,10 @@ const CommonView: FC<Props> = ({component, details}) => {
           onLoadEnd={() => setImageLoading(false)}
         />
       </View>
-      <View
-        style={{
-          marginHorizontal: Width * 0.09,
-          justifyContent: 'space-around',
-          flex: 0.7,
-        }}>
-        <Text style={styles.sponsorNameText}>{details.name}</Text>
+      <View style={styles.viewTextContainer}>
+        <Text style={styles.viewNameText}>{details.name}</Text>
         {component === 'judges' && (
-          <Text style={styles.judgeCompanyText}>{details.company}</Text>
+          <Text style={styles.viewCompanyText}>{details.company}</Text>
         )}
         {component === 'sponsors' && (
           <Text style={styles.sponsorURL}>{details.url}</Text>
@@ -71,7 +85,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
   // get hackathon id from params
   const {ID} = route.params;
 
-  const [HackathonData, setHackathonData] = useState({});
+  const [HackathonData, setHackathonData] = useState<any>({});
   const [BackgroundImageLoading, setBackgroundImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [Loading, setLoading] = useState(true);
@@ -127,19 +141,30 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
             <Text style={styles.titleText}>{HackathonData.title}</Text>
             <Text style={styles.tagLineText}>{HackathonData.tag_line}</Text>
           </View>
-
-          <Text style={styles.descriptionText}>
-            {HackathonData.description}
-          </Text>
-
-          {/* prizes  */}
-          <View style={styles.prizeContainer}>
-            {HackathonData.prizes.map(prize => (
-              <Text style={styles.prizeText} key={prize.id}>
-                {prize.value}
-              </Text>
-            ))}
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionText}>
+              {HackathonData.description}
+            </Text>
           </View>
+          {/* prizes  */}
+
+          <View style={styles.labelContainer}>
+            <Text style={styles.label}>Prizes</Text>
+          </View>
+          <FlatList
+            numColumns={2}
+            data={HackathonData.prizes}
+            keyExtractor={(item: any, index) => `${item.id}`}
+            renderItem={({item: prize}) => (
+              <Prize prize={prize} key={prize.id} />
+            )}
+          />
+          {/* <View style={{flexDirection: 'row', flex: 1}}>
+            {HackathonData?.prizes.map(prize => (
+              <Prize prize={prize} />
+            ))}
+          </View> */}
+
           {/* judges  */}
           {HackathonData?.judges && (
             <>
@@ -151,7 +176,6 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
               ))}
             </>
           )}
-
           {/* sponsors  */}
           {HackathonData?.sponsors && (
             <>
@@ -172,11 +196,30 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           {/* Contact us  */}
           <Text>{HackathonData.contact_email}</Text>
         </ScrollView>
+
+        {/* join now  */}
+        <View style={styles.joinNowButtonContainer}>
+          <TouchableOpacity style={styles.joinNowButton} activeOpacity={0.5}>
+            <Text style={styles.joinNowText}>Join Now </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
-  } else {
-    return <HackathonSkeleton />;
   }
+
+  return (
+    <View style={styles.parent}>
+      <CustomHeader
+        title={'Detail'}
+        navigation={navigation}
+        back
+        onBackPress={() => navigation.goBack()}
+        chat
+        bell
+      />
+      <HackathonCardSkeleton />
+    </View>
+  );
 };
 
 export default ViewHackathon;
@@ -193,16 +236,41 @@ const styles = StyleSheet.create({
   },
   tagLineText: {
     color: darkColors.TEXT_COLOR,
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 1.15,
     fontStyle: 'italic',
     // fontFamily: 'Raleway-Light',
   },
+  descriptionContainer: {
+    marginHorizontal: Width * 0.025,
+    marginVertical: 10,
+  },
   descriptionText: {
     color: darkColors.TEXT_COLOR,
-    fontSize: Sizes.normal * 0.9,
+    fontSize: Sizes.normal,
   },
-  prizeContainer: {},
-  prizeText: {
+  prizeContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginVertical: 10,
+    // marginHorizontal: Width * 0.01,
+  },
+  prizeBadgeContainer: {
+    // flex: 0.1,
+  },
+  prizeDetailContainer: {
+    flex: 0.95,
+    justifyContent: 'center',
+  },
+  prizeTitleText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal * 1.3,
+    fontWeight: 'bold',
+  },
+  prizeValueText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal * 1.25,
+  },
+  prizeDescText: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
@@ -219,28 +287,59 @@ const styles = StyleSheet.create({
     color: darkColors.TEXT_COLOR,
     fontFamily: 'Cindyrella',
   },
-
   viewContainer: {
     flexDirection: 'row',
     marginVertical: 10,
   },
-  judgeNameText: {
+  viewImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 0.33,
+  },
+  viewTextContainer: {
+    paddingHorizontal: Width * 0.04,
+    justifyContent: 'space-around',
+    flex: 0.67,
+  },
+  viewNameText: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.3,
   },
-  judgeCompanyText: {
+  viewCompanyText: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     // fontWeight: 'bold',
     fontStyle: 'italic',
   },
-  judgeImage: {},
-  sponsorNameText: {
-    color: darkColors.TEXT_COLOR,
-    fontSize: Sizes.normal * 1.3,
+  commonViewImage: {
+    width: Width * 0.25,
+    height: Width * 0.25,
+    borderRadius: 45,
+    borderWidth: 2,
+    borderColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   sponsorURL: {
     color: darkColors.TOMATO_COLOR,
     fontSize: Sizes.normal,
+  },
+  joinNowButtonContainer: {
+    height: Width * 0.14,
+    // backgroundColor: darkColors.BACKGROUND_COLOR,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  joinNowButton: {
+    width: Width * 0.9,
+    height: Width * 0.12,
+    backgroundColor: darkColors.TOMATO_COLOR,
+    justifyContent: 'center',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  joinNowText: {
+    fontSize: Sizes.large,
+    color: darkColors.TEXT_COLOR,
   },
 });
