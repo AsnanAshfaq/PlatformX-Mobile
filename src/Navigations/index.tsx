@@ -13,20 +13,22 @@ import CreatePost from '../Screens/Post/CreatePost';
 import Hackathon from '../Screens/Hackathon/Index';
 import Workshop from '../Screens/Workshop/Index';
 import Project from '../Screens/Project/Index';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
-import {Sizes, Width} from '../Constants/Size';
 import CustomDrawer from '../Components/CustomDrawer';
 import MyProfile from '../Screens/Profile/Index';
 import Followers from '../Screens/Profile/Followers';
 import Following from '../Screens/Profile/Following';
-// Auth screens
-import SignIn from '../Screens/Auth/SignIn';
-import SignUp from '../Screens/Auth/SignUp';
 import Notification from '../Screens/Notification/Notification';
 import Chat from '../Screens/Chat/Chat';
-import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 import ViewHackathon from '../Screens/Hackathon/ViewHackathon';
+import RegisterHackathon from '../Screens/Hackathon/Register';
+// importing Auth screens
+import SignIn from '../Screens/Auth/SignIn';
+import SignUp from '../Screens/Auth/SignUp';
+// other imports
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {darkColors} from '../Constants/Colors';
+import {Sizes, Width} from '../Constants/Size';
+import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 
 // declaring navigators
 const Stack = createStackNavigator();
@@ -208,6 +210,7 @@ const Navigation = () => {
         <Stack.Screen name="Main" component={DrawerScreens} />
         <Stack.Screen name="Create_Post" component={CreatePost} />
         <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
+        <Stack.Screen name="Register_Hackathon" component={RegisterHackathon} />
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="Profile" component={ProfileScreens} />

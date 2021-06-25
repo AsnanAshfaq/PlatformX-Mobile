@@ -11,15 +11,19 @@ const App = () => {
 
   useEffect(() => {
     // get user type and set it into global state
-    axios.get('/user/').then(result => {
-      if (result.data.student) {
-        dispatch({type: 'SET_USER_TYPE', payload: 'student'});
-      } else {
-        dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
-      }
-      setLoading(false);
-    });
-  }, []);
+    const get_user_type = () => {
+      axios.get('/user/').then(result => {
+        if (result.data.student) {
+          dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+        } else {
+          dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
+        }
+        setLoading(false);
+      });
+    };
+
+    get_user_type();
+  }, [dispatch]);
 
   if (!Loading)
     return (

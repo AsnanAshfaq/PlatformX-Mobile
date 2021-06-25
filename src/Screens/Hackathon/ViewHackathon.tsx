@@ -112,7 +112,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           chat
           bell
         />
-        <ScrollView stickyHeaderIndices={[1, 2, 4, 6]} removeClippedSubviews>
+        <ScrollView stickyHeaderIndices={[2, 4, 6]} removeClippedSubviews>
           {/* background image  */}
           <View>
             <Image
@@ -162,11 +162,6 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
               <Prize prize={prize} key={prize.id} />
             )}
           />
-          {/* <View style={{flexDirection: 'row', flex: 1}}>
-            {HackathonData?.prizes.map(prize => (
-              <Prize prize={prize} />
-            ))}
-          </View> */}
 
           {/* judges  */}
           {HackathonData?.judges && (
@@ -202,7 +197,14 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
 
         {/* join now  */}
         <View style={styles.joinNowButtonContainer}>
-          <TouchableOpacity style={styles.joinNowButton} activeOpacity={0.5}>
+          <TouchableOpacity
+            style={styles.joinNowButton}
+            activeOpacity={0.5}
+            onPress={() =>
+              navigation.navigate('Register_Hackathon', {
+                ID: ID, // pass the hackathon data
+              })
+            }>
             <Text style={styles.joinNowText}>Join Now </Text>
           </TouchableOpacity>
         </View>
@@ -333,6 +335,7 @@ const styles = StyleSheet.create({
     // backgroundColor: darkColors.BACKGROUND_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: 5,
   },
   joinNowButton: {
     width: Width * 0.9,
