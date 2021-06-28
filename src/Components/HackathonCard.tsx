@@ -138,7 +138,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
             })
           }
           style={styles.hackathonButton}>
-          <Text style={styles.hackathonButtonText}>View Detail </Text>
+          <Text style={styles.hackathonButtonText}>View Details </Text>
         </TouchableOpacity>
       </View>
     </View>

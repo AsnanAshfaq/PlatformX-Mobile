@@ -228,19 +228,10 @@ const PostCard: FC<props> = ({postDetail}) => {
             <View style={styles.postImageContainer} key={image.id}>
               <Image
                 source={{
-                  uri: PostImageLoading
-                    ? POST_IMAGE
-                    : // : ImageAspectRatio.current !== 0
-                      // ? POST_IMAGE
-                      image.path,
+                  uri: PostImageLoading ? POST_IMAGE : image.path,
                 }}
                 style={[
-                  // styles.postImage,
                   {
-                    // flex: 1,
-                    // width: undefined,
-                    // height: undefined,
-                    // aspectRatio: 0.6,
                     width: Width * 0.9,
                     height: Width * ImageAspectRatio * 0.9,
                   },

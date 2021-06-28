@@ -8,11 +8,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import {hackathonFilterData} from '../Constants/sample';
-
+import CheckBox from '../Components/CheckBox';
 type Props = {
   list: Array<string>;
 };
@@ -21,16 +20,9 @@ const SubTagList: FC<Props> = ({list}) => {
     <View style={styles.subtagContainer}>
       {list.map(item => (
         <View style={{flexDirection: 'row'}} key={item}>
-          <BouncyCheckbox
+          <CheckBox
             size={25}
-            fillColor={darkColors.BADGE_COLOR}
-            unfillColor="#FFFFFF"
-            // text="Custom Checkbox"
-            disableText={true}
-            iconStyle={{borderColor: darkColors.SHADOW_COLOR}}
-            // textStyle={{fontFamily: 'JosefinSans-Regular'}}
-            onPress={isChecked => console.log(isChecked)}
-            style={{marginRight: 10}}
+            onPress={isCheck => console.log('Checked value', isCheck)}
           />
           <Text style={styles.subtag}>{item}</Text>
         </View>

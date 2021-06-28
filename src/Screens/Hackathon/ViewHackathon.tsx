@@ -112,7 +112,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           chat
           bell
         />
-        <ScrollView stickyHeaderIndices={[2, 4, 6]} removeClippedSubviews>
+        <ScrollView stickyHeaderIndices={[2, 4]} removeClippedSubviews>
           {/* background image  */}
           <View>
             <Image
@@ -165,15 +165,14 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
 
           {/* judges  */}
           {HackathonData?.judges && (
-            <>
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>Judges</Text>
-              </View>
-              {HackathonData?.judges.map(judge => (
-                <CommonView component="judges" details={judge} key={judge.id} />
-              ))}
-            </>
+            <View style={styles.labelContainer}>
+              <Text style={styles.label}>Judges</Text>
+            </View>
           )}
+          {HackathonData?.judges &&
+            HackathonData?.judges.map(judge => (
+              <CommonView component="judges" details={judge} key={judge.id} />
+            ))}
           {/* sponsors  */}
           {HackathonData?.sponsors && (
             <>
@@ -192,6 +191,23 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           {/* requirements  */}
           {/* criteria  */}
           {/* Contact us  */}
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
+          <Text>{HackathonData.contact_email}</Text>
           <Text>{HackathonData.contact_email}</Text>
         </ScrollView>
 
@@ -291,7 +307,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: Sizes.large * 1.3,
     color: darkColors.TEXT_COLOR,
-    fontFamily: 'Cindyrella',
+    // fontFamily: 'Cindyrella',
   },
   viewContainer: {
     flexDirection: 'row',

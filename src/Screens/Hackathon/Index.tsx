@@ -24,6 +24,7 @@ const Hackathons: FC<props> = ({navigation}) => {
   const [Hackathons, setHackathons] = useState([]);
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true);
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -32,10 +33,17 @@ const Hackathons: FC<props> = ({navigation}) => {
   //   }, []),
   // );
 
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log('Screen is focused');
+  //     getData();
+  //   }, []),
+  // );
   const getData = async () => {
     try {
       axios.get('/api/hackathons/').then(response => {
         setHackathons(response.data);
+        setIsLoading(false);
       });
     } catch (error) {
       console.log('Error is', error);
@@ -50,13 +58,9 @@ const Hackathons: FC<props> = ({navigation}) => {
     });
   };
   useEffect(() => {
-    let isCancelled = false;
     getData();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
+    console.log('Running in use effect');
+  }, [IsLoading]);
 
   return (
     <View style={styles.parent}>
@@ -67,9 +71,10 @@ const Hackathons: FC<props> = ({navigation}) => {
         chat
         bell
       />
-      <CustomSearch placeholder={'Search here'} showFilterIcon />
-      {Hackathons.length > 0 ? (
+
+      {!IsLoading && Hackathons.length > 0 ? (
         <>
+          <CustomSearch placeholder={'Search here'} showFilterIcon />
           <FlatList
             data={Hackathons}
             // disableVirtualization
@@ -97,6 +102,13 @@ const Hackathons: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
         </>
+      ) : !IsLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={styles.noMoreText}>No more hackathons</Text>
+          <TouchableOpacity onPress={() => setIsLoading(true)}>
+            <Text style={styles.refreshText}>Refresh</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
         <HackathonSkeleton />
       )}
@@ -122,9 +134,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  plusText: {
-    fontSize: Sizes.large * 1.4,
+  noMoreText: {
     color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal,
+  },
+  refreshText: {
+    fontSize: Sizes.normal,
+    color: darkColors.TOMATO_COLOR,
   },
 });
 
