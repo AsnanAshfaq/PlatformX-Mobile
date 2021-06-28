@@ -193,22 +193,6 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           {/* Contact us  */}
           <Text>{HackathonData.contact_email}</Text>
           <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
         </ScrollView>
 
         {/* join now  */}

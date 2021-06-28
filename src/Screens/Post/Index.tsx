@@ -25,7 +25,7 @@ const Posts: FC<props> = ({navigation}) => {
   const [Post, setPost] = useState([]);
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
-
+  const [IsLoading, setIsLoading] = useState(true);
   // useFocusEffect(
   //   useCallback(() => {
   //     // getData();
@@ -36,6 +36,7 @@ const Posts: FC<props> = ({navigation}) => {
     try {
       axios.get('/api/posts/').then(response => {
         setPost(response.data);
+        setIsLoading(false);
       });
     } catch (error) {
       console.log('Error is', error);
@@ -51,18 +52,18 @@ const Posts: FC<props> = ({navigation}) => {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [IsLoading]);
 
   return (
     <View style={styles.parent}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
-      <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
       {Post.length > 0 ? (
         <>
+          <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
           <FlatList
             data={Post}
             // disableVirtualization
-            keyExtractor={(item, index) => `${item.id}-${index}`}
+            keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: Post, index}: any) => {
               return <PostCard key={Post?.id} postDetail={Post} />;
             }}
@@ -88,8 +89,14 @@ const Posts: FC<props> = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </>
+      ) : !IsLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={styles.noMoreText}>No more hackathons</Text>
+          <TouchableOpacity onPress={() => setIsLoading(true)}>
+            <Text style={styles.refreshText}>Refresh</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
-        // show the post skeleton
         <PostSkeleton />
       )}
     </View>
@@ -118,8 +125,13 @@ const styles = StyleSheet.create({
     fontSize: Sizes.large * 1.4,
     color: darkColors.TEXT_COLOR,
   },
-  skeleton: {
-    // height: 10,
+  noMoreText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal,
+  },
+  refreshText: {
+    fontSize: Sizes.normal,
+    color: darkColors.TOMATO_COLOR,
   },
 });
 

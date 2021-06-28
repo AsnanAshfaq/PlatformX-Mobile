@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 // import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ContentLoader, {Rect, Circle} from 'react-content-loader/native';
-
+import SearchSkeleton from './SearchSkeleton';
 import {darkColors} from '../Constants/Colors';
 import {Height, Width} from '../Constants/Size';
 

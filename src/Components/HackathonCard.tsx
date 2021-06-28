@@ -118,7 +118,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           <HackathonCardIcons name={'globe-outline'} label={'Online'} />
           <HackathonCardIcons
             name={'people-sharp'}
-            label={`${12} Participants`}
+            label={`${hackathonDetail.participants} Participants`}
           />
         </View>
         <View style={styles.iconsRow}>

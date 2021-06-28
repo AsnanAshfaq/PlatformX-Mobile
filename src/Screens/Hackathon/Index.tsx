@@ -59,7 +59,6 @@ const Hackathons: FC<props> = ({navigation}) => {
   };
   useEffect(() => {
     getData();
-    console.log('Running in use effect');
   }, [IsLoading]);
 
   return (
@@ -72,7 +71,7 @@ const Hackathons: FC<props> = ({navigation}) => {
         bell
       />
 
-      {!IsLoading && Hackathons.length > 0 ? (
+      {Hackathons.length > 0 ? (
         <>
           <CustomSearch placeholder={'Search here'} showFilterIcon />
           <FlatList
