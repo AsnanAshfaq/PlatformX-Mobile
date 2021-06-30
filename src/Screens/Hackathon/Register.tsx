@@ -56,11 +56,10 @@ const Register: FC<props> = ({navigation, route}) => {
     axios
       .post(`/api/hackathon/${ID}/register/`)
       .then(result => {
-        console.log(result.status);
         if (result.status === 201) {
           // user has been registered
           ToastAndroid.show(result.data.success, 1500);
-          // navigate to hackathon screen
+          // navigate to main screen
           navigation.navigate('Main');
         } else {
           ToastAndroid.show(result.data.error, 1500);

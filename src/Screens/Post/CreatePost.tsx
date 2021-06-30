@@ -107,7 +107,7 @@ const CreatePost: FC<props> = ({navigation}) => {
           .catch(function (error) {
             //handle error
             if (error.response) {
-              ToastAndroid.show('Error is' + error.response.data, 1500);
+              ToastAndroid.show(error.response.data.error, 1500);
             }
           });
       } else {

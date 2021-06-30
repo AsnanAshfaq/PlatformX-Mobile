@@ -17,6 +17,7 @@ import {
   Image,
   ToastAndroid,
   FlatList,
+  RefreshControl,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -84,6 +85,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
   const [ProfileData, setProfileData] = useState<any>(null);
   const [Post, setPost] = useState([]);
   const [Loading, setLoading] = useState(true);
+  const [Refresh, setRefresh] = useState(false);
 
   const [LoadBackgroundImage, setLoadBackgroundImage] = useState(true);
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
@@ -105,8 +107,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
     }
   };
 
-  useEffect(() => {
-    // get user data from data base
+  const getUserDetails = async () => {
     axios
       .get('/user/')
       .then(result => setProfileData(result.data))
@@ -121,6 +122,18 @@ const StudentProfile: FC<props> = ({navigation}) => {
         // error while fetching data
         ToastAndroid.show('Error while fetching data', 1500);
       });
+  };
+
+  const onRefresh = () => {
+    setRefresh(true);
+    getUserDetails().then(() => {
+      setRefresh(false);
+    });
+  };
+
+  useEffect(() => {
+    // get user data from data base
+    getUserDetails();
   }, []);
 
   if (!Loading) {
@@ -132,7 +145,19 @@ const StudentProfile: FC<props> = ({navigation}) => {
           back
           onBackPress={() => navigation.goBack()}
         />
-        <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps="handled">
+        <ScrollView
+          ref={scrollViewRef}
+          keyboardShouldPersistTaps="handled"
+          refreshControl={
+            <RefreshControl
+              refreshing={Refresh}
+              onRefresh={onRefresh}
+              colors={[darkColors.TEXT_COLOR]}
+              progressBackgroundColor={darkColors.SHADOW_COLOR}
+              progressViewOffset={20}
+              size={Sizes.large}
+            />
+          }>
           {/* background and profile image section  */}
           <View style={styles.center}>
             <Image
@@ -162,7 +187,6 @@ const StudentProfile: FC<props> = ({navigation}) => {
               style={[
                 styles.profile_image,
                 !LoadProfileImage && {
-                  bottom: 30,
                   borderRadius: 50,
                   borderWidth: 3,
                   borderColor: darkColors.SHADOW_COLOR,
@@ -253,8 +277,8 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   </View>
                 )}
                 nestedScrollEnabled
-                renderItem={({item: Post, index, separators}: any) => (
-                  <PostCard key={Post.id} postDetail={Post} />
+                renderItem={({item: post, index, separators}: any) => (
+                  <PostCard key={post.id} postDetail={post} />
                 )}
               />
             </View>
@@ -293,6 +317,7 @@ const styles = StyleSheet.create({
     width: Width * 0.37,
     height: Width * 0.37,
     position: 'relative',
+    bottom: 30,
     // top: 100,
     // backgroundColor: 'red',
     // overflow: 'hidden',

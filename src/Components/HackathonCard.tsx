@@ -1,5 +1,12 @@
 import React, {FC, useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Image,
+} from 'react-native';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -80,12 +87,23 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       <View style={styles.contentContainer}>
         {/* title  */}
         <Text style={styles.titleText}>{hackathonDetail.title}</Text>
-        <Text style={styles.descriptionText}>
-          {hackathonDetail.description.length > MAX_TEXT_LENGTH
-            ? hackathonDetail.description.substring(0, MAX_TEXT_LENGTH - 4) +
-              '.... read more'
-            : hackathonDetail.description}
-        </Text>
+        {hackathonDetail.description.length > MAX_TEXT_LENGTH ? (
+          <Text>
+            <Text style={styles.descriptionText}>
+              {hackathonDetail.description.substring(0, MAX_TEXT_LENGTH - 4)}
+            </Text>
+            <TouchableWithoutFeedback
+              onPress={() =>
+                navigation.navigate('View_Hackathon', {
+                  ID: hackathonDetail.id,
+                })
+              }>
+              <Text style={styles.descriptionText}>... {'  '}read more</Text>
+            </TouchableWithoutFeedback>
+          </Text>
+        ) : (
+          hackathonDetail.description
+        )}
       </View>
       {/* hackathon image  */}
       <View style={styles.thumbnailContainer}>
