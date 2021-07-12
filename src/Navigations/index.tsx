@@ -9,7 +9,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 // importing screens
 import Post from '../Screens/Post/Index';
-import CreatePost from '../Screens/Post/CreatePost';
+import Create_EditPost from '../Screens/Post/Create_EditPost';
 import Hackathon from '../Screens/Hackathon/Index';
 import Workshop from '../Screens/Workshop/Index';
 import Project from '../Screens/Project/Index';
@@ -29,6 +29,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
+import EditPost from '../Screens/Post/EditPost';
 
 // declaring navigators
 const Stack = createStackNavigator();
@@ -208,7 +209,8 @@ const Navigation = () => {
           };
         }}>
         <Stack.Screen name="Main" component={DrawerScreens} />
-        <Stack.Screen name="Create_Post" component={CreatePost} />
+        <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
+        <Stack.Screen name="Edit_Post" component={EditPost} />
         <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
         <Stack.Screen name="Register_Hackathon" component={RegisterHackathon} />
         <Stack.Screen name="Chat" component={Chat} />

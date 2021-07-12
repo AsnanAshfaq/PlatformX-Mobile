@@ -1,8 +1,10 @@
 // TODO:
-// title of the post
-// post type -> General, Collaborate on a project, seeking help, seeking assistance
-// choose image to upload
-
+// screen (Create OR Edit)
+// screen header ( Create Post OR Edit Post)
+// post text input (Write your post OR text passed)
+// post category (Select Post Type OR category passed)
+// post images (empty OR list of images passed)
+// post button (Post)
 import React, {FC, useRef, useState, useEffect} from 'react';
 import {
   StyleSheet,
@@ -23,21 +25,43 @@ import {Height, Sizes, Width} from '../../Constants/Size';
 import {darkColors} from '../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from '../../Utils/Axios';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
+
+type base = {
+  navigation: any;
+  route: any;
+};
+interface props {
+  text: string;
+  category: string;
+}
+type screen = 'Create' | 'Edit';
 
 const ICON_SIZE = Width * 0.07;
 
-type props = {
-  navigation: any;
-};
+const Create_Edit: FC<base> = ({navigation, route}) => {
+  const {screen}: {screen: screen} = route.params;
 
-const CreatePost: FC<props> = ({navigation}) => {
-  const [text, settext] = useState('');
-  const [textPlacholder, setTextPlacholder] = useState('Write your post . . .');
+  var data: props = {
+    text: '',
+    category: 'Select Post Type',
+  };
+
+  if (screen === 'Edit') {
+    // if the screen is 'Edit'
+    const {post}: {post: props} = route.params;
+    data = post;
+  }
+
+  const [Post, setPost] = useState({
+    text: data.text,
+    textPlacholder: 'Write here . . .',
+    category: data.category,
+  });
   const [ToggleDropDown, setToggleDropDown] = useState(false);
-  const [Selected, setSelected] = useState('Select Post Type');
   const [Images, setImages] = useState<ImageOrVideo[]>([]);
-  const dropDownRef = useRef(null);
-  const textInput = useRef(null);
+  const textInputRef = useRef(null);
 
   const openGallery = () => {
     ImagePicker.openPicker({
@@ -46,25 +70,20 @@ const CreatePost: FC<props> = ({navigation}) => {
       setImages(prev => [...images, ...prev]);
     });
     // first hide the drop down if it is open
-    if (textInput && textInput.current) {
-      settoggleDropDown(false);
+    if (textInputRef && textInputRef.current) {
+      setToggleDropDown(false);
     }
   };
 
-  const removeImage = (index: number) => {
-    // remove image from setImages
-    setImages(Images.filter((_, i) => i != index));
-  };
-
-  const handlePost = () => {
+  const handlePost = async (method: string) => {
     var bodyFormData = new FormData();
 
-    if (text.trim() !== '') {
-      if (textPlacholder === 'Write your post . . .') {
+    if (Post.text.trim() !== '') {
+      if (Post.category.trim() !== 'Select Post Category') {
         // if we have images array
         if (Images.length > 0) {
           Images.forEach((image, index) => {
-            // append all the images in bodyFormData
+            // append all the images
             bodyFormData.append('path', {
               uri: image.path,
               type: image.mime,
@@ -73,6 +92,7 @@ const CreatePost: FC<props> = ({navigation}) => {
                 '',
               ),
             });
+            // append meta data
             bodyFormData.append(
               'metadata',
               image.path
@@ -84,11 +104,16 @@ const CreatePost: FC<props> = ({navigation}) => {
             );
           });
         }
+        // append text
+        bodyFormData.append('text', Post.text);
 
-        bodyFormData.append('text', text);
+        method = method.toLowerCase();
+        if (method === 'edit') {
+          bodyFormData.append('post', route.params.post.id);
+        }
         axios({
           method: 'post',
-          url: 'http://127.0.0.1:8000/api/post/create/',
+          url: `${BASE_URL}/api/post/${method}/`,
           data: bodyFormData,
           headers: {'Content-Type': 'multipart/form-data'},
         })
@@ -96,12 +121,11 @@ const CreatePost: FC<props> = ({navigation}) => {
             //handle success
             // if the request status code is 201, then the post has been created
             if (response.status === 201) {
-              ToastAndroid.show('Post has been created', 1500);
+              ToastAndroid.show(response.data.success, 1500);
               // navigate user to main screen
               navigation.pop();
             } else {
-              ToastAndroid.show("Couldn't post", 1000);
-              ToastAndroid.show('Error status code' + response.status, 1500);
+              ToastAndroid.show(response.data.error + response.status, 1500);
             }
           })
           .catch(function (error) {
@@ -111,35 +135,24 @@ const CreatePost: FC<props> = ({navigation}) => {
             }
           });
       } else {
-        ToastAndroid.show('Select Post Type', 1500);
+        ToastAndroid.show('Selecte Post Category', 1500);
       }
     } else {
       ToastAndroid.show('Post is Empty', 1500);
     }
   };
 
-  useEffect(() => {
-    // make text input blur if keyboard is hidden
-    Keyboard.addListener('keyboardDidHide', event => {
-      if (textInput && textInput.current) {
-        textInput?.current?.blur();
-        // and make the placeholder to its previous value
-        setTextPlacholder('Write your post . . .');
-      }
-    });
-    // hide the drop down if the keyboard is open
-    Keyboard.addListener('keyboardDidShow', event => {
-      if (textInput && textInput.current) {
-        settoggleDropDown(false);
-      }
-    });
-  }, [textInput]);
+  // removing image
+  const removeImage = (index: number) => {
+    // remove image from setImages
+    setImages(Images.filter((_, i) => i != index));
+  };
 
   return (
     <View style={styles.parent}>
       <CustomHeader
         navigation={navigation}
-        title={'Create Post'}
+        title={`${screen} Post`}
         back
         onBackPress={() => navigation.goBack()}
       />
@@ -147,16 +160,28 @@ const CreatePost: FC<props> = ({navigation}) => {
         {/* post text view  */}
         <View style={styles.textInputContainer}>
           <TextInput
-            ref={textInput}
+            ref={textInputRef}
             style={styles.text}
-            onChangeText={settext}
-            value={text}
+            onChangeText={text =>
+              setPost(prev => {
+                return {
+                  ...prev,
+                  text: text,
+                };
+              })
+            }
+            value={Post.text}
             multiline
-            placeholder={textPlacholder}
+            placeholder={Post.textPlacholder}
             placeholderTextColor={darkColors.TEXT_COLOR}
             onFocus={() => {
-              if (textInput && textInput.current) {
-                setTextPlacholder('');
+              if (textInputRef && textInputRef.current) {
+                setPost(prev => {
+                  return {
+                    ...prev,
+                    textPlacholder: '',
+                  };
+                });
               }
             }}
             // onBlur={() => console.log('Text input is blured')}
@@ -166,14 +191,14 @@ const CreatePost: FC<props> = ({navigation}) => {
         <View style={{marginBottom: 20}}>
           <CustomDropDown
             data={POST_TYPE}
-            isShow={toggleDropDown}
-            toggleShow={settoggleDropDown}
-            Selected={Selected}
-            setSelected={setSelected}
+            isShow={ToggleDropDown}
+            toggleShow={setToggleDropDown}
+            Selected={Post.category}
+            setSelected={setPost}
           />
         </View>
-        {/* show image view in a scrollview*/}
 
+        {/* show image view in a scrollview*/}
         {Images.length > 0 && (
           <ScrollView horizontal>
             {Images.map((image, index) => {
@@ -182,8 +207,8 @@ const CreatePost: FC<props> = ({navigation}) => {
                   <Image
                     source={{uri: image?.path}}
                     style={{
-                      width: image.width > 200 ? 200 : image?.width,
-                      height: image.height > 300 ? 300 : image?.height,
+                      width: 200,
+                      height: 300,
                       marginHorizontal: 7,
                       borderRadius: 10,
                     }}
@@ -221,7 +246,7 @@ const CreatePost: FC<props> = ({navigation}) => {
         <View style={styles.postButtonContainer}>
           <TouchableOpacity
             style={styles.postButton}
-            onPress={() => handlePost()}>
+            onPress={() => handlePost(screen)}>
             <Text style={styles.postButtonText}>Post</Text>
           </TouchableOpacity>
         </View>
@@ -230,7 +255,7 @@ const CreatePost: FC<props> = ({navigation}) => {
   );
 };
 
-export default CreatePost;
+export default Create_Edit;
 
 const styles = StyleSheet.create({
   parent: {

@@ -65,7 +65,13 @@ const Posts: FC<props> = ({navigation}) => {
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: Post, index}: any) => {
-              return <PostCard key={Post?.id} postDetail={Post} />;
+              return (
+                <PostCard
+                  key={Post?.id}
+                  postDetail={Post}
+                  navigation={navigation}
+                />
+              );
             }}
             // progressViewOffset={10}
             refreshControl={
@@ -84,7 +90,9 @@ const Posts: FC<props> = ({navigation}) => {
           {/* floating action button  */}
           <View style={styles.floatingButtonContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Create_Post')}>
+              onPress={() =>
+                navigation.navigate('Create_Edit_Post', {screen: 'Create'})
+              }>
               <Text style={styles.plusText}>+</Text>
             </TouchableOpacity>
           </View>

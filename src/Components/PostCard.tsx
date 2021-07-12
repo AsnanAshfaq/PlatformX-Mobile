@@ -29,9 +29,11 @@ const MAX_TEXT_LENGTH = 290;
 const ICON_SIZE = Width * 0.07;
 
 type prop = {
+  navigation: any;
   isEditable: boolean;
+  post?: undefined;
 };
-const PopUpMenu: FC<prop> = ({isEditable}) => {
+const PopUpMenu: FC<prop> = ({navigation, isEditable, post}) => {
   return (
     <Menu>
       <MenuTrigger>
@@ -61,7 +63,13 @@ const PopUpMenu: FC<prop> = ({isEditable}) => {
               height: 35,
             },
           }}>
-          <MenuOption onSelect={() => console.log('Clicked on edit')}>
+          <MenuOption
+            onSelect={() =>
+              navigation.navigate('Create_Edit_Post', {
+                screen: 'Edit',
+                post: post,
+              })
+            }>
             <View style={styles.menuOptionContainer}>
               <Text style={styles.menuOptionText}>Edit</Text>
             </View>
@@ -142,10 +150,11 @@ const PostCardButtons: FC<Props> = ({setModal}) => {
 };
 
 type props = {
+  navigation: any;
   postDetail: any;
 };
 
-const PostCard: FC<props> = ({postDetail}) => {
+const PostCard: FC<props> = ({navigation, postDetail}) => {
   const [Commentmodal, setCommentmodal] = useState({
     showModal: false, // show modal or not
     focusTextInput: false, // if true, set auto focus on comment modal text input field to true
@@ -194,7 +203,11 @@ const PostCard: FC<props> = ({postDetail}) => {
         </View>
         {/* icon container  */}
         <View style={styles.headerIconContainer}>
-          <PopUpMenu isEditable={postDetail.is_editable} />
+          <PopUpMenu
+            isEditable={postDetail.is_editable}
+            post={postDetail.is_editable ? postDetail : undefined}
+            navigation={navigation}
+          />
         </View>
       </View>
       {/* content  */}

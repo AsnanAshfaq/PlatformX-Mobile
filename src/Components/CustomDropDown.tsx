@@ -11,7 +11,7 @@ type props = {
   isShow?: boolean;
   toggleShow?: any;
   Selected: string;
-  setSelected: (type: string) => void;
+  setSelected: (type: any) => void;
 };
 
 const ICON_SIZE = Width * 0.07;
@@ -47,7 +47,12 @@ const CustomDropDown: FC<props> = ({
             <TouchableOpacity
               onPress={() => {
                 toggleDropDown();
-                setSelected(type);
+                setSelected(prev => {
+                  return {
+                    ...prev,
+                    category: type,
+                  };
+                });
               }}
               key={type}>
               <View style={styles.droppedView}>

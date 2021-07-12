@@ -33,11 +33,11 @@ type props = {
 const CreatePost: FC<props> = ({navigation}) => {
   const [text, settext] = useState('');
   const [textPlacholder, setTextPlacholder] = useState('Write your post . . .');
-  const [ToggleDropDown, setToggleDropDown] = useState(false);
+  const [toggleDropDown, settoggleDropDown] = useState(false);
   const [Selected, setSelected] = useState('Select Post Type');
   const [Images, setImages] = useState<ImageOrVideo[]>([]);
   const dropDownRef = useRef(null);
-  const textInput = useRef(null);
+  const textInput = useRef<any>(null);
 
   const openGallery = () => {
     ImagePicker.openPicker({
@@ -96,7 +96,7 @@ const CreatePost: FC<props> = ({navigation}) => {
             //handle success
             // if the request status code is 201, then the post has been created
             if (response.status === 201) {
-              ToastAndroid.show('Post has been created', 1500);
+              ToastAndroid.show('Post has been edited', 1500);
               // navigate user to main screen
               navigation.pop();
             } else {
@@ -114,7 +114,7 @@ const CreatePost: FC<props> = ({navigation}) => {
         ToastAndroid.show('Select Post Type', 1500);
       }
     } else {
-      ToastAndroid.show('Post is Empty', 1500);
+      ToastAndroid.show('Please Write Something.', 1500);
     }
   };
 
