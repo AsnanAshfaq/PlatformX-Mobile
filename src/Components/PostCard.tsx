@@ -8,116 +8,23 @@ import {
   FlatList,
   Alert,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
+import DeleteModal from '../Modals/DeleteModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-  renderers,
-} from 'react-native-popup-menu';
+import PopUpMenu from '../Menu/PostCardPopUpMenu';
+import Axios from '../Utils/Axios';
 
 const MAX_TEXT_LENGTH = 290;
 
 const ICON_SIZE = Width * 0.07;
 
-type prop = {
-  navigation: any;
-  isEditable: boolean;
-  post?: undefined;
-};
-const PopUpMenu: FC<prop> = ({navigation, isEditable, post}) => {
-  return (
-    <Menu>
-      <MenuTrigger>
-        <View>
-          <Ionicons
-            name={'ellipsis-vertical'}
-            size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
-          />
-        </View>
-      </MenuTrigger>
-      {/* if the post is editable  */}
-      {isEditable ? (
-        <MenuOptions
-          customStyles={{
-            optionsContainer: {
-              backgroundColor: darkColors.SHADOW_COLOR,
-              borderWidth: 5,
-              borderRadius: 20,
-              width: 150,
-              borderColor: 'transparent',
-              marginTop: 20,
-              marginLeft: -10,
-              // marginRight: 30,
-            },
-            optionWrapper: {
-              height: 35,
-            },
-          }}>
-          <MenuOption
-            onSelect={() =>
-              navigation.navigate('Create_Edit_Post', {
-                screen: 'Edit',
-                post: post,
-              })
-            }>
-            <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Edit</Text>
-            </View>
-          </MenuOption>
-          <MenuOption onSelect={() => console.log('Clicked on delete')}>
-            <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Delete</Text>
-            </View>
-          </MenuOption>
-        </MenuOptions>
-      ) : (
-        // else report post
-        <MenuOptions
-          customStyles={{
-            optionsContainer: {
-              backgroundColor: darkColors.SHADOW_COLOR,
-              borderWidth: 1,
-              borderRadius: 20,
-              marginRight: 20,
-              width: 140,
-              marginTop: 24,
-              marginLeft: -10,
-              borderColor: 'transparent',
-            },
-            optionWrapper: {
-              height: 35,
-            },
-          }}>
-          {/* <MenuOption onSelect={() => console.log('Clicked on edit')}>
-            <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Not Editable</Text>
-            </View>
-          </MenuOption> */}
-          <MenuOption onSelect={() => console.log('Clicked on save post')}>
-            <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Save Post</Text>
-            </View>
-          </MenuOption>
-          <MenuOption onSelect={() => console.log('Clicked on report')}>
-            <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Report</Text>
-            </View>
-          </MenuOption>
-        </MenuOptions>
-      )}
-    </Menu>
-  );
-};
 type Props = {
   setModal: any;
 };
@@ -159,11 +66,33 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
     showModal: false, // show modal or not
     focusTextInput: false, // if true, set auto focus on comment modal text input field to true
   });
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
   const [PostImageLoading, setPostImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
 
+  const handleDelete = () => {
+    // hide the modal first
+    setShowDeleteModal(false);
+    // make an api call
+    var bodyFormData = new FormData();
+
+    bodyFormData.append('post', postDetail.id);
+    Axios({
+      method: 'post',
+      url: `${BASE_URL}/api/post/delete/`,
+      data: bodyFormData,
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
+      .then(response => {
+        if (response.status == 200) {
+          ToastAndroid.show(response.data.success, 1500);
+        } else {
+          ToastAndroid.show(response.data.error, 1500);
+        }
+      })
+      .catch(error => ToastAndroid.show(error, 1500));
+  };
   return (
     <View style={styles.parent}>
       {/* comment modal  */}
@@ -177,6 +106,16 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         }
         focusTextInput={Commentmodal.focusTextInput}
         postID={postDetail.id}
+      />
+
+      {/* delete modal  */}
+
+      <DeleteModal
+        heading="Delete Post"
+        description={'Would you like to delete your post?'}
+        isShow={showDeleteModal}
+        toggleModal={() => setShowDeleteModal(prev => !prev)}
+        onDelete={handleDelete}
       />
 
       {/* header  */}
@@ -205,6 +144,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         <View style={styles.headerIconContainer}>
           <PopUpMenu
             isEditable={postDetail.is_editable}
+            deleteModal={postDetail.is_editable && setShowDeleteModal}
             post={postDetail.is_editable ? postDetail : undefined}
             navigation={navigation}
           />
@@ -344,14 +284,6 @@ const styles = StyleSheet.create({
   headerIconContainer: {
     flex: 0.1,
     justifyContent: 'center',
-  },
-  menuOptionContainer: {
-    paddingHorizontal: 10,
-  },
-  menuOptionText: {
-    color: darkColors.TEXT_COLOR,
-    fontSize: Sizes.normal,
-    // fontFamily: 'Raleway-Medium',
   },
   contentContainer: {
     // minHeight: Height * 0.15,
