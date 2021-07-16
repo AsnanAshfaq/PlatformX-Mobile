@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     flex: 0.5,
+    marginHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -33,6 +33,7 @@ type base = {
   route: any;
 };
 interface props {
+  id: any;
   text: string;
   category: string;
 }
@@ -44,14 +45,14 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
   const {screen}: {screen: screen} = route.params;
 
   var data: props = {
+    id: '', // id of the post to be edited
     text: '',
     category: 'Select Post Type',
   };
 
   if (screen === 'Edit') {
     // if the screen is 'Edit'
-    const {post}: {post: props} = route.params;
-    data = post;
+    data = route.params;
   }
 
   const [Post, setPost] = useState({
@@ -79,7 +80,10 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
     var bodyFormData = new FormData();
 
     if (Post.text.trim() !== '') {
-      if (Post.category.trim() !== 'Select Post Category') {
+      if (
+        Post.category.trim() !== 'Select Post Category' ||
+        Post.category.trim() !== ''
+      ) {
         // if we have images array
         if (Images.length > 0) {
           Images.forEach((image, index) => {
@@ -106,10 +110,12 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
         }
         // append text
         bodyFormData.append('text', Post.text);
+        // append category
+        bodyFormData.append('category', Post.category);
 
         method = method.toLowerCase();
         if (method === 'edit') {
-          bodyFormData.append('post', route.params.post.id);
+          bodyFormData.append('post', data.id);
         }
         axios({
           method: 'post',
@@ -174,16 +180,16 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
             multiline
             placeholder={Post.textPlacholder}
             placeholderTextColor={darkColors.TEXT_COLOR}
-            onFocus={() => {
-              if (textInputRef && textInputRef.current) {
-                setPost(prev => {
-                  return {
-                    ...prev,
-                    textPlacholder: '',
-                  };
-                });
-              }
-            }}
+            // onFocus={() => {
+            //   if (textInputRef && textInputRef.current) {
+            //     setPost(prev => {
+            //       return {
+            //         ...prev,
+            //         textPlacholder: '',
+            //       };
+            //     });
+            //   }
+            // }}
             // onBlur={() => console.log('Text input is blured')}
           />
         </View>

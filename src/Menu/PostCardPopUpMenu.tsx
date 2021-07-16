@@ -16,7 +16,7 @@ const ICON_SIZE = Width * 0.07;
 type prop = {
   navigation: any;
   isEditable: boolean;
-  post?: undefined;
+  post: any;
   deleteModal: (prev: boolean) => void;
 };
 const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
@@ -53,7 +53,9 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
             onSelect={() =>
               navigation.navigate('Create_Edit_Post', {
                 screen: 'Edit',
-                post: post,
+                id: post.id,
+                text: post.text,
+                category: post.category,
               })
             }>
             <View style={styles.menuOptionContainer}>

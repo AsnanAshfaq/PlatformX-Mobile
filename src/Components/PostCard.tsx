@@ -20,6 +20,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {BASE_URL} from 'react-native-dotenv';
 import PopUpMenu from '../Menu/PostCardPopUpMenu';
 import Axios from '../Utils/Axios';
+import PostCarImageSlider from './PostCardImageSlider';
 
 const MAX_TEXT_LENGTH = 290;
 
@@ -75,14 +76,19 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
     // hide the modal first
     setShowDeleteModal(false);
     // make an api call
-    var bodyFormData = new FormData();
+    // var bodyFormData = new FormData();
 
-    bodyFormData.append('post', postDetail.id);
+    // bodyFormData.append('post', postDetail.id);
+    // console.log(bodyFormData);
     Axios({
       method: 'post',
       url: `${BASE_URL}/api/post/delete/`,
-      data: bodyFormData,
-      headers: {'Content-Type': 'multipart/form-data'},
+      data: {
+        post: postDetail.id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
       .then(response => {
         if (response.status == 200) {
@@ -109,10 +115,9 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       />
 
       {/* delete modal  */}
-
       <DeleteModal
         heading="Delete Post"
-        description={'Would you like to delete your post?'}
+        description={'Are you sure that you want to delete your post?'}
         isShow={showDeleteModal}
         toggleModal={() => setShowDeleteModal(prev => !prev)}
         onDelete={handleDelete}
@@ -140,16 +145,18 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
             {new Date(postDetail.created_at).toDateString()}
           </Text>
         </View>
+
         {/* icon container  */}
         <View style={styles.headerIconContainer}>
           <PopUpMenu
             isEditable={postDetail.is_editable}
             deleteModal={postDetail.is_editable && setShowDeleteModal}
-            post={postDetail.is_editable ? postDetail : undefined}
+            post={postDetail.is_editable && postDetail}
             navigation={navigation}
           />
         </View>
       </View>
+
       {/* content  */}
       <View style={styles.contentContainer}>
         <Text style={styles.descriptionText}>
@@ -159,50 +166,10 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
             : postDetail.text}
         </Text>
       </View>
+
       {/* image if any  */}
       {postDetail.images.length > 0 && (
-        <ScrollView
-          horizontal
-          pagingEnabled
-          endFillColor="#000"
-          contentContainerStyle={{
-            // width: Width * 0.9,
-            marginHorizontal: Width * 0.01,
-            // backgroundColor: 'transparent',
-            // alignContent: 'space-around',
-            // alignItems: 'center',
-            // width: Width * 0.9,
-            height: Width * ImageAspectRatio * 0.9,
-            // flexGrow: 1,
-          }}
-          showsHorizontalScrollIndicator
-          decelerationRate="fast">
-          {postDetail.images.map(image => (
-            <View style={styles.postImageContainer} key={image.id}>
-              <Image
-                source={{
-                  uri: PostImageLoading ? POST_IMAGE : image.path,
-                }}
-                style={[
-                  {
-                    width: Width * 0.9,
-                    height: Width * ImageAspectRatio * 0.9,
-                  },
-                ]}
-                resizeMode={'contain'}
-                onLoadEnd={() => {
-                  // get image width and height
-                  Image.getSize(image.path, (width, heigth) => {
-                    // calculate aspect ratio of image
-                    setImageAspectRatio(heigth / width);
-                    setPostImageLoading(false);
-                  });
-                }}
-                // onProgress={() => setPostImageLoading(true)}
-              />
-            </View>
-          ))}
-        </ScrollView>
+        <PostCarImageSlider postImages={postDetail.images} />
       )}
       {/* like comment share details */}
       <TouchableOpacity
