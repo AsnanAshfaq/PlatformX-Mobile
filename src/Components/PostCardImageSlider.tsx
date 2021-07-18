@@ -47,8 +47,8 @@ const PostCarImageSlider: FC<props> = ({postImages}) => {
   const [Height, setHeight] = useState(400);
 
   useEffect(() => {
-    console.log('Height is');
-    console.log(Height);
+    // console.log('Height is');
+    // console.log(Height);
   }, [Height]);
   return (
     <View
