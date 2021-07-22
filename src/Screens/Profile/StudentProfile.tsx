@@ -186,11 +186,12 @@ const StudentProfile: FC<props> = ({navigation}) => {
               }}
               style={[
                 styles.profile_image,
-                !LoadProfileImage && {
-                  borderRadius: 50,
-                  borderWidth: 3,
-                  borderColor: darkColors.SHADOW_COLOR,
-                },
+                !LoadProfileImage &&
+                  ProfileData?.user_profile_image && {
+                    borderRadius: 50,
+                    borderWidth: 3,
+                    borderColor: darkColors.SHADOW_COLOR,
+                  },
               ]}
               resizeMode={'cover'}
               // onLoad={() => setLoadProfileImage(true)}
@@ -225,7 +226,12 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   ? ProfileData?.followed_id.length
                   : 0
               }
-              onPress={() => navigation.navigate('Followers')}
+              onPress={() =>
+                navigation.navigate('Follow_Tab', {
+                  userName: ProfileData?.username,
+                  activeScreen: 'Followers',
+                })
+              }
             />
             <Card
               label={'Following'}
@@ -234,7 +240,12 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   ? ProfileData?.follower_id.length
                   : 0
               }
-              onPress={() => navigation.navigate('Following')}
+              onPress={() =>
+                navigation.navigate('Follow_Tab', {
+                  userName: ProfileData?.username,
+                  activeScreen: 'Following',
+                })
+              }
             />
           </View>
 
@@ -278,7 +289,11 @@ const StudentProfile: FC<props> = ({navigation}) => {
                 )}
                 nestedScrollEnabled
                 renderItem={({item: post, index, separators}: any) => (
-                  <PostCard key={post.id} postDetail={post} />
+                  <PostCard
+                    key={post.id}
+                    postDetail={post}
+                    navigation={navigation}
+                  />
                 )}
               />
             </View>

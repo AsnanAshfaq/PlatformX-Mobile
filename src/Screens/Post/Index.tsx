@@ -63,15 +63,9 @@ const Posts: FC<props> = ({navigation}) => {
           <FlatList
             data={Post}
             // disableVirtualization
-            keyExtractor={(item: any, index) => `${item.id}-${index}`}
+            keyExtractor={(item: any, index) => `${item.id}`}
             renderItem={({item: Post, index}: any) => {
-              return (
-                <PostCard
-                  key={Post?.id}
-                  postDetail={Post}
-                  navigation={navigation}
-                />
-              );
+              return <PostCard postDetail={Post} navigation={navigation} />;
             }}
             // progressViewOffset={10}
             refreshControl={

@@ -2,6 +2,7 @@ import React from 'react';
 import MyProfile from '../Screens/Profile/Index';
 import {createStackNavigator} from '@react-navigation/stack';
 import Followers from '../Screens/Profile/Followers';
+import Tab from '../Screens/Profile/Tab';
 import Following from '../Screens/Profile/Following';
 import {config} from './Index';
 
@@ -27,8 +28,8 @@ const ProfileScreens = () => {
         }}
       />
       <Stack.Screen
-        name="Followers"
-        component={Followers}
+        name="Follow_Tab"
+        component={Tab}
         options={{
           animationEnabled: true,
           gestureDirection: 'horizontal',
@@ -39,7 +40,7 @@ const ProfileScreens = () => {
           },
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Following"
         component={Following}
         options={{
@@ -50,7 +51,7 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };
