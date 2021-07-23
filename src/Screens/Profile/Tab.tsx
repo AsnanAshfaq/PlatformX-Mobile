@@ -18,6 +18,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE} from '../../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
+import Loading from '../../Components/Loading';
 
 type cardProps = {
   data: any;
@@ -72,7 +73,7 @@ const Followers: FC = () => {
       });
   }, []);
 
-  if (isLoading) return <Text>It is Loading </Text>;
+  if (isLoading) return <Loading size={Width * 0.15} />;
 
   return (
     <View>
@@ -100,7 +101,7 @@ const Following: FC = () => {
       });
   }, []);
 
-  if (isLoading) return <Text>It is Loading </Text>;
+  if (isLoading) return <Loading size={Width * 0.15} />;
 
   return (
     <View>
