@@ -11,15 +11,20 @@ import CustomHeader from '../../Components/CustomHeader';
 import Search from '../../Components/Search';
 import UserCard from '../../Components/UserCard';
 import Axios from '../../Utils/Axios';
-import {TabView, SceneMap} from 'react-native-tab-view';
+import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 import {darkColors} from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {PROFILE_IMAGE} from '../../Constants/sample';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 type cardProps = {
-  data: [];
+  data: any;
   screens: 'Followers' | 'Following';
 };
 type screens = 'Followers' | 'Following';
+const ICON_SIZE = Width * 0.07;
 
 const Card: FC<cardProps> = ({data, screens}) => {
   return (
@@ -30,18 +35,26 @@ const Card: FC<cardProps> = ({data, screens}) => {
           style={styles.cardImage}
           source={{
             uri:
-              'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
+              data.user_profile_image !== null
+                ? BASE_URL + data.user_profile_image.path
+                : PROFILE_IMAGE,
           }}
         />
       </View>
       {/* details container  */}
       <View style={styles.cardDetailsContainer}>
-        <Text style={styles.cardText}>Lucy Edison</Text>
-        <Text style={styles.cardText}>@lucy10234</Text>
+        <Text style={styles.cardTextName}>
+          {data.first_name + data.last_name}
+        </Text>
+        <Text style={styles.cardTextUserName}>@{data.username}</Text>
       </View>
-      {/* remove container */}
-      <View>
-        <Text style={styles.cardText}>Remove</Text>
+      {/* icon container */}
+      <View style={styles.cardIconContainer}>
+        <Ionicons
+          name={'ellipsis-vertical'}
+          size={ICON_SIZE}
+          color={darkColors.TAB_BAR_ACTIVE_COLOR}
+        />
       </View>
     </View>
   );
@@ -53,10 +66,10 @@ const Followers: FC = () => {
   useEffect(() => {
     Axios.get('/user/follower')
       .then(result => setFollowers(result.data))
-      .then(() =>
+      .then(() => {
         // set the loading to false
-        setisLoading(false),
-      );
+        setisLoading(false);
+      });
   }, []);
 
   if (isLoading) return <Text>It is Loading </Text>;
@@ -66,7 +79,9 @@ const Followers: FC = () => {
       <Search placeholder={'Seach Followers'} showFilterIcon={false} />
       <FlatList
         data={followers}
-        renderItem={({item}) => <Card data={item} screens={'Followers'} />}
+        renderItem={({item}: any) => (
+          <Card data={item.followed_id} screens={'Followers'} />
+        )}
         keyExtractor={(item: any, _) => `${item.id}`}
       />
     </View>
@@ -79,10 +94,10 @@ const Following: FC = () => {
   useEffect(() => {
     Axios.get('/user/following')
       .then(result => setFollowing(result.data))
-      .then(() =>
+      .then(() => {
         // set the loading to false
-        setisLoading(false),
-      );
+        setisLoading(false);
+      });
   }, []);
 
   if (isLoading) return <Text>It is Loading </Text>;
@@ -92,7 +107,9 @@ const Following: FC = () => {
       <Search placeholder={'Seach Following'} showFilterIcon={false} />
       <FlatList
         data={following}
-        renderItem={({item}) => <Card data={item} screens={'Following'} />}
+        renderItem={({item}: any) => (
+          <Card data={item?.follower_id} screens={'Following'} />
+        )}
         keyExtractor={(item: any, _) => `${item.id}`}
       />
     </View>
@@ -115,24 +132,6 @@ const Tab: FC<props> = ({navigation, route: Route}) => {
     {key: 'followers', title: 'Followers'},
     {key: 'following', title: 'Following'},
   ]);
-
-  // useEffect(() => {
-  //   // get user followers and followings
-  //   if (activeScreen === 'Following')
-  //     Axios.get('/user/following')
-  //       .then(result => setFollowing(result.data))
-  //       .then(() =>
-  //         // set the loading to false
-  //         setisLoading(false),
-  //       );
-  //   if (activeScreen === 'Followers')
-  //     Axios.get('/user/follower')
-  //       .then(result => setFollowers(result.data))
-  //       .then(() =>
-  //         // set the loading to false
-  //         setisLoading(false),
-  //       );
-  // }, [isLoading, activeScreen]);
 
   const renderScene = ({route}) => {
     switch (route.key) {
@@ -160,9 +159,17 @@ const Tab: FC<props> = ({navigation, route: Route}) => {
         navigationState={{index, routes}}
         onIndexChange={setIndex}
         renderScene={renderScene}
+        renderTabBar={props => (
+          <TabBar
+            {...props}
+            indicatorStyle={{backgroundColor: darkColors.LIGHT_BACKGROUND}}
+            style={{backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR}}
+            activeColor={darkColors.TEXT_COLOR}
+            inactiveColor={darkColors.SHADOW_COLOR}
+          />
+        )}
         keyboardDismissMode={'auto'}
       />
-      {/* {!isLoading ? <></> : <Text>No {activeScreen} to show </Text>} */}
     </View>
   );
 };
@@ -204,10 +211,20 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   cardDetailsContainer: {
-    flex: 0.8,
+    flex: 0.7,
+    justifyContent: 'center',
   },
-  cardText: {
+  cardTextName: {
     fontSize: Sizes.normal,
     color: darkColors.TEXT_COLOR,
+  },
+  cardTextUserName: {
+    fontSize: Sizes.normal * 0.9,
+    color: darkColors.TEXT_COLOR,
+  },
+  cardIconContainer: {
+    flex: 0.1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
