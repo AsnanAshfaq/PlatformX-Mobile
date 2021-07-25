@@ -3,17 +3,19 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
+  TouchableWithoutFeedback,
+  RefreshControl,
   FlatList,
   Image,
 } from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import Search from '../../Components/Search';
-import UserCard from '../../Components/UserCard';
+import FollowingModal from '../../Modals/FollowingModal';
 import Axios from '../../Utils/Axios';
 import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 import {darkColors} from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
+import PopUpMenu from '../../Menu/FollowingCardPopUpMenu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE} from '../../Constants/sample';
 //@ts-ignore
@@ -21,13 +23,17 @@ import {BASE_URL} from 'react-native-dotenv';
 import Loading from '../../Components/Loading';
 
 type cardProps = {
+  id: string;
   data: any;
   screens: 'Followers' | 'Following';
+  showModal: () => void;
 };
+
 type screens = 'Followers' | 'Following';
+
 const ICON_SIZE = Width * 0.07;
 
-const Card: FC<cardProps> = ({data, screens}) => {
+const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
   return (
     <View style={styles.cardParent}>
       {/* profile image container  */}
@@ -51,11 +57,11 @@ const Card: FC<cardProps> = ({data, screens}) => {
       </View>
       {/* icon container */}
       <View style={styles.cardIconContainer}>
-        <Ionicons
-          name={'ellipsis-vertical'}
-          size={ICON_SIZE}
-          color={darkColors.TAB_BAR_ACTIVE_COLOR}
-        />
+        {screens === 'Following' && (
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <PopUpMenu Modal={showModal} />
+          </TouchableWithoutFeedback>
+        )}
       </View>
     </View>
   );
@@ -64,7 +70,9 @@ const Card: FC<cardProps> = ({data, screens}) => {
 const Followers: FC = () => {
   const [followers, setFollowers] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+
   useEffect(() => {
+    console.log('Gettign follower ');
     Axios.get('/user/follower')
       .then(result => setFollowers(result.data))
       .then(() => {
@@ -77,11 +85,16 @@ const Followers: FC = () => {
 
   return (
     <View>
-      <Search placeholder={'Seach Followers'} showFilterIcon={false} />
+      <Search placeholder={'Search Followers'} showFilterIcon={false} />
       <FlatList
         data={followers}
         renderItem={({item}: any) => (
-          <Card data={item.followed_id} screens={'Followers'} />
+          <Card
+            data={item.followed_id}
+            id={item.id}
+            screens={'Followers'}
+            showModal={() => null}
+          />
         )}
         keyExtractor={(item: any, _) => `${item.id}`}
       />
@@ -92,7 +105,14 @@ const Followers: FC = () => {
 const Following: FC = () => {
   const [isLoading, setisLoading] = useState(true);
   const [following, setFollowing] = useState([]);
+  const [unFollowModal, setUnFollowModal] = useState({
+    show: false,
+    id: '', // id of the user
+    description: '',
+  });
+
   useEffect(() => {
+    console.log('Gettign following ');
     Axios.get('/user/following')
       .then(result => setFollowing(result.data))
       .then(() => {
@@ -105,13 +125,40 @@ const Following: FC = () => {
 
   return (
     <View>
-      <Search placeholder={'Seach Following'} showFilterIcon={false} />
+      {/* un-follow modal  */}
+      <FollowingModal
+        heading={'UnFollow'}
+        unFollow={unFollowModal}
+        toggleModal={() =>
+          setUnFollowModal(props => {
+            return {
+              ...props,
+              show: !props.show,
+            };
+          })
+        }
+      />
+      <Search placeholder={'Search Following'} showFilterIcon={false} />
       <FlatList
         data={following}
-        renderItem={({item}: any) => (
-          <Card data={item?.follower_id} screens={'Following'} />
-        )}
         keyExtractor={(item: any, _) => `${item.id}`}
+        renderItem={({item}: any) => (
+          <Card
+            data={item?.follower_id}
+            id={item.id}
+            screens={'Following'}
+            showModal={() => {
+              // show the modal
+              setUnFollowModal(props => {
+                return {
+                  id: item.follower_id.id,
+                  show: true,
+                  description: `Are you sure that you want to unfollow  @${item.follower_id.username}?`,
+                };
+              });
+            }}
+          />
+        )}
       />
     </View>
   );
