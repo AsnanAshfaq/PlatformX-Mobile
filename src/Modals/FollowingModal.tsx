@@ -26,17 +26,23 @@ const FilterModal: FC<props> = ({toggleModal, unFollow, heading}) => {
   const unFollowUser = () => {
     console.log('Un following user', unFollow.id);
     // setshowModal(false);
-    Axios.post('/user/follower/delete', {
+    Axios.post('/user/following/delete', {
       id: unFollow.id,
     })
       .then(result => {
-        ToastAndroid.show(result.data, 1500);
+        if (result.status === 201) {
+          ToastAndroid.show(result.data.success, 1500);
+        } else {
+          ToastAndroid.show(result.data.error, 1500);
+        }
       })
       .then(() => {
         // then toggle the modal
         toggleModal();
       })
-      .catch(error => ToastAndroid.show(error, 1500));
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (

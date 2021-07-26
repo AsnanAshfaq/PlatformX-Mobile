@@ -72,9 +72,10 @@ const Followers: FC = () => {
   const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Gettign follower ');
     Axios.get('/user/follower')
-      .then(result => setFollowers(result.data))
+      .then(result => {
+        setFollowers(result.data);
+      })
       .then(() => {
         // set the loading to false
         setisLoading(false);
@@ -90,7 +91,7 @@ const Followers: FC = () => {
         data={followers}
         renderItem={({item}: any) => (
           <Card
-            data={item.followed_id}
+            data={item.follower_id}
             id={item.id}
             screens={'Followers'}
             showModal={() => null}
@@ -105,16 +106,17 @@ const Followers: FC = () => {
 const Following: FC = () => {
   const [isLoading, setisLoading] = useState(true);
   const [following, setFollowing] = useState([]);
-  const [unFollowModal, setUnFollowModal] = useState({
+  const [unFollowData, setUnFollowModalData] = useState({
     show: false,
     id: '', // id of the user
     description: '',
   });
 
   useEffect(() => {
-    console.log('Gettign following ');
     Axios.get('/user/following')
-      .then(result => setFollowing(result.data))
+      .then(result => {
+        setFollowing(result.data);
+      })
       .then(() => {
         // set the loading to false
         setisLoading(false);
@@ -128,9 +130,9 @@ const Following: FC = () => {
       {/* un-follow modal  */}
       <FollowingModal
         heading={'UnFollow'}
-        unFollow={unFollowModal}
+        unFollow={unFollowData}
         toggleModal={() =>
-          setUnFollowModal(props => {
+          setUnFollowModalData(props => {
             return {
               ...props,
               show: !props.show,
@@ -144,16 +146,16 @@ const Following: FC = () => {
         keyExtractor={(item: any, _) => `${item.id}`}
         renderItem={({item}: any) => (
           <Card
-            data={item?.follower_id}
+            data={item?.followed_id}
             id={item.id}
             screens={'Following'}
             showModal={() => {
               // show the modal
-              setUnFollowModal(props => {
+              setUnFollowModalData(props => {
                 return {
-                  id: item.follower_id.id,
+                  id: item.followed_id.id,
                   show: true,
-                  description: `Are you sure that you want to unfollow  @${item.follower_id.username}?`,
+                  description: `Are you sure that you want to unfollow  @${item.followed_id.username}?`,
                 };
               });
             }}
