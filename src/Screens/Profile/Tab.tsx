@@ -31,8 +31,6 @@ type cardProps = {
 
 type screens = 'Followers' | 'Following';
 
-const ICON_SIZE = Width * 0.07;
-
 const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
   return (
     <View style={styles.cardParent}>
@@ -67,6 +65,20 @@ const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
   );
 };
 
+const NoDataView: FC<{screen: 'Followers' | 'Following'}> = ({screen}) => {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text
+        style={{
+          fontSize: Sizes.normal,
+          color: darkColors.TEXT_COLOR,
+        }}>
+        You don't have any {screen} yet
+      </Text>
+    </View>
+  );
+};
+
 const Followers: FC = () => {
   const [followers, setFollowers] = useState([]);
   const [isLoading, setisLoading] = useState(true);
@@ -85,20 +97,27 @@ const Followers: FC = () => {
   if (isLoading) return <Loading size={Width * 0.15} />;
 
   return (
-    <View>
-      <Search placeholder={'Search Followers'} showFilterIcon={false} />
-      <FlatList
-        data={followers}
-        renderItem={({item}: any) => (
-          <Card
-            data={item.follower_id}
-            id={item.id}
-            screens={'Followers'}
-            showModal={() => null}
+    <View style={styles.parent}>
+      {followers.length === 0 ? (
+        // if there are no followers then show the no data view
+        <NoDataView screen={'Followers'} />
+      ) : (
+        <>
+          <Search placeholder={'Search Followers'} showFilterIcon={false} />
+          <FlatList
+            data={followers}
+            renderItem={({item}: any) => (
+              <Card
+                data={item.follower_id}
+                id={item.id}
+                screens={'Followers'}
+                showModal={() => null}
+              />
+            )}
+            keyExtractor={(item: any, _) => `${item.id}`}
           />
-        )}
-        keyExtractor={(item: any, _) => `${item.id}`}
-      />
+        </>
+      )}
     </View>
   );
 };
@@ -126,42 +145,50 @@ const Following: FC = () => {
   if (isLoading) return <Loading size={Width * 0.15} />;
 
   return (
-    <View>
-      {/* un-follow modal  */}
-      <FollowingModal
-        heading={'UnFollow'}
-        unFollow={unFollowData}
-        toggleModal={() =>
-          setUnFollowModalData(props => {
-            return {
-              ...props,
-              show: !props.show,
-            };
-          })
-        }
-      />
-      <Search placeholder={'Search Following'} showFilterIcon={false} />
-      <FlatList
-        data={following}
-        keyExtractor={(item: any, _) => `${item.id}`}
-        renderItem={({item}: any) => (
-          <Card
-            data={item?.followed_id}
-            id={item.id}
-            screens={'Following'}
-            showModal={() => {
-              // show the modal
+    <View style={styles.parent}>
+      {/* if we dont have any following  */}
+      {following.length === 0 ? (
+        // if there are no following then show the no data view
+        <NoDataView screen={'Following'} />
+      ) : (
+        <>
+          {/* un-follow modal  */}
+          <FollowingModal
+            heading={'UnFollow'}
+            unFollow={unFollowData}
+            toggleModal={() =>
               setUnFollowModalData(props => {
                 return {
-                  id: item.followed_id.id,
-                  show: true,
-                  description: `Are you sure that you want to unfollow  @${item.followed_id.username}?`,
+                  ...props,
+                  show: !props.show,
                 };
-              });
-            }}
+              })
+            }
           />
-        )}
-      />
+          <Search placeholder={'Search Following'} showFilterIcon={false} />
+          <FlatList
+            data={following}
+            keyExtractor={(item: any, _) => `${item.id}`}
+            renderItem={({item}: any) => (
+              <Card
+                data={item?.followed_id}
+                id={item.id}
+                screens={'Following'}
+                showModal={() => {
+                  // show the modal
+                  setUnFollowModalData(props => {
+                    return {
+                      id: item.followed_id.id,
+                      show: true,
+                      description: `Are you sure that you want to unfollow  @${item.followed_id.username}?`,
+                    };
+                  });
+                }}
+              />
+            )}
+          />
+        </>
+      )}
     </View>
   );
 };
