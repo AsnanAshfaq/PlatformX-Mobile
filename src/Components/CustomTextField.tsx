@@ -5,12 +5,40 @@ import {Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
+type textContentType =
+  | 'none' //disable autofill
+  | 'URL'
+  | 'addressCity'
+  | 'addressCityAndState'
+  | 'addressState'
+  | 'countryName'
+  | 'creditCardNumber'
+  | 'emailAddress'
+  | 'familyName'
+  | 'fullStreetAddress'
+  | 'givenName'
+  | 'jobTitle'
+  | 'location'
+  | 'middleName'
+  | 'name'
+  | 'namePrefix'
+  | 'nameSuffix'
+  | 'nickname'
+  | 'organizationName'
+  | 'postalCode'
+  | 'streetAddressLine1'
+  | 'streetAddressLine2'
+  | 'sublocality'
+  | 'telephoneNumber'
+  | 'username'
+  | 'password';
+
 type props = {
   defaultValue: any;
   onChangeText: any;
-  icon?: string;
   placeholder: string;
-  textContentType: string;
+  textContentType: textContentType;
+  icon?: string;
   secureTextEntry?: boolean;
   rightIcon?: boolean;
   maxLength?: number;

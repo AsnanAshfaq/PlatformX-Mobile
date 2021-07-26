@@ -13,7 +13,7 @@ import React, {FC, useRef, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import axios from '../../Utils/Axios';
 import OrgProfile from './OrgProfile';
-import StudentProfile from './StudentProfile';
+import StudentProfile from './Student/StudentProfile';
 import {useStateValue} from '../../Store/StateProvider';
 
 type props = {

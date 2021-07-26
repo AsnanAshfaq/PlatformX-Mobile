@@ -21,14 +21,14 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import CustomHeader from '../../Components/CustomHeader';
-import PostCard from '../../Components/PostCard';
-import {darkColors} from '../../Constants/Colors';
-import {postData, profileData} from '../../Constants/sample';
-import {Height, Sizes, Width} from '../../Constants/Size';
+import CustomHeader from '../../../Components/CustomHeader';
+import PostCard from '../../../Components/PostCard';
+import {darkColors} from '../../../Constants/Colors';
+import {postData, profileData} from '../../../Constants/sample';
+import {Height, Sizes, Width} from '../../../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../Constants/sample';
-import axios from '../../Utils/Axios';
+import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../../Constants/sample';
+import axios from '../../../Utils/Axios';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
@@ -269,7 +269,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
           {/* view profile button  */}
           <TouchableOpacity
             style={styles.viewButtonContainer}
-            onPress={() => console.log('Go to main profile')}>
+            onPress={() => navigation.navigate('View_Profile')}>
             <Text style={styles.viewButtonText}>View Profile</Text>
           </TouchableOpacity>
           <View style={styles.activitiesContainer}>

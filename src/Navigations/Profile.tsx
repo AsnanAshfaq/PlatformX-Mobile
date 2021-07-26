@@ -1,10 +1,9 @@
 import React from 'react';
 import MyProfile from '../Screens/Profile/Index';
 import {createStackNavigator} from '@react-navigation/stack';
-import Followers from '../Screens/Profile/Followers';
 import Tab from '../Screens/Profile/Tab';
-import Following from '../Screens/Profile/Following';
 import {config} from './Index';
+import ViewProfile from '../Screens/Profile/Student/ViewProfile';
 
 const Stack = createStackNavigator();
 
@@ -14,7 +13,7 @@ const ProfileScreens = () => {
       screenOptions={{
         header: () => null,
       }}>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Home"
         component={MyProfile}
         options={{
@@ -26,8 +25,8 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      />
-      <Stack.Screen
+      /> */}
+      {/* <Stack.Screen
         name="Follow_Tab"
         component={Tab}
         options={{
@@ -39,11 +38,12 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      />
-      {/* <Stack.Screen
-        name="Following"
-        component={Following}
+      /> */}
+      <Stack.Screen
+        name="View_Profile"
+        component={ViewProfile}
         options={{
+          animationEnabled: true,
           gestureDirection: 'horizontal',
           gestureEnabled: true,
           transitionSpec: {
@@ -51,7 +51,7 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

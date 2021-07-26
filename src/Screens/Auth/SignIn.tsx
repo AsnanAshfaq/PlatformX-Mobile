@@ -26,7 +26,7 @@ const SignIn: FC<props> = ({navigation}) => {
   const handleLogin = () => {
     console.log('pressed on sign in');
     axios
-      .post('http://127.0.0.1:8000/api/token/', {
+      .post('/api/token/', {
         email: '18asnan@gmail.com',
         password: '@snan@shfaq18',
       })

@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  RefreshControl,
   FlatList,
   Image,
 } from 'react-native';
@@ -12,11 +11,10 @@ import CustomHeader from '../../Components/CustomHeader';
 import Search from '../../Components/Search';
 import FollowingModal from '../../Modals/FollowingModal';
 import Axios from '../../Utils/Axios';
-import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
+import {TabView, TabBar} from 'react-native-tab-view';
 import {darkColors} from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
 import PopUpMenu from '../../Menu/FollowingCardPopUpMenu';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE} from '../../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';

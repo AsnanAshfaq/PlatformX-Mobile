@@ -57,34 +57,6 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
           </View>
         </MenuOption> */}
       </MenuOptions>
-
-      {/* <MenuOptions
-        customStyles={{
-          optionsContainer: {
-            backgroundColor: darkColors.SHADOW_COLOR,
-            borderWidth: 1,
-            borderRadius: 20,
-            marginRight: 20,
-            width: 140,
-            marginTop: 24,
-            marginLeft: -10,
-            borderColor: 'transparent',
-          },
-          optionWrapper: {
-            height: 35,
-          },
-        }}>
-        <MenuOption onSelect={() => console.log('Clicked on save post')}>
-          <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Save Post</Text>
-          </View>
-        </MenuOption>
-        <MenuOption onSelect={() => console.log('Clicked on report')}>
-          <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Report</Text>
-          </View>
-        </MenuOption>
-      </MenuOptions> */}
     </Menu>
   );
 };
