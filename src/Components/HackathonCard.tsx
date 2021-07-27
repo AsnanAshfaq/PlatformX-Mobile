@@ -11,6 +11,7 @@ import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import {PROFILE_IMAGE,} from '../Constants/sample';
+import PopUpMenu from '../Menu/HackathonCardPopUpMenu';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
@@ -52,6 +53,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
     <View style={styles.parent}>
       {/* header  */}
       <View style={styles.headerContainer}>
+        {/* user image  */}
         <View style={styles.headerImageContainer}>
           <Image
             source={{
@@ -72,21 +74,16 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
             {new Date(hackathonDetail.created_at).toDateString()}
           </Text>
         </View>
+        {/* right icon  */}
         <View style={styles.headerIconContainer}>
-          <TouchableOpacity
-            onPress={() => console.log('Clicked on post option icon')}>
-            <Ionicons
-              name={'ellipsis-vertical'}
-              size={ICON_SIZE}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
-            />
-          </TouchableOpacity>
+          <PopUpMenu navigation={navigation} />
         </View>
       </View>
       {/* content  */}
       <View style={styles.contentContainer}>
         {/* title  */}
         <Text style={styles.titleText}>{hackathonDetail.title}</Text>
+        {/* description  */}
         {hackathonDetail.description.length > MAX_TEXT_LENGTH ? (
           <Text>
             <Text style={styles.descriptionText}>
@@ -130,7 +127,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           resizeMode={'contain'}
         />
       </View>
-      {/* hackathon details  */}
+      {/* hackathon details (Cash Prize - Participants - Date)  */}
       <View style={styles.iconsRowConatiner}>
         <View style={styles.iconsRow}>
           <HackathonCardIcons name={'globe-outline'} label={'Online'} />

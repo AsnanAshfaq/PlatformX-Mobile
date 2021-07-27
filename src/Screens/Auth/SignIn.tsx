@@ -24,7 +24,6 @@ const SignIn: FC<props> = ({navigation}) => {
   const [Password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log('pressed on sign in');
     axios
       .post('/api/token/', {
         email: '18asnan@gmail.com',

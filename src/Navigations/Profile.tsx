@@ -13,7 +13,7 @@ const ProfileScreens = () => {
       screenOptions={{
         header: () => null,
       }}>
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Home"
         component={MyProfile}
         options={{
@@ -25,8 +25,8 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name="Follow_Tab"
         component={Tab}
         options={{
@@ -38,7 +38,7 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      /> */}
+      />
       <Stack.Screen
         name="View_Profile"
         component={ViewProfile}

@@ -29,6 +29,7 @@ import {Height, Sizes, Width} from '../../../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../../Constants/sample';
 import axios from '../../../Utils/Axios';
+import Loading from '../../../Components/Loading';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
@@ -84,7 +85,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
   // states
   const [ProfileData, setProfileData] = useState<any>(null);
   const [Post, setPost] = useState([]);
-  const [Loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [Refresh, setRefresh] = useState(false);
 
   const [LoadBackgroundImage, setLoadBackgroundImage] = useState(true);
@@ -136,7 +137,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
     getUserDetails();
   }, []);
 
-  if (!Loading) {
+  if (!loading) {
     return (
       <View style={styles.parent}>
         <CustomHeader
@@ -298,13 +299,15 @@ const StudentProfile: FC<props> = ({navigation}) => {
               />
             </View>
           ) : (
-            <Text>You dont have any posts yet :)</Text>
+            <View style={styles.noPostContainer}>
+              <Text style={styles.noPostText}>No posts yet :)</Text>
+            </View>
           )}
         </ScrollView>
       </View>
     );
   }
-  return <Text>Loading </Text>;
+  return <Loading size={'large'} />;
 };
 
 const styles = StyleSheet.create({
@@ -438,6 +441,14 @@ const styles = StyleSheet.create({
   myPostText: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large,
+  },
+  noPostContainer: {
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  noPostText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal * 1.1,
   },
 });
 

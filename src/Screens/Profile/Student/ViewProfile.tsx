@@ -11,7 +11,7 @@
 // education
 
 import React, {FC, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomTextField from '../../../Components/CustomTextField';
 import {darkColors} from '../../../Constants/Colors';
@@ -26,6 +26,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
     firstName: '',
     lastName: '',
     userName: '',
+    bio: '',
   });
   return (
     <View style={styles.parent}>
@@ -35,51 +36,68 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
         back
         onBackPress={() => navigation.goBack()}
       />
-      <View style={styles.center}>
-        <CustomTextField
-          defaultValue={Input.firstName}
-          onChangeText={text =>
-            setInput(props => {
-              return {
-                ...props,
-                firstName: text,
-              };
-            })
-          }
-          placeholder={'First Name'}
-          textContentType={'name'}
-        />
-      </View>
-      <View style={styles.center}>
-        <CustomTextField
-          defaultValue={Input.firstName}
-          onChangeText={text =>
-            setInput(props => {
-              return {
-                ...props,
-                lastName: text,
-              };
-            })
-          }
-          placeholder={'Last Name'}
-          textContentType={'name'}
-        />
-      </View>
-      <View style={styles.center}>
-        <CustomTextField
-          defaultValue={Input.firstName}
-          onChangeText={text =>
-            setInput(props => {
-              return {
-                ...props,
-                userName: text,
-              };
-            })
-          }
-          placeholder={'User Name'}
-          textContentType={'name'}
-        />
-      </View>
+      <ScrollView>
+        <View style={styles.center}>
+          <CustomTextField
+            defaultValue={Input.firstName}
+            onChangeText={text =>
+              setInput(props => {
+                return {
+                  ...props,
+                  firstName: text,
+                };
+              })
+            }
+            placeholder={'First Name'}
+            textContentType={'name'}
+          />
+        </View>
+        <View style={styles.center}>
+          <CustomTextField
+            defaultValue={Input.firstName}
+            onChangeText={text =>
+              setInput(props => {
+                return {
+                  ...props,
+                  lastName: text,
+                };
+              })
+            }
+            placeholder={'Last Name'}
+            textContentType={'name'}
+          />
+        </View>
+        <View style={styles.center}>
+          <CustomTextField
+            defaultValue={Input.firstName}
+            onChangeText={text =>
+              setInput(props => {
+                return {
+                  ...props,
+                  userName: text,
+                };
+              })
+            }
+            placeholder={'User Name'}
+            textContentType={'name'}
+          />
+        </View>
+        <View style={styles.center}>
+          <CustomTextField
+            defaultValue={Input.firstName}
+            onChangeText={text =>
+              setInput(props => {
+                return {
+                  ...props,
+                  bio: text,
+                };
+              })
+            }
+            placeholder={'Bio'}
+            textContentType={'name'}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };
