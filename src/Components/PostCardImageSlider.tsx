@@ -28,7 +28,7 @@ const ImageView: FC<imageProps> = ({image, setHeight}) => {
   const [PostImageLoading, setPostImageLoading] = useState(true);
 
   useEffect(() => {
-    console.log('View is on Focus');
+    // console.log('View is on Focus');
   }, []);
   return (
     <View style={styles.postImageContainer} key={image.id}>

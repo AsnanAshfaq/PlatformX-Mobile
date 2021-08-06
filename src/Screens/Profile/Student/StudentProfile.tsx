@@ -24,7 +24,6 @@ import {
 import CustomHeader from '../../../Components/CustomHeader';
 import PostCard from '../../../Components/PostCard';
 import {darkColors} from '../../../Constants/Colors';
-import {postData, profileData} from '../../../Constants/sample';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../../Constants/sample';
@@ -273,12 +272,13 @@ const StudentProfile: FC<props> = ({navigation}) => {
             onPress={() => navigation.navigate('View_Profile')}>
             <Text style={styles.viewButtonText}>View Profile</Text>
           </TouchableOpacity>
+          {/* activities button  */}
           <View style={styles.activitiesContainer}>
             <TouchableOpacity style={styles.activitiesButtonContainer}>
               <Text style={styles.activityButtonText}>My Activities</Text>
             </TouchableOpacity>
           </View>
-          {/* if user has posted something show my post section*/}
+          {/* if user has posted something then show my post section*/}
           {Post.length !== 0 ? (
             <View ref={myPostRef}>
               <FlatList

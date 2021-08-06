@@ -93,7 +93,7 @@ const Posts: FC<props> = ({navigation}) => {
         </>
       ) : !IsLoading ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={styles.noMoreText}>No more hackathons</Text>
+          <Text style={styles.noMoreText}>No Posts yet</Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
             <Text style={styles.refreshText}>Refresh</Text>
           </TouchableOpacity>
