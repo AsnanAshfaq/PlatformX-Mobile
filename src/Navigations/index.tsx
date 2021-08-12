@@ -4,9 +4,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 // importing screens
 import Create_EditPost from '../Screens/Post/Create_EditPost';
 import Notification from '../Screens/Notification/Notification';
-import Chat from '../Screens/Chat/ChatList';
+import ChatScreens from './Chat';
 import ViewHackathon from '../Screens/Hackathon/ViewHackathon';
 import RegisterHackathon from '../Screens/Hackathon/Register';
+import ProfileScreens from './Profile';
 // importing Auth screen stack
 import AuthScreens from './Auth';
 import DrawerScreens from './Drawer';
@@ -56,15 +57,15 @@ const Navigation = () => {
             detachPreviousScreen: !navigation.isFocused(),
           };
         }}>
-        <Stack.Screen name="Main" component={DrawerScreens} />
+        {/* <Stack.Screen name="Main" component={DrawerScreens} /> */}
         {/* <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
         <Stack.Screen name="Edit_Post" component={EditPost} />
         <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
         <Stack.Screen name="Register_Hackathon" component={RegisterHackathon} /> */}
-        <Stack.Screen name="Chat" component={Chat} />
+        {/* <Stack.Screen name="Chat" component={ChatScreens} /> */}
         {/* <Stack.Screen name="Notification" component={Notification} /> */}
         {/* <Stack.Screen name="Profile" component={ProfileScreens} /> */}
-        {/* <Stack.Screen name="Auth" component={AuthScreens} /> */}
+        <Stack.Screen name="Auth" component={AuthScreens} />
         {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
       </Stack.Navigator>
     </NavigationContainer>

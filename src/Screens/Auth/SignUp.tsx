@@ -19,31 +19,22 @@ import {
 import CustomTextField from '../../Components/CustomTextField';
 import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
+import AuthState from '../../Utils/AuthHandler';
 
 type props = {
   navigation: any;
 };
 
 const SignUp: FC<props> = ({navigation}) => {
-  const [Registration, setRegistration] = useState({
-    first_name: '',
-    last_name: '',
-    username: '',
-    email: '',
-    password: '',
-    confirm_password: '',
-  });
-
-  const handleSignUp = () => {
-    console.log('pressed on sign up');
-  };
+  // get some handlers
+  const {Registration, setRegistration, handleSignUp} = AuthState();
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       // keyboardVerticalOffset={20}
       style={styles.parent}>
-      <ScrollView keyboardShouldPersistTaps={'always'}>
+      <ScrollView keyboardShouldPersistTaps={'never'}>
         <>
           {/* platformX logo  */}
           <View style={styles.logoContainer}>
@@ -61,7 +52,10 @@ const SignUp: FC<props> = ({navigation}) => {
                 setRegistration(props => {
                   return {
                     ...props,
-                    first_name: text,
+                    first_name: {
+                      value: text,
+                      error: '',
+                    },
                   };
                 })
               }
@@ -76,7 +70,10 @@ const SignUp: FC<props> = ({navigation}) => {
                 setRegistration(props => {
                   return {
                     ...props,
-                    last_name: text,
+                    last_name: {
+                      value: text,
+                      error: '',
+                    },
                   };
                 })
               }
@@ -90,7 +87,10 @@ const SignUp: FC<props> = ({navigation}) => {
                 setRegistration(props => {
                   return {
                     ...props,
-                    username: text,
+                    username: {
+                      value: text,
+                      error: '',
+                    },
                   };
                 })
               }
@@ -104,7 +104,10 @@ const SignUp: FC<props> = ({navigation}) => {
                 setRegistration(props => {
                   return {
                     ...props,
-                    email: text,
+                    email: {
+                      value: text,
+                      error: '',
+                    },
                   };
                 })
               }
@@ -119,7 +122,10 @@ const SignUp: FC<props> = ({navigation}) => {
                 setRegistration(props => {
                   return {
                     ...props,
-                    password: text,
+                    password: {
+                      value: text,
+                      error: '',
+                    },
                   };
                 })
               }
@@ -136,7 +142,10 @@ const SignUp: FC<props> = ({navigation}) => {
                 setRegistration(props => {
                   return {
                     ...props,
-                    confirm_password: text,
+                    confirm_password: {
+                      value: text,
+                      error: '',
+                    },
                   };
                 })
               }

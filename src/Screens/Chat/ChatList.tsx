@@ -1,12 +1,13 @@
 import React, {FC} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
-import ChatCard from '../../Components/ChatCard';
+import ChatCard from './ChatCard';
 import {chatData} from '../../Constants/sample';
 
 type props = {
   navigation: any;
 };
+
 const Chat: FC<props> = ({navigation}) => {
   return (
     <View style={styles.parent}>
@@ -19,7 +20,12 @@ const Chat: FC<props> = ({navigation}) => {
       <ScrollView style={{flex: 1}}>
         <>
           {chatData.map(chat => (
-            <ChatCard chat={chat} navigation={navigation} key={chat.id} />
+            <ChatCard
+              chat={chat}
+              navigation={navigation}
+              key={chat.id}
+              onPress={e => navigation.navigate('ChatScreen')}
+            />
           ))}
         </>
       </ScrollView>

@@ -9,7 +9,7 @@ const AuthScreens = () => {
   return (
     <Stack.Navigator
       screenOptions={{header: () => null}}
-      initialRouteName={'SignIn'}>
+      initialRouteName={'SignUp'}>
       <Stack.Screen name={'SignIn'} component={SignIn} />
       <Stack.Screen name={'SignUp'} component={SignUp} />
     </Stack.Navigator>

@@ -1,31 +1,30 @@
 import React, {FC, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
-import {Sizes, Width} from '../Constants/Size';
+import {darkColors} from '../../Constants/Colors';
+import {Sizes, Width} from '../../Constants/Size';
+import {PROFILE_IMAGE} from '../../Constants/sample';
 
 type props = {
   navigation: any;
   chat: any;
+  onPress: (e: any) => void;
 };
 
 //icon size
 const ICON_SIZE = Width * 0.07;
-//random image
 
-const RANDOM_PROFILE_IMAGE =
-  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
-
-const ChatCard: FC<props> = ({navigation, chat}) => {
+const ChatCard: FC<props> = ({navigation, chat, onPress}) => {
   const [ImageLoading, setImageLoading] = useState(true);
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.parent}>
         {/* image container */}
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: ImageLoading ? RANDOM_PROFILE_IMAGE : chat.user_image,
+              uri: ImageLoading ? PROFILE_IMAGE : chat.user_image,
             }}
             style={styles.image}
             onLoad={() => setImageLoading(false)}
