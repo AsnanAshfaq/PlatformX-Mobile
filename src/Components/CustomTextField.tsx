@@ -43,6 +43,7 @@ type props = {
   rightIcon?: boolean;
   maxLength?: number;
   autoFocus?: boolean;
+  error?: string;
 };
 
 const ICON_SIZE = Width * 0.07;
@@ -57,35 +58,40 @@ const CustomTextField: FC<props> = ({
   rightIcon,
   maxLength,
   autoFocus,
+  error,
 }) => {
   const [Security, setSecurity] = useState(secureTextEntry);
 
+  console.log(error);
   return (
-    <View style={styles.textFieldContainer}>
-      <TextInput
-        placeholder={placeholder}
-        style={styles.textField}
-        value={defaultValue}
-        onChangeText={onChangeText}
-        placeholderTextColor={darkColors.TEXT_COLOR}
-        textContentType={textContentType}
-        secureTextEntry={Security === true ? Security : false}
-        maxLength={maxLength}
-        autoFocus={autoFocus}
-      />
-      {rightIcon && (
-        <TouchableWithoutFeedback
-          onPress={() => setSecurity(!Security)}
-          style={styles.iconContainer}>
-          <Ionicons
-            name={Security ? 'eye-outline' : 'eye-off-outline'}
-            size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
-            style={styles.icon}
-          />
-        </TouchableWithoutFeedback>
-      )}
-    </View>
+    <>
+      <View style={styles.textFieldContainer}>
+        <TextInput
+          placeholder={placeholder}
+          style={styles.textField}
+          value={defaultValue}
+          onChangeText={onChangeText}
+          placeholderTextColor={darkColors.TEXT_COLOR}
+          textContentType={textContentType}
+          secureTextEntry={Security === true ? Security : false}
+          maxLength={maxLength}
+          autoFocus={autoFocus}
+        />
+        {rightIcon && (
+          <TouchableWithoutFeedback
+            onPress={() => setSecurity(!Security)}
+            style={styles.iconContainer}>
+            <Ionicons
+              name={Security ? 'eye-outline' : 'eye-off-outline'}
+              size={ICON_SIZE}
+              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              style={styles.icon}
+            />
+          </TouchableWithoutFeedback>
+        )}
+      </View>
+      <Text>{error}</Text>
+    </>
   );
 };
 

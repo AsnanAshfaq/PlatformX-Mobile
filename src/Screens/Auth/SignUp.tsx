@@ -6,7 +6,7 @@
 // password
 // confirm password
 
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,15 +19,212 @@ import {
 import CustomTextField from '../../Components/CustomTextField';
 import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
-import AuthState from '../../Utils/AuthHandler';
+import AuthHandlers from '../../Utils/AuthHandler';
 
 type props = {
   navigation: any;
 };
 
+const Error: FC<{error: string}> = ({error}) => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        // width: Width * 0.9,
+        alignItems: 'flex-start',
+      }}>
+      <Text style={styles.errorText}>{error}</Text>
+    </View>
+  );
+};
+
 const SignUp: FC<props> = ({navigation}) => {
   // get some handlers
-  const {Registration, setRegistration, handleSignUp} = AuthState();
+  const {isEmailValid, isEmpty, isSame, checkLength} = AuthHandlers();
+
+  const [Registration, setRegistration] = useState({
+    first_name: {value: '', error: ''},
+    last_name: {value: '', error: ''},
+    username: {value: '', error: ''},
+    email: {value: '', error: ''},
+    password: {value: '', error: ''},
+    confirm_password: {value: '', error: ''},
+  });
+
+  const handleSignUp = () => {
+    let x = Registration;
+
+    const customChecks = (
+      Key: string,
+      emptyError: string,
+      minError: string,
+      maxError: string,
+    ) => {
+      const value = Registration[Key]['value'];
+      let y = Registration;
+      if (isEmpty(value)) {
+        y[Key]['error'] = emptyError;
+      } else {
+        if (checkLength(value, 5, 13) == 'min') {
+          y[Key]['error'] = minError;
+        } else if (checkLength(value, 5, 14) == 'max') {
+          y[Key]['error'] = maxError;
+        }
+      }
+      const error = y[Key]['error'];
+      if (error != '') {
+        Registration[Key]['error'] = error;
+        Registration[Key]['value'] = value;
+        setRegistration(props => {
+          return {
+            ...Registration,
+          };
+        });
+      }
+    };
+
+    customChecks(
+      'first_name',
+      'First Name cannot be Empty',
+      'First Name should be atleast 5 characters',
+      'First Name shoule be less than 14 characters',
+    );
+    // check's for first name
+    // if (isEmpty(Registration.first_name.value)) {
+    //   x['first_name']['error'] = 'First Name cannot be Empty';
+    // } else {
+    //   if (checkLength(Registration.first_name.value, 5, 13) == 'min') {
+    //     x['first_name']['error'] = 'First Name should be atleast 5 characters';
+    //   } else if (checkLength(Registration.first_name.value, 5, 14) == 'max') {
+    //     x['first_name']['error'] =
+    //       'First Name should be less than 14 characters';
+    //   }
+    // }
+    // if (Registration['first_name']['error'] != '') {
+    //   setRegistration(props => {
+    //     return {
+    //       ...props,
+    //       first_name: {
+    //         value: props.first_name.value,
+    //         error: props.first_name.error,
+    //       },
+    //     };
+    //   });
+    // }
+
+    //check's for last name
+    if (isEmpty(Registration.last_name.value)) {
+      x['last_name']['error'] = 'Last Name cannnot be Empty';
+    } else {
+      if (checkLength(Registration.last_name.value, 5, 13) == 'min') {
+        x['last_name']['error'] = 'Last Name should be atleast 5 characters';
+      } else if (checkLength(Registration.last_name.value, 5, 14) == 'max') {
+        x['last_name']['error'] = 'Last Name should be less than 14 characters';
+      }
+    }
+    if (Registration['last_name']['error'] != '') {
+      setRegistration(props => {
+        return {
+          ...props,
+          last_name: {
+            value: props.last_name.value,
+            error: props.last_name.error,
+          },
+        };
+      });
+    }
+
+    // check's for user name
+    if (isEmpty(Registration.username.value)) {
+      x['username']['error'] = 'User Name cannnot be Empty';
+    } else {
+      if (checkLength(Registration.username.value, 5, 13) == 'min') {
+        x['username']['error'] = 'User Name should be atleast 5 characters';
+      } else if (checkLength(Registration.username.value, 5, 14) == 'max') {
+        x['username']['error'] = 'User Name should be less than 15 characters';
+      }
+    }
+    if (Registration['username']['error'] != '') {
+      setRegistration(props => {
+        return {
+          ...props,
+          username: {
+            value: props.username.value,
+            error: props.username.error,
+          },
+        };
+      });
+    }
+
+    // check's for email
+    if (isEmpty(Registration.email.value)) {
+      x['email']['error'] = 'Email cannnot be Empty';
+    } else {
+      if (!isEmailValid(Registration.email.value)) {
+        x['email']['error'] = 'Please enter a valid email address';
+      } else if (checkLength(Registration.email.value, 5, 14) == 'max') {
+        x['email']['error'] = 'User Name should be less than 15 characters';
+      }
+    }
+    if (Registration['email']['error'] != '') {
+      setRegistration(props => {
+        return {
+          ...props,
+          email: {
+            value: props.email.value,
+            error: props.email.error,
+          },
+        };
+      });
+    }
+
+    // check's for password
+    if (isEmpty(Registration.password.value)) {
+      x['password']['error'] = 'Password cannnot be Empty';
+    } else {
+      if (checkLength(Registration.password.value, 8, 14) == 'min') {
+        x['password']['error'] = 'Password be atleast 8 characters';
+      } else if (checkLength(Registration.password.value, 8, 14) == 'max') {
+        x['password']['error'] = 'Password should be less than 14 characters';
+      }
+    }
+    if (Registration['password']['error'] != '') {
+      setRegistration(props => {
+        return {
+          ...props,
+          password: {
+            value: props.password.value,
+            error: props.password.error,
+          },
+        };
+      });
+    }
+
+    // check's for confirm password
+    if (isEmpty(Registration.confirm_password.value)) {
+      x['confirm_password']['error'] = 'Confirm Password cannnot be Empty';
+    } else {
+      if (
+        !isSame(
+          Registration.password.value,
+          Registration.confirm_password.value,
+        )
+      )
+        x['confirm_password']['error'] = 'Passwords do not match';
+    }
+    if (Registration['confirm_password']['error'] != '') {
+      setRegistration(props => {
+        return {
+          ...props,
+          confirm_password: {
+            value: props.confirm_password.value,
+            error: props.confirm_password.error,
+          },
+        };
+      });
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -47,8 +244,8 @@ const SignUp: FC<props> = ({navigation}) => {
             {/* first name field  */}
             <CustomTextField
               placeholder={'First Name'}
-              defaultValue={Registration.first_name}
-              onChangeText={text =>
+              defaultValue={Registration.first_name.value}
+              onChangeText={text => {
                 setRegistration(props => {
                   return {
                     ...props,
@@ -57,15 +254,16 @@ const SignUp: FC<props> = ({navigation}) => {
                       error: '',
                     },
                   };
-                })
-              }
+                });
+              }}
               textContentType={'name'}
               autoFocus
+              error={Registration.first_name.error}
             />
             {/* last name field  */}
             <CustomTextField
               placeholder={'Last Name'}
-              defaultValue={Registration.last_name}
+              defaultValue={Registration.last_name.value}
               onChangeText={text =>
                 setRegistration(props => {
                   return {
@@ -78,6 +276,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'name'}
+              error={Registration.last_name.error}
             />
             {/* username field  */}
             <CustomTextField
@@ -95,8 +294,8 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'username'}
+              error={Registration.username.error}
             />
-            {/* email field  */}
             <CustomTextField
               placeholder={'Email'}
               defaultValue={Registration.email}
@@ -112,6 +311,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'emailAddress'}
+              error={Registration.email.error}
             />
 
             {/* password field  */}
@@ -132,6 +332,7 @@ const SignUp: FC<props> = ({navigation}) => {
               textContentType={'password'}
               rightIcon
               secureTextEntry={true}
+              error={Registration.password.error}
             />
 
             {/* confirm password  */}
@@ -152,6 +353,7 @@ const SignUp: FC<props> = ({navigation}) => {
               textContentType={'password'}
               rightIcon
               secureTextEntry={true}
+              error={Registration.confirm_password.error}
             />
           </View>
           {/* submit button container  */}
@@ -250,5 +452,9 @@ const styles = StyleSheet.create({
     color: darkColors.TOMATO_COLOR,
     fontSize: Sizes.normal,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: darkColors.TOMATO_COLOR,
+    fontSize: Sizes.small,
   },
 });
