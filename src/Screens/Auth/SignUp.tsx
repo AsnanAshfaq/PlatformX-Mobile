@@ -25,6 +25,15 @@ type props = {
   navigation: any;
 };
 
+type customChecksProps = {
+  Key: string;
+  emptyError: string;
+  minError: string;
+  maxError: string;
+  minValue: number;
+  maxValue: number;
+};
+
 const Error: FC<{error: string}> = ({error}) => {
   return (
     <View
@@ -60,15 +69,17 @@ const SignUp: FC<props> = ({navigation}) => {
       emptyError: string,
       minError: string,
       maxError: string,
+      minValue: number,
+      maxValue: number,
     ) => {
       const value = Registration[Key]['value'];
       let y = Registration;
       if (isEmpty(value)) {
         y[Key]['error'] = emptyError;
       } else {
-        if (checkLength(value, 5, 13) == 'min') {
+        if (checkLength(value, minValue, maxValue) == 'min') {
           y[Key]['error'] = minError;
-        } else if (checkLength(value, 5, 14) == 'max') {
+        } else if (checkLength(value, minValue, maxValue) == 'max') {
           y[Key]['error'] = maxError;
         }
       }
@@ -87,75 +98,29 @@ const SignUp: FC<props> = ({navigation}) => {
     customChecks(
       'first_name',
       'First Name cannot be Empty',
-      'First Name should be atleast 5 characters',
-      'First Name shoule be less than 14 characters',
+      'First Name should be atleast 5 characters.',
+      'First Name should be less than 14 characters.',
+      5,
+      14,
     );
-    // check's for first name
-    // if (isEmpty(Registration.first_name.value)) {
-    //   x['first_name']['error'] = 'First Name cannot be Empty';
-    // } else {
-    //   if (checkLength(Registration.first_name.value, 5, 13) == 'min') {
-    //     x['first_name']['error'] = 'First Name should be atleast 5 characters';
-    //   } else if (checkLength(Registration.first_name.value, 5, 14) == 'max') {
-    //     x['first_name']['error'] =
-    //       'First Name should be less than 14 characters';
-    //   }
-    // }
-    // if (Registration['first_name']['error'] != '') {
-    //   setRegistration(props => {
-    //     return {
-    //       ...props,
-    //       first_name: {
-    //         value: props.first_name.value,
-    //         error: props.first_name.error,
-    //       },
-    //     };
-    //   });
-    // }
 
-    //check's for last name
-    if (isEmpty(Registration.last_name.value)) {
-      x['last_name']['error'] = 'Last Name cannnot be Empty';
-    } else {
-      if (checkLength(Registration.last_name.value, 5, 13) == 'min') {
-        x['last_name']['error'] = 'Last Name should be atleast 5 characters';
-      } else if (checkLength(Registration.last_name.value, 5, 14) == 'max') {
-        x['last_name']['error'] = 'Last Name should be less than 14 characters';
-      }
-    }
-    if (Registration['last_name']['error'] != '') {
-      setRegistration(props => {
-        return {
-          ...props,
-          last_name: {
-            value: props.last_name.value,
-            error: props.last_name.error,
-          },
-        };
-      });
-    }
+    customChecks(
+      'last_name',
+      'Last Name cannot be Empty',
+      'Last Name should be atleast 5 characters.',
+      'Last Name should be less than 14 characters.',
+      5,
+      14,
+    );
 
-    // check's for user name
-    if (isEmpty(Registration.username.value)) {
-      x['username']['error'] = 'User Name cannnot be Empty';
-    } else {
-      if (checkLength(Registration.username.value, 5, 13) == 'min') {
-        x['username']['error'] = 'User Name should be atleast 5 characters';
-      } else if (checkLength(Registration.username.value, 5, 14) == 'max') {
-        x['username']['error'] = 'User Name should be less than 15 characters';
-      }
-    }
-    if (Registration['username']['error'] != '') {
-      setRegistration(props => {
-        return {
-          ...props,
-          username: {
-            value: props.username.value,
-            error: props.username.error,
-          },
-        };
-      });
-    }
+    customChecks(
+      'username',
+      'User Name cannot be Empty',
+      'User Name should be atleast 5 characters.',
+      'User Name should be less than 14 characters.',
+      5,
+      14,
+    );
 
     // check's for email
     if (isEmpty(Registration.email.value)) {
@@ -180,26 +145,14 @@ const SignUp: FC<props> = ({navigation}) => {
     }
 
     // check's for password
-    if (isEmpty(Registration.password.value)) {
-      x['password']['error'] = 'Password cannnot be Empty';
-    } else {
-      if (checkLength(Registration.password.value, 8, 14) == 'min') {
-        x['password']['error'] = 'Password be atleast 8 characters';
-      } else if (checkLength(Registration.password.value, 8, 14) == 'max') {
-        x['password']['error'] = 'Password should be less than 14 characters';
-      }
-    }
-    if (Registration['password']['error'] != '') {
-      setRegistration(props => {
-        return {
-          ...props,
-          password: {
-            value: props.password.value,
-            error: props.password.error,
-          },
-        };
-      });
-    }
+    customChecks(
+      'password',
+      'Password cannot be empty',
+      'Password should be atleast 5 characters.',
+      'Password should be less than 14 characters.',
+      8,
+      14,
+    );
 
     // check's for confirm password
     if (isEmpty(Registration.confirm_password.value)) {

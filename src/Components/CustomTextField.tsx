@@ -62,10 +62,16 @@ const CustomTextField: FC<props> = ({
 }) => {
   const [Security, setSecurity] = useState(secureTextEntry);
 
-  console.log(error);
   return (
     <>
-      <View style={styles.textFieldContainer}>
+      <View
+        style={[
+          styles.textFieldContainer,
+          {
+            borderColor:
+              error != '' ? darkColors.TOMATO_COLOR : darkColors.SHADOW_COLOR,
+          },
+        ]}>
         <TextInput
           placeholder={placeholder}
           style={styles.textField}
@@ -106,7 +112,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    borderColor: darkColors.SHADOW_COLOR,
   },
   textField: {
     color: darkColors.TEXT_COLOR,
