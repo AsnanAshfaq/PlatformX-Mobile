@@ -68,8 +68,9 @@ const CustomTextField: FC<props> = ({
         style={[
           styles.textFieldContainer,
           {
-            borderColor:
-              error != '' ? darkColors.TOMATO_COLOR : darkColors.SHADOW_COLOR,
+            borderColor: error
+              ? darkColors.TOMATO_COLOR
+              : darkColors.SHADOW_COLOR,
           },
         ]}>
         <TextInput
@@ -96,7 +97,7 @@ const CustomTextField: FC<props> = ({
           </TouchableWithoutFeedback>
         )}
       </View>
-      <Text>{error}</Text>
+      <Text style={styles.errorText}>{error}</Text>
     </>
   );
 };
@@ -124,5 +125,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginVertical: 10,
+  },
+  errorText: {
+    color: darkColors.TOMATO_COLOR,
+    fontSize: Sizes.small,
   },
 });

@@ -6,11 +6,15 @@ import {darkColors} from '../Constants/Colors';
 
 type props = {
   size: 'small' | 'large' | number;
+  color?: string;
 };
-const Loading: FC<props> = ({size}) => {
+const Loading: FC<props> = ({size, color}) => {
   return (
     <View style={styles.parent}>
-      <ActivityIndicator size={size} color={darkColors.SHADOW_COLOR} />
+      <ActivityIndicator
+        size={size}
+        color={color ? color : darkColors.SHADOW_COLOR}
+      />
     </View>
   );
 };

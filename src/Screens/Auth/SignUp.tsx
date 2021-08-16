@@ -15,54 +15,46 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  ToastAndroid,
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
+import Loading from '../../Components/Loading';
 import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import AuthHandlers from '../../Utils/AuthHandler';
+import Axios from '../../Utils/Axios';
 
 type props = {
   navigation: any;
 };
 
-type customChecksProps = {
-  Key: string;
-  emptyError: string;
-  minError: string;
-  maxError: string;
-  minValue: number;
-  maxValue: number;
-};
-
-const Error: FC<{error: string}> = ({error}) => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        // width: Width * 0.9,
-        alignItems: 'flex-start',
-      }}>
-      <Text style={styles.errorText}>{error}</Text>
-    </View>
-  );
-};
-
 const SignUp: FC<props> = ({navigation}) => {
   // get some handlers
-  const {isEmailValid, isEmpty, isSame, checkLength} = AuthHandlers();
+  const {
+    isEmailValid,
+    isEmpty,
+    isSame,
+    checkLength,
+    isOnylAlphabets,
+  } = AuthHandlers();
 
   const [Registration, setRegistration] = useState({
-    first_name: {value: '', error: ''},
-    last_name: {value: '', error: ''},
-    username: {value: '', error: ''},
-    email: {value: '', error: ''},
-    password: {value: '', error: ''},
-    confirm_password: {value: '', error: ''},
+    first_name: {value: 'Asnan', error: ''},
+    last_name: {value: 'Ashfaq', error: ''},
+    username: {value: 'shanay_asnan', error: ''},
+    email: {value: 'shanay@gmail.com', error: ''},
+    password: {value: 'asnanashfaq', error: ''},
+    confirm_password: {value: 'asnanashfaq', error: ''},
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = () => {
     let x = Registration;
+    let isAllInputsValid = true;
+
+    // set the loading to true
+    setIsLoading(true);
 
     const customChecks = (
       Key: string,
@@ -77,9 +69,18 @@ const SignUp: FC<props> = ({navigation}) => {
       if (isEmpty(value)) {
         y[Key]['error'] = emptyError;
       } else {
-        if (checkLength(value, minValue, maxValue) == 'min') {
+        // if it is the first name and last name
+        // then also raise error if it contains values other than alphabets
+        if (Key === 'first_name' || Key === 'last_name') {
+          if (!isOnylAlphabets(value))
+            y[Key]['error'] = `${
+              Key === 'first_name' ? 'First' : 'Last'
+            } Name is invalid`;
+        }
+        const MinMax = checkLength(value, minValue, maxValue);
+        if (MinMax == 'min') {
           y[Key]['error'] = minError;
-        } else if (checkLength(value, minValue, maxValue) == 'max') {
+        } else if (MinMax == 'max') {
           y[Key]['error'] = maxError;
         }
       }
@@ -92,9 +93,12 @@ const SignUp: FC<props> = ({navigation}) => {
             ...Registration,
           };
         });
+        // make the input validation variable false
+        isAllInputsValid = false;
       }
     };
 
+    // check for first name
     customChecks(
       'first_name',
       'First Name cannot be Empty',
@@ -104,6 +108,7 @@ const SignUp: FC<props> = ({navigation}) => {
       14,
     );
 
+    // check for last name
     customChecks(
       'last_name',
       'Last Name cannot be Empty',
@@ -113,6 +118,7 @@ const SignUp: FC<props> = ({navigation}) => {
       14,
     );
 
+    // check for user name
     customChecks(
       'username',
       'User Name cannot be Empty',
@@ -128,8 +134,6 @@ const SignUp: FC<props> = ({navigation}) => {
     } else {
       if (!isEmailValid(Registration.email.value)) {
         x['email']['error'] = 'Please enter a valid email address';
-      } else if (checkLength(Registration.email.value, 5, 14) == 'max') {
-        x['email']['error'] = 'User Name should be less than 15 characters';
       }
     }
     if (Registration['email']['error'] != '') {
@@ -142,13 +146,15 @@ const SignUp: FC<props> = ({navigation}) => {
           },
         };
       });
+      // make the input validation variable false
+      isAllInputsValid = false;
     }
 
     // check's for password
     customChecks(
       'password',
       'Password cannot be empty',
-      'Password should be atleast 5 characters.',
+      'Password should be atleast 8 characters.',
       'Password should be less than 14 characters.',
       8,
       14,
@@ -176,6 +182,38 @@ const SignUp: FC<props> = ({navigation}) => {
           },
         };
       });
+      // make the input validation variable false
+      isAllInputsValid = false;
+    }
+
+    // check if all inputs are valid or not
+    if (isAllInputsValid) {
+      Axios.post('/user/signup/', {
+        first_name: Registration.first_name.value,
+        last_name: Registration.last_name.value,
+        username: Registration.username.value,
+        email: Registration.email.value,
+        password: Registration.password.value,
+      })
+        .then(response => {
+          if (response.status === 201) {
+            // account has been created
+            ToastAndroid.show(response.data.success, 1500);
+            //TODO:
+            //navigate to on boarding screen
+          } else {
+            ToastAndroid.show(response.data.error, 1500);
+          }
+          // set the loading to false
+          setIsLoading(false);
+        })
+        .catch(error => {
+          ToastAndroid.show(error.response.data.error, 1500);
+          // set the loading to false
+          setIsLoading(false);
+          // throw error;
+          return Promise.reject(error);
+        });
     }
   };
 
@@ -234,7 +272,7 @@ const SignUp: FC<props> = ({navigation}) => {
             {/* username field  */}
             <CustomTextField
               placeholder={'User Name'}
-              defaultValue={Registration.username}
+              defaultValue={Registration.username.value}
               onChangeText={text =>
                 setRegistration(props => {
                   return {
@@ -251,7 +289,7 @@ const SignUp: FC<props> = ({navigation}) => {
             />
             <CustomTextField
               placeholder={'Email'}
-              defaultValue={Registration.email}
+              defaultValue={Registration.email.value}
               onChangeText={text =>
                 setRegistration(props => {
                   return {
@@ -270,7 +308,7 @@ const SignUp: FC<props> = ({navigation}) => {
             {/* password field  */}
             <CustomTextField
               placeholder={'Password'}
-              defaultValue={Registration.password}
+              defaultValue={Registration.password.value}
               onChangeText={text =>
                 setRegistration(props => {
                   return {
@@ -291,7 +329,7 @@ const SignUp: FC<props> = ({navigation}) => {
             {/* confirm password  */}
             <CustomTextField
               placeholder={'Confirm Password '}
-              defaultValue={Registration.confirm_password}
+              defaultValue={Registration.confirm_password.value}
               onChangeText={text =>
                 setRegistration(props => {
                   return {
@@ -314,7 +352,16 @@ const SignUp: FC<props> = ({navigation}) => {
             <TouchableOpacity
               style={styles.submitButton}
               onPress={handleSignUp}>
-              <Text style={styles.submitButtonText}>Sign Up</Text>
+              {isLoading ? (
+                // <View style={{flex: 1}}>
+                <Loading
+                  size={'small'}
+                  color={darkColors.SCREEN_BACKGROUND_COLOR}
+                />
+              ) : (
+                // </View>
+                <Text style={styles.submitButtonText}>Sign Up</Text>
+              )}
             </TouchableOpacity>
             {/* sign up container  */}
             <View style={styles.signInContainer}>
@@ -343,6 +390,7 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
     // marginTop: Platform.OS === 'android' ? 25 : 0,
   },
   logoContainer: {
