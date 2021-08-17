@@ -15,6 +15,7 @@ import Splash from './src/Components/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {darkColors} from './src/Constants/Colors';
 
+export let Token = '';
 const App = () => {
   const [Loading, setLoading] = useState(true);
   const [state, dispatch] = useStateValue();
@@ -31,21 +32,23 @@ const App = () => {
           .then(result => {
             if (result.status === 200) {
               // if token is valid
-              // get result and store locally
-            }
-            if (result.data.student) {
-              dispatch({type: 'SET_USER_TYPE', payload: 'student'});
-            } else {
-              dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
+              // get result and store in context state
+              if (result.data.student) {
+                dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+              } else if (result.data.organization) {
+                dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
+              }
+              setIsAuthenticated(true);
             }
             setLoading(false);
-            setIsAuthenticated(true);
           })
           .catch(error => {
             setIsAuthenticated(false);
             setLoading(false);
             return Promise.reject(error);
           });
+      } else {
+        setLoading(false);
       }
     };
     getUserType();
