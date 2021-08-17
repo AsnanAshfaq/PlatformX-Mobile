@@ -353,13 +353,11 @@ const SignUp: FC<props> = ({navigation}) => {
               style={styles.submitButton}
               onPress={handleSignUp}>
               {isLoading ? (
-                // <View style={{flex: 1}}>
                 <Loading
                   size={'small'}
                   color={darkColors.SCREEN_BACKGROUND_COLOR}
                 />
               ) : (
-                // </View>
                 <Text style={styles.submitButtonText}>Sign Up</Text>
               )}
             </TouchableOpacity>

@@ -1,37 +1,68 @@
+//TODO:
+// when user opens the app
+// get "access" token from local storage
+// if token != ''
+// make api call to validate token
+// if token is valid, go to main screen, also store token in axios
+// else go to auth screens
+
 import React, {useEffect, useState} from 'react';
 import Navigation from './src/Navigations/Index';
 import {useStateValue} from './src/Store/StateProvider';
 import axios from './src/Utils/Axios';
 import {MenuProvider} from 'react-native-popup-menu';
-import PostSkeleton from './src/Skeleton/PostCardSkeleton';
+import Splash from './src/Components/Splash';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {darkColors} from './src/Constants/Colors';
 
 const App = () => {
   const [Loading, setLoading] = useState(true);
   const [state, dispatch] = useStateValue();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // get user type and set it into global state
-    const get_user_type = () => {
-      axios.get('/user/').then(result => {
-        if (result.data.student) {
-          dispatch({type: 'SET_USER_TYPE', payload: 'student'});
-        } else {
-          dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
-        }
-        setLoading(false);
-      });
+    const getUserType = async () => {
+      // get token from local storage
+      const accessToken = await AsyncStorage.getItem('access');
+      if (accessToken !== null && accessToken != '') {
+        // make api call
+        axios
+          .get('/user/')
+          .then(result => {
+            if (result.status === 200) {
+              // if token is valid
+              // get result and store locally
+            }
+            if (result.data.student) {
+              dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+            } else {
+              dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
+            }
+            setLoading(false);
+            setIsAuthenticated(true);
+          })
+          .catch(error => {
+            setIsAuthenticated(false);
+            setLoading(false);
+            return Promise.reject(error);
+          });
+      }
     };
-
-    get_user_type();
+    getUserType();
   }, [dispatch]);
 
   if (!Loading)
     return (
-      <MenuProvider>
-        <Navigation />
+      <MenuProvider
+        customStyles={{
+          menuProviderWrapper: {
+            backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
+          },
+        }}>
+        <Navigation isAuthenticated={isAuthenticated} />
       </MenuProvider>
     );
-  return null;
+  return <Splash />;
 };
 
 export default App;

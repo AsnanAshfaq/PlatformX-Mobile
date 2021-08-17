@@ -6,8 +6,6 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Platform,
-  TextInput,
-  Alert,
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import {darkColors} from '../../Constants/Colors';
@@ -17,13 +15,15 @@ import Axios from '../../Utils/Axios';
 import Loading from '../../Components/Loading';
 import AuthHandlers from '../../Utils/AuthHandler';
 import {ToastAndroid} from 'react-native';
+//@ts-ignore
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type props = {
   navigation: any;
 };
 
 const SignIn: FC<props> = ({navigation}) => {
-  const [SignIn, setSignIn] = useState({
+  const [signIn, setsignIn] = useState({
     email: {value: 'priya@gmail.com', error: ''},
     password: {value: 'angelspriya', error: ''},
   });
@@ -32,22 +32,29 @@ const SignIn: FC<props> = ({navigation}) => {
   // get some handlers
   const {isEmailValid, isEmpty} = AuthHandlers();
 
+  const storeTokenLocally = async (key: string, value: string) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      await AsyncStorage.setItem(key, '');
+    }
+  };
   const handleSignIn = () => {
     // set the loading to true
-    let x = SignIn;
+    let x = signIn;
     let isAllInputsValid = true;
     setIsLoading(true);
 
     // check's for email
-    if (isEmpty(SignIn.email.value)) {
+    if (isEmpty(signIn.email.value)) {
       x['email']['error'] = 'Email cannnot be Empty';
     } else {
-      if (!isEmailValid(SignIn.email.value)) {
+      if (!isEmailValid(signIn.email.value)) {
         x['email']['error'] = 'Please enter a valid email address';
       }
     }
-    if (SignIn['email']['error'] != '') {
-      setSignIn(props => {
+    if (signIn['email']['error'] != '') {
+      setsignIn(props => {
         return {
           ...props,
           email: {
@@ -61,11 +68,11 @@ const SignIn: FC<props> = ({navigation}) => {
     }
 
     // check's for password
-    if (isEmpty(SignIn.password.value)) {
-      SignIn['password']['error'] = 'Password cannot be empty';
-      setSignIn(props => {
+    if (isEmpty(signIn.password.value)) {
+      signIn['password']['error'] = 'Password cannot be empty';
+      setsignIn(props => {
         return {
-          ...SignIn,
+          ...signIn,
         };
       });
       // make the input validation variable false
@@ -74,34 +81,37 @@ const SignIn: FC<props> = ({navigation}) => {
 
     if (isAllInputsValid) {
       Axios.post('/user/signin/', {
-        email: SignIn.email.value,
-        password: SignIn.password.value,
+        email: signIn.email.value,
+        password: signIn.password.value,
       })
         .then(function (response) {
           // handle success
-          console.log(response.data);
           if (response.status === 200) {
             // user is valid
             // get user token
-            console.log(response.data);
+            if (response.data.access && response.data.refresh) {
+              // if access and refresh token exist
+              // store them in local storage
+              storeTokenLocally('access', response.data.access)
+                .then(() => storeTokenLocally('refresh', response.data.refresh))
+                .then(() => {
+                  // set the loading to false
+                  setIsLoading(false);
+                  // and navigate to main screen
+                  navigation.navigate('Main');
+                });
+            } else {
+              ToastAndroid.show('Error occured while signing in', 500);
+            }
           } else {
             ToastAndroid.show(response.data, 1500);
-          }
-          // set the loading to false
-          setIsLoading(false);
-          // if access and refresh token exist
-          if (response.data.access && response.data.refresh) {
-            // store them in local storage
-            ToastAndroid.show('Storing tokens in local storage', 500);
-            // and navigate to main screen
-            ToastAndroid.show('Navigating to main screen', 500);
           }
         })
         .catch(function (error) {
           // if there is exist email error
           if (error.response.data.email_error) {
             // set email error
-            setSignIn(props => {
+            setsignIn(props => {
               return {
                 ...props,
                 email: {
@@ -112,7 +122,7 @@ const SignIn: FC<props> = ({navigation}) => {
             });
           } else if (error.response.data.password_error) {
             // set password error
-            setSignIn(props => {
+            setsignIn(props => {
               return {
                 ...props,
                 password: {
@@ -152,9 +162,9 @@ const SignIn: FC<props> = ({navigation}) => {
         {/* email field  */}
         <CustomTextField
           placeholder={'Email'}
-          defaultValue={SignIn.email.value}
+          defaultValue={signIn.email.value}
           onChangeText={text => {
-            setSignIn(props => {
+            setsignIn(props => {
               return {
                 ...props,
                 email: {
@@ -165,15 +175,15 @@ const SignIn: FC<props> = ({navigation}) => {
             });
           }}
           textContentType={'emailAddress'}
-          error={SignIn.email.error}
+          error={signIn.email.error}
         />
 
         {/* password field  */}
         <CustomTextField
           placeholder={'Password'}
-          defaultValue={SignIn.password.value}
+          defaultValue={signIn.password.value}
           onChangeText={text => {
-            setSignIn(props => {
+            setsignIn(props => {
               return {
                 ...props,
                 password: {
@@ -184,7 +194,7 @@ const SignIn: FC<props> = ({navigation}) => {
             });
           }}
           textContentType={'password'}
-          error={SignIn.password.error}
+          error={signIn.password.error}
           rightIcon
           secureTextEntry={true}
         />
@@ -193,13 +203,11 @@ const SignIn: FC<props> = ({navigation}) => {
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity style={styles.submitButton} onPress={handleSignIn}>
           {isLoading ? (
-            // <View style={{flex: 1}}>
             <Loading
               size={'small'}
               color={darkColors.SCREEN_BACKGROUND_COLOR}
             />
           ) : (
-            // </View>
             <Text style={styles.submitButtonText}>Sign In</Text>
           )}
         </TouchableOpacity>
