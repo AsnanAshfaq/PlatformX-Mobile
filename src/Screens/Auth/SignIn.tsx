@@ -17,6 +17,7 @@ import AuthHandlers from '../../Utils/AuthHandler';
 import {ToastAndroid} from 'react-native';
 //@ts-ignore
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -24,13 +25,15 @@ type props = {
 
 const SignIn: FC<props> = ({navigation}) => {
   const [signIn, setsignIn] = useState({
-    email: {value: 'priya@gmail.com', error: ''},
-    password: {value: 'angelspriya', error: ''},
+    email: {value: 'roger@gmail.com', error: ''},
+    password: {value: 'greatestplayer', error: ''},
   });
   const [isLoading, setIsLoading] = useState(false);
 
   // get some handlers
   const {isEmailValid, isEmpty} = AuthHandlers();
+  // get context state
+  const [state, dispatch] = useStateValue();
 
   const storeTokenLocally = async (key: string, value: string) => {
     try {
@@ -97,8 +100,8 @@ const SignIn: FC<props> = ({navigation}) => {
                 .then(() => {
                   // set the loading to false
                   setIsLoading(false);
-                  // and navigate to main screen
-                  navigation.navigate('Main');
+                  // set the local sign in state to true
+                  dispatch({type: 'SET_SIGN_IN', payload: true});
                 });
             } else {
               ToastAndroid.show('Error occured while signing in', 500);
@@ -109,6 +112,7 @@ const SignIn: FC<props> = ({navigation}) => {
         })
         .catch(function (error) {
           // if there is exist email error
+          console.log(error);
           if (error.response.data.email_error) {
             // set email error
             setsignIn(props => {

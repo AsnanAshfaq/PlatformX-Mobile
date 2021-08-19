@@ -23,6 +23,7 @@ type imageProps = {
   image: any;
   setHeight?: (height: number) => void;
 };
+
 const ImageView: FC<imageProps> = ({image, setHeight}) => {
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [PostImageLoading, setPostImageLoading] = useState(true);

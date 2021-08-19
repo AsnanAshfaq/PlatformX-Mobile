@@ -14,7 +14,8 @@ const instance = axios.create({
 // adding token from local storage in axios headers
 instance.interceptors.request.use(async config => {
   const token = await AsyncStorage.getItem('access');
-  if (token != null) config.headers.Authorization = 'Bearer ' + token;
+  if (token != null && token != '')
+    config.headers.Authorization = 'Bearer ' + token;
   return config;
 });
 export default instance;

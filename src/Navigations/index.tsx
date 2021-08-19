@@ -10,8 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
-import EditPost from '../Screens/Post/EditPost';
-
+import {useStateValue} from '../Store/StateProvider';
 // declaring navigators
 const Stack = createStackNavigator();
 
@@ -27,11 +26,11 @@ export const config: TransitionSpec = {
   },
 };
 
-type props = {
-  isAuthenticated: boolean;
-};
+const Navigation: FC = () => {
+  // get sign in  state from context store
+  const [state, dispatch] = useStateValue();
+  const {isSignedIn} = state;
 
-const Navigation: FC<props> = ({isAuthenticated}) => {
   return (
     <NavigationContainer
       theme={{
@@ -55,7 +54,7 @@ const Navigation: FC<props> = ({isAuthenticated}) => {
             detachPreviousScreen: !navigation.isFocused(),
           };
         }}>
-        {isAuthenticated ? (
+        {isSignedIn ? (
           <Stack.Screen name="Main" component={DrawerScreens} />
         ) : (
           <Stack.Screen name="Auth" component={AuthScreens} />

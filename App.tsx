@@ -3,7 +3,7 @@
 // get "access" token from local storage
 // if token != ''
 // make api call to validate token
-// if token is valid, go to main screen, also store token in axios
+// if token is valid, go to main screen
 // else go to auth screens
 
 import React, {useEffect, useState} from 'react';
@@ -15,11 +15,9 @@ import Splash from './src/Components/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {darkColors} from './src/Constants/Colors';
 
-export let Token = '';
 const App = () => {
   const [Loading, setLoading] = useState(true);
   const [state, dispatch] = useStateValue();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const getUserType = async () => {
@@ -33,17 +31,17 @@ const App = () => {
             if (result.status === 200) {
               // if token is valid
               // get result and store in context state
+              dispatch({type: 'SET_SIGN_IN', payload: true});
               if (result.data.student) {
                 dispatch({type: 'SET_USER_TYPE', payload: 'student'});
               } else if (result.data.organization) {
                 dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
               }
-              setIsAuthenticated(true);
             }
             setLoading(false);
           })
           .catch(error => {
-            setIsAuthenticated(false);
+            dispatch({type: 'SET_SIGN_IN', payload: false});
             setLoading(false);
             return Promise.reject(error);
           });
@@ -62,7 +60,7 @@ const App = () => {
             backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
           },
         }}>
-        <Navigation isAuthenticated={isAuthenticated} />
+        <Navigation />
       </MenuProvider>
     );
   return <Splash />;
