@@ -181,21 +181,25 @@ export const drawerItems = [
     id: 1,
     label: 'My Activities',
     icon_name: 'home-sharp',
+    onPress: () => console.log('Pressed on My Activities'),
   },
   {
     id: 2,
     label: 'Saved',
     icon_name: 'bookmarks',
+    onPress: () => console.log('Pressed on Bookmarks'),
   },
   {
     id: 3,
     label: 'Settings',
     icon_name: 'ios-settings-sharp',
+    onPress: () => console.log('Pressed on Settings'),
   },
   {
     id: 4,
     label: 'Logout',
     icon_name: 'md-log-out-outline',
+    onPress: () => console.log('Pressed on Logout'),
   },
 ];
 
@@ -457,7 +461,9 @@ export const BACKGROUND_IMAGE =
 
 export const POST_IMAGE = 'https://wallpaperaccess.com/full/1397755.jpg';
 
-export const GREY_IMAGE = 'https://www.tilelook.com/system/tile_picture/resource/2336209/d3d_default_Pure_MA_Grey_60x60_FGYT660GR1.jpg';
+export const GREY_IMAGE =
+  'https://www.tilelook.com/system/tile_picture/resource/2336209/d3d_default_Pure_MA_Grey_60x60_FGYT660GR1.jpg';
+
 export const POST_TYPE = [
   'General',
   'Seeking Assisstance',

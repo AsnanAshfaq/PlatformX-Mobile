@@ -14,9 +14,10 @@ import {drawerItems} from '../Constants/sample';
 type Props = {
   label: string;
   icon_name: string;
+  onPress: () => void;
 };
 
-const CustomDrawerItem: FC<Props> = ({label, icon_name}) => {
+const CustomDrawerItem: FC<Props> = ({label, icon_name, onPress}) => {
   return (
     <DrawerItem
       label={({focused, color}) => (
@@ -27,7 +28,7 @@ const CustomDrawerItem: FC<Props> = ({label, icon_name}) => {
       icon={({focused, color, size}) => (
         <Ionicons name={icon_name} size={25} color={darkColors.TEXT_COLOR} />
       )}
-      onPress={() => console.log('Pressed ')}
+      onPress={() => onPress()}
     />
   );
 };
@@ -69,6 +70,7 @@ const CustomDrawer: FC<props> = (props: any) => {
           key={item.id}
           icon_name={item.icon_name}
           label={item.label}
+          onPress={item.onPress}
         />
       ))}
     </DrawerContentScrollView>

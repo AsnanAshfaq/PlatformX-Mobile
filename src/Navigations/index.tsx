@@ -6,9 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AuthScreens from './Auth';
 import DrawerScreens from './Drawer';
 // other imports
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
-import {Sizes, Width} from '../Constants/Size';
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 import {useStateValue} from '../Store/StateProvider';
 // declaring navigators
@@ -52,23 +50,30 @@ const Navigation: FC = () => {
             gestureEnabled: true,
             gestureDirection: 'horizontal',
             detachPreviousScreen: !navigation.isFocused(),
+            // animationTypeForReplace: 'push',
           };
         }}>
         {isSignedIn ? (
-          <Stack.Screen name="Main" component={DrawerScreens} />
+          <>
+            <Stack.Screen name="Main" component={DrawerScreens} />
+            {/* 
+            <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
+            <Stack.Screen name="Edit_Post" component={EditPost} />
+            <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
+            <Stack.Screen
+              name="Register_Hackathon"
+              component={RegisterHackathon}
+            />
+            <Stack.Screen name="Chat" component={ChatScreens} />
+            <Stack.Screen name="Notification" component={Notification} />
+            <Stack.Screen name="Profile" component={ProfileScreens} />
+            <Stack.Screen name="TabScreens" component={TabScreens} /> */}
+          </>
         ) : (
-          <Stack.Screen name="Auth" component={AuthScreens} />
+          <>
+            <Stack.Screen name="Auth" component={AuthScreens} />
+          </>
         )}
-
-        {/* <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
-        <Stack.Screen name="Edit_Post" component={EditPost} />
-        <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
-        <Stack.Screen name="Register_Hackathon" component={RegisterHackathon} /> */}
-        {/* <Stack.Screen name="Chat" component={ChatScreens} /> */}
-        {/* <Stack.Screen name="Notification" component={Notification} /> */}
-        {/* <Stack.Screen name="Profile" component={ProfileScreens} /> */}
-
-        {/* <Stack.Screen name="TabScreens" component={TabScreens} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

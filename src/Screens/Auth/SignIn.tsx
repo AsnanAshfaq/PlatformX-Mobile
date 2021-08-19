@@ -104,6 +104,8 @@ const SignIn: FC<props> = ({navigation}) => {
                   dispatch({type: 'SET_SIGN_IN', payload: true});
                 });
             } else {
+              // set the local sign in state to false
+              dispatch({type: 'SET_SIGN_IN', payload: false});
               ToastAndroid.show('Error occured while signing in', 500);
             }
           } else {
@@ -111,8 +113,9 @@ const SignIn: FC<props> = ({navigation}) => {
           }
         })
         .catch(function (error) {
+          // set the local sign in state to false
+          dispatch({type: 'SET_SIGN_IN', payload: false});
           // if there is exist email error
-          console.log(error);
           if (error.response.data.email_error) {
             // set email error
             setsignIn(props => {
@@ -136,12 +139,10 @@ const SignIn: FC<props> = ({navigation}) => {
               };
             });
           }
-
           // else if there is any other error
           else if (error.response.data.error) {
             ToastAndroid.show(error.response.data.error, 1500);
           }
-
           // set the loading to false
           setIsLoading(false);
           // throw error;
@@ -150,8 +151,6 @@ const SignIn: FC<props> = ({navigation}) => {
     }
   };
 
-  // password_error
-  // email_error
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

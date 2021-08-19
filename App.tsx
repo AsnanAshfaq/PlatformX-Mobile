@@ -41,11 +41,14 @@ const App = () => {
             setLoading(false);
           })
           .catch(error => {
+            // set sign in state
             dispatch({type: 'SET_SIGN_IN', payload: false});
             setLoading(false);
             return Promise.reject(error);
           });
       } else {
+        // set sign in state
+        dispatch({type: 'SET_SIGN_IN', payload: false});
         setLoading(false);
       }
     };
