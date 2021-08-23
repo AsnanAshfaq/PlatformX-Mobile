@@ -1,9 +1,12 @@
 //@ts-ignore
 import {BASE_ADDRESS} from 'react-native-dotenv';
+
 const Token =
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjI4Njg0NDQ1LCJqdGkiOiI3NjQzMmUzNTA2ZTI0MGFmODI2Njk2NmNhZDg5NTBhOSIsInVzZXJfaWQiOiJjZDRkY2QwNS1iYzk3LTQ4MmYtOTEyOC02ZGM4NDBiYzA3YmYifQ.f0WV6s4bFyAvVC8wv_MKpEg2FwYbY6TuhFYC3IRQ81I';
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjMwMDc5NjEwLCJqdGkiOiJlODk1ZGQ4YWFiZjk0MWFmYTZmZmY5MzRmMGY1NDQ0MyIsInVzZXJfaWQiOiJkMzY0MjMxZC00MGJlLTQyN2EtODFiNC05OWMwYzZiYTAzZDcifQ.A75O1MO5BEzRZNKKVk_p-NX3LwrMIdWTu5u0rwzpUSs';
 
 const get_web_socket = (query: string) => {
+  // const token = await AsyncStorage.getItem('access');
+
   return new WebSocket(`ws://${BASE_ADDRESS}/ws/${query}`, null, {
     headers: {
       authorization: `Bearer ${Token}`,

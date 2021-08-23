@@ -10,7 +10,6 @@ import {
 import HackathonCard from '../../Components/HackathonCard';
 import CustomHeader from '../../Components/CustomHeader';
 import CustomSearch from '../../Components/Search';
-import {postData} from '../../Constants/sample';
 import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
@@ -40,14 +39,16 @@ const Hackathons: FC<props> = ({navigation}) => {
   //   }, []),
   // );
   const getData = async () => {
-    try {
-      axios.get('/api/hackathons/').then(response => {
+    axios
+      .get('/api/hackathons/')
+      .then(response => {
         setHackathons(response.data);
         setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+        console.log('Error is', error);
       });
-    } catch (error) {
-      console.log('Error is', error);
-    }
   };
 
   const onRefresh = () => {

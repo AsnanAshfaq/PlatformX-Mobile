@@ -63,7 +63,7 @@ const Posts: FC<props> = ({navigation}) => {
           <FlatList
             data={Post}
             // disableVirtualization
-            keyExtractor={(item: any, index) => `${item.id}`}
+            keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: Post, index}: any) => {
               return <PostCard postDetail={Post} navigation={navigation} />;
             }}

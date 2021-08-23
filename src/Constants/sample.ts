@@ -176,6 +176,20 @@ export const hackathonFilterData = [
   },
 ];
 
+export const workshopFilterData = [
+  {
+    id: 'interest tags',
+    tag: 'Interest tags',
+    subtag: [
+      'Social Good',
+      'Machine Learning/AI',
+      'COVID - 19',
+      'Productivity',
+      'Blockchain',
+    ],
+  },
+];
+
 export const drawerItems = [
   {
     id: 1,

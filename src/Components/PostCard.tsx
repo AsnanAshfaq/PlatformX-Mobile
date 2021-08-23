@@ -5,9 +5,6 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  FlatList,
-  Alert,
-  ScrollView,
   ToastAndroid,
 } from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
@@ -99,6 +96,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       })
       .catch(error => ToastAndroid.show(error, 1500));
   };
+
   return (
     <View style={styles.parent}>
       {/* comment modal  */}

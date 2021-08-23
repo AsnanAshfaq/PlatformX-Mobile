@@ -9,6 +9,10 @@ import DrawerScreens from './Drawer';
 import {darkColors} from '../Constants/Colors';
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 import {useStateValue} from '../Store/StateProvider';
+import Create_EditPost from '../Screens/Post/Create_EditPost';
+import Chat from './Chat';
+import Notification from './Notification';
+
 // declaring navigators
 const Stack = createStackNavigator();
 
@@ -56,16 +60,15 @@ const Navigation: FC = () => {
         {isSignedIn ? (
           <>
             <Stack.Screen name="Main" component={DrawerScreens} />
-            {/* 
             <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
-            <Stack.Screen name="Edit_Post" component={EditPost} />
+            <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="Notification" component={Notification} />
+            {/* 
             <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
             <Stack.Screen
               name="Register_Hackathon"
               component={RegisterHackathon}
             />
-            <Stack.Screen name="Chat" component={ChatScreens} />
-            <Stack.Screen name="Notification" component={Notification} />
             <Stack.Screen name="Profile" component={ProfileScreens} />
             <Stack.Screen name="TabScreens" component={TabScreens} /> */}
           </>

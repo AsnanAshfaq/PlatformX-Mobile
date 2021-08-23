@@ -1,9 +1,9 @@
 // TODO:
 // screen (Create OR Edit)
 // screen header ( Create Post OR Edit Post)
-// post text input (Write your post OR text passed)
-// post category (Select Post Type OR category passed)
-// post images (empty OR list of images passed)
+// post text input (Write your post OR text passed as prop)
+// post category (Select Post Type OR category passed as prop)
+// post images (empty OR list of images passed as prop)
 // post button (Post)
 import React, {FC, useRef, useState, useEffect} from 'react';
 import {
@@ -152,6 +152,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
   const removeImage = (index: number) => {
     // remove image from setImages
     setImages(Images.filter((_, i) => i != index));
+    // make api call to delete image
   };
 
   return (
@@ -208,6 +209,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
         {Images.length > 0 && (
           <ScrollView horizontal>
             {Images.map((image, index) => {
+              console.log(image);
               return (
                 <View style={styles.imageContainer} key={index}>
                   <Image

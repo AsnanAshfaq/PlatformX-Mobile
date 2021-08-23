@@ -1,54 +1,34 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
 } from 'react-native';
 import {darkColors} from '../Constants/Colors';
-import {Height, Sizes, Width} from '../Constants/Size';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-// import {PROFILE_IMAGE,} from '../Constants/sample';
-import PopUpMenu from '../Menu/HackathonCardPopUpMenu';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
+import {Height, Sizes, Width} from '../Constants/Size';
+import PopUpMenu from '../Menu/WorkshopCardPopUpMenu';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import {commaSeperator} from '../Utils/Numbers';
-
-const ICON_SIZE = Width * 0.07;
-
-type Props = {
-  name: string;
-  label: string | number;
-};
-
-const HackathonCardIcons: FC<Props> = ({name, label}) => {
-  return (
-    <View style={{flex: 1, flexDirection: 'row'}}>
-      <Ionicons
-        name={name}
-        size={ICON_SIZE}
-        color={darkColors.TAB_BAR_ACTIVE_COLOR}
-      />
-      <Text style={styles.iconText}>{label}</Text>
-    </View>
-  );
-};
 
 type props = {
   navigation: any;
-  hackathonDetail: any;
+  workshopDetail: any;
 };
 
 const MAX_TEXT_LENGTH = 250;
 
-const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
+const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
-  const [HackathonImageLoading, setHackathonImageLoading] = useState(true);
+  const [WokrshopPosterLoading, setWokrshopPosterLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
 
+  useEffect(() => {
+    // console.log(BASE_URL + workshopDetail.poster);
+  }, [workshopDetail]);
   return (
     <View style={styles.parent}>
       {/* header  */}
@@ -60,7 +40,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
               uri: ProfileImageLoading
                 ? PROFILE_IMAGE
                 : BASE_URL +
-                  hackathonDetail.organization.user.profile_image.path,
+                  workshopDetail.organization.user.profile_image.path,
             }}
             onLoadEnd={() => setProfileImageLoading(false)}
             style={styles.userImage}
@@ -68,10 +48,10 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         </View>
         <View style={styles.headerTextContainer}>
           <Text style={styles.username}>
-            {hackathonDetail.organization.name}
+            {workshopDetail.organization.name}
           </Text>
           <Text style={styles.date}>
-            {new Date(hackathonDetail.created_at).toDateString()}
+            {new Date(workshopDetail.created_at).toDateString()}
           </Text>
         </View>
         {/* right icon  */}
@@ -82,17 +62,17 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       {/* content  */}
       <View style={styles.contentContainer}>
         {/* title  */}
-        <Text style={styles.titleText}>{hackathonDetail.title}</Text>
+        <Text style={styles.titleText}>{workshopDetail.title}</Text>
         {/* description  */}
-        {hackathonDetail.description.length > MAX_TEXT_LENGTH ? (
+        {workshopDetail.description.length > MAX_TEXT_LENGTH ? (
           <Text>
             <Text style={styles.descriptionText}>
-              {hackathonDetail.description.substring(0, MAX_TEXT_LENGTH - 4)}
+              {workshopDetail.description.substring(0, MAX_TEXT_LENGTH - 4)}
             </Text>
             <TouchableWithoutFeedback
               onPress={() =>
                 navigation.navigate('View_Hackathon', {
-                  ID: hackathonDetail.id,
+                  ID: workshopDetail.id,
                 })
               }>
               <Text style={styles.descriptionText}>... {'  '}read more</Text>
@@ -100,27 +80,25 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           </Text>
         ) : (
           <Text style={styles.descriptionText}>
-            {hackathonDetail.description}
+            {workshopDetail.description}
           </Text>
         )}
       </View>
-      {/* hackathon image  */}
+      {/* workshop poster  */}
       <View style={styles.thumbnailContainer}>
         <Image
           source={{
-            uri: HackathonImageLoading
+            uri: WokrshopPosterLoading
               ? GREY_IMAGE
-              : BASE_URL + hackathonDetail.thumbnail_image,
+              : BASE_URL + workshopDetail.poster,
           }}
           onLoadEnd={() => {
-            Image.getSize(
-              BASE_URL + hackathonDetail.thumbnail_image,
-              (width, heigth) => {
-                // calculate aspect ratio of image
-                setImageAspectRatio(heigth / width);
-                setHackathonImageLoading(false);
-              },
-            );
+            Image.getSize(BASE_URL + workshopDetail.poster, (width, heigth) => {
+              // calculate aspect ratio of image
+              console.log(workshopDetail.poster);
+              setImageAspectRatio(heigth / width);
+              setWokrshopPosterLoading(false);
+            });
           }}
           style={{
             width: Width * 0.87,
@@ -129,31 +107,10 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           resizeMode={'contain'}
         />
       </View>
-      {/* hackathon details (Cash Prize - Participants - Date)  */}
-      <View style={styles.iconsRowConatiner}>
-        <View style={styles.iconsRow}>
-          <HackathonCardIcons name={'globe-outline'} label={'Online'} />
-          <HackathonCardIcons
-            name={'people-sharp'}
-            label={`${hackathonDetail.participants} Participants`}
-          />
-        </View>
-        <View style={styles.iconsRow}>
-          <HackathonCardIcons name={'time-outline'} label={'20 Days left'} />
-          <HackathonCardIcons
-            name={'cash-outline'}
-            label={commaSeperator(hackathonDetail.total_prize)}
-          />
-        </View>
-      </View>
       {/* apply now button  */}
       <View style={styles.applyButtonContainer}>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('View_Hackathon', {
-              ID: hackathonDetail.id,
-            })
-          }
+          onPress={() => console.log('Trying to apply in workshop')}
           style={styles.applyButton}>
           <Text style={styles.applyButtonText}>View Details </Text>
         </TouchableOpacity>
@@ -162,7 +119,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   );
 };
 
-export default HackathonCard;
+export default WorkshopCard;
 
 const styles = StyleSheet.create({
   parent: {
@@ -190,11 +147,6 @@ const styles = StyleSheet.create({
     // width: Width * 0.3,
     flex: 0.2,
   },
-  userImage: {
-    height: Height * 0.07,
-    width: Width * 0.14,
-    borderRadius: 40,
-  },
   headerTextContainer: {
     // width: Width * 0.6,
     flex: 0.7,
@@ -203,6 +155,11 @@ const styles = StyleSheet.create({
   headerIconContainer: {
     flex: 0.1,
     justifyContent: 'center',
+  },
+  userImage: {
+    height: Height * 0.07,
+    width: Width * 0.14,
+    borderRadius: 40,
   },
   username: {
     color: darkColors.TEXT_COLOR,
@@ -221,7 +178,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: darkColors.TEXT_COLOR,
-    fontSize: Sizes.normal * 1.7,
+    fontSize: Sizes.normal * 1.5,
     fontFamily: 'Raleway-Light',
   },
   descriptionText: {
@@ -239,24 +196,6 @@ const styles = StyleSheet.create({
     // marginRight: 20,
     // marginRight: 20,
     marginHorizontal: 0,
-  },
-  thumbnail: {
-    // width: Width * 0.865,
-    // height: Height * 0.25,
-  },
-  iconsRowConatiner: {
-    // height: Height * 0.09,
-    paddingHorizontal: 5,
-    marginTop: Height * 0.02,
-  },
-  iconsRow: {
-    flexDirection: 'row',
-    paddingVertical: 3,
-  },
-  iconText: {
-    color: darkColors.TEXT_COLOR,
-    fontSize: Sizes.normal,
-    paddingHorizontal: 5,
   },
   applyButtonContainer: {
     // minHeight: Height * 0.05,

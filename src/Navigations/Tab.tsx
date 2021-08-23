@@ -7,7 +7,9 @@ import Projects from '../Screens/Project/Index';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Width} from '../Constants/Size';
 import Post from '../Screens/Post/Index';
+
 const Tab = createBottomTabNavigator();
+
 const TabScreens = () => {
   return (
     <Tab.Navigator

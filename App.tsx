@@ -52,6 +52,7 @@ const App = () => {
         setLoading(false);
       }
     };
+
     getUserType();
   }, [dispatch]);
 

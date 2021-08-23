@@ -8,38 +8,37 @@ import {
   RefreshControl,
   Keyboard,
 } from 'react-native';
-import PostCard from '../../Components/PostCard';
 import CustomHeader from '../../Components/CustomHeader';
 import CustomSearch from '../../Components/Search';
-import {postData} from '../../Constants/sample';
 import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import PostSkeleton from '../../Skeleton/PostCardSkeleton';
+import {ToastAndroid} from 'react-native';
+import WorkshopCard from '../../Components/WorkshopCard';
+import WorkshopSkeleton from '../../Skeleton/WorkshopCardSkeleton';
 
 type props = {
   navigation: any;
 };
 const Workshop: FC<props> = ({navigation}) => {
   const [Workshops, setWorkshops] = useState([]);
-  const isFocuses = useIsFocused();
+  // const isFocuses = useIsFocused();
+  const [IsLoading, setIsLoading] = useState(true);
   const [Refreshing, setRefreshing] = useState(false);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     // getData();
-  //   }, []),
-  // );
-
   const getData = async () => {
-    try {
-      axios.get('/api/posts/').then(response => {
+    axios
+      .get('/api/workshops/')
+      .then(response => {
         setWorkshops(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+        if (error.response.data) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
       });
-    } catch (error) {
-      console.log('Error is', error);
-    }
   };
 
   const onRefresh = () => {
@@ -49,9 +48,10 @@ const Workshop: FC<props> = ({navigation}) => {
       setRefreshing(false);
     });
   };
+
   useEffect(() => {
     getData();
-  }, []);
+  }, [IsLoading]);
 
   return (
     <View style={styles.parent}>
@@ -62,7 +62,7 @@ const Workshop: FC<props> = ({navigation}) => {
         chat
         bell
       />
-      <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
+      <CustomSearch placeholder={'Search here'} showFilterIcon />
       {Workshops.length > 0 ? (
         <>
           <FlatList
@@ -70,9 +70,12 @@ const Workshop: FC<props> = ({navigation}) => {
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: workshop, index}: any) => {
-              return <Text>This is the workshop component</Text>;
-
-              //   return <PostCard key={workshop?.id} postDetail={workshop} />;
+              return (
+                <WorkshopCard
+                  navigation={navigation}
+                  workshopDetail={workshop}
+                />
+              );
             }}
             // progressViewOffset={10}
             refreshControl={
@@ -89,9 +92,15 @@ const Workshop: FC<props> = ({navigation}) => {
             contentOffset={{y: -300, x: 0}}
           />
         </>
+      ) : !IsLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={styles.noMoreText}>No more Workshops</Text>
+          <TouchableOpacity onPress={() => setIsLoading(true)}>
+            <Text style={styles.refreshText}>Refresh</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
-        // show the workshop skeleton
-        <PostSkeleton />
+        <WorkshopSkeleton />
       )}
     </View>
   );
@@ -121,6 +130,14 @@ const styles = StyleSheet.create({
   },
   skeleton: {
     // height: 10,
+  },
+  noMoreText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.normal,
+  },
+  refreshText: {
+    fontSize: Sizes.normal,
+    color: darkColors.TOMATO_COLOR,
   },
 });
 

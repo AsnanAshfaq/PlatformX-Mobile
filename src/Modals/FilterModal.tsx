@@ -12,9 +12,11 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import {hackathonFilterData} from '../Constants/sample';
 import CheckBox from '../Components/CheckBox';
+
 type Props = {
   list: Array<string>;
 };
+
 const SubTagList: FC<Props> = ({list}) => {
   return (
     <View style={styles.subtagContainer}>
@@ -30,10 +32,12 @@ const SubTagList: FC<Props> = ({list}) => {
     </View>
   );
 };
+
 type props = {
   isShow: boolean;
   toggleModal: () => void;
 };
+
 const FilterModal: FC<props> = ({isShow, toggleModal}) => {
   return (
     <Modal

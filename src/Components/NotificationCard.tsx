@@ -10,6 +10,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
+import {PROFILE_IMAGE} from '../Constants/sample';
 
 type props = {
   navigation: any;
@@ -17,9 +18,6 @@ type props = {
 };
 
 const ICON_SIZE = Width * 0.07;
-
-const RANDOM_PROFILE_IMAGE =
-  'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 
 const NotificationCard: FC<props> = ({navigation, notification}) => {
   const [ImageLoading, setImageLoading] = useState(true);
@@ -30,9 +28,7 @@ const NotificationCard: FC<props> = ({navigation, notification}) => {
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: ImageLoading
-                ? RANDOM_PROFILE_IMAGE
-                : notification.user_image,
+              uri: ImageLoading ? PROFILE_IMAGE : notification.user_image,
             }}
             style={styles.image}
             onLoad={() => setImageLoading(false)}
