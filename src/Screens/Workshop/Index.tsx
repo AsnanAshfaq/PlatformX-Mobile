@@ -16,6 +16,7 @@ import {Sizes} from '../../Constants/Size';
 import {ToastAndroid} from 'react-native';
 import WorkshopCard from '../../Components/WorkshopCard';
 import WorkshopSkeleton from '../../Skeleton/WorkshopCardSkeleton';
+import {workshopFilterData} from '../../Constants/sample';
 
 type props = {
   navigation: any;
@@ -62,9 +63,10 @@ const Workshop: FC<props> = ({navigation}) => {
         chat
         bell
       />
-      <CustomSearch placeholder={'Search here'} showFilterIcon />
+
       {Workshops.length > 0 ? (
         <>
+          <CustomSearch placeholder={'Search here'} showFilterIcon />
           <FlatList
             data={Workshops}
             // disableVirtualization

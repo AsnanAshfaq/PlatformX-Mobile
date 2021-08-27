@@ -15,6 +15,7 @@ import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import HackathonSkeleton from '../../Skeleton/HackathonCardSkeleton';
+import {hackathonFilterData} from '../../Constants/sample';
 
 type props = {
   navigation: any;

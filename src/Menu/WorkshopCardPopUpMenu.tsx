@@ -46,9 +46,15 @@ const PopUpMenu: FC<prop> = ({navigation}) => {
           },
         }}>
         <MenuOption
-          onSelect={() => console.log('Follow Menu has been selected')}>
+          onSelect={() => console.log('Bookmark Menu has been selected')}>
           <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Follow</Text>
+            <Text style={styles.menuOptionText}>Bookmark</Text>
+          </View>
+        </MenuOption>
+        <MenuOption
+          onSelect={() => console.log('Report Menu has been selected')}>
+          <View style={styles.menuOptionContainer}>
+            <Text style={styles.menuOptionText}>Report</Text>
           </View>
         </MenuOption>
         <MenuOption

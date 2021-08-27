@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import {darkColors} from '../../Constants/Colors';
@@ -42,6 +43,7 @@ const SignIn: FC<props> = ({navigation}) => {
       await AsyncStorage.setItem(key, '');
     }
   };
+
   const handleSignIn = () => {
     // set the loading to true
     let x = signIn;
@@ -151,6 +153,10 @@ const SignIn: FC<props> = ({navigation}) => {
     }
   };
 
+  const forgotPassword = () => {
+    console.log('Pressed on forgot password');
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -201,6 +207,13 @@ const SignIn: FC<props> = ({navigation}) => {
           rightIcon
           secureTextEntry={true}
         />
+
+        {/* forgot password container  */}
+        <TouchableWithoutFeedback onPress={() => forgotPassword()}>
+          <View style={styles.forgotContainer}>
+            <Text style={styles.forgotText}>Forgot password?</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
       {/* submit button container  */}
       <View style={styles.submitButtonContainer}>
@@ -264,6 +277,15 @@ const styles = StyleSheet.create({
     flex: 0.5,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  forgotContainer: {
+    width: Width * 0.8,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
+  forgotText: {
+    color: darkColors.TOMATO_COLOR,
+    fontSize: Sizes.normal,
   },
   submitButtonContainer: {
     flex: 0.2,

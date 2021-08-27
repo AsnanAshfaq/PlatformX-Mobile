@@ -95,7 +95,6 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           onLoadEnd={() => {
             Image.getSize(BASE_URL + workshopDetail.poster, (width, heigth) => {
               // calculate aspect ratio of image
-              console.log(workshopDetail.poster);
               setImageAspectRatio(heigth / width);
               setWokrshopPosterLoading(false);
             });

@@ -25,6 +25,7 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
       <FilterModal
         isShow={isModalOpen}
         toggleModal={() => setisModalOpen(!isModalOpen)}
+        // Data={filterData}
       />
       <View
         style={[

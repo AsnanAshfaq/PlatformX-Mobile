@@ -1,12 +1,11 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
 import {Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
 import CustomDrawer from '../Components/CustomDrawer';
 import TabScreens from './Tab';
-import Workshop from '../Screens/Workshop/Index';
 import ProfileScreens from './Profile';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import Activities from '../Screens/Profile/Student/Activities';
 
 const Drawer = createDrawerNavigator();
 
@@ -27,6 +26,7 @@ const DrawerScreens = () => {
       drawerType={'slide'}>
       <Drawer.Screen name="Tabs" component={TabScreens} />
       <Drawer.Screen name="Profile_Home" component={ProfileScreens} />
+      <Drawer.Screen name="Activites" component={Activities} />
     </Drawer.Navigator>
   );
 };

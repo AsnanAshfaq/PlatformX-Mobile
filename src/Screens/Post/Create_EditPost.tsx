@@ -47,7 +47,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
   var data: props = {
     id: '', // id of the post to be edited
     text: '',
-    category: 'Select Post Type',
+    category: 'Select Post Category',
   };
 
   if (screen === 'Edit') {
@@ -76,7 +76,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
     }
   };
 
-  const handlePost = async (method: string) => {
+  const handlePost = (method: string) => {
     var bodyFormData = new FormData();
 
     if (Post.text.trim() !== '') {
@@ -209,7 +209,6 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
         {Images.length > 0 && (
           <ScrollView horizontal>
             {Images.map((image, index) => {
-              console.log(image);
               return (
                 <View style={styles.imageContainer} key={index}>
                   <Image

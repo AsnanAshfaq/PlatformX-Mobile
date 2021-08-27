@@ -8,8 +8,35 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {drawerItems} from '../Constants/sample';
-// import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+
+const getDrawerItems = navigation => {
+  return [
+    {
+      id: 1,
+      label: 'My Activities',
+      icon_name: 'home-sharp',
+      onPress: () => navigation.navigate('Activites'),
+    },
+    {
+      id: 2,
+      label: 'Saved',
+      icon_name: 'bookmarks',
+      onPress: () => console.log('Pressed on Bookmarks'),
+    },
+    {
+      id: 3,
+      label: 'Settings',
+      icon_name: 'ios-settings-sharp',
+      onPress: () => console.log('Pressed on Settings'),
+    },
+    {
+      id: 4,
+      label: 'Logout',
+      icon_name: 'md-log-out-outline',
+      onPress: () => console.log('Pressed on Logout'),
+    },
+  ];
+};
 
 type Props = {
   label: string;
@@ -39,6 +66,9 @@ type props = {
 
 const CustomDrawer: FC<props> = (props: any) => {
   const {navigation} = props;
+
+  const drawerItems = getDrawerItems(navigation);
+
   return (
     <DrawerContentScrollView {...props} style={styles.parent}>
       {/* <DrawerItemList {...props} /> */}

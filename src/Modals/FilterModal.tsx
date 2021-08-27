@@ -36,6 +36,7 @@ const SubTagList: FC<Props> = ({list}) => {
 type props = {
   isShow: boolean;
   toggleModal: () => void;
+  // Data: Array<any>;
 };
 
 const FilterModal: FC<props> = ({isShow, toggleModal}) => {

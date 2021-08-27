@@ -190,33 +190,6 @@ export const workshopFilterData = [
   },
 ];
 
-export const drawerItems = [
-  {
-    id: 1,
-    label: 'My Activities',
-    icon_name: 'home-sharp',
-    onPress: () => console.log('Pressed on My Activities'),
-  },
-  {
-    id: 2,
-    label: 'Saved',
-    icon_name: 'bookmarks',
-    onPress: () => console.log('Pressed on Bookmarks'),
-  },
-  {
-    id: 3,
-    label: 'Settings',
-    icon_name: 'ios-settings-sharp',
-    onPress: () => console.log('Pressed on Settings'),
-  },
-  {
-    id: 4,
-    label: 'Logout',
-    icon_name: 'md-log-out-outline',
-    onPress: () => console.log('Pressed on Logout'),
-  },
-];
-
 export const profileData = {
   background_image:
     'https://1stwebdesigner.com/wp-content/uploads/2019/07/css-background-effects-thumb.jpg',
