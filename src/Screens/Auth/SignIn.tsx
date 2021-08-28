@@ -29,6 +29,7 @@ const SignIn: FC<props> = ({navigation}) => {
     email: {value: 'roger@gmail.com', error: ''},
     password: {value: 'greatestplayer', error: ''},
   });
+
   const [isLoading, setIsLoading] = useState(false);
 
   // get some handlers

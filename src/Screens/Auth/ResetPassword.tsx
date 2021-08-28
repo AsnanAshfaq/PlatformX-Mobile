@@ -4,8 +4,6 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Platform,
   View,
 } from 'react-native';
 import {darkColors} from '../../Constants/Colors';
@@ -42,7 +40,9 @@ const ResetPassword: FC<props> = ({navigation}) => {
         </TouchableWithoutFeedback>
       </View>
       {/* title  */}
-
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Reset Password</Text>
+      </View>
       <View style={styles.mainContainer}>
         <CustomTextField
           defaultValue={Email.value}
@@ -56,6 +56,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
           }
           placeholder={'Email Address'}
           textContentType={'emailAddress'}
+          error={Email.error}
         />
         <View style={styles.textContainer}>
           <Text style={styles.simpleText}>
@@ -63,11 +64,11 @@ const ResetPassword: FC<props> = ({navigation}) => {
             with a code to reset your password.
           </Text>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => sendCode()}>
-            <Text style={styles.buttonText}>Send Code</Text>
-          </TouchableOpacity>
-        </View>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={() => sendCode()}>
+          <Text style={styles.buttonText}>Send Code</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -85,9 +86,19 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     height: Height * 0.09,
   },
-  mainContainer: {
-    flex: 1,
+  titleContainer: {
+    flex: 0.2,
     justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginHorizontal: Width * 0.06,
+  },
+  titleText: {
+    color: darkColors.TEXT_COLOR,
+    fontSize: Sizes.large * 1.5,
+  },
+  mainContainer: {
+    flex: 0.6,
+    justifyContent: 'flex-end',
     alignItems: 'center',
     marginHorizontal: Width * 0.08,
   },
@@ -99,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 0.8,
   },
   buttonContainer: {
-    width: Width * 0.8,
+    flex: 0.2,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: Width * 0.04,
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'transparent',
     maxHeight: Height * 0.06,
-    width: Width * 0.8,
+    width: Width * 0.9,
     height: Height * 0.06,
     justifyContent: 'center',
     alignItems: 'center',
