@@ -2,7 +2,6 @@ import axios from 'react-native-axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useStateValue} from '../Store/StateProvider';
 
 const instance = axios.create({
   baseURL: BASE_URL,

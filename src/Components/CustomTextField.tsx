@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect, useRef} from 'react';
-import {StyleSheet, Text, View, TextInput} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Keyboard} from 'react-native';
 import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -61,7 +61,13 @@ const CustomTextField: FC<props> = ({
   error,
 }) => {
   const [Security, setSecurity] = useState(secureTextEntry);
+  const ref = useRef<any>(null);
 
+  Keyboard.addListener('keyboardDidHide', e => {
+    if (ref.current) {
+      ref?.current.blur();
+    }
+  });
   return (
     <>
       <View
@@ -75,6 +81,7 @@ const CustomTextField: FC<props> = ({
         ]}>
         <TextInput
           placeholder={placeholder}
+          ref={ref}
           style={styles.textField}
           value={defaultValue}
           onChangeText={onChangeText}

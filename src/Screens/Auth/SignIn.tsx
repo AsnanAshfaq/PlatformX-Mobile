@@ -207,14 +207,15 @@ const SignIn: FC<props> = ({navigation}) => {
           rightIcon
           secureTextEntry={true}
         />
-
         {/* forgot password container  */}
-        <TouchableWithoutFeedback onPress={() => forgotPassword()}>
-          <View style={styles.forgotContainer}>
+        <View style={styles.forgotContainer}>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('ResetPassword')}>
             <Text style={styles.forgotText}>Forgot password?</Text>
-          </View>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </View>
       </View>
+
       {/* submit button container  */}
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity style={styles.submitButton} onPress={handleSignIn}>
@@ -279,7 +280,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   forgotContainer: {
+    // flex: 0.1,
     width: Width * 0.8,
+    // flex: 0.2,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
