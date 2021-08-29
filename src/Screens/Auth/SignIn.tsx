@@ -11,12 +11,10 @@ import {
 import CustomTextField from '../../Components/CustomTextField';
 import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
-// @ts-ignore
 import Axios from '../../Utils/Axios';
 import Loading from '../../Components/Loading';
 import AuthHandlers from '../../Utils/AuthHandler';
 import {ToastAndroid} from 'react-native';
-//@ts-ignore
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../Store/StateProvider';
 

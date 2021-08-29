@@ -4,12 +4,15 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  ToastAndroid,
   View,
 } from 'react-native';
 import {darkColors} from '../../Constants/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import CustomTextField from '../../Components/CustomTextField';
+import Axios from '../../Utils/Axios';
+import AuthHandlers from '../../Utils/AuthHandler';
 
 type props = {
   navigation: any;
@@ -19,12 +22,53 @@ const ICON_SIZE = Width * 0.07;
 
 const ResetPassword: FC<props> = ({navigation}) => {
   const [Email, setEmail] = useState({
-    value: 'roger@gmail.com',
+    value: '18asnan@gmail.com',
     error: '',
   });
 
+  const {isEmailValid, isEmpty} = AuthHandlers();
+
   const sendCode = () => {
-    console.log('Sending code on user email');
+    // check email
+    if (isEmpty(Email.value)) {
+      setEmail(props => {
+        return {
+          ...props,
+          error: 'Email cannnot be Empty',
+        };
+      });
+    } else if (!isEmailValid(Email.value)) {
+      setEmail(props => {
+        return {
+          ...props,
+          error: 'Please enter a valid email address',
+        };
+      });
+    } else {
+      // email is not empty and is valid
+      Axios.post('/user/password_reset/', {
+        email: Email.value,
+      })
+        .then(response => {
+          if (response.status === 200) {
+            // navigate to code confirmation screen
+            ToastAndroid.show(response.data.success, 1500);
+          }
+        })
+        .catch(error => {
+          console.log('Error', error);
+          if (error.response.data.email_error) {
+            setEmail(props => {
+              return {
+                ...props,
+                error: error.response.data.email_error,
+              };
+            });
+          } else if (error.response.data.error) {
+            ToastAndroid.show(error.response.data.error, 1500);
+          }
+        });
+    }
   };
 
   return (
