@@ -64,7 +64,7 @@ const SignUp: FC<props> = ({navigation}) => {
       minValue: number,
       maxValue: number,
     ) => {
-      const value = Registration[Key]['value'];
+      const value = Registration[Key]['value'].trim();
       let y = Registration;
       if (isEmpty(value)) {
         y[Key]['error'] = emptyError;
@@ -129,10 +129,10 @@ const SignUp: FC<props> = ({navigation}) => {
     );
 
     // check's for email
-    if (isEmpty(Registration.email.value)) {
+    if (isEmpty(Registration.email.value.trim())) {
       x['email']['error'] = 'Email cannnot be Empty';
     } else {
-      if (!isEmailValid(Registration.email.value)) {
+      if (!isEmailValid(Registration.email.value.trim())) {
         x['email']['error'] = 'Please enter a valid email address';
       }
     }
@@ -161,13 +161,13 @@ const SignUp: FC<props> = ({navigation}) => {
     );
 
     // check's for confirm password
-    if (isEmpty(Registration.confirm_password.value)) {
+    if (isEmpty(Registration.confirm_password.value.trim())) {
       x['confirm_password']['error'] = 'Confirm Password cannnot be Empty';
     } else {
       if (
         !isSame(
-          Registration.password.value,
-          Registration.confirm_password.value,
+          Registration.password.value.trim(),
+          Registration.confirm_password.value.trim(),
         )
       )
         x['confirm_password']['error'] = 'Passwords do not match';
@@ -189,11 +189,11 @@ const SignUp: FC<props> = ({navigation}) => {
     // check if all inputs are valid or not
     if (isAllInputsValid) {
       Axios.post('/user/signup/', {
-        first_name: Registration.first_name.value,
-        last_name: Registration.last_name.value,
-        username: Registration.username.value,
-        email: Registration.email.value,
-        password: Registration.password.value,
+        first_name: Registration.first_name.value.trim(),
+        last_name: Registration.last_name.value.trim(),
+        username: Registration.username.value.trim(),
+        email: Registration.email.value.trim(),
+        password: Registration.password.value.trim(),
       })
         .then(response => {
           if (response.status === 201) {
@@ -248,6 +248,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 });
               }}
               textContentType={'name'}
+              keyboardType={'default'}
               autoFocus
               error={Registration.first_name.error}
             />
@@ -267,6 +268,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'name'}
+              keyboardType={'default'}
               error={Registration.last_name.error}
             />
             {/* username field  */}
@@ -285,6 +287,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'username'}
+              keyboardType={'default'}
               error={Registration.username.error}
             />
             <CustomTextField
@@ -302,6 +305,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'emailAddress'}
+              keyboardType={'email-address'}
               error={Registration.email.error}
             />
 
@@ -321,6 +325,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'password'}
+              keyboardType={'default'}
               rightIcon
               secureTextEntry={true}
               error={Registration.password.error}
@@ -342,6 +347,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 })
               }
               textContentType={'password'}
+              keyboardType={'default'}
               rightIcon
               secureTextEntry={true}
               error={Registration.confirm_password.error}

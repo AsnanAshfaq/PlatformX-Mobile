@@ -13,6 +13,7 @@ import {Height, Sizes, Width} from '../../Constants/Size';
 import CustomTextField from '../../Components/CustomTextField';
 import Axios from '../../Utils/Axios';
 import AuthHandlers from '../../Utils/AuthHandler';
+import Loading from '../../Components/Loading';
 
 type props = {
   navigation: any;
@@ -25,11 +26,13 @@ const ResetPassword: FC<props> = ({navigation}) => {
     value: '18asnan@gmail.com',
     error: '',
   });
+  const [isLoading, setisLoading] = useState(false);
 
+  // get some handlers
   const {isEmailValid, isEmpty} = AuthHandlers();
 
   const sendCode = () => {
-    // check email
+    // checks for email
     if (isEmpty(Email.value)) {
       setEmail(props => {
         return {
@@ -46,6 +49,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
       });
     } else {
       // email is not empty and is valid
+      setisLoading(true);
       Axios.post('/user/password_reset/', {
         email: Email.value,
       })
@@ -53,10 +57,15 @@ const ResetPassword: FC<props> = ({navigation}) => {
           if (response.status === 200) {
             // navigate to code confirmation screen
             ToastAndroid.show(response.data.success, 1500);
+            navigation.navigate('codeConfirmation', {
+              otp: response.data.otp,
+              email: Email.value,
+            });
           }
+          setisLoading(false);
         })
         .catch(error => {
-          console.log('Error', error);
+          setisLoading(false);
           if (error.response.data.email_error) {
             setEmail(props => {
               return {
@@ -100,6 +109,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
           }
           placeholder={'Email Address'}
           textContentType={'emailAddress'}
+          keyboardType={'email-address'}
           error={Email.error}
         />
         <View style={styles.textContainer}>
@@ -111,7 +121,14 @@ const ResetPassword: FC<props> = ({navigation}) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => sendCode()}>
-          <Text style={styles.buttonText}>Send Code</Text>
+          {isLoading ? (
+            <Loading
+              size={'small'}
+              color={darkColors.SCREEN_BACKGROUND_COLOR}
+            />
+          ) : (
+            <Text style={styles.buttonText}>Send Code</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

@@ -33,11 +33,20 @@ type textContentType =
   | 'username'
   | 'password';
 
+type keyboardType =
+  | 'default'
+  | 'number-pad'
+  | 'decimal-pad'
+  | 'numeric'
+  | 'email-address'
+  | 'phone-pad';
+
 type props = {
   defaultValue: any;
   onChangeText: any;
   placeholder: string;
   textContentType: textContentType;
+  keyboardType: keyboardType;
   icon?: string;
   secureTextEntry?: boolean;
   rightIcon?: boolean;
@@ -56,6 +65,7 @@ const CustomTextField: FC<props> = ({
   textContentType,
   secureTextEntry,
   rightIcon,
+  keyboardType,
   maxLength,
   autoFocus,
   error,
@@ -87,6 +97,7 @@ const CustomTextField: FC<props> = ({
           onChangeText={onChangeText}
           placeholderTextColor={darkColors.TEXT_COLOR}
           textContentType={textContentType}
+          keyboardType={keyboardType}
           secureTextEntry={Security === true ? Security : false}
           maxLength={maxLength}
           autoFocus={autoFocus}

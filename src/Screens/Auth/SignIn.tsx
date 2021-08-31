@@ -25,7 +25,7 @@ type props = {
 const SignIn: FC<props> = ({navigation}) => {
   const [signIn, setsignIn] = useState({
     email: {value: 'roger@gmail.com', error: ''},
-    password: {value: 'greatestplayer', error: ''},
+    password: {value: 'asnanashfaq', error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -50,10 +50,10 @@ const SignIn: FC<props> = ({navigation}) => {
     setIsLoading(true);
 
     // check's for email
-    if (isEmpty(signIn.email.value)) {
+    if (isEmpty(signIn.email.value.trim())) {
       x['email']['error'] = 'Email cannnot be Empty';
     } else {
-      if (!isEmailValid(signIn.email.value)) {
+      if (!isEmailValid(signIn.email.value.trim())) {
         x['email']['error'] = 'Please enter a valid email address';
       }
     }
@@ -72,7 +72,7 @@ const SignIn: FC<props> = ({navigation}) => {
     }
 
     // check's for password
-    if (isEmpty(signIn.password.value)) {
+    if (isEmpty(signIn.password.value.trim())) {
       signIn['password']['error'] = 'Password cannot be empty';
       setsignIn(props => {
         return {
@@ -110,6 +110,8 @@ const SignIn: FC<props> = ({navigation}) => {
               ToastAndroid.show('Error occured while signing in', 500);
             }
           } else {
+            // set the local sign in state to false
+            dispatch({type: 'SET_SIGN_IN', payload: false});
             ToastAndroid.show(response.data, 1500);
           }
         })
@@ -149,11 +151,20 @@ const SignIn: FC<props> = ({navigation}) => {
           // throw error;
           return Promise.reject(error);
         });
+    } else {
+      setIsLoading(false);
     }
   };
 
   const forgotPassword = () => {
-    console.log('Pressed on forgot password');
+    // clear all the error first
+    setsignIn(props => {
+      return {
+        email: {value: '', error: ''},
+        password: {value: '', error: ''},
+      };
+    });
+    navigation.navigate('ResetPassword');
   };
 
   return (
@@ -183,6 +194,7 @@ const SignIn: FC<props> = ({navigation}) => {
             });
           }}
           textContentType={'emailAddress'}
+          keyboardType={'email-address'}
           error={signIn.email.error}
         />
 
@@ -202,14 +214,14 @@ const SignIn: FC<props> = ({navigation}) => {
             });
           }}
           textContentType={'password'}
+          keyboardType={'default'}
           error={signIn.password.error}
           rightIcon
           secureTextEntry={true}
         />
         {/* forgot password container  */}
         <View style={styles.forgotContainer}>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('ResetPassword')}>
+          <TouchableWithoutFeedback onPress={() => forgotPassword()}>
             <Text style={styles.forgotText}>Forgot password?</Text>
           </TouchableWithoutFeedback>
         </View>
@@ -282,6 +294,7 @@ const styles = StyleSheet.create({
     // flex: 0.1,
     width: Width * 0.8,
     // flex: 0.2,
+    marginVertical: 7,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
