@@ -23,7 +23,7 @@ const ICON_SIZE = Width * 0.07;
 
 const ResetPassword: FC<props> = ({navigation}) => {
   const [Email, setEmail] = useState({
-    value: '18asnan@gmail.com',
+    value: '',
     error: '',
   });
   const [isLoading, setisLoading] = useState(false);

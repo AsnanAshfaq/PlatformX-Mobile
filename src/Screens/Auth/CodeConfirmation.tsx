@@ -11,7 +11,6 @@ import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomTextField from '../../Components/CustomTextField';
-import Axios from '../../Utils/Axios';
 
 type props = {
   navigation: any;
@@ -29,7 +28,9 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
   useEffect(() => {
     // set the timer
     const Interval = setInterval(() => {
-      if (countDown > 1) setcountDown(value => value - 1);
+      if (countDown > 1) {
+        setcountDown(value => value - 1);
+      }
     }, 1000);
 
     if (countDown < 1) {
@@ -83,24 +84,14 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
         </View>
       </View>
       {countDown !== 1 ? (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-            marginHorizontal: 20,
-          }}>
+        <View style={styles.countDownContainer}>
           <Text style={styles.simpleText}>
             Time left{' '}
             <Text style={{color: darkColors.TOMATO_COLOR}}> {countDown}</Text>
           </Text>
         </View>
       ) : (
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-            marginHorizontal: 20,
-          }}>
+        <View style={styles.countDownContainer}>
           <Text style={{color: darkColors.TOMATO_COLOR}}>
             Code has been expired
           </Text>
@@ -158,6 +149,7 @@ const styles = StyleSheet.create({
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.small,
   },
+  countDownContainer: {},
   buttonContainer: {
     flex: 0.2,
     justifyContent: 'center',

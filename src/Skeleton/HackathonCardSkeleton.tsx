@@ -28,6 +28,7 @@ const HackathonSkeleton = () => {
   return (
     <ScrollView>
       <>
+        <SearchSkeleton />
         <Skeleton />
         <Skeleton />
       </>

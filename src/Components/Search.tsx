@@ -1,8 +1,9 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC, useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
   StyleSheet,
+  Keyboard,
   TextInput,
   TouchableWithoutFeedback,
 } from 'react-native';
@@ -19,6 +20,13 @@ type props = {
 const Search: FC<props> = ({placeholder, showFilterIcon}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
+  const textInputRef = useRef<any>(null);
+
+  Keyboard.addListener('keyboardDidHide', e => {
+    if (textInputRef.current) {
+      textInputRef?.current.blur();
+    }
+  });
 
   return (
     <View style={styles.parent}>
@@ -34,6 +42,7 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
         ]}>
         <TextInput
           value={input}
+          ref={textInputRef}
           onChangeText={text => setinput(text)}
           placeholder={placeholder}
           style={styles.textInput}

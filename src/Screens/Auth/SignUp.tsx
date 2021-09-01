@@ -85,7 +85,7 @@ const SignUp: FC<props> = ({navigation}) => {
         }
       }
       const error = y[Key]['error'];
-      if (error != '') {
+      if (error !== '') {
         Registration[Key]['error'] = error;
         Registration[Key]['value'] = value;
         setRegistration(props => {
@@ -136,7 +136,7 @@ const SignUp: FC<props> = ({navigation}) => {
         x['email']['error'] = 'Please enter a valid email address';
       }
     }
-    if (Registration['email']['error'] != '') {
+    if (Registration['email']['error'] !== '') {
       setRegistration(props => {
         return {
           ...props,
@@ -172,7 +172,7 @@ const SignUp: FC<props> = ({navigation}) => {
       )
         x['confirm_password']['error'] = 'Passwords do not match';
     }
-    if (Registration['confirm_password']['error'] != '') {
+    if (Registration['confirm_password']['error'] !== '') {
       setRegistration(props => {
         return {
           ...props,
@@ -395,7 +395,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
-    // marginTop: Platform.OS === 'android' ? 25 : 0,
   },
   logoContainer: {
     flex: 0.3,

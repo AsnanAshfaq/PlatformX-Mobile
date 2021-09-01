@@ -12,18 +12,18 @@ const instance = axios.create({
 });
 
 // adding token from local storage in axios headers
-// instance.interceptors.request.use(
-//   async config => {
-//     const token = await AsyncStorage.getItem('access');
-//     if (token != null && token != '')
-//       config.headers.Authorization = 'Bearer ' + token;
-//     return config;
-//   },
-//   function (error) {
-//     // Do something with request error
-//     return Promise.reject(error);
-//   },
-// );
+instance.interceptors.request.use(
+  async config => {
+    const token = await AsyncStorage.getItem('access');
+    if (token != null && token != '')
+      config.headers.Authorization = 'Bearer ' + token;
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  },
+);
 
 // Add a response interceptor
 // const responseInterceptor = instance.interceptors.response.use(

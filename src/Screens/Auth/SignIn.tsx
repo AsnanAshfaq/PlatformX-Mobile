@@ -5,6 +5,7 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
+  ScrollView,
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
@@ -24,8 +25,8 @@ type props = {
 
 const SignIn: FC<props> = ({navigation}) => {
   const [signIn, setsignIn] = useState({
-    email: {value: 'roger@gmail.com', error: ''},
-    password: {value: 'asnanashfaq', error: ''},
+    email: {value: 'shazam@gmail.com', error: ''},
+    password: {value: 'grasscourt', error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +58,7 @@ const SignIn: FC<props> = ({navigation}) => {
         x['email']['error'] = 'Please enter a valid email address';
       }
     }
-    if (signIn['email']['error'] != '') {
+    if (signIn['email']['error'] !== '') {
       setsignIn(props => {
         return {
           ...props,

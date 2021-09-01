@@ -25,13 +25,12 @@ const ICON_SIZE = Width * 0.07;
 
 type Props = {
   setModal: any;
+  handleLike: () => void;
 };
-const PostCardButtons: FC<Props> = ({setModal}) => {
+const PostCardButtons: FC<Props> = ({setModal, handleLike}) => {
   return (
     <View style={styles.postButtonContainer}>
-      <TouchableOpacity
-        onPress={() => console.log('Pressed on like button')}
-        style={styles.PostButton}>
+      <TouchableOpacity onPress={() => handleLike()} style={styles.PostButton}>
         <Text style={styles.PostButtonText}>Like</Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -95,6 +94,10 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         }
       })
       .catch(error => ToastAndroid.show(error, 1500));
+  };
+
+  const handleLike = () => {
+    console.log('You pressed on post with id: ', postDetail.id);
   };
 
   return (
@@ -195,7 +198,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         </View>
       </TouchableOpacity>
       {/* post buttons   */}
-      <PostCardButtons setModal={setCommentmodal} />
+      <PostCardButtons setModal={setCommentmodal} handleLike={handleLike} />
     </View>
   );
 };

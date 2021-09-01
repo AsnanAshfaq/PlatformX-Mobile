@@ -78,6 +78,7 @@ const CustomTextField: FC<props> = ({
       ref?.current.blur();
     }
   });
+
   return (
     <>
       <View

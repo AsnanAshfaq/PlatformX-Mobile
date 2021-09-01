@@ -20,9 +20,13 @@ const Stack = createStackNavigator();
 export const config: TransitionSpec = {
   animation: 'spring',
   config: {
-    stiffness: 1000,
-    damping: 500,
-    mass: 3,
+    stiffness: 1400,
+    damping: 50,
+    mass: 1,
+    // delay: 10,
+    // bounciness: 20,
+    // speed: 1000,
+    // velocity: 20,
     overshootClamping: true,
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
@@ -60,12 +64,11 @@ const Navigation: FC = () => {
         }}>
         {isSignedIn ? (
           <>
-            {/* <Stack.Screen name="Main" component={DrawerScreens} />
+            <Stack.Screen name="Main" component={DrawerScreens} />
             <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
             <Stack.Screen name="Chat" component={Chat} />
-            <Stack.Screen name="Notification" component={Notification} /> */}
+            <Stack.Screen name="Notification" component={Notification} />
             {/* <Stack.Screen name="Settings" component={Settings} /> */}
-            <Stack.Screen name="Auth" component={AuthScreens} />
             {/* 
             <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
             <Stack.Screen

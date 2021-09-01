@@ -50,9 +50,9 @@ const NewPassword: FC<props> = ({navigation, route}) => {
     } else {
       const MinMax = checkLength(ResetPassword.password.value.trim(), 8, 14);
       let error = '';
-      if (MinMax == 'min') {
+      if (MinMax === 'min') {
         error = 'Password should be atleast 8 characters.';
-      } else if (MinMax == 'max') {
+      } else if (MinMax === 'max') {
         error = 'Password should be less than 14 characters.';
       }
       setResetPassword(props => {

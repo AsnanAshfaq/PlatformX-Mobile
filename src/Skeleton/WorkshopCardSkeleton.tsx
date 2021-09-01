@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import ContentLoader, {Rect, Circle} from 'react-content-loader/native';
 import {darkColors} from '../Constants/Colors';
+import SearchSkeleton from './SearchSkeleton';
 
 const Skeleton = () => {
   return (
@@ -25,6 +26,7 @@ const WorkshopSkeleton = () => {
   return (
     <ScrollView>
       <>
+        <SearchSkeleton />
         <Skeleton />
         <Skeleton />
       </>
