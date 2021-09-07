@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 //TODO:
 // user background image
 // user profile image
@@ -15,6 +16,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  TouchableWithoutFeedback,
   ToastAndroid,
   FlatList,
   RefreshControl,
@@ -29,10 +31,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../../Constants/sample';
 import axios from '../../../Utils/Axios';
 import Loading from '../../../Components/Loading';
+import ImagePicker from 'react-native-image-crop-picker';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
+import BottomImageModal from '../../../Modals/BottomImageModal';
 
 const ICON_SIZE = Width * 0.06;
+
+const CAMERA_ICON_SIZE = Width * 0.085;
 
 const UserInfo = ({icon, label, value}) => {
   return (
@@ -48,13 +54,13 @@ const UserInfo = ({icon, label, value}) => {
   );
 };
 
-type Props = {
+type cardProps = {
   label: string;
   value: number;
   onPress: () => void;
 };
 
-const Card: FC<Props> = ({label, value, onPress}) => {
+const Card: FC<cardProps> = ({label, value, onPress}) => {
   return (
     <View
       style={[
@@ -89,6 +95,15 @@ const StudentProfile: FC<props> = ({navigation}) => {
 
   const [LoadBackgroundImage, setLoadBackgroundImage] = useState(true);
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
+  const [Modal, setModal] = useState<{
+    isShow: boolean;
+    type: 'profile' | 'background' | '';
+    isImageSet: boolean;
+  }>({
+    isShow: false,
+    type: '',
+    isImageSet: false,
+  });
 
   // ref
   const scrollViewRef = useRef<any>(null);
@@ -131,6 +146,22 @@ const StudentProfile: FC<props> = ({navigation}) => {
     });
   };
 
+  const handleImagePickerModal = (
+    type: 'profile' | 'background',
+    isImageSet: boolean,
+  ) => {
+    console.log(`Opening modal for ${type} image picker`);
+
+    setModal({isShow: true, type: type, isImageSet: isImageSet});
+    // ImagePicker.openPicker({
+    //   width: 300,
+    //   height: 400,
+    //   cropping: true,
+    // }).then(image => {
+    //   console.log(image);
+    // });
+  };
+
   useEffect(() => {
     // get user data from data base
     getUserDetails();
@@ -144,6 +175,21 @@ const StudentProfile: FC<props> = ({navigation}) => {
           navigation={navigation}
           back
           onBackPress={() => navigation.goBack()}
+        />
+
+        <BottomImageModal
+          isShow={Modal.isShow}
+          toggleModal={() =>
+            setModal(props => {
+              return {
+                isShow: !props.isShow,
+                type: '',
+                isImageSet: false,
+              };
+            })
+          }
+          type={Modal.type}
+          isImageSet={Modal.isImageSet}
         />
         <ScrollView
           ref={scrollViewRef}
@@ -160,47 +206,80 @@ const StudentProfile: FC<props> = ({navigation}) => {
           }>
           {/* background and profile image section  */}
           <View style={styles.center}>
-            <Image
-              source={{
-                uri: LoadBackgroundImage
-                  ? BACKGROUND_IMAGE
-                  : ProfileData?.user_background_image
-                  ? ProfileData?.user_background_image.path
-                  : BACKGROUND_IMAGE,
-              }}
-              style={styles.background_image}
-              resizeMode={'cover'}
-              onLoadEnd={() => setLoadBackgroundImage(false)}
-              onError={() => {
-                setLoadProfileImage(true);
-                ToastAndroid.show("Couldn't load background image", 1500);
-              }}
-            />
-            <Image
-              source={{
-                uri: LoadProfileImage
-                  ? PROFILE_IMAGE
-                  : ProfileData?.user_profile_image
-                  ? BASE_URL + ProfileData?.user_profile_image.path
-                  : PROFILE_IMAGE,
-              }}
-              style={[
-                styles.profile_image,
-                !LoadProfileImage &&
-                  ProfileData?.user_profile_image && {
-                    borderRadius: 50,
-                    borderWidth: 3,
-                    borderColor: darkColors.SHADOW_COLOR,
-                  },
-              ]}
-              resizeMode={'cover'}
-              // onLoad={() => setLoadProfileImage(true)}
-              onLoadEnd={() => setLoadProfileImage(false)}
-              onError={() => {
-                setLoadProfileImage(true);
-                ToastAndroid.show("Couldn't load profile image", 1500);
-              }}
-            />
+            <View>
+              <Image
+                source={{
+                  uri: LoadBackgroundImage
+                    ? BACKGROUND_IMAGE
+                    : ProfileData?.user_background_image
+                    ? ProfileData?.user_background_image.path
+                    : BACKGROUND_IMAGE,
+                }}
+                style={styles.background_image}
+                resizeMode={'cover'}
+                onLoadEnd={() => setLoadBackgroundImage(false)}
+                onError={() => {
+                  setLoadProfileImage(true);
+                  ToastAndroid.show("Couldn't load background image", 1500);
+                }}
+              />
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  handleImagePickerModal(
+                    'background',
+                    ProfileData?.user_background_image ? true : false,
+                  )
+                }>
+                <Ionicons
+                  name={'camera'}
+                  size={CAMERA_ICON_SIZE}
+                  color={darkColors.ICON_COLOR}
+                  style={styles.backgroundCameraIcon}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+            <View>
+              <Image
+                source={{
+                  uri: LoadProfileImage
+                    ? PROFILE_IMAGE
+                    : ProfileData?.user_profile_image
+                    ? BASE_URL + ProfileData?.user_profile_image.path
+                    : PROFILE_IMAGE,
+                }}
+                style={[
+                  styles.profile_image,
+                  !LoadProfileImage &&
+                    ProfileData?.user_profile_image && {
+                      borderRadius: 50,
+                      borderWidth: 3,
+                      borderColor: darkColors.SHADOW_COLOR,
+                    },
+                ]}
+                resizeMode={'cover'}
+                // onLoad={() => setLoadProfileImage(true)}
+                onLoadEnd={() => setLoadProfileImage(false)}
+                onError={() => {
+                  setLoadProfileImage(true);
+                  ToastAndroid.show("Couldn't load profile image", 1500);
+                }}
+              />
+              {/* edit photo icon here  */}
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  handleImagePickerModal(
+                    'profile',
+                    ProfileData?.user_profile_image ? true : false,
+                  )
+                }>
+                <Ionicons
+                  name={'camera'}
+                  size={CAMERA_ICON_SIZE}
+                  color={darkColors.ICON_COLOR}
+                  style={styles.profileCameraIcon}
+                />
+              </TouchableWithoutFeedback>
+            </View>
           </View>
 
           {/* name-username-bio section  */}
@@ -331,14 +410,21 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     // overflow: 'hidden',
   },
+  backgroundCameraIcon: {
+    position: 'absolute',
+    right: 10,
+    bottom: -20,
+  },
   profile_image: {
-    width: Width * 0.37,
-    height: Width * 0.37,
+    width: Width * 0.45,
+    height: Width * 0.45,
     position: 'relative',
     bottom: 30,
-    // top: 100,
-    // backgroundColor: 'red',
-    // overflow: 'hidden',
+  },
+  profileCameraIcon: {
+    position: 'absolute',
+    right: 0,
+    bottom: 25,
   },
   personalInfoContainer: {
     justifyContent: 'center',

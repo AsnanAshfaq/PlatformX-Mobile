@@ -85,7 +85,7 @@ const CommentModal: FC<props> = ({
 }) => {
   const [Comment, setComment] = useState([]);
   const [Input, setInput] = useState('');
-  const textInput = useRef(null);
+  const textInput = useRef<any>(null);
   const [isCommentPosted, setisCommentPosted] = useState(false);
 
   const postComment = () => {
@@ -176,7 +176,7 @@ const CommentModal: FC<props> = ({
               keyExtractor={(item, index) => `${index}`}
               keyboardShouldPersistTaps="always"
               keyboardDismissMode={'interactive'}
-              renderItem={({item, index}) => (
+              renderItem={({item, index}: any) => (
                 <CommentView comment={item} index={index} key={item.id} />
               )}
               // onEndReached={() => console.log('End of list')}
