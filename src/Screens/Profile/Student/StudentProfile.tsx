@@ -31,7 +31,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../../Constants/sample';
 import axios from '../../../Utils/Axios';
 import Loading from '../../../Components/Loading';
-import ImagePicker from 'react-native-image-crop-picker';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import BottomImageModal from '../../../Modals/BottomImageModal';
@@ -127,6 +126,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
       .get('/user/')
       .then(result => setProfileData(result.data))
       .then(() => {
+        console.log(ProfileData);
         // get posts related to current user
         axios
           .get('/api/post/')
@@ -150,16 +150,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
     type: 'profile' | 'background',
     isImageSet: boolean,
   ) => {
-    console.log(`Opening modal for ${type} image picker`);
-
     setModal({isShow: true, type: type, isImageSet: isImageSet});
-    // ImagePicker.openPicker({
-    //   width: 300,
-    //   height: 400,
-    //   cropping: true,
-    // }).then(image => {
-    //   console.log(image);
-    // });
   };
 
   useEffect(() => {

@@ -25,8 +25,8 @@ type props = {
 
 const SignIn: FC<props> = ({navigation}) => {
   const [signIn, setsignIn] = useState({
-    email: {value: 'shazam@gmail.com', error: ''},
-    password: {value: 'grasscourt', error: ''},
+    email: {value: 'federerr482@gmail.com', error: ''},
+    password: {value: 'code.test', error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -100,10 +100,29 @@ const SignIn: FC<props> = ({navigation}) => {
               storeTokenLocally('access', response.data.access)
                 .then(() => storeTokenLocally('refresh', response.data.refresh))
                 .then(() => {
-                  // set the loading to false
-                  setIsLoading(false);
                   // set the local sign in state to true
                   dispatch({type: 'SET_SIGN_IN', payload: true});
+                  Axios.get('/user/')
+                    .then(result => {
+                      if (result.status === 200) {
+                        // if token is valid
+                        if (result.data.student) {
+                          dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+                        } else if (result.data.organization) {
+                          dispatch({
+                            type: 'SET_USER_TYPE',
+                            payload: 'organization',
+                          });
+                        }
+                      }
+                    })
+                    .catch(error => {
+                      // set sign in state
+                      dispatch({type: 'SET_USER_TYPE', payload: null});
+                      return Promise.reject(error);
+                    });
+                  // set the loading to false
+                  setIsLoading(false);
                 });
             } else {
               // set the local sign in state to false

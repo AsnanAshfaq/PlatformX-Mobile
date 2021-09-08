@@ -1,10 +1,13 @@
-import React, {FC} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {FC, useState} from 'react';
+import {StyleSheet, Text, View, TouchableWithoutFeedback} from 'react-native';
 import Modal from 'react-native-modal';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import ImagePicker from 'react-native-image-crop-picker';
+import axios from '../Utils/Axios';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 type props = {
   isShow: boolean;
@@ -21,6 +24,50 @@ const BottomImageModal: FC<props> = ({
   type,
   isImageSet,
 }) => {
+  const [image, setimage] = useState('');
+  const handleImagePicker = () => {
+    //   toggle the modal first
+    toggleModal();
+
+    var bodyFormData = new FormData();
+
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      // make a post api call
+      // then reload the student profile
+      bodyFormData.append('path', {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.replace(
+          'file:///data/user/0/com.platformx/cache/react-native-image-crop-picker/', // replace path with empty string
+          '',
+        ),
+      });
+      bodyFormData.append(
+        'metadata',
+        image.path
+          .replace(
+            'file:///data/user/0/com.platformx/cache/react-native-image-crop-picker/', // replace path with empty string
+            '',
+          )
+          .substring(0, 20),
+      );
+      axios({
+        method: 'post',
+        url: `/user/profile_image/${isImageSet ? 'edit' : 'create'}/`,
+        data: bodyFormData,
+        headers: {'Content-Type': 'multipart/form-data'},
+      })
+        .then(response => console.log('Response is', response.data))
+        .catch(error => {
+          console.log('Error is', error.response);
+        });
+    });
+  };
+
   return (
     <Modal
       isVisible={isShow}
@@ -50,33 +97,41 @@ const BottomImageModal: FC<props> = ({
       <>
         <View style={styles.container}>
           <View style={styles.roundContainer}>
-            <Ionicons
-              name={'md-image-outline'}
-              size={ICON_SIZE}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
-              // style={styles.iconPadding}
-            />
+            <View style={styles.iconContainer}>
+              <TouchableWithoutFeedback onPress={() => handleImagePicker()}>
+                <Ionicons
+                  name={'md-image-outline'}
+                  size={ICON_SIZE}
+                  color={darkColors.ICON_COLOR}
+                  style={styles.icon}
+                />
+              </TouchableWithoutFeedback>
+            </View>
             <Text style={styles.text}>Open Gallery</Text>
           </View>
           {isImageSet !== false && (
             <View style={styles.roundContainer}>
-              <Ionicons
-                name={'person'}
-                size={ICON_SIZE}
-                color={darkColors.TAB_BAR_ACTIVE_COLOR}
-                // style={styles.iconPadding}
-              />
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name={'person'}
+                  size={ICON_SIZE}
+                  color={darkColors.ICON_COLOR}
+                  style={styles.icon}
+                />
+              </View>
               <Text style={styles.text}>View Image</Text>
             </View>
           )}
           {isImageSet !== false && (
             <View style={styles.roundContainer}>
-              <Ionicons
-                name={'trash'}
-                size={ICON_SIZE}
-                color={darkColors.TAB_BAR_ACTIVE_COLOR}
-                // style={styles.iconPadding}
-              />
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  name={'trash'}
+                  size={ICON_SIZE}
+                  color={darkColors.ICON_COLOR}
+                  style={styles.icon}
+                />
+              </View>
               <Text style={styles.text}>Remove Image</Text>
             </View>
           )}
@@ -108,15 +163,19 @@ const styles = StyleSheet.create({
   roundContainer: {
     width: Width * 0.25,
     height: Height * 0.12,
-    marginLeft: 20,
-    marginVertical: 7,
+    marginLeft: Width * 0.05,
+    marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 15,
-    borderWidth: 4,
-    borderColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
+  iconContainer: {
+    borderRadius: 15,
+    marginVertical: 6,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: darkColors.TAB_BAR_ICON_COLOR,
+  },
+  icon: {},
   text: {
     color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.8,
