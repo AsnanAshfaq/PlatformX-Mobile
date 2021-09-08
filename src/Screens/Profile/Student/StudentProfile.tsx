@@ -10,7 +10,7 @@
 // user linedin link
 // edit profile button
 
-import React, {FC, useRef, useEffect, useState} from 'react';
+import React, {FC, useRef, useEffect, useState, Dispatch} from 'react';
 import {
   View,
   Text,
@@ -150,12 +150,17 @@ const StudentProfile: FC<props> = ({navigation}) => {
     type: 'profile' | 'background',
     isImageSet: boolean,
   ) => {
-    setModal({isShow: true, type: type, isImageSet: isImageSet});
+    setModal({
+      isShow: true,
+      type: type,
+      isImageSet: isImageSet,
+    });
   };
 
   useEffect(() => {
     // get user data from data base
     getUserDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!loading) {
@@ -173,6 +178,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
           toggleModal={() =>
             setModal(props => {
               return {
+                ...props,
                 isShow: !props.isShow,
                 type: '',
                 isImageSet: false,
@@ -181,6 +187,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
           }
           type={Modal.type}
           isImageSet={Modal.isImageSet}
+          refresh={onRefresh}
         />
         <ScrollView
           ref={scrollViewRef}
@@ -203,7 +210,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   uri: LoadBackgroundImage
                     ? BACKGROUND_IMAGE
                     : ProfileData?.user_background_image
-                    ? ProfileData?.user_background_image.path
+                    ? BASE_URL + ProfileData?.user_background_image.path
                     : BACKGROUND_IMAGE,
                 }}
                 style={styles.background_image}

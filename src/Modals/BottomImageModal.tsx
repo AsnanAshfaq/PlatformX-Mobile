@@ -1,5 +1,11 @@
 import React, {FC, useState} from 'react';
-import {StyleSheet, Text, View, TouchableWithoutFeedback} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  ToastAndroid,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
@@ -7,13 +13,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from '../Utils/Axios';
 //@ts-ignore
-import {BASE_URL} from 'react-native-dotenv';
 
 type props = {
   isShow: boolean;
   toggleModal: () => void;
   type: 'profile' | 'background' | '';
   isImageSet: boolean;
+  refresh: any;
 };
 
 const ICON_SIZE = Width * 0.08;
@@ -23,9 +29,9 @@ const BottomImageModal: FC<props> = ({
   toggleModal,
   type,
   isImageSet,
+  refresh,
 }) => {
-  const [image, setimage] = useState('');
-  const handleImagePicker = () => {
+  const handleOpenGallery = () => {
     //   toggle the modal first
     toggleModal();
 
@@ -57,15 +63,29 @@ const BottomImageModal: FC<props> = ({
       );
       axios({
         method: 'post',
-        url: `/user/profile_image/${isImageSet ? 'edit' : 'create'}/`,
+        url: `/user/${
+          type === 'profile' ? 'profile_image' : 'background_image'
+        }/${isImageSet ? 'edit' : 'create'}/`,
         data: bodyFormData,
         headers: {'Content-Type': 'multipart/form-data'},
       })
-        .then(response => console.log('Response is', response.data))
+        .then(response => {
+          ToastAndroid.show(`${response.data.success}`, 1500);
+          // refresh the screen
+          refresh();
+        })
         .catch(error => {
-          console.log('Error is', error.response);
+          ToastAndroid.show(`${error.response.data.error}`, 1500);
         });
     });
+  };
+
+  const handleRemoveImage = () => {
+    //   toggle the modal first
+    toggleModal();
+    console.log('Removing the image handler');
+    // refresh the screen
+    refresh();
   };
 
   return (
@@ -98,7 +118,7 @@ const BottomImageModal: FC<props> = ({
         <View style={styles.container}>
           <View style={styles.roundContainer}>
             <View style={styles.iconContainer}>
-              <TouchableWithoutFeedback onPress={() => handleImagePicker()}>
+              <TouchableWithoutFeedback onPress={() => handleOpenGallery()}>
                 <Ionicons
                   name={'md-image-outline'}
                   size={ICON_SIZE}
@@ -125,12 +145,14 @@ const BottomImageModal: FC<props> = ({
           {isImageSet !== false && (
             <View style={styles.roundContainer}>
               <View style={styles.iconContainer}>
-                <Ionicons
-                  name={'trash'}
-                  size={ICON_SIZE}
-                  color={darkColors.ICON_COLOR}
-                  style={styles.icon}
-                />
+                <TouchableWithoutFeedback onPress={() => handleRemoveImage()}>
+                  <Ionicons
+                    name={'trash'}
+                    size={ICON_SIZE}
+                    color={darkColors.ICON_COLOR}
+                    style={styles.icon}
+                  />
+                </TouchableWithoutFeedback>
               </View>
               <Text style={styles.text}>Remove Image</Text>
             </View>
