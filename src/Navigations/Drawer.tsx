@@ -24,9 +24,9 @@ const DrawerScreens = () => {
       }}
       // overlayColor={'grey'}
       drawerType={'slide'}>
-      {/* <Drawer.Screen name="Tabs" component={TabScreens} /> */}
+      <Drawer.Screen name="Tabs" component={TabScreens} />
       <Drawer.Screen name="Profile_Home" component={ProfileScreens} />
-      {/* <Drawer.Screen name="Activites" component={Activities} /> */}
+      <Drawer.Screen name="Activites" component={Activities} />
     </Drawer.Navigator>
   );
 };

@@ -1,5 +1,12 @@
-import React, {FC} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import React, {FC, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItem,
@@ -8,6 +15,10 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
+import {useStateValue} from '../../src/Store/StateProvider';
+import {PROFILE_IMAGE} from '../Constants/sample';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 const getDrawerItems = navigation => {
   return [
@@ -69,22 +80,38 @@ const CustomDrawer: FC<props> = (props: any) => {
 
   const drawerItems = getDrawerItems(navigation);
 
+  const [LoadProfileImage, setLoadProfileImage] = useState(true);
+
+  const [state, dispatch] = useStateValue();
+  console.log(state);
+
   return (
     <DrawerContentScrollView {...props} style={styles.parent}>
       {/* <DrawerItemList {...props} /> */}
       {/* header  */}
       <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>PlatFormX</Text>
+        <Text style={styles.headerTitle}>PlatformX</Text>
       </View>
 
       {/* profile section  */}
       <View style={styles.profileContainer}>
         <Image
-          source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
+          source={{
+            uri: LoadProfileImage
+              ? PROFILE_IMAGE
+              : BASE_URL + state.user.profilePic,
+          }}
+          onLoadEnd={() => setLoadProfileImage(false)}
+          onError={() => {
+            setLoadProfileImage(true);
+            ToastAndroid.show("Couldn't load profile image", 1500);
+          }}
           style={styles.profileImage}
         />
-        <Text style={styles.fullName}>Asnan Ashfaq</Text>
-        <Text style={styles.userName}>@shanay_ash</Text>
+        <Text style={styles.fullName}>
+          {state.user.firstName + ' ' + state.user.lastName}
+        </Text>
+        <Text style={styles.userName}>@{state.user.userName}</Text>
         <TouchableOpacity
           onPress={() => {
             // navigation.closeDrawer();

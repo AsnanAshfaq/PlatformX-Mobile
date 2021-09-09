@@ -67,6 +67,8 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
   const openGallery = () => {
     ImagePicker.openPicker({
       multiple: true,
+      cropping: true,
+      freeStyleCropEnabled: true,
     }).then(images => {
       setImages(prev => [...images, ...prev]);
     });

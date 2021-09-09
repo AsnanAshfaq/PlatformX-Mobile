@@ -3,6 +3,7 @@ export const initialState = {
   theme: lightColors,
   isLightTheme: true,
   userType: '',
+  user: {},
   isSignedIn: false,
 };
 
@@ -13,6 +14,12 @@ export const reducer = (state, action) => {
         ...state,
         isLightTheme: !state.isLightTheme,
         theme: state.isLightTheme ? darkColors : lightColors,
+      };
+
+    case 'SET_USER':
+      return {
+        ...state,
+        user: action.payload,
       };
 
     case 'SET_SIGN_IN':

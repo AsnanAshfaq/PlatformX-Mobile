@@ -20,6 +20,7 @@ type props = {
   type: 'profile' | 'background' | '';
   isImageSet: boolean;
   refresh: any;
+  imageID: string | null;
 };
 
 const ICON_SIZE = Width * 0.08;
@@ -30,6 +31,7 @@ const BottomImageModal: FC<props> = ({
   type,
   isImageSet,
   refresh,
+  imageID,
 }) => {
   const handleOpenGallery = () => {
     //   toggle the modal first
@@ -41,6 +43,8 @@ const BottomImageModal: FC<props> = ({
       width: 300,
       height: 400,
       cropping: true,
+      multiple: false,
+      freeStyleCropEnabled: true,
     }).then(image => {
       // make a post api call
       // then reload the student profile
@@ -83,9 +87,32 @@ const BottomImageModal: FC<props> = ({
   const handleRemoveImage = () => {
     //   toggle the modal first
     toggleModal();
-    console.log('Removing the image handler');
+
+    axios({
+      method: 'post',
+      url: `/user/${
+        type === 'profile' ? 'profile_image' : 'background_image'
+      }/delete/`,
+      data: {
+        id: imageID,
+      },
+    })
+      .then(response => {
+        ToastAndroid.show(`${response.data.success}`, 1500);
+        // refresh the screen
+        refresh();
+      })
+      .catch(error => {
+        ToastAndroid.show(`${error.response.data.error}`, 1500);
+      });
     // refresh the screen
     refresh();
+  };
+
+  const handleViewImage = () => {
+    console.log('Handling view image');
+    //   toggle the modal first
+    toggleModal();
   };
 
   return (
@@ -132,12 +159,14 @@ const BottomImageModal: FC<props> = ({
           {isImageSet !== false && (
             <View style={styles.roundContainer}>
               <View style={styles.iconContainer}>
-                <Ionicons
-                  name={'person'}
-                  size={ICON_SIZE}
-                  color={darkColors.ICON_COLOR}
-                  style={styles.icon}
-                />
+                <TouchableWithoutFeedback onPress={() => handleViewImage()}>
+                  <Ionicons
+                    name={'person'}
+                    size={ICON_SIZE}
+                    color={darkColors.ICON_COLOR}
+                    style={styles.icon}
+                  />
+                </TouchableWithoutFeedback>
               </View>
               <Text style={styles.text}>View Image</Text>
             </View>

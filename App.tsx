@@ -14,6 +14,7 @@ import {MenuProvider} from 'react-native-popup-menu';
 import Splash from './src/Components/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {darkColors} from './src/Constants/Colors';
+import {NativeModules} from 'react-native';
 
 const App = () => {
   const [Loading, setLoading] = useState(true);
@@ -29,8 +30,15 @@ const App = () => {
           .get('/user/')
           .then(result => {
             if (result.status === 200) {
-              // if token is valid
               // get result and store in context state
+              const userData = {
+                firstName: result.data.first_name,
+                lastName: result.data.last_name,
+                email: result.data.email,
+                userName: result.data.username,
+                profilePic: result.data.user_profile_image.path,
+              };
+              dispatch({type: 'SET_USER', payload: userData});
               dispatch({type: 'SET_SIGN_IN', payload: true});
               if (result.data.student) {
                 dispatch({type: 'SET_USER_TYPE', payload: 'student'});

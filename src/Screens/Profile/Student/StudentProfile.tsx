@@ -95,10 +95,12 @@ const StudentProfile: FC<props> = ({navigation}) => {
   const [LoadBackgroundImage, setLoadBackgroundImage] = useState(true);
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
   const [Modal, setModal] = useState<{
+    imageID: string | null;
     isShow: boolean;
     type: 'profile' | 'background' | '';
     isImageSet: boolean;
   }>({
+    imageID: null,
     isShow: false,
     type: '',
     isImageSet: false,
@@ -126,7 +128,6 @@ const StudentProfile: FC<props> = ({navigation}) => {
       .get('/user/')
       .then(result => setProfileData(result.data))
       .then(() => {
-        console.log(ProfileData);
         // get posts related to current user
         axios
           .get('/api/post/')
@@ -149,11 +150,13 @@ const StudentProfile: FC<props> = ({navigation}) => {
   const handleImagePickerModal = (
     type: 'profile' | 'background',
     isImageSet: boolean,
+    imageID = null,
   ) => {
     setModal({
       isShow: true,
       type: type,
       isImageSet: isImageSet,
+      imageID: imageID,
     });
   };
 
@@ -188,6 +191,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
           type={Modal.type}
           isImageSet={Modal.isImageSet}
           refresh={onRefresh}
+          imageID={Modal.imageID}
         />
         <ScrollView
           ref={scrollViewRef}
@@ -226,6 +230,9 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   handleImagePickerModal(
                     'background',
                     ProfileData?.user_background_image ? true : false,
+                    ProfileData?.user_background_image
+                      ? ProfileData?.user_background_image.id
+                      : null,
                   )
                 }>
                 <Ionicons
@@ -268,6 +275,9 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   handleImagePickerModal(
                     'profile',
                     ProfileData?.user_profile_image ? true : false,
+                    ProfileData?.user_profile_image
+                      ? ProfileData?.user_profile_image.id
+                      : null,
                   )
                 }>
                 <Ionicons
