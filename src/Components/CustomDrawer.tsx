@@ -19,35 +19,8 @@ import {useStateValue} from '../../src/Store/StateProvider';
 import {PROFILE_IMAGE} from '../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-
-const getDrawerItems = navigation => {
-  return [
-    {
-      id: 1,
-      label: 'My Activities',
-      icon_name: 'home-sharp',
-      onPress: () => navigation.navigate('Activites'),
-    },
-    {
-      id: 2,
-      label: 'Saved',
-      icon_name: 'bookmarks',
-      onPress: () => console.log('Pressed on Bookmarks'),
-    },
-    {
-      id: 3,
-      label: 'Settings',
-      icon_name: 'ios-settings-sharp',
-      onPress: () => console.log('Pressed on Settings'),
-    },
-    {
-      id: 4,
-      label: 'Logout',
-      icon_name: 'md-log-out-outline',
-      onPress: () => console.log('Pressed on Logout'),
-    },
-  ];
-};
+import SignOutModal from '../Modals/SignOutModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   label: string;
@@ -77,13 +50,39 @@ type props = {
 
 const CustomDrawer: FC<props> = (props: any) => {
   const {navigation} = props;
-
-  const drawerItems = getDrawerItems(navigation);
-
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
-
+  const [signOutModal, setSignOutModal] = useState(false);
   const [state, dispatch] = useStateValue();
-  console.log(state);
+
+  const drawerItems = [
+    {
+      id: 1,
+      label: 'My Activities',
+      icon_name: 'home-sharp',
+      onPress: () => navigation.navigate('Activites'),
+    },
+    {
+      id: 2,
+      label: 'Saved',
+      icon_name: 'bookmarks',
+      onPress: () => console.log('Pressed on Bookmarks'),
+    },
+    {
+      id: 3,
+      label: 'Settings',
+      icon_name: 'ios-settings-sharp',
+      onPress: () => console.log('Pressed on Settings'),
+    },
+    {
+      id: 4,
+      label: 'Sign Out',
+      icon_name: 'md-log-out-outline',
+      onPress: () => {
+        navigation.closeDrawer();
+        setSignOutModal(true);
+      },
+    },
+  ];
 
   return (
     <DrawerContentScrollView {...props} style={styles.parent}>
@@ -92,6 +91,11 @@ const CustomDrawer: FC<props> = (props: any) => {
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>PlatformX</Text>
       </View>
+
+      <SignOutModal
+        isShow={signOutModal}
+        toggleModal={() => setSignOutModal(false)}
+      />
 
       {/* profile section  */}
       <View style={styles.profileContainer}>
@@ -137,6 +141,7 @@ const CustomDrawer: FC<props> = (props: any) => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
+    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   headerContainer: {
     borderBottomWidth: 1,

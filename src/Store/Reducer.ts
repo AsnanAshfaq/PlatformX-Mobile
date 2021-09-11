@@ -28,6 +28,11 @@ export const reducer = (state, action) => {
         isSignedIn: action.payload,
       };
 
+    case 'SET_SIGN_OUT':
+      return {
+        ...initialState,
+      };
+
     case 'SET_USER_TYPE':
       return {
         ...state,

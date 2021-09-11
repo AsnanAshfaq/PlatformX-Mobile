@@ -101,19 +101,28 @@ const SignIn: FC<props> = ({navigation}) => {
                 .then(() => storeTokenLocally('refresh', response.data.refresh))
                 .then(() => {
                   // set the local sign in state to true
-                  dispatch({type: 'SET_SIGN_IN', payload: true});
                   Axios.get('/user/')
                     .then(result => {
                       if (result.status === 200) {
                         // if token is valid
                         if (result.data.student) {
                           dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+                          // set user details
+                          const userData = {
+                            firstName: result.data.first_name,
+                            lastName: result.data.last_name,
+                            email: result.data.email,
+                            userName: result.data.username,
+                            profilePic: result.data.user_profile_image.path,
+                          };
+                          dispatch({type: 'SET_USER', payload: userData});
                         } else if (result.data.organization) {
                           dispatch({
                             type: 'SET_USER_TYPE',
                             payload: 'organization',
                           });
                         }
+                        dispatch({type: 'SET_SIGN_IN', payload: true});
                       }
                     })
                     .catch(error => {

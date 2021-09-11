@@ -31,17 +31,19 @@ const App = () => {
           .then(result => {
             if (result.status === 200) {
               // get result and store in context state
-              const userData = {
-                firstName: result.data.first_name,
-                lastName: result.data.last_name,
-                email: result.data.email,
-                userName: result.data.username,
-                profilePic: result.data.user_profile_image.path,
-              };
-              dispatch({type: 'SET_USER', payload: userData});
+
               dispatch({type: 'SET_SIGN_IN', payload: true});
               if (result.data.student) {
                 dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+                // store student related data
+                const userData = {
+                  firstName: result.data.first_name,
+                  lastName: result.data.last_name,
+                  email: result.data.email,
+                  userName: result.data.username,
+                  profilePic: result.data.user_profile_image.path,
+                };
+                dispatch({type: 'SET_USER', payload: userData});
               } else if (result.data.organization) {
                 dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
               }
