@@ -14,7 +14,7 @@ import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import Axios from '../../Utils/Axios';
 import Loading from '../../Components/Loading';
-import AuthHandlers from '../../Utils/AuthHandler';
+import FormHandlers from '../../Utils/FormHandler';
 import {ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../Store/StateProvider';
@@ -32,7 +32,7 @@ const SignIn: FC<props> = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // get some handlers
-  const {isEmailValid, isEmpty} = AuthHandlers();
+  const {isEmailValid, isEmpty} = FormHandlers();
   // get context state
   const [state, dispatch] = useStateValue();
 

@@ -1,4 +1,4 @@
-const AuthHandler = () => {
+const FormHandler = () => {
   const isEmpty = (value: string): boolean => {
     return value.trim().length === 0 ? true : false;
   };
@@ -18,11 +18,11 @@ const AuthHandler = () => {
 
   const isEmailValid = (value: string): boolean => {
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return !emailRegex.test(String(value).toLowerCase()) ? false : true;
+    return !emailRegex.test(String(value.trim()).toLowerCase()) ? false : true;
   };
 
   const isSame = (value1: string, value2: string): boolean => {
-    return value1.trim() != value2.trim() ? false : true;
+    return value1.trim() !== value2.trim() ? false : true;
   };
 
   return {
@@ -34,4 +34,4 @@ const AuthHandler = () => {
   };
 };
 
-export default AuthHandler;
+export default FormHandler;

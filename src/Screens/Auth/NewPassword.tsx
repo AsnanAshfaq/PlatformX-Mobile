@@ -12,7 +12,7 @@ import {Height, Sizes, Width} from '../../Constants/Size';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomTextField from '../../Components/CustomTextField';
 import Loading from '../../Components/Loading';
-import AuthHandlers from '../../Utils/AuthHandler';
+import FormHandlers from '../../Utils/FormHandler';
 import Axios from '../../Utils/Axios';
 
 type props = {
@@ -33,7 +33,7 @@ const NewPassword: FC<props> = ({navigation, route}) => {
     let isAllInputsValid = true;
     setisLoading(true);
     // get some handers
-    const {checkLength, isSame, isEmpty} = AuthHandlers();
+    const {checkLength, isSame, isEmpty} = FormHandlers();
 
     // check's for password
     if (isEmpty(ResetPassword.password.value.trim())) {

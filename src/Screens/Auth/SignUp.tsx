@@ -21,7 +21,7 @@ import CustomTextField from '../../Components/CustomTextField';
 import Loading from '../../Components/Loading';
 import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
-import AuthHandlers from '../../Utils/AuthHandler';
+import FormHandlers from '../../Utils/FormHandler';
 import Axios from '../../Utils/Axios';
 
 type props = {
@@ -36,7 +36,7 @@ const SignUp: FC<props> = ({navigation}) => {
     isSame,
     checkLength,
     isOnylAlphabets,
-  } = AuthHandlers();
+  } = FormHandlers();
 
   const [Registration, setRegistration] = useState({
     first_name: {value: 'Asnan', error: ''},

@@ -12,7 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import CustomTextField from '../../Components/CustomTextField';
 import Axios from '../../Utils/Axios';
-import AuthHandlers from '../../Utils/AuthHandler';
+import FormHandlers from '../../Utils/FormHandler';
 import Loading from '../../Components/Loading';
 
 type props = {
@@ -29,7 +29,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
   const [isLoading, setisLoading] = useState(false);
 
   // get some handlers
-  const {isEmailValid, isEmpty} = AuthHandlers();
+  const {isEmailValid, isEmpty} = FormHandlers();
 
   const sendCode = () => {
     // checks for email
