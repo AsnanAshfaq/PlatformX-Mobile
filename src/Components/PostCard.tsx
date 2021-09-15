@@ -47,7 +47,7 @@ const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
           },
         ]}>
         <Text style={styles.PostButtonText}>
-          {isLiked === 'Liked' ? 'Liked' : 'Likes'}
+          {isLiked === 'Liked' ? 'Liked' : 'Like'}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -86,7 +86,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
     isLiked: string;
     likeCount: number;
   }>({
-    isLiked: postDetail.isLiked,
+    isLiked: postDetail.isLiked, // either '' or 'Liked'
     likeCount: postDetail.likes.length,
   });
 
