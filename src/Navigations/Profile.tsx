@@ -2,7 +2,7 @@ import React from 'react';
 import MyProfile from '../Screens/Profile/Index';
 import {createStackNavigator} from '@react-navigation/stack';
 import Tab from '../Screens/Profile/Tab';
-import {config} from './Index';
+import {config} from './index';
 import ViewProfile from '../Screens/Profile/Student/ViewProfile';
 
 const Stack = createStackNavigator();

@@ -221,7 +221,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                 resizeMode={'cover'}
                 onLoadEnd={() => setLoadBackgroundImage(false)}
                 onError={() => {
-                  setLoadProfileImage(true);
+                  setLoadProfileImage(false);
                   ToastAndroid.show("Couldn't load background image", 1500);
                 }}
               />
@@ -265,7 +265,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                 // onLoad={() => setLoadProfileImage(true)}
                 onLoadEnd={() => setLoadProfileImage(false)}
                 onError={() => {
-                  setLoadProfileImage(true);
+                  setLoadProfileImage(false);
                   ToastAndroid.show("Couldn't load profile image", 1500);
                 }}
               />

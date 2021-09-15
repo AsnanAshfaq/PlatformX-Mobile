@@ -7,14 +7,15 @@
 // else go to auth screens
 
 import React, {useEffect, useState} from 'react';
-import Navigation from './src/Navigations/Index';
+import Navigation from './src/Navigations/index';
 import {useStateValue} from './src/Store/StateProvider';
 import axios from './src/Utils/Axios';
 import {MenuProvider} from 'react-native-popup-menu';
 import Splash from './src/Components/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {darkColors} from './src/Constants/Colors';
-import {NativeModules} from 'react-native';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 const App = () => {
   const [Loading, setLoading] = useState(true);
@@ -24,14 +25,13 @@ const App = () => {
     const getUserType = async () => {
       // get token from local storage
       const accessToken = await AsyncStorage.getItem('access');
-      if (accessToken !== null && accessToken != '') {
+      if (accessToken !== null && accessToken !== '') {
         // make api call
         axios
           .get('/user/')
           .then(result => {
             if (result.status === 200) {
               // get result and store in context state
-
               dispatch({type: 'SET_SIGN_IN', payload: true});
               if (result.data.student) {
                 dispatch({type: 'SET_USER_TYPE', payload: 'student'});

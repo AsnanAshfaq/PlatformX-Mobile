@@ -18,6 +18,9 @@ import {BASE_URL} from 'react-native-dotenv';
 import PopUpMenu from '../Menu/PostCardPopUpMenu';
 import Axios from '../Utils/Axios';
 import PostCarImageSlider from './PostCardImageSlider';
+//@ts-ignore
+import {BASE_ADDRESS} from 'react-native-dotenv';
+import {useStateValue} from '../Store/StateProvider';
 
 const MAX_TEXT_LENGTH = 290;
 
@@ -25,13 +28,27 @@ const ICON_SIZE = Width * 0.07;
 
 type Props = {
   setModal: any;
+  isLiked: string;
   handleLike: () => void;
 };
-const PostCardButtons: FC<Props> = ({setModal, handleLike}) => {
+
+const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
   return (
     <View style={styles.postButtonContainer}>
-      <TouchableOpacity onPress={() => handleLike()} style={styles.PostButton}>
-        <Text style={styles.PostButtonText}>Like</Text>
+      <TouchableOpacity
+        onPress={() => handleLike()}
+        style={[
+          styles.PostButton,
+          {
+            backgroundColor:
+              isLiked === 'Liked'
+                ? darkColors.SCREEN_BACKGROUND_COLOR
+                : darkColors.SHADOW_COLOR,
+          },
+        ]}>
+        <Text style={styles.PostButtonText}>
+          {isLiked === 'Liked' ? 'Liked' : 'Likes'}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
@@ -39,7 +56,6 @@ const PostCardButtons: FC<Props> = ({setModal, handleLike}) => {
             focusTextInput: true,
             showModal: true,
           });
-          console.log('Clicked on comment');
         }}
         style={styles.PostButton}>
         <Text style={styles.PostButtonText}>Comment</Text>
@@ -65,8 +81,16 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
   });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
-  const [PostImageLoading, setPostImageLoading] = useState(true);
-  const [ImageAspectRatio, setImageAspectRatio] = useState(0);
+
+  const [Like, setLike] = useState<{
+    isLiked: string;
+    likeCount: number;
+  }>({
+    isLiked: '',
+    likeCount: postDetail.likes.length,
+  });
+
+  const [state, dispatch] = useStateValue();
 
   const handleDelete = () => {
     // hide the modal first
@@ -97,7 +121,30 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
   };
 
   const handleLike = () => {
-    console.log('You pressed on post with id: ', postDetail.id);
+    // make connection first
+
+    const socket = new WebSocket(
+      `ws://127.0.0.1:8000/ws/like/${postDetail.id}/${state.user.userName}/`,
+    );
+
+    socket.onopen = function () {
+      console.log('Opening post like socket connection');
+      socket.send('Like');
+    };
+
+    socket.onmessage = function (e) {
+      const response = JSON.parse(e.data);
+
+      const likeCount = Number.parseInt(response.likeCount);
+
+      response.likeCount = likeCount;
+
+      setLike(response);
+      // change the like state
+      socket.close = function () {
+        console.log('Connection has been closed ');
+      };
+    };
   };
 
   return (
@@ -182,9 +229,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
           })
         }>
         <View style={styles.likeContainer}>
-          <Text style={styles.PostButtonText}>
-            {postDetail.likes.length} Likes
-          </Text>
+          <Text style={styles.PostButtonText}>{Like.likeCount} Likes</Text>
         </View>
 
         <View style={styles.commentConatiner}>
@@ -198,7 +243,11 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         </View>
       </TouchableOpacity>
       {/* post buttons   */}
-      <PostCardButtons setModal={setCommentmodal} handleLike={handleLike} />
+      <PostCardButtons
+        setModal={setCommentmodal}
+        handleLike={handleLike}
+        isLiked={Like.isLiked}
+      />
     </View>
   );
 };

@@ -107,7 +107,7 @@ const CustomDrawer: FC<props> = (props: any) => {
           }}
           onLoadEnd={() => setLoadProfileImage(false)}
           onError={() => {
-            setLoadProfileImage(true);
+            setLoadProfileImage(false);
             ToastAndroid.show("Couldn't load profile image", 1500);
           }}
           style={styles.profileImage}

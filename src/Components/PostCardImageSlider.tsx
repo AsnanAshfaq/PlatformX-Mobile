@@ -55,7 +55,7 @@ const PostCarImageSlider: FC<props> = ({postImages}) => {
         height: 100,
         flexGrow: 1,
       }}
-      onContentSizeChange={(w, h) => console.log('Width and height ', w, h)}
+      // onContentSizeChange={(w, h) => console.log('Width and height ', w, h)}
       pagingEnabled
       onScrollEndDrag={e => {
         // console.log('Height is', Height);
