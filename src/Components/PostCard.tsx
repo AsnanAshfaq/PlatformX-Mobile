@@ -86,7 +86,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
     isLiked: string;
     likeCount: number;
   }>({
-    isLiked: '',
+    isLiked: postDetail.isLiked,
     likeCount: postDetail.likes.length,
   });
 
@@ -124,7 +124,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
     // make connection first
 
     const socket = new WebSocket(
-      `ws://127.0.0.1:8000/ws/like/${postDetail.id}/${state.user.userName}/`,
+      `ws://${BASE_ADDRESS}/ws/like/${postDetail.id}/${state.user.userName}/`,
     );
 
     socket.onopen = function () {
