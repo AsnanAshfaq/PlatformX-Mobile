@@ -12,13 +12,14 @@ import Search from '../../Components/Search';
 import FollowingModal from '../../Modals/FollowingModal';
 import Axios from '../../Utils/Axios';
 import {TabView, TabBar} from 'react-native-tab-view';
-import {darkColors} from '../../Constants/Colors';
+// import {darkColors} from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
 import PopUpMenu from '../../Menu/FollowingCardPopUpMenu';
 import {PROFILE_IMAGE} from '../../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import Loading from '../../Components/Loading';
+import {useStateValue} from '../../Store/StateProvider';
 
 type cardProps = {
   id: string;
@@ -30,8 +31,17 @@ type cardProps = {
 type screens = 'Followers' | 'Following';
 
 const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
+  const [state, dispatch] = useStateValue();
+
   return (
-    <View style={styles.cardParent}>
+    <View
+      style={[
+        styles.cardParent,
+        {
+          shadowColor: state.theme.SHADOW_COLOR,
+          backgroundColor: state.theme.LIGHT_BACKGROUND,
+        },
+      ]}>
       {/* profile image container  */}
       <View style={styles.cardImageContainer}>
         <Image
@@ -46,10 +56,13 @@ const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
       </View>
       {/* details container  */}
       <View style={styles.cardDetailsContainer}>
-        <Text style={styles.cardTextName}>
+        <Text style={[styles.cardTextName, {color: state.theme.TEXT_COLOR}]}>
           {data.first_name + data.last_name}
         </Text>
-        <Text style={styles.cardTextUserName}>@{data.username}</Text>
+        <Text
+          style={[styles.cardTextUserName, {color: state.theme.TEXT_COLOR}]}>
+          @{data.username}
+        </Text>
       </View>
       {/* icon container */}
       <View style={styles.cardIconContainer}>
@@ -64,12 +77,14 @@ const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
 };
 
 const NoDataView: FC<{screen: 'Followers' | 'Following'}> = ({screen}) => {
+  const [state, dispatch] = useStateValue();
+
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={styles.center}>
       <Text
         style={{
           fontSize: Sizes.normal,
-          color: darkColors.TEXT_COLOR,
+          color: state.theme.TEXT_COLOR,
         }}>
         You don't have any {screen} yet
       </Text>
@@ -80,6 +95,7 @@ const NoDataView: FC<{screen: 'Followers' | 'Following'}> = ({screen}) => {
 const Followers: FC = () => {
   const [followers, setFollowers] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+  const [state, dispatch] = useStateValue();
 
   useEffect(() => {
     Axios.get('/user/follower')
@@ -128,6 +144,7 @@ const Following: FC = () => {
     id: '', // id of the user
     description: '',
   });
+  const [state, dispatch] = useStateValue();
 
   useEffect(() => {
     Axios.get('/user/following')
@@ -207,6 +224,7 @@ const Tab: FC<props> = ({navigation, route: Route}) => {
     {key: 'followers', title: 'Followers'},
     {key: 'following', title: 'Following'},
   ]);
+  const [state, dispatch] = useStateValue();
 
   const renderScene = ({route}) => {
     switch (route.key) {
@@ -220,7 +238,11 @@ const Tab: FC<props> = ({navigation, route: Route}) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
+      ]}>
       <CustomHeader
         title={`@${userName}`}
         navigation={navigation}
@@ -237,10 +259,10 @@ const Tab: FC<props> = ({navigation, route: Route}) => {
         renderTabBar={props => (
           <TabBar
             {...props}
-            indicatorStyle={{backgroundColor: darkColors.LIGHT_BACKGROUND}}
-            style={{backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR}}
-            activeColor={darkColors.TEXT_COLOR}
-            inactiveColor={darkColors.SHADOW_COLOR}
+            indicatorStyle={{backgroundColor: state.theme.LIGHT_BACKGROUND}}
+            style={{backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR}}
+            activeColor={state.theme.TEXT_COLOR}
+            inactiveColor={state.theme.SHADOW_COLOR}
           />
         )}
         keyboardDismissMode={'auto'}
@@ -254,7 +276,6 @@ export default Tab;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   cardParent: {
     flexDirection: 'row',
@@ -264,8 +285,6 @@ const styles = StyleSheet.create({
     // maxHeight: Height * 0.4,
     borderRadius: 10,
     padding: 10,
-    shadowColor: darkColors.SHADOW_COLOR,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {
@@ -277,6 +296,11 @@ const styles = StyleSheet.create({
   cardImageContainer: {
     margin: 2,
     flex: 0.2,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardImage: {
     width: Width * 0.14,
@@ -291,11 +315,9 @@ const styles = StyleSheet.create({
   },
   cardTextName: {
     fontSize: Sizes.normal,
-    color: darkColors.TEXT_COLOR,
   },
   cardTextUserName: {
     fontSize: Sizes.normal * 0.9,
-    color: darkColors.TEXT_COLOR,
   },
   cardIconContainer: {
     flex: 0.1,

@@ -26,7 +26,7 @@ const Posts: FC<props> = ({navigation}) => {
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   const getData = async () => {
     try {
@@ -55,7 +55,7 @@ const Posts: FC<props> = ({navigation}) => {
       style={[
         styles.parent,
         {
-          backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
@@ -74,8 +74,8 @@ const Posts: FC<props> = ({navigation}) => {
               <RefreshControl
                 refreshing={Refreshing}
                 onRefresh={onRefresh}
-                colors={[state.theme.TEXT_COLOR]}
-                progressBackgroundColor={state.theme.SHADOW_COLOR}
+                colors={[theme.TEXT_COLOR]}
+                progressBackgroundColor={theme.SHADOW_COLOR}
                 progressViewOffset={20}
                 size={Sizes.large}
               />
@@ -88,7 +88,7 @@ const Posts: FC<props> = ({navigation}) => {
             style={[
               styles.floatingButtonContainer,
               {
-                backgroundColor: state.theme.TOMATO_COLOR,
+                backgroundColor: theme.TOMATO_COLOR,
               },
             ]}>
             <TouchableOpacity
@@ -99,7 +99,7 @@ const Posts: FC<props> = ({navigation}) => {
                 style={[
                   styles.plusText,
                   {
-                    color: state.theme.TEXT_COLOR,
+                    color: theme.TEXT_COLOR,
                   },
                 ]}>
                 +
@@ -113,14 +113,13 @@ const Posts: FC<props> = ({navigation}) => {
             style={[
               styles.noMoreText,
               {
-                color: state.theme.TEXT_COLOR,
+                color: theme.TEXT_COLOR,
               },
             ]}>
             No Posts yet
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text
-              style={[styles.refreshText, {color: state.theme.TOMATO_COLOR}]}>
+            <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
               Refresh
             </Text>
           </TouchableOpacity>

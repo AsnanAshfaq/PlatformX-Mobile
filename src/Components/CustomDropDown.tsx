@@ -2,9 +2,9 @@
 
 import React, {FC, useState, forwardRef} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useStateValue} from '../../src/Store/StateProvider';
 
 type props = {
   data: Array<string>;
@@ -24,24 +24,36 @@ const CustomDropDown: FC<props> = ({
   setSelected,
 }) => {
   const toggleDropDown = () => toggleShow(!isShow);
+
+  const [{theme}, dispatch] = useStateValue();
+
   return (
     <View style={styles.parent}>
       <TouchableOpacity
         onPress={() => toggleDropDown()}
-        style={styles.dropDownBar}>
+        style={[styles.dropDownBar, {backgroundColor: theme.LIGHT_BACKGROUND}]}>
         <View style={{flexDirection: 'row'}}>
-          <Text style={styles.selectedText}>{Selected}</Text>
+          <Text style={[styles.selectedText, {color: theme.TEXT_COLOR}]}>
+            {Selected}
+          </Text>
           <Ionicons
             name={isShow === false ? 'caret-down-outline' : 'caret-up-outline'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
             style={styles.dropDownIcon}
           />
         </View>
       </TouchableOpacity>
 
       {/* drop down view  */}
-      <View style={styles.droppedViewContainer}>
+      <View
+        style={[
+          styles.droppedViewContainer,
+          {
+            borderColor: theme.LIGHT_BACKGROUND,
+            backgroundColor: theme.LIGHT_BACKGROUND,
+          },
+        ]}>
         {isShow &&
           data.map(type => (
             <TouchableOpacity
@@ -56,7 +68,9 @@ const CustomDropDown: FC<props> = ({
               }}
               key={type}>
               <View style={styles.droppedView}>
-                <Text style={styles.droppedText}>{type}</Text>
+                <Text style={[styles.droppedText, {color: theme.TEXT_COLOR}]}>
+                  {type}
+                </Text>
               </View>
             </TouchableOpacity>
           ))}
@@ -73,7 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dropDownBar: {
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     width: Width * 0.9,
     marginHorizontal: Width * 0.01,
     padding: 10,
@@ -87,7 +100,6 @@ const styles = StyleSheet.create({
     flex: 0.1,
   },
   selectedText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
     flex: 0.9,
   },
@@ -98,8 +110,6 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: darkColors.LIGHT_BACKGROUND,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
   },
   droppedView: {
     width: Width * 0.87,
@@ -108,7 +118,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.01,
   },
   droppedText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
   },
 });

@@ -1,14 +1,25 @@
-import React, {FC} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import React, {FC, useState} from 'react';
+import {StyleSheet, Text, View, ScrollView, RefreshControl} from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import NotificationCard from '../../Components/NotificationCard';
 import {notificationData} from '../../Constants/sample';
+import {Sizes} from '../../Constants/Size';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
 };
 
 const Notification: FC<props> = ({navigation}) => {
+  const [Refreshing, setRefreshing] = useState(false);
+  const [{theme}, dispatch] = useStateValue();
+
+  const onRefresh = () => {
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
+
   return (
     <View style={styles.parent}>
       <CustomHeader
@@ -17,7 +28,18 @@ const Notification: FC<props> = ({navigation}) => {
         back
         onBackPress={() => navigation.goBack()}
       />
-      <ScrollView style={{flex: 1}}>
+      <ScrollView
+        style={{flex: 1}}
+        refreshControl={
+          <RefreshControl
+            refreshing={Refreshing}
+            onRefresh={onRefresh}
+            colors={[theme.TEXT_COLOR]}
+            progressBackgroundColor={theme.SHADOW_COLOR}
+            progressViewOffset={20}
+            size={Sizes.large}
+          />
+        }>
         <>
           {notificationData.map(notify => (
             <NotificationCard

@@ -2,8 +2,9 @@ import React, {FC, useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TabView, TabBar} from 'react-native-tab-view';
 import CustomHeader from '../../../Components/CustomHeader';
-import {darkColors} from '../../../Constants/Colors';
+// import {darkColors} from '../../../Constants/Colors';
 import {Width} from '../../../Constants/Size';
+import {useStateValue} from '../../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -32,6 +33,7 @@ const Activities: FC<props> = ({navigation}) => {
     {key: 'internship', title: 'Internship'},
     {key: 'project', title: 'Project'},
   ]);
+  const [state, dispatch] = useStateValue();
 
   const renderScene = ({route}) => {
     switch (route.key) {
@@ -44,7 +46,11 @@ const Activities: FC<props> = ({navigation}) => {
     }
   };
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
+      ]}>
       {/* header  */}
       <CustomHeader
         navigation
@@ -63,10 +69,10 @@ const Activities: FC<props> = ({navigation}) => {
           <TabBar
             {...props}
             tabStyle={{width: 'auto'}}
-            indicatorStyle={{backgroundColor: darkColors.LIGHT_BACKGROUND}}
-            style={{backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR}}
-            activeColor={darkColors.TEXT_COLOR}
-            inactiveColor={darkColors.SHADOW_COLOR}
+            indicatorStyle={{backgroundColor: state.theme.LIGHT_BACKGROUND}}
+            style={{backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR}}
+            activeColor={state.theme.TEXT_COLOR}
+            inactiveColor={state.theme.SHADOW_COLOR}
           />
         )}
         keyboardDismissMode={'auto'}
@@ -80,6 +86,5 @@ export default Activities;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
 });

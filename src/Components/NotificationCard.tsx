@@ -8,9 +8,10 @@ import {
   Image,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
+// import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import {PROFILE_IMAGE} from '../Constants/sample';
+import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -21,9 +22,18 @@ const ICON_SIZE = Width * 0.07;
 
 const NotificationCard: FC<props> = ({navigation, notification}) => {
   const [ImageLoading, setImageLoading] = useState(true);
+  const [{theme}, dispatch] = useStateValue();
+
   return (
     <TouchableOpacity>
-      <View style={styles.parent}>
+      <View
+        style={[
+          styles.parent,
+          {
+            shadowColor: theme.SHADOW_COLOR,
+            backgroundColor: theme.LIGHT_BACKGROUND,
+          },
+        ]}>
         {/* image container */}
         <View style={styles.imageContainer}>
           <Image
@@ -31,13 +41,21 @@ const NotificationCard: FC<props> = ({navigation, notification}) => {
               uri: ImageLoading ? PROFILE_IMAGE : notification.user_image,
             }}
             style={styles.image}
-            onLoad={() => setImageLoading(false)}
+            onLoadEnd={() => setImageLoading(false)}
           />
         </View>
         {/* title container  */}
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{notification.notification}</Text>
-          <Text style={styles.date}>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {notification.notification}
+          </Text>
+          <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
             {notification.timestamp.toUTCString().substring(0, 17)}
           </Text>
         </View>
@@ -46,7 +64,7 @@ const NotificationCard: FC<props> = ({navigation, notification}) => {
             <Ionicons
               name={'ellipsis-vertical'}
               size={ICON_SIZE}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              color={theme.TAB_BAR_ACTIVE_COLOR}
             />
           </TouchableOpacity>
         </View>
@@ -66,8 +84,6 @@ const styles = StyleSheet.create({
     // maxHeight: Height * 0.4,
     borderRadius: 20,
     padding: 10,
-    shadowColor: darkColors.SHADOW_COLOR,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
@@ -90,11 +106,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   date: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.75,
   },
   optionContainer: {

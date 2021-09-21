@@ -13,14 +13,13 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
+// import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {useStateValue} from '../../src/Store/StateProvider';
 import {PROFILE_IMAGE} from '../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import SignOutModal from '../Modals/SignOutModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   label: string;
@@ -29,15 +28,17 @@ type Props = {
 };
 
 const CustomDrawerItem: FC<Props> = ({label, icon_name, onPress}) => {
+  const [{theme}, dispatch] = useStateValue();
+
   return (
     <DrawerItem
       label={({focused, color}) => (
-        <Text style={{color: darkColors.TEXT_COLOR, fontSize: Sizes.normal}}>
+        <Text style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
           {label}
         </Text>
       )}
       icon={({focused, color, size}) => (
-        <Ionicons name={icon_name} size={25} color={darkColors.TEXT_COLOR} />
+        <Ionicons name={icon_name} size={25} color={theme.TEXT_COLOR} />
       )}
       onPress={() => onPress()}
     />
@@ -85,11 +86,24 @@ const CustomDrawer: FC<props> = (props: any) => {
   ];
 
   return (
-    <DrawerContentScrollView {...props} style={styles.parent}>
+    <DrawerContentScrollView
+      {...props}
+      style={[
+        styles.parent,
+        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
+      ]}>
       {/* <DrawerItemList {...props} /> */}
       {/* header  */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>PlatformX</Text>
+      <View
+        style={[
+          styles.headerContainer,
+          {
+            borderBottomColor: state.theme.SHADOW_COLOR,
+          },
+        ]}>
+        <Text style={[styles.headerTitle, {color: state.theme.TEXT_COLOR}]}>
+          PlatformX
+        </Text>
       </View>
 
       <SignOutModal
@@ -112,17 +126,25 @@ const CustomDrawer: FC<props> = (props: any) => {
           }}
           style={styles.profileImage}
         />
-        <Text style={styles.fullName}>
+        <Text style={[styles.fullName, {color: state.theme.TEXT_COLOR}]}>
           {state.user.firstName + ' ' + state.user.lastName}
         </Text>
-        <Text style={styles.userName}>@{state.user.userName}</Text>
+        <Text style={[styles.userName, {color: state.theme.TEXT_COLOR}]}>
+          @{state.user.userName}
+        </Text>
         <TouchableOpacity
           onPress={() => {
             // navigation.closeDrawer();
             navigation.navigate('Profile_Home');
           }}
-          style={styles.profileButtonContainer}>
-          <Text style={styles.profileButtonText}>View Profile</Text>
+          style={[
+            styles.profileButtonContainer,
+            {backgroundColor: state.theme.SHADOW_COLOR},
+          ]}>
+          <Text
+            style={[styles.profileButtonText, {color: state.theme.TEXT_COLOR}]}>
+            View Profile
+          </Text>
         </TouchableOpacity>
       </View>
       {/* drawer items list  */}
@@ -141,17 +163,14 @@ const CustomDrawer: FC<props> = (props: any) => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   headerContainer: {
     borderBottomWidth: 1,
     width: Width * 0.6,
     marginHorizontal: Width * 0.02,
-    borderBottomColor: darkColors.SHADOW_COLOR,
     padding: Width * 0.035,
   },
   headerTitle: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large * 1.3,
   },
   profileContainer: {
@@ -165,23 +184,19 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
   fullName: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.3,
   },
   userName: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.9,
   },
   profileButtonContainer: {
     marginVertical: Width * 0.03,
-    backgroundColor: darkColors.SHADOW_COLOR,
     padding: 10,
     borderWidth: 2,
     borderColor: 'transparent',
     borderRadius: 15,
   },
   profileButtonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.8,
   },
 });

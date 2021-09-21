@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
-import {darkColors} from '../../Constants/Colors';
+// import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import Axios from '../../Utils/Axios';
 import Loading from '../../Components/Loading';
@@ -199,12 +199,21 @@ const SignIn: FC<props> = ({navigation}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.parent}>
+      style={[
+        styles.parent,
+        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
+      ]}>
       {/* platformX logo  */}
       <View style={styles.logoContainer}>
-        <Text style={styles.bracket}>{'<'}</Text>
-        <Text style={styles.logo}>PlatformX</Text>
-        <Text style={styles.bracket}>{'/>'}</Text>
+        <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
+          {'<'}
+        </Text>
+        <Text style={[styles.logo, {color: state.theme.TEXT_COLOR}]}>
+          PlatformX
+        </Text>
+        <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
+          {'/>'}
+        </Text>
       </View>
       <View style={styles.fieldContainer}>
         {/* email field  */}
@@ -251,29 +260,43 @@ const SignIn: FC<props> = ({navigation}) => {
         {/* forgot password container  */}
         <View style={styles.forgotContainer}>
           <TouchableWithoutFeedback onPress={() => forgotPassword()}>
-            <Text style={styles.forgotText}>Forgot password?</Text>
+            <Text
+              style={[styles.forgotText, {color: state.theme.TOMATO_COLOR}]}>
+              Forgot password?
+            </Text>
           </TouchableWithoutFeedback>
         </View>
       </View>
 
       {/* submit button container  */}
       <View style={styles.submitButtonContainer}>
-        <TouchableOpacity style={styles.submitButton} onPress={handleSignIn}>
+        <TouchableOpacity
+          style={[
+            styles.submitButton,
+            {backgroundColor: state.theme.SHADOW_COLOR},
+          ]}
+          onPress={handleSignIn}>
           {isLoading ? (
             <Loading
               size={'small'}
-              color={darkColors.SCREEN_BACKGROUND_COLOR}
+              color={state.theme.SCREEN_BACKGROUND_COLOR}
             />
           ) : (
-            <Text style={styles.submitButtonText}>Sign In</Text>
+            <Text
+              style={[
+                styles.submitButtonText,
+                {color: state.theme.TEXT_COLOR},
+              ]}>
+              Sign In
+            </Text>
           )}
         </TouchableOpacity>
         {/* sign up container  */}
         <View style={styles.signUpContainer}>
-          <Text style={styles.signUpText}>
+          <Text style={[styles.signUpText, {color: state.theme.TEXT_COLOR}]}>
             Don't have an account?{' '}
             <Text
-              style={styles.signUp}
+              style={[styles.signUp, {color: state.theme.TOMATO_COLOR}]}
               onPress={() => navigation.navigate('SignUp')}>
               {' '}
               Sign Up
@@ -294,7 +317,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
     flexDirection: 'column',
   },
   logoContainer: {
@@ -307,11 +329,9 @@ const styles = StyleSheet.create({
     fontSize: Sizes.large * 2,
     // fontWeight: 'bold',
     fontFamily: 'ComicNeue-Regular',
-    color: darkColors.TEXT_COLOR,
   },
   logo: {
     fontSize: Sizes.large * 1.7,
-    color: darkColors.TEXT_COLOR,
     fontFamily: 'Comfortaa-SemiBold',
   },
   fieldContainer: {
@@ -328,7 +348,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   forgotText: {
-    color: darkColors.TOMATO_COLOR,
     fontSize: Sizes.normal,
   },
   submitButtonContainer: {
@@ -340,7 +359,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitButton: {
-    backgroundColor: darkColors.SHADOW_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
@@ -351,7 +369,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitButtonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
     paddingVertical: 2,
   },
@@ -359,12 +376,10 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   signUpText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.9,
     paddingVertical: 2,
   },
   signUp: {
-    color: darkColors.TOMATO_COLOR,
     fontSize: Sizes.normal,
     fontWeight: 'bold',
   },

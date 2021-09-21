@@ -1,19 +1,21 @@
-// small, normal, large
+//TODO: small, normal, large
 
 import React, {FC} from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {darkColors} from '../Constants/Colors';
+import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   size: 'small' | 'large' | number;
   color?: string;
 };
 const Loading: FC<props> = ({size, color}) => {
+  const [{theme}, dispatch] = useStateValue();
+
   return (
     <View style={styles.parent}>
       <ActivityIndicator
         size={size}
-        color={color ? color : darkColors.SHADOW_COLOR}
+        color={color ? color : theme.SHADOW_COLOR}
       />
     </View>
   );

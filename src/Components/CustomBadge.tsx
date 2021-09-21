@@ -1,14 +1,25 @@
 import React, {FC} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {darkColors} from '../Constants/Colors';
+import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   value?: number;
 };
 const CustomBadge: FC<props> = ({value}) => {
+  const [{theme}, dispatch] = useStateValue();
+
   return (
-    <View style={styles.badgeStyle}>
-      <Text style={styles.badgeText}>{value !== undefined ? value : 2}</Text>
+    <View
+      style={[
+        styles.badgeStyle,
+        {
+          backgroundColor: theme.BADGE_COLOR,
+          borderColor: theme.BADGE_COLOR,
+        },
+      ]}>
+      <Text style={{color: theme.BADGE_TEXT_COLOR}}>
+        {value !== undefined ? value : 2}
+      </Text>
     </View>
   );
 };
@@ -24,12 +35,8 @@ const styles = StyleSheet.create({
     height: 21,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkColors.BADGE_COLOR,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: darkColors.BADGE_COLOR,
   },
-  badgeText: {
-    color: darkColors.BADGE_TEXT_COLOR,
-  },
+  badgeText: {},
 });

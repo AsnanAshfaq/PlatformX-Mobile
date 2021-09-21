@@ -26,20 +26,20 @@ type Props = {
 };
 
 const HackathonCardIcons: FC<Props> = ({name, label}) => {
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
       <Ionicons
         name={name}
         size={ICON_SIZE}
-        color={state.theme.TAB_BAR_ACTIVE_COLOR}
+        color={theme.TAB_BAR_ACTIVE_COLOR}
       />
       <Text
         style={[
           styles.iconText,
           {
-            color: state.theme.TEXT_COLOR,
+            color: theme.TEXT_COLOR,
           },
         ]}>
         {label}
@@ -59,22 +59,22 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
   const [HackathonImageLoading, setHackathonImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   return (
     <View
       style={[
         styles.parent,
         {
-          shadowColor: state.theme.SHADOW_COLOR,
-          backgroundColor: state.theme.LIGHT_BACKGROUND,
+          shadowColor: theme.SHADOW_COLOR,
+          backgroundColor: theme.LIGHT_BACKGROUND,
         },
       ]}>
       {/* header  */}
       <View
         style={[
           styles.headerContainer,
-          {borderBottomColor: state.theme.SHADOW_COLOR},
+          {borderBottomColor: theme.SHADOW_COLOR},
         ]}>
         {/* user image  */}
         <View style={styles.headerImageContainer}>
@@ -94,12 +94,12 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
             style={[
               styles.username,
               {
-                color: state.theme.TEXT_COLOR,
+                color: theme.TEXT_COLOR,
               },
             ]}>
             {hackathonDetail.organization.name}
           </Text>
-          <Text style={[styles.date, {color: state.theme.TEXT_COLOR}]}>
+          <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
             {new Date(hackathonDetail.created_at).toDateString()}
           </Text>
         </View>
@@ -111,14 +111,13 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       {/* content  */}
       <View style={styles.contentContainer}>
         {/* title  */}
-        <Text style={[styles.titleText, {color: state.theme.TEXT_COLOR}]}>
+        <Text style={[styles.titleText, {color: theme.TEXT_COLOR}]}>
           {hackathonDetail.title}
         </Text>
         {/* description  */}
         {hackathonDetail.description.length > MAX_TEXT_LENGTH ? (
           <Text>
-            <Text
-              style={[styles.descriptionText, {color: state.theme.TEXT_COLOR}]}>
+            <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
               {hackathonDetail.description.substring(0, MAX_TEXT_LENGTH - 4)}
             </Text>
             <TouchableWithoutFeedback
@@ -127,18 +126,13 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
                   ID: hackathonDetail.id,
                 })
               }>
-              <Text
-                style={[
-                  styles.descriptionText,
-                  {color: state.theme.TEXT_COLOR},
-                ]}>
+              <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
                 ... {'  '}read more
               </Text>
             </TouchableWithoutFeedback>
           </Text>
         ) : (
-          <Text
-            style={[styles.descriptionText, {color: state.theme.TEXT_COLOR}]}>
+          <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
             {hackathonDetail.description}
           </Text>
         )}
@@ -193,15 +187,12 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
               ID: hackathonDetail.id,
             })
           }
-          style={[
-            styles.applyButton,
-            {backgroundColor: state.theme.SHADOW_COLOR},
-          ]}>
+          style={[styles.applyButton, {backgroundColor: theme.SHADOW_COLOR}]}>
           <Text
             style={[
               styles.applyButtonText,
               {
-                color: state.theme.TEXT_COLOR,
+                color: theme.TEXT_COLOR,
               },
             ]}>
             View Details{' '}

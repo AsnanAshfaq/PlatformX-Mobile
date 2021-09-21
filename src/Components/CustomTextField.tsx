@@ -1,9 +1,10 @@
 import React, {FC, useState, useEffect, useRef} from 'react';
 import {StyleSheet, Text, View, TextInput, Keyboard} from 'react-native';
-import {darkColors} from '../Constants/Colors';
+// import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {useStateValue} from '../Store/StateProvider';
 
 type textContentType =
   | 'none' //disable autofill
@@ -72,6 +73,7 @@ const CustomTextField: FC<props> = ({
 }) => {
   const [Security, setSecurity] = useState(secureTextEntry);
   const ref = useRef<any>(null);
+  const [{theme}, dispatch] = useStateValue();
 
   Keyboard.addListener('keyboardDidHide', e => {
     if (ref.current) {
@@ -85,18 +87,16 @@ const CustomTextField: FC<props> = ({
         style={[
           styles.textFieldContainer,
           {
-            borderColor: error
-              ? darkColors.TOMATO_COLOR
-              : darkColors.SHADOW_COLOR,
+            borderColor: error ? theme.TOMATO_COLOR : theme.SHADOW_COLOR,
           },
         ]}>
         <TextInput
           placeholder={placeholder}
           ref={ref}
-          style={styles.textField}
+          style={[styles.textField, {color: theme.TEXT_COLOR}]}
           value={defaultValue}
           onChangeText={onChangeText}
-          placeholderTextColor={darkColors.TEXT_COLOR}
+          placeholderTextColor={theme.TEXT_COLOR}
           textContentType={textContentType}
           keyboardType={keyboardType}
           secureTextEntry={Security === true ? Security : false}
@@ -110,13 +110,15 @@ const CustomTextField: FC<props> = ({
             <Ionicons
               name={Security ? 'eye-outline' : 'eye-off-outline'}
               size={ICON_SIZE}
-              color={darkColors.TAB_BAR_ACTIVE_COLOR}
+              color={theme.TAB_BAR_ACTIVE_COLOR}
               style={styles.icon}
             />
           </TouchableWithoutFeedback>
         )}
       </View>
-      <Text style={styles.errorText}>{error}</Text>
+      <Text style={[styles.errorText, {color: theme.TOMATO_COLOR}]}>
+        {error}
+      </Text>
     </>
   );
 };
@@ -134,7 +136,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   textField: {
-    color: darkColors.TEXT_COLOR,
     width: Width * 0.68,
     fontSize: Sizes.normal,
   },
@@ -146,7 +147,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   errorText: {
-    color: darkColors.TOMATO_COLOR,
     fontSize: Sizes.small,
   },
 });

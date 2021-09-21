@@ -19,10 +19,11 @@ import {
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import Loading from '../../Components/Loading';
-import {darkColors} from '../../Constants/Colors';
+// import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import FormHandlers from '../../Utils/FormHandler';
 import Axios from '../../Utils/Axios';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -48,6 +49,7 @@ const SignUp: FC<props> = ({navigation}) => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [state, dispatch] = useStateValue();
 
   const handleSignUp = () => {
     let x = Registration;
@@ -221,14 +223,23 @@ const SignUp: FC<props> = ({navigation}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       // keyboardVerticalOffset={20}
-      style={styles.parent}>
+      style={[
+        styles.parent,
+        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
+      ]}>
       <ScrollView keyboardShouldPersistTaps={'never'}>
         <>
           {/* platformX logo  */}
           <View style={styles.logoContainer}>
-            <Text style={styles.bracket}>{'<'}</Text>
-            <Text style={styles.logo}>PlatformX</Text>
-            <Text style={styles.bracket}>{'/>'}</Text>
+            <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
+              {'<'}
+            </Text>
+            <Text style={[styles.logo, {color: state.theme.TEXT_COLOR}]}>
+              PlatformX
+            </Text>
+            <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
+              {'/>'}
+            </Text>
           </View>
 
           <View style={styles.fieldContainer}>
@@ -356,23 +367,33 @@ const SignUp: FC<props> = ({navigation}) => {
           {/* submit button container  */}
           <View style={styles.submitButtonContainer}>
             <TouchableOpacity
-              style={styles.submitButton}
+              style={[
+                styles.submitButton,
+                {backgroundColor: state.theme.SHADOW_COLOR},
+              ]}
               onPress={handleSignUp}>
               {isLoading ? (
                 <Loading
                   size={'small'}
-                  color={darkColors.SCREEN_BACKGROUND_COLOR}
+                  color={state.theme.SCREEN_BACKGROUND_COLOR}
                 />
               ) : (
-                <Text style={styles.submitButtonText}>Sign Up</Text>
+                <Text
+                  style={[
+                    styles.submitButtonText,
+                    {color: state.theme.TEXT_COLOR},
+                  ]}>
+                  Sign Up
+                </Text>
               )}
             </TouchableOpacity>
             {/* sign up container  */}
             <View style={styles.signInContainer}>
-              <Text style={styles.signInText}>
+              <Text
+                style={[styles.signInText, {color: state.theme.TEXT_COLOR}]}>
                 Don't have an account?
                 <Text
-                  style={styles.signIn}
+                  style={[styles.signIn, {color: state.theme.TOMATO_COLOR}]}
                   onPress={() => navigation.navigate('SignIn')}>
                   {' '}
                   Sign In
@@ -394,7 +415,6 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   logoContainer: {
     flex: 0.3,
@@ -407,11 +427,9 @@ const styles = StyleSheet.create({
     fontSize: Sizes.large * 2,
     // fontWeight: 'bold',
     fontFamily: 'ComicNeue-Regular',
-    color: darkColors.TEXT_COLOR,
   },
   logo: {
     fontSize: Sizes.large * 1.7,
-    color: darkColors.TEXT_COLOR,
     fontFamily: 'Comfortaa-SemiBold',
   },
   fieldContainer: {
@@ -429,7 +447,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitButton: {
-    backgroundColor: darkColors.SHADOW_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
@@ -440,7 +457,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   submitButtonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
     paddingVertical: 2,
   },
@@ -448,17 +464,11 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   signInText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.9,
     paddingVertical: 2,
   },
   signIn: {
-    color: darkColors.TOMATO_COLOR,
     fontSize: Sizes.normal,
     fontWeight: 'bold',
-  },
-  errorText: {
-    color: darkColors.TOMATO_COLOR,
-    fontSize: Sizes.small,
   },
 });

@@ -50,6 +50,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
             }
             placeholder={'First Name'}
             textContentType={'name'}
+            keyboardType={'default'}
           />
         </View>
         <View style={styles.center}>
@@ -65,6 +66,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
             }
             placeholder={'Last Name'}
             textContentType={'name'}
+            keyboardType={'default'}
           />
         </View>
         <View style={styles.center}>
@@ -80,6 +82,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
             }
             placeholder={'User Name'}
             textContentType={'name'}
+            keyboardType={'default'}
           />
         </View>
         <View style={styles.center}>
@@ -95,6 +98,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
             }
             placeholder={'Bio'}
             textContentType={'name'}
+            keyboardType={'default'}
           />
         </View>
       </ScrollView>
