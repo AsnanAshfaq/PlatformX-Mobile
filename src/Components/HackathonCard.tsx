@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from 'react-native';
-import {darkColors} from '../Constants/Colors';
+// import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import {PROFILE_IMAGE,} from '../Constants/sample';
@@ -16,6 +16,7 @@ import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {commaSeperator} from '../Utils/Numbers';
+import {useStateValue} from '../Store/StateProvider';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -25,14 +26,24 @@ type Props = {
 };
 
 const HackathonCardIcons: FC<Props> = ({name, label}) => {
+  const [state, dispatch] = useStateValue();
+
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
       <Ionicons
         name={name}
         size={ICON_SIZE}
-        color={darkColors.TAB_BAR_ACTIVE_COLOR}
+        color={state.theme.TAB_BAR_ACTIVE_COLOR}
       />
-      <Text style={styles.iconText}>{label}</Text>
+      <Text
+        style={[
+          styles.iconText,
+          {
+            color: state.theme.TEXT_COLOR,
+          },
+        ]}>
+        {label}
+      </Text>
     </View>
   );
 };
@@ -48,11 +59,23 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
   const [HackathonImageLoading, setHackathonImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
+  const [state, dispatch] = useStateValue();
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          shadowColor: state.theme.SHADOW_COLOR,
+          backgroundColor: state.theme.LIGHT_BACKGROUND,
+        },
+      ]}>
       {/* header  */}
-      <View style={styles.headerContainer}>
+      <View
+        style={[
+          styles.headerContainer,
+          {borderBottomColor: state.theme.SHADOW_COLOR},
+        ]}>
         {/* user image  */}
         <View style={styles.headerImageContainer}>
           <Image
@@ -67,10 +90,16 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.username}>
+          <Text
+            style={[
+              styles.username,
+              {
+                color: state.theme.TEXT_COLOR,
+              },
+            ]}>
             {hackathonDetail.organization.name}
           </Text>
-          <Text style={styles.date}>
+          <Text style={[styles.date, {color: state.theme.TEXT_COLOR}]}>
             {new Date(hackathonDetail.created_at).toDateString()}
           </Text>
         </View>
@@ -82,11 +111,14 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       {/* content  */}
       <View style={styles.contentContainer}>
         {/* title  */}
-        <Text style={styles.titleText}>{hackathonDetail.title}</Text>
+        <Text style={[styles.titleText, {color: state.theme.TEXT_COLOR}]}>
+          {hackathonDetail.title}
+        </Text>
         {/* description  */}
         {hackathonDetail.description.length > MAX_TEXT_LENGTH ? (
           <Text>
-            <Text style={styles.descriptionText}>
+            <Text
+              style={[styles.descriptionText, {color: state.theme.TEXT_COLOR}]}>
               {hackathonDetail.description.substring(0, MAX_TEXT_LENGTH - 4)}
             </Text>
             <TouchableWithoutFeedback
@@ -95,11 +127,18 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
                   ID: hackathonDetail.id,
                 })
               }>
-              <Text style={styles.descriptionText}>... {'  '}read more</Text>
+              <Text
+                style={[
+                  styles.descriptionText,
+                  {color: state.theme.TEXT_COLOR},
+                ]}>
+                ... {'  '}read more
+              </Text>
             </TouchableWithoutFeedback>
           </Text>
         ) : (
-          <Text style={styles.descriptionText}>
+          <Text
+            style={[styles.descriptionText, {color: state.theme.TEXT_COLOR}]}>
             {hackathonDetail.description}
           </Text>
         )}
@@ -154,8 +193,19 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
               ID: hackathonDetail.id,
             })
           }
-          style={styles.applyButton}>
-          <Text style={styles.applyButtonText}>View Details </Text>
+          style={[
+            styles.applyButton,
+            {backgroundColor: state.theme.SHADOW_COLOR},
+          ]}>
+          <Text
+            style={[
+              styles.applyButtonText,
+              {
+                color: state.theme.TEXT_COLOR,
+              },
+            ]}>
+            View Details{' '}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -172,8 +222,6 @@ const styles = StyleSheet.create({
     // maxHeight: Height * 0.8,
     borderRadius: 20,
     padding: 10,
-    shadowColor: darkColors.SHADOW_COLOR,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
@@ -182,7 +230,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     minHeight: Height * 0.08,
     maxHeight: Height * 0.15,
-    borderBottomColor: darkColors.SHADOW_COLOR,
     borderBottomWidth: 2,
     flexDirection: 'row',
   },
@@ -205,12 +252,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   username: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large * 0.9,
     fontWeight: 'bold',
   },
   date: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.75,
   },
   contentContainer: {
@@ -220,12 +265,10 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
   titleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.7,
     fontFamily: 'Raleway-Light',
   },
   descriptionText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   thumbnailContainer: {
@@ -254,7 +297,6 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   iconText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     paddingHorizontal: 5,
   },
@@ -271,12 +313,10 @@ const styles = StyleSheet.create({
     width: Width * 0.35,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkColors.SHADOW_COLOR,
     marginHorizontal: Width * 0.008,
     borderRadius: 10,
   },
   applyButtonText: {
     fontSize: Sizes.small,
-    color: darkColors.TEXT_COLOR,
   },
 });

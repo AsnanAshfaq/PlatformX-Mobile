@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {darkColors} from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
 import {PROFILE_IMAGE} from '../../Constants/sample';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -16,10 +17,18 @@ const ICON_SIZE = Width * 0.07;
 
 const ChatCard: FC<props> = ({navigation, chat, onPress}) => {
   const [ImageLoading, setImageLoading] = useState(true);
+  const [state, dispatch] = useStateValue();
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.parent}>
+      <View
+        style={[
+          styles.parent,
+          {
+            shadowColor: state.theme.SHADOW_COLOR,
+            backgroundColor: state.theme.LIGHT_BACKGROUND,
+          },
+        ]}>
         {/* image container */}
         <View style={styles.imageContainer}>
           <Image
@@ -32,8 +41,12 @@ const ChatCard: FC<props> = ({navigation, chat, onPress}) => {
         </View>
         {/* name container  */}
         <View style={styles.nameContainer}>
-          <Text style={styles.title}>{chat.user_name}</Text>
-          <Text style={styles.desc}>{chat.little_desc}</Text>
+          <Text style={[styles.title, {color: state.theme.TEXT_COLOR}]}>
+            {chat.user_name}
+          </Text>
+          <Text style={[styles.desc, {color: state.theme.TEXT_COLOR}]}>
+            {chat.little_desc}
+          </Text>
         </View>
         <View style={styles.optionContainer}>
           <TouchableOpacity>
@@ -60,8 +73,6 @@ const styles = StyleSheet.create({
     // maxHeight: Height * 0.4,
     borderRadius: 20,
     padding: 10,
-    shadowColor: darkColors.SHADOW_COLOR,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
@@ -85,12 +96,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   title: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
     fontWeight: 'bold',
   },
   desc: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.8,
   },
   optionContainer: {

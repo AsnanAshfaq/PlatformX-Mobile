@@ -10,21 +10,22 @@ import {
 import HackathonCard from '../../Components/HackathonCard';
 import CustomHeader from '../../Components/CustomHeader';
 import CustomSearch from '../../Components/Search';
-import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import HackathonSkeleton from '../../Skeleton/HackathonCardSkeleton';
-import {hackathonFilterData} from '../../Constants/sample';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
 };
+
 const Hackathons: FC<props> = ({navigation}) => {
   const [Hackathons, setHackathons] = useState([]);
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
+  const [state, dispatch] = useStateValue();
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -64,7 +65,13 @@ const Hackathons: FC<props> = ({navigation}) => {
   }, [IsLoading]);
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       <CustomHeader
         title={'Hackathons'}
         navigation={navigation}
@@ -94,8 +101,8 @@ const Hackathons: FC<props> = ({navigation}) => {
               <RefreshControl
                 refreshing={Refreshing}
                 onRefresh={onRefresh}
-                colors={[darkColors.TEXT_COLOR]}
-                progressBackgroundColor={darkColors.SHADOW_COLOR}
+                colors={[state.theme.TEXT_COLOR]}
+                progressBackgroundColor={state.theme.SHADOW_COLOR}
                 progressViewOffset={20}
                 size={Sizes.large}
               />
@@ -104,10 +111,15 @@ const Hackathons: FC<props> = ({navigation}) => {
           />
         </>
       ) : !IsLoading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={styles.noMoreText}>No more hackathons</Text>
+        <View style={styles.center}>
+          <Text style={[styles.noMoreText, {color: state.theme.TEXT_COLOR}]}>
+            No more hackathons
+          </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text style={styles.refreshText}>Refresh</Text>
+            <Text
+              style={[styles.refreshText, {color: state.theme.TOMATO_COLOR}]}>
+              Refresh
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -120,28 +132,30 @@ const Hackathons: FC<props> = ({navigation}) => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
-  floatingButtonContainer: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderWidth: 2,
-    borderRadius: 30,
-    bottom: 20,
-    right: 5,
-    borderColor: 'transparent',
-    backgroundColor: darkColors.TOMATO_COLOR,
+  center: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  // floatingButtonContainer: {
+  //   position: 'absolute',
+  //   width: 60,
+  //   height: 60,
+  //   borderWidth: 2,
+  //   borderRadius: 30,
+  //   bottom: 20,
+  //   right: 5,
+  //   borderColor: 'transparent',
+  //   backgroundColor: darkColors.TOMATO_COLOR,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
   noMoreText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   refreshText: {
     fontSize: Sizes.normal,
-    color: darkColors.TOMATO_COLOR,
   },
 });
 

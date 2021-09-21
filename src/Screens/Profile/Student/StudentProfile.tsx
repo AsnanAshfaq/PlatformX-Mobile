@@ -25,7 +25,6 @@ import {
 } from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import PostCard from '../../../Components/PostCard';
-import {darkColors} from '../../../Constants/Colors';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PROFILE_IMAGE, BACKGROUND_IMAGE} from '../../../Constants/sample';
@@ -34,20 +33,25 @@ import Loading from '../../../Components/Loading';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import BottomImageModal from '../../../Modals/BottomImageModal';
+import {useStateValue} from '../../../Store/StateProvider';
 
 const ICON_SIZE = Width * 0.06;
 
 const CAMERA_ICON_SIZE = Width * 0.085;
 
 const UserInfo = ({icon, label, value}) => {
+  const [state, dispatch] = useStateValue();
+
   return (
     <View style={styles.userInfoContainer}>
-      <Ionicons name={icon} size={ICON_SIZE} color={darkColors.ICON_COLOR} />
-      <Text style={styles.label}>
+      <Ionicons name={icon} size={ICON_SIZE} color={state.theme.ICON_COLOR} />
+      <Text style={[styles.label, {color: state.theme.TEXT_COLOR}]}>
         {'  '}
         {label}
         {'  '}
-        <Text style={styles.value}>{value}</Text>
+        <Text style={[styles.value, {color: state.theme.TEXT_COLOR}]}>
+          {value}
+        </Text>
       </Text>
     </View>
   );
@@ -60,21 +64,29 @@ type cardProps = {
 };
 
 const Card: FC<cardProps> = ({label, value, onPress}) => {
+  const [state, dispatch] = useStateValue();
+
   return (
     <View
       style={[
         styles.keyValueContainer,
         {
+          borderColor: state.theme.SHADOW_COLOR,
           borderRightWidth: label === 'Posts' ? 2 : 0,
-          borderRightColor: label === 'Posts' ? darkColors.SHADOW_COLOR : '',
+          borderRightColor: label === 'Posts' ? state.theme.SHADOW_COLOR : '',
           borderLeftWidth: label === 'Following' ? 2 : 0,
-          borderLeftColor: label === 'Following' ? darkColors.SHADOW_COLOR : '',
+          borderLeftColor:
+            label === 'Following' ? state.theme.SHADOW_COLOR : '',
         },
       ]}>
       <TouchableOpacity onPress={onPress}>
         <View style={styles.center}>
-          <Text style={styles.label}>{label}</Text>
-          <Text style={styles.value}>{value}</Text>
+          <Text style={[styles.label, {color: state.theme.TEXT_COLOR}]}>
+            {label}
+          </Text>
+          <Text style={[styles.value, {color: state.theme.TEXT_COLOR}]}>
+            {value}
+          </Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -91,6 +103,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
   const [Post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
   const [Refresh, setRefresh] = useState(false);
+  const [state, dispatch] = useStateValue();
 
   const [LoadBackgroundImage, setLoadBackgroundImage] = useState(true);
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
@@ -168,7 +181,11 @@ const StudentProfile: FC<props> = ({navigation}) => {
 
   if (!loading) {
     return (
-      <View style={styles.parent}>
+      <View
+        style={[
+          styles.parent,
+          {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
+        ]}>
         <CustomHeader
           title={`@${ProfileData?.username}`}
           navigation={navigation}
@@ -200,8 +217,8 @@ const StudentProfile: FC<props> = ({navigation}) => {
             <RefreshControl
               refreshing={Refresh}
               onRefresh={onRefresh}
-              colors={[darkColors.TEXT_COLOR]}
-              progressBackgroundColor={darkColors.SHADOW_COLOR}
+              colors={[state.theme.TEXT_COLOR]}
+              progressBackgroundColor={state.theme.SHADOW_COLOR}
               progressViewOffset={20}
               size={Sizes.large}
             />
@@ -238,7 +255,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                 <Ionicons
                   name={'camera'}
                   size={CAMERA_ICON_SIZE}
-                  color={darkColors.ICON_COLOR}
+                  color={state.theme.ICON_COLOR}
                   style={styles.backgroundCameraIcon}
                 />
               </TouchableWithoutFeedback>
@@ -258,7 +275,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                     ProfileData?.user_profile_image && {
                       borderRadius: 50,
                       borderWidth: 3,
-                      borderColor: darkColors.SHADOW_COLOR,
+                      borderColor: state.theme.SHADOW_COLOR,
                     },
                 ]}
                 resizeMode={'cover'}
@@ -283,7 +300,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                 <Ionicons
                   name={'camera'}
                   size={CAMERA_ICON_SIZE}
-                  color={darkColors.ICON_COLOR}
+                  color={state.theme.ICON_COLOR}
                   style={styles.profileCameraIcon}
                 />
               </TouchableWithoutFeedback>
@@ -292,11 +309,15 @@ const StudentProfile: FC<props> = ({navigation}) => {
 
           {/* name-username-bio section  */}
           <View style={styles.personalInfoContainer}>
-            <Text style={styles.name}>
+            <Text style={[styles.name, {color: state.theme.TEXT_COLOR}]}>
               {ProfileData?.first_name} {ProfileData?.last_name}
             </Text>
-            <Text style={styles.user_name}>@{ProfileData?.username}</Text>
-            <Text style={styles.bio}>{ProfileData?.student?.bio}</Text>
+            <Text style={[styles.user_name, {color: state.theme.TEXT_COLOR}]}>
+              @{ProfileData?.username}
+            </Text>
+            <Text style={[styles.bio, {color: state.theme.TEXT_COLOR}]}>
+              {ProfileData?.student?.bio}
+            </Text>
           </View>
 
           {/* post-followers-followings section  */}
@@ -355,14 +376,35 @@ const StudentProfile: FC<props> = ({navigation}) => {
           /> */}
           {/* view profile button  */}
           <TouchableOpacity
-            style={styles.viewButtonContainer}
+            style={[
+              styles.viewButtonContainer,
+              {backgroundColor: state.theme.SHADOW_COLOR},
+            ]}
             onPress={() => navigation.navigate('View_Profile')}>
-            <Text style={styles.viewButtonText}>View Profile</Text>
+            <Text
+              style={[
+                styles.viewButtonText,
+                {
+                  color: state.theme.TEXT_COLOR,
+                },
+              ]}>
+              View Profile
+            </Text>
           </TouchableOpacity>
           {/* activities button  */}
           <View style={styles.activitiesContainer}>
-            <TouchableOpacity style={styles.activitiesButtonContainer}>
-              <Text style={styles.activityButtonText}>My Activities</Text>
+            <TouchableOpacity
+              style={[
+                styles.activitiesButtonContainer,
+                {backgroundColor: state.theme.TOMATO_COLOR},
+              ]}>
+              <Text
+                style={[
+                  styles.activityButtonText,
+                  {color: state.theme.TEXT_COLOR},
+                ]}>
+                My Activities
+              </Text>
             </TouchableOpacity>
           </View>
           {/* if user has posted something then show my post section*/}
@@ -371,8 +413,18 @@ const StudentProfile: FC<props> = ({navigation}) => {
               <FlatList
                 data={Post}
                 ListHeaderComponent={() => (
-                  <View style={styles.myPostContainer}>
-                    <Text style={styles.myPostText}>My Posts</Text>
+                  <View
+                    style={[
+                      styles.myPostContainer,
+                      {borderBottomColor: state.theme.SHADOW_COLOR},
+                    ]}>
+                    <Text
+                      style={[
+                        styles.myPostText,
+                        {color: state.theme.TEXT_COLOR},
+                      ]}>
+                      My Posts
+                    </Text>
                   </View>
                 )}
                 nestedScrollEnabled
@@ -387,7 +439,10 @@ const StudentProfile: FC<props> = ({navigation}) => {
             </View>
           ) : (
             <View style={styles.noPostContainer}>
-              <Text style={styles.noPostText}>No posts yet :)</Text>
+              <Text
+                style={[styles.noPostText, {color: state.theme.TEXT_COLOR}]}>
+                No posts yet :)
+              </Text>
             </View>
           )}
         </ScrollView>
@@ -400,7 +455,6 @@ const StudentProfile: FC<props> = ({navigation}) => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   center: {
     justifyContent: 'center',
@@ -440,16 +494,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   name: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.5,
   },
   user_name: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
     marginVertical: 5,
   },
   bio: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.small * 1.1,
     marginVertical: 5,
   },
@@ -471,7 +522,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: darkColors.SHADOW_COLOR,
     margin: 2,
   },
   userInfoContainer: {
@@ -480,11 +530,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   label: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
   },
   value: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   viewButtonContainer: {
@@ -495,13 +543,11 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkColors.SHADOW_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
   },
   viewButtonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
     paddingVertical: 2,
   },
@@ -515,13 +561,11 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 5,
     paddingHorizontal: 10,
-    backgroundColor: darkColors.TOMATO_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
   },
   activityButtonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     paddingVertical: 2,
   },
@@ -529,11 +573,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginHorizontal: Width * 0.05,
     marginVertical: 5,
-    borderBottomColor: darkColors.SHADOW_COLOR,
     borderBottomWidth: 1,
   },
   myPostText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large,
   },
   noPostContainer: {
@@ -541,7 +583,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   noPostText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
   },
 });

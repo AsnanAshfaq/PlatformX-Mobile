@@ -8,7 +8,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
-import {darkColors} from '../Constants/Colors';
+// import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
 import DeleteModal from '../Modals/DeleteModal';
@@ -33,6 +33,8 @@ type Props = {
 };
 
 const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
+  const [state, dispatch] = useStateValue();
+
   return (
     <View style={styles.postButtonContainer}>
       <TouchableOpacity
@@ -42,11 +44,17 @@ const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
           {
             backgroundColor:
               isLiked === 'Liked'
-                ? darkColors.SCREEN_BACKGROUND_COLOR
-                : darkColors.SHADOW_COLOR,
+                ? state.theme.SCREEN_BACKGROUND_COLOR
+                : state.theme.SHADOW_COLOR,
           },
         ]}>
-        <Text style={styles.PostButtonText}>
+        <Text
+          style={[
+            styles.PostButtonText,
+            {
+              color: state.theme.TEXT_COLOR,
+            },
+          ]}>
           {isLiked === 'Liked' ? 'Liked' : 'Like'}
         </Text>
       </TouchableOpacity>
@@ -57,13 +65,39 @@ const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
             showModal: true,
           });
         }}
-        style={styles.PostButton}>
-        <Text style={styles.PostButtonText}>Comment</Text>
+        style={[
+          styles.PostButton,
+          {
+            backgroundColor: state.theme.SHADOW_COLOR,
+          },
+        ]}>
+        <Text
+          style={[
+            styles.PostButtonText,
+            {
+              color: state.theme.TEXT_COLOR,
+            },
+          ]}>
+          Comment
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => console.log('Pressed on share button')}
-        style={styles.PostButton}>
-        <Text style={styles.PostButtonText}>Share</Text>
+        style={[
+          styles.PostButton,
+          {
+            backgroundColor: state.theme.SHADOW_COLOR,
+          },
+        ]}>
+        <Text
+          style={[
+            styles.PostButtonText,
+            {
+              color: state.theme.TEXT_COLOR,
+            },
+          ]}>
+          Share
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -148,7 +182,14 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          shadowColor: state.theme.SHADOW_COLOR,
+          backgroundColor: state.theme.LIGHT_BACKGROUND,
+        },
+      ]}>
       {/* comment modal  */}
       <CommentModal
         isShow={Commentmodal.showModal}
@@ -172,7 +213,11 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       />
 
       {/* header  */}
-      <View style={styles.headerContainer}>
+      <View
+        style={[
+          styles.headerContainer,
+          {borderBottomColor: state.theme.SHADOW_COLOR},
+        ]}>
         <View style={styles.headerImageContainer}>
           <Image
             source={{
@@ -188,8 +233,10 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={styles.username}>{postDetail?.user?.username}</Text>
-          <Text style={styles.date}>
+          <Text style={[styles.username, {color: state.theme.TEXT_COLOR}]}>
+            {postDetail?.user?.username}
+          </Text>
+          <Text style={[styles.date, {color: state.theme.TEXT_COLOR}]}>
             {new Date(postDetail.created_at).toDateString()}
           </Text>
         </View>
@@ -207,7 +254,13 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
 
       {/* content  */}
       <View style={styles.contentContainer}>
-        <Text style={styles.descriptionText}>
+        <Text
+          style={[
+            styles.descriptionText,
+            {
+              color: state.theme.TEXT_COLOR,
+            },
+          ]}>
           {postDetail.text.length > MAX_TEXT_LENGTH
             ? postDetail.text.substring(0, MAX_TEXT_LENGTH - 4) +
               '.... read more'
@@ -221,7 +274,10 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       )}
       {/* like comment share details */}
       <TouchableOpacity
-        style={styles.numberContainer}
+        style={[
+          styles.numberContainer,
+          {borderColor: state.theme.SHADOW_COLOR},
+        ]}
         onPress={() =>
           setCommentmodal({
             focusTextInput: false,
@@ -229,11 +285,25 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
           })
         }>
         <View style={styles.likeContainer}>
-          <Text style={styles.PostButtonText}>{Like.likeCount} Likes</Text>
+          <Text
+            style={[
+              styles.PostButtonText,
+              {
+                color: state.theme.TEXT_COLOR,
+              },
+            ]}>
+            {Like.likeCount} Likes
+          </Text>
         </View>
 
         <View style={styles.commentConatiner}>
-          <Text style={styles.PostButtonText}>
+          <Text
+            style={[
+              styles.PostButtonText,
+              {
+                color: state.theme.TEXT_COLOR,
+              },
+            ]}>
             {postDetail.comments.length} Comment
           </Text>
         </View>
@@ -260,8 +330,6 @@ const styles = StyleSheet.create({
     // maxHeight: Height * 0.4,
     borderRadius: 20,
     // padding: 5,
-    shadowColor: darkColors.SHADOW_COLOR,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
@@ -270,7 +338,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     minHeight: Height * 0.08,
     maxHeight: Height * 0.15,
-    borderBottomColor: darkColors.SHADOW_COLOR,
     borderBottomWidth: 2,
     flexDirection: 'row',
     padding: 7,
@@ -290,12 +357,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   username: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large * 0.9,
     fontWeight: 'bold',
   },
   date: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.75,
   },
   headerIconContainer: {
@@ -310,7 +375,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
   },
   descriptionText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   postImageContainer: {
@@ -349,7 +413,6 @@ const styles = StyleSheet.create({
     // borderTopWidth: 2,
     padding: 5,
     paddingVertical: 10,
-    borderColor: darkColors.SHADOW_COLOR,
     // marginTop: 10,
   },
   likeContainer: {
@@ -378,13 +441,11 @@ const styles = StyleSheet.create({
     padding: 9,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkColors.SHADOW_COLOR,
     marginHorizontal: Width * 0.008,
     borderRadius: 10,
   },
   PostButtonText: {
     fontSize: Sizes.small,
-    color: darkColors.TEXT_COLOR,
   },
 });
 

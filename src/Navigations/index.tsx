@@ -42,7 +42,7 @@ const Navigation: FC = () => {
     <NavigationContainer
       theme={{
         colors: {
-          background: darkColors.BACKGROUND_COLOR,
+          background: state.theme.BACKGROUND_COLOR,
           border: '#fff',
           card: '#fff',
           notification: '#fff',
@@ -64,9 +64,9 @@ const Navigation: FC = () => {
         }}>
         {isSignedIn ? (
           <>
-            {/* <Stack.Screen name="Main" component={DrawerScreens} /> */}
-            {/* <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} /> */}
-            <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="Main" component={DrawerScreens} />
+            <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
+            {/* <Stack.Screen name="Chat" component={Chat} /> */}
             {/* <Stack.Screen name="Notification" component={Notification} /> */}
             {/* <Stack.Screen name="Settings" component={Settings} /> */}
             {/* 

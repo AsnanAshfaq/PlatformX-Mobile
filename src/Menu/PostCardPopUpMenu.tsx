@@ -9,8 +9,7 @@ import {
   renderers,
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
-
+import {useStateValue} from '../Store/StateProvider';
 const ICON_SIZE = Width * 0.07;
 
 type prop = {
@@ -20,6 +19,8 @@ type prop = {
   deleteModal: (prev: boolean) => void;
 };
 const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
+  const [state, dispatch] = useStateValue();
+
   return (
     <Menu>
       <MenuTrigger>
@@ -27,7 +28,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
           <Ionicons
             name={'ellipsis-vertical'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={state.theme.TAB_BAR_ACTIVE_COLOR}
           />
         </View>
       </MenuTrigger>
@@ -36,7 +37,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <MenuOptions
           customStyles={{
             optionsContainer: {
-              backgroundColor: darkColors.SHADOW_COLOR,
+              backgroundColor: state.theme.SHADOW_COLOR,
               borderWidth: 5,
               borderRadius: 20,
               width: 150,
@@ -73,7 +74,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <MenuOptions
           customStyles={{
             optionsContainer: {
-              backgroundColor: darkColors.SHADOW_COLOR,
+              backgroundColor: state.theme.SHADOW_COLOR,
               borderWidth: 1,
               borderRadius: 20,
               marginRight: 20,
@@ -88,12 +89,28 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
           }}>
           <MenuOption onSelect={() => console.log('Clicked on save post')}>
             <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Save Post</Text>
+              <Text
+                style={[
+                  styles.menuOptionText,
+                  {
+                    color: state.theme.TEXT_COLOR,
+                  },
+                ]}>
+                Save Post
+              </Text>
             </View>
           </MenuOption>
           <MenuOption onSelect={() => console.log('Clicked on report')}>
             <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Report</Text>
+              <Text
+                style={[
+                  styles.menuOptionText,
+                  {
+                    color: state.theme.TEXT_COLOR,
+                  },
+                ]}>
+                Report
+              </Text>
             </View>
           </MenuOption>
         </MenuOptions>
@@ -109,7 +126,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   menuOptionText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     // fontFamily: 'Raleway-Medium',
   },

@@ -10,22 +10,23 @@ import {
 } from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import CustomSearch from '../../Components/Search';
-import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {ToastAndroid} from 'react-native';
 import WorkshopCard from '../../Components/WorkshopCard';
 import WorkshopSkeleton from '../../Skeleton/WorkshopCardSkeleton';
-import {workshopFilterData} from '../../Constants/sample';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
 };
+
 const Workshop: FC<props> = ({navigation}) => {
   const [Workshops, setWorkshops] = useState([]);
   // const isFocuses = useIsFocused();
   const [IsLoading, setIsLoading] = useState(true);
   const [Refreshing, setRefreshing] = useState(false);
+  const [state, dispatch] = useStateValue();
 
   const getData = async () => {
     axios
@@ -55,7 +56,13 @@ const Workshop: FC<props> = ({navigation}) => {
   }, [IsLoading]);
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       <CustomHeader
         title={'Workshops'}
         navigation={navigation}
@@ -84,8 +91,8 @@ const Workshop: FC<props> = ({navigation}) => {
               <RefreshControl
                 refreshing={Refreshing}
                 onRefresh={onRefresh}
-                colors={[darkColors.TEXT_COLOR]}
-                progressBackgroundColor={darkColors.SHADOW_COLOR}
+                colors={[state.theme.TEXT_COLOR]}
+                progressBackgroundColor={state.theme.SHADOW_COLOR}
                 progressViewOffset={20}
                 size={Sizes.large}
               />
@@ -95,10 +102,15 @@ const Workshop: FC<props> = ({navigation}) => {
           />
         </>
       ) : !IsLoading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={styles.noMoreText}>No more Workshops</Text>
+        <View style={styles.center}>
+          <Text style={[styles.noMoreText, {color: state.theme.TEXT_COLOR}]}>
+            No more Workshops
+          </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text style={styles.refreshText}>Refresh</Text>
+            <Text
+              style={[styles.refreshText, {color: state.theme.TOMATO_COLOR}]}>
+              Refresh
+            </Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -111,35 +123,37 @@ const Workshop: FC<props> = ({navigation}) => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
-  floatingButtonContainer: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderWidth: 2,
-    borderRadius: 30,
-    bottom: 20,
-    right: 12,
-    borderColor: 'transparent',
-    backgroundColor: darkColors.TOMATO_COLOR,
+  center: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  plusText: {
-    fontSize: Sizes.large * 1.4,
-    color: darkColors.TEXT_COLOR,
-  },
-  skeleton: {
-    // height: 10,
-  },
+  // floatingButtonContainer: {
+  //   position: 'absolute',
+  //   width: 60,
+  //   height: 60,
+  //   borderWidth: 2,
+  //   borderRadius: 30,
+  //   bottom: 20,
+  //   right: 12,
+  //   borderColor: 'transparent',
+  //   backgroundColor: darkColors.TOMATO_COLOR,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // plusText: {
+  //   fontSize: Sizes.large * 1.4,
+  //   color: darkColors.TEXT_COLOR,
+  // },
+  // skeleton: {
+  // height: 10,
+  // },
   noMoreText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   refreshText: {
     fontSize: Sizes.normal,
-    color: darkColors.TOMATO_COLOR,
   },
 });
 

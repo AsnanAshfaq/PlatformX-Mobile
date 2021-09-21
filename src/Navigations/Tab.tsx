@@ -1,5 +1,4 @@
 import React from 'react';
-import {darkColors} from '../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Hackathon from '../Screens/Hackathon/Index';
 import Workshop from '../Screens/Workshop/Index';
@@ -7,10 +6,13 @@ import Projects from '../Screens/Project/Index';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Width} from '../Constants/Size';
 import Post from '../Screens/Post/Index';
+import {useStateValue} from '../Store/StateProvider';
 
 const Tab = createBottomTabNavigator();
 
 const TabScreens = () => {
+  const [state, dispatch] = useStateValue();
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -32,17 +34,17 @@ const TabScreens = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: darkColors.TAB_BAR_ACTIVE_COLOR,
-        inactiveTintColor: darkColors.TAB_BAR_INACTIVE_COLOR,
+        activeTintColor: state.theme.TAB_BAR_ACTIVE_COLOR,
+        inactiveTintColor: state.theme.TAB_BAR_INACTIVE_COLOR,
         iconStyle: {
-          color: darkColors.TAB_BAR_ICON_COLOR,
+          color: state.theme.TAB_BAR_ICON_COLOR,
           // fontSize: Sizes.normal * 10,
         },
         allowFontScaling: true,
         keyboardHidesTabBar: true,
         // activeBackgroundColor: darkColors.LIGHT_BACKGROUND,
         style: {
-          backgroundColor: darkColors.BACKGROUND_COLOR,
+          backgroundColor: state.theme.BACKGROUND_COLOR,
           borderTopColor: 'transparent',
           // position: 'absolute',
         },
