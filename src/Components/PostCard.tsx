@@ -21,18 +21,25 @@ import PostCarImageSlider from './PostCardImageSlider';
 //@ts-ignore
 import {BASE_ADDRESS} from 'react-native-dotenv';
 import {useStateValue} from '../Store/StateProvider';
+import ShareModal from '../Modals/ShareModal';
 
 const MAX_TEXT_LENGTH = 290;
 
 const ICON_SIZE = Width * 0.07;
 
 type Props = {
-  setModal: any;
+  setCommentModal: any;
+  setShareModal: any;
   isLiked: string;
   handleLike: () => void;
 };
 
-const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
+const PostCardButtons: FC<Props> = ({
+  setCommentModal,
+  setShareModal,
+  isLiked,
+  handleLike,
+}) => {
   const [state, dispatch] = useStateValue();
 
   return (
@@ -60,7 +67,7 @@ const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          setModal({
+          setCommentModal({
             focusTextInput: true,
             showModal: true,
           });
@@ -82,7 +89,7 @@ const PostCardButtons: FC<Props> = ({setModal, isLiked, handleLike}) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => console.log('Pressed on share button')}
+        onPress={() => setShareModal(true)}
         style={[
           styles.PostButton,
           {
@@ -113,9 +120,9 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
     showModal: false, // show modal or not
     focusTextInput: false, // if true, set auto focus on comment modal text input field to true
   });
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // user image
-
+  const [shareModal, setShareModal] = useState(false);
   const [Like, setLike] = useState<{
     isLiked: string;
     likeCount: number;
@@ -126,14 +133,12 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
 
   const [state, dispatch] = useStateValue();
 
+  const {theme} = state;
+
   const handleDelete = () => {
     // hide the modal first
-    setShowDeleteModal(false);
-    // make an api call
-    // var bodyFormData = new FormData();
+    setDeleteModal(false);
 
-    // bodyFormData.append('post', postDetail.id);
-    // console.log(bodyFormData);
     Axios({
       method: 'post',
       url: `${BASE_URL}/api/post/delete/`,
@@ -145,7 +150,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       },
     })
       .then(response => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           ToastAndroid.show(response.data.success, 1500);
         } else {
           ToastAndroid.show(response.data.error, 1500);
@@ -181,13 +186,43 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
     };
   };
 
+  const handleShare = () => {
+    // hide the modal first
+    setShareModal(false);
+    // make api call
+
+    Axios({
+      method: 'post',
+      url: `${BASE_URL}/api/post/share/create/`,
+      data: {
+        post: postDetail.id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(result => {
+        if (result.status === 201) {
+          ToastAndroid.show(result.data.success, 1500);
+        } else {
+          ToastAndroid.show(result.data.error, 1500);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        return Promise.reject();
+      });
+  };
+
   return (
     <View
       style={[
         styles.parent,
         {
-          shadowColor: state.theme.SHADOW_COLOR,
-          backgroundColor: state.theme.LIGHT_BACKGROUND,
+          shadowColor: theme.SHADOW_COLOR,
+          backgroundColor: theme.LIGHT_BACKGROUND,
         },
       ]}>
       {/* comment modal  */}
@@ -207,16 +242,28 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       <DeleteModal
         heading="Delete Post"
         description={'Are you sure that you want to delete your post?'}
-        isShow={showDeleteModal}
-        toggleModal={() => setShowDeleteModal(prev => !prev)}
+        isShow={deleteModal}
+        toggleModal={() => setDeleteModal(prev => !prev)}
         onDelete={handleDelete}
+      />
+
+      {/* share modal  */}
+
+      <ShareModal
+        isShow={shareModal}
+        toggleModal={() => {
+          setShareModal(prev => !prev);
+        }}
+        onShare={handleShare}
+        heading={'Sharing Post'}
+        description={`Do you want to share @${postDetail?.user?.username} post on your profile?`}
       />
 
       {/* header  */}
       <View
         style={[
           styles.headerContainer,
-          {borderBottomColor: state.theme.SHADOW_COLOR},
+          {borderBottomColor: theme.SHADOW_COLOR},
         ]}>
         <View style={styles.headerImageContainer}>
           <Image
@@ -233,10 +280,10 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={[styles.username, {color: state.theme.TEXT_COLOR}]}>
+          <Text style={[styles.username, {color: theme.TEXT_COLOR}]}>
             {postDetail?.user?.username}
           </Text>
-          <Text style={[styles.date, {color: state.theme.TEXT_COLOR}]}>
+          <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
             {new Date(postDetail.created_at).toDateString()}
           </Text>
         </View>
@@ -245,7 +292,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         <View style={styles.headerIconContainer}>
           <PopUpMenu
             isEditable={postDetail.is_editable}
-            deleteModal={postDetail.is_editable && setShowDeleteModal}
+            deleteModal={postDetail.is_editable && setDeleteModal}
             post={postDetail.is_editable && postDetail}
             navigation={navigation}
           />
@@ -258,7 +305,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
           style={[
             styles.descriptionText,
             {
-              color: state.theme.TEXT_COLOR,
+              color: theme.TEXT_COLOR,
             },
           ]}>
           {postDetail.text.length > MAX_TEXT_LENGTH
@@ -274,10 +321,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       )}
       {/* like comment share details */}
       <TouchableOpacity
-        style={[
-          styles.numberContainer,
-          {borderColor: state.theme.SHADOW_COLOR},
-        ]}
+        style={[styles.numberContainer, {borderColor: theme.SHADOW_COLOR}]}
         onPress={() =>
           setCommentmodal({
             focusTextInput: false,
@@ -289,7 +333,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
             style={[
               styles.PostButtonText,
               {
-                color: state.theme.TEXT_COLOR,
+                color: theme.TEXT_COLOR,
               },
             ]}>
             {Like.likeCount} Likes
@@ -301,10 +345,10 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
             style={[
               styles.PostButtonText,
               {
-                color: state.theme.TEXT_COLOR,
+                color: theme.TEXT_COLOR,
               },
             ]}>
-            {postDetail.comments.length} Comment
+            {postDetail.comments.length} Comments
           </Text>
         </View>
 
@@ -314,7 +358,8 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       </TouchableOpacity>
       {/* post buttons   */}
       <PostCardButtons
-        setModal={setCommentmodal}
+        setCommentModal={setCommentmodal}
+        setShareModal={setShareModal}
         handleLike={handleLike}
         isLiked={Like.isLiked}
       />
@@ -378,34 +423,14 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal,
   },
   postImageContainer: {
-    // width: Width * 0.961,
-    // minHeight: Height * 0.25,
-    // maxHeight: Height * 0.3,
-    // height: 'auto',
     marginRight: 4,
-    // flex: 1,
-    // height: Width * (9 / 16),
-    // justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'red',
   },
   postImage: {
-    // width: Width * 0.7,
-    // minHeight: Height * 0.2,
-    // maxHeight: Height * 0.4,
-    // width: Width * 0.95,
-    // flex: 1,
-    // aspectRatio: 1,
     width: Width * 0.9,
     minHeight: Height * 0.4,
     maxHeight: Height * 0.6,
-    // flex: 1,
-    // minHeight: Width,
-    // width: '100%',
-    // height: 'auto',
-    // height: Height * 0.3,
-    // aspectRatio: 1,
-    // maxHeight: Width,
   },
   numberContainer: {
     flexDirection: 'row',

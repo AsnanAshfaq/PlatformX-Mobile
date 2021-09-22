@@ -34,7 +34,7 @@ const SignIn: FC<props> = ({navigation}) => {
   // get some handlers
   const {isEmailValid, isEmpty} = FormHandlers();
   // get context state
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   const storeTokenLocally = async (key: string, value: string) => {
     try {
@@ -199,21 +199,12 @@ const SignIn: FC<props> = ({navigation}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[
-        styles.parent,
-        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
-      ]}>
+      style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       {/* platformX logo  */}
       <View style={styles.logoContainer}>
-        <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
-          {'<'}
-        </Text>
-        <Text style={[styles.logo, {color: state.theme.TEXT_COLOR}]}>
-          PlatformX
-        </Text>
-        <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
-          {'/>'}
-        </Text>
+        <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'<'}</Text>
+        <Text style={[styles.logo, {color: theme.TEXT_COLOR}]}>PlatformX</Text>
+        <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'/>'}</Text>
       </View>
       <View style={styles.fieldContainer}>
         {/* email field  */}
@@ -260,8 +251,7 @@ const SignIn: FC<props> = ({navigation}) => {
         {/* forgot password container  */}
         <View style={styles.forgotContainer}>
           <TouchableWithoutFeedback onPress={() => forgotPassword()}>
-            <Text
-              style={[styles.forgotText, {color: state.theme.TOMATO_COLOR}]}>
+            <Text style={[styles.forgotText, {color: theme.TOMATO_COLOR}]}>
               Forgot password?
             </Text>
           </TouchableWithoutFeedback>
@@ -271,32 +261,22 @@ const SignIn: FC<props> = ({navigation}) => {
       {/* submit button container  */}
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity
-          style={[
-            styles.submitButton,
-            {backgroundColor: state.theme.SHADOW_COLOR},
-          ]}
+          style={[styles.submitButton, {backgroundColor: theme.SHADOW_COLOR}]}
           onPress={handleSignIn}>
           {isLoading ? (
-            <Loading
-              size={'small'}
-              color={state.theme.SCREEN_BACKGROUND_COLOR}
-            />
+            <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
           ) : (
-            <Text
-              style={[
-                styles.submitButtonText,
-                {color: state.theme.TEXT_COLOR},
-              ]}>
+            <Text style={[styles.submitButtonText, {color: theme.TEXT_COLOR}]}>
               Sign In
             </Text>
           )}
         </TouchableOpacity>
         {/* sign up container  */}
         <View style={styles.signUpContainer}>
-          <Text style={[styles.signUpText, {color: state.theme.TEXT_COLOR}]}>
+          <Text style={[styles.signUpText, {color: theme.TEXT_COLOR}]}>
             Don't have an account?{' '}
             <Text
-              style={[styles.signUp, {color: state.theme.TOMATO_COLOR}]}
+              style={[styles.signUp, {color: theme.TOMATO_COLOR}]}
               onPress={() => navigation.navigate('SignUp')}>
               {' '}
               Sign Up

@@ -1,7 +1,15 @@
 import React, {FC, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
+// import {darkColors} from '../Constants/Colors';
 import {useStateValue} from '../Store/StateProvider';
 
 type props = {
@@ -9,26 +17,21 @@ type props = {
   toggleModal: () => void;
   description: string;
   heading: string;
-  onDelete: () => void;
+  onShare: () => void;
 };
-const FilterModal: FC<props> = ({
+const ShareModal: FC<props> = ({
   isShow,
   toggleModal,
   description,
   heading,
-  onDelete,
+  onShare,
 }) => {
   const [{theme}, dispatch] = useStateValue();
 
   return (
     <Modal
       isVisible={isShow}
-      style={[
-        styles.Modalparent,
-        {
-          backgroundColor: theme.BACKGROUND_COLOR,
-        },
-      ]}
+      style={[styles.Modalparent, {backgroundColor: theme.BACKGROUND_COLOR}]}
       animationIn={'slideInUp'}
       animationInTiming={300}
       animationOut={'slideOutDown'}
@@ -62,10 +65,10 @@ const FilterModal: FC<props> = ({
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => onDelete()}
+            onPress={() => onShare()}
             style={[styles.Button, {backgroundColor: theme.BADGE_COLOR}]}>
             <Text style={[styles.buttonText, {color: theme.BACKGROUND_COLOR}]}>
-              Delete
+              Share
             </Text>
           </TouchableOpacity>
         </View>
@@ -77,7 +80,6 @@ const FilterModal: FC<props> = ({
 
 const styles = StyleSheet.create({
   Modalparent: {
-    // flex: 1,
     maxHeight: Height * 0.3,
     borderRadius: 20,
     borderWidth: 2,
@@ -108,6 +110,7 @@ const styles = StyleSheet.create({
   divider: {
     borderBottomWidth: 1,
     borderBottomColor: 'grey',
+    // backgroundColor: 'grey',
   },
 
   buttonsContainer: {
@@ -129,4 +132,4 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal,
   },
 });
-export default FilterModal;
+export default ShareModal;

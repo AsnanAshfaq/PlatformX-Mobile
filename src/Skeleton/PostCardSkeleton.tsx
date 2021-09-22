@@ -3,15 +3,17 @@ import {StyleSheet, Text, View, ScrollView} from 'react-native';
 // import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ContentLoader, {Rect, Circle} from 'react-content-loader/native';
 import SearchSkeleton from './SearchSkeleton';
-import {darkColors} from '../Constants/Colors';
+import {useStateValue} from '../Store/StateProvider';
 import {Height, Width} from '../Constants/Size';
 
 const Skeleton = () => {
+  const [{theme}, dispatch] = useStateValue();
+
   return (
     <ContentLoader
       height={350}
       viewBox="0 0 380 350"
-      backgroundColor={darkColors.SHADOW_COLOR}
+      backgroundColor={theme.SHADOW_COLOR}
       foregroundColor={'grey'}
       interval={0.2}
       speed={1}>

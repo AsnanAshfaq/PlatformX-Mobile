@@ -33,6 +33,7 @@ type Props = {
 
 const CommentView: FC<Props> = ({comment, index}) => {
   const [ImageLoading, setImageLoading] = useState(true);
+
   return (
     <View style={[styles.commentContainer, styles.divider]} key={comment.id}>
       <View style={styles.commentImageContainer}>
@@ -121,7 +122,7 @@ const CommentModal: FC<props> = ({
     setisCommentPosted(false);
     if (!isCommentPosted) {
       axios
-        .get(`/api/post/${postID}/comment/`)
+        .get(`/api/post/${postID}/comments/`)
         .then(response => {
           setComment(response.data);
         })
@@ -168,7 +169,10 @@ const CommentModal: FC<props> = ({
         {Comment.length > 0 ? (
           <>
             <View style={[styles.headingContainer, styles.divider]}>
-              <Text style={styles.heading}> {Comment.length} Comments</Text>
+              <Text style={styles.heading}>
+                {' '}
+                {Comment.length > 1 ? 'Comments' : 'Comment'}
+              </Text>
             </View>
             <FlatList
               data={Comment}

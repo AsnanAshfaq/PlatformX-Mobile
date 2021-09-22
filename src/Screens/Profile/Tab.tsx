@@ -12,7 +12,6 @@ import Search from '../../Components/Search';
 import FollowingModal from '../../Modals/FollowingModal';
 import Axios from '../../Utils/Axios';
 import {TabView, TabBar} from 'react-native-tab-view';
-// import {darkColors} from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
 import PopUpMenu from '../../Menu/FollowingCardPopUpMenu';
 import {PROFILE_IMAGE} from '../../Constants/sample';
@@ -31,15 +30,15 @@ type cardProps = {
 type screens = 'Followers' | 'Following';
 
 const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   return (
     <View
       style={[
         styles.cardParent,
         {
-          shadowColor: state.theme.SHADOW_COLOR,
-          backgroundColor: state.theme.LIGHT_BACKGROUND,
+          shadowColor: theme.SHADOW_COLOR,
+          backgroundColor: theme.LIGHT_BACKGROUND,
         },
       ]}>
       {/* profile image container  */}
@@ -56,11 +55,10 @@ const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
       </View>
       {/* details container  */}
       <View style={styles.cardDetailsContainer}>
-        <Text style={[styles.cardTextName, {color: state.theme.TEXT_COLOR}]}>
+        <Text style={[styles.cardTextName, {color: theme.TEXT_COLOR}]}>
           {data.first_name + data.last_name}
         </Text>
-        <Text
-          style={[styles.cardTextUserName, {color: state.theme.TEXT_COLOR}]}>
+        <Text style={[styles.cardTextUserName, {color: theme.TEXT_COLOR}]}>
           @{data.username}
         </Text>
       </View>
@@ -95,7 +93,7 @@ const NoDataView: FC<{screen: 'Followers' | 'Following'}> = ({screen}) => {
 const Followers: FC = () => {
   const [followers, setFollowers] = useState([]);
   const [isLoading, setisLoading] = useState(true);
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   useEffect(() => {
     Axios.get('/user/follower')
@@ -144,7 +142,7 @@ const Following: FC = () => {
     id: '', // id of the user
     description: '',
   });
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   useEffect(() => {
     Axios.get('/user/following')

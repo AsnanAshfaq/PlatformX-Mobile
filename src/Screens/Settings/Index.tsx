@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import {StyleSheet, Text, View, Switch} from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
-import {darkColors} from '../../Constants/Colors';
+// import {darkColors} from '../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,20 +18,32 @@ type cardProps = {
 
 const Card: FC<cardProps> = ({IconComponent, title, description, onPress}) => {
   const [isEnabled, setIsEnabled] = useState(false);
+  const [{theme}, dispatch] = useStateValue();
 
   return (
-    <View style={styles.cardParent}>
+    <View
+      style={[
+        styles.cardParent,
+        {
+          shadowColor: theme.SHADOW_COLOR,
+          backgroundColor: theme.LIGHT_BACKGROUND,
+        },
+      ]}>
       <View style={{flex: 0.2, alignItems: 'center'}}>
         <IconComponent />
       </View>
       <View style={{flex: 0.7}}>
-        <Text style={styles.cardTitleText}>{title}</Text>
-        <Text style={styles.cardDescText}>{description}</Text>
+        <Text style={[styles.cardTitleText, {color: theme.TEXT_COLOR}]}>
+          {title}
+        </Text>
+        <Text style={[styles.cardDescText, {color: theme.TEXT_COLOR}]}>
+          {description}
+        </Text>
       </View>
       <View style={{flex: 0.1}}>
         <Switch
-          trackColor={{false: '#767577', true: darkColors.TEXT_COLOR}}
-          thumbColor={isEnabled ? darkColors.SHADOW_COLOR : '#f4f3f4'}
+          trackColor={{false: '#767577', true: theme.TEXT_COLOR}}
+          thumbColor={isEnabled ? theme.SHADOW_COLOR : '#f4f3f4'}
           onValueChange={value => {
             onPress();
             setIsEnabled(value);
@@ -50,9 +62,15 @@ type props = {
 const ICON_SIZE = Width * 0.08;
 
 const Index: FC<props> = ({navigation}) => {
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       {/* header  */}
       <CustomHeader
         title="Settings"
@@ -67,7 +85,7 @@ const Index: FC<props> = ({navigation}) => {
           <MaterialCommunityIcons
             name={'shield-account'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
             // style={styles.iconPadding}
           />
         )}
@@ -87,7 +105,7 @@ const Index: FC<props> = ({navigation}) => {
           <MaterialCommunityIcons
             name={'theme-light-dark'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
             // style={styles.iconPadding}
           />
         )}
@@ -104,7 +122,7 @@ const Index: FC<props> = ({navigation}) => {
           <Entypo
             name={'bell'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
           />
         )}
         title={'Notifications'}
@@ -120,7 +138,6 @@ export default Index;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   cardParent: {
     width: Width * 0.9,
@@ -132,19 +149,15 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    shadowColor: darkColors.SHADOW_COLOR,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
     elevation: 30,
   },
   cardTitleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large,
   },
   cardDescText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.9,
   },
 });

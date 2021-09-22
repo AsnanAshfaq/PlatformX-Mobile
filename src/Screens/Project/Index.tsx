@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import CustomSearch from '../../Components/Search';
-// import {darkColors} from '../../Constants/Colors';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
@@ -24,7 +23,7 @@ const Projects: FC<props> = ({navigation}) => {
   const [Project, setProject] = useState([]);
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
   const [IsLoading, setIsLoading] = useState(true);
 
   // useFocusEffect(
@@ -58,10 +57,7 @@ const Projects: FC<props> = ({navigation}) => {
 
   return (
     <View
-      style={[
-        styles.parent,
-        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
-      ]}>
+      style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       <CustomHeader
         title={'Projects'}
         navigation={navigation}
@@ -85,8 +81,8 @@ const Projects: FC<props> = ({navigation}) => {
               <RefreshControl
                 refreshing={Refreshing}
                 onRefresh={onRefresh}
-                colors={[state.theme.TEXT_COLOR]}
-                progressBackgroundColor={state.theme.SHADOW_COLOR}
+                colors={[theme.TEXT_COLOR]}
+                progressBackgroundColor={theme.SHADOW_COLOR}
                 progressViewOffset={20}
                 size={Sizes.large}
               />
@@ -97,12 +93,11 @@ const Projects: FC<props> = ({navigation}) => {
         </>
       ) : !IsLoading ? (
         <View style={styles.center}>
-          <Text style={[styles.noMoreText, {color: state.theme.TEXT_COLOR}]}>
+          <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
             No more Projects
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text
-              style={[styles.refreshText, {color: state.theme.TOMATO_COLOR}]}>
+            <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
               Refresh
             </Text>
           </TouchableOpacity>
