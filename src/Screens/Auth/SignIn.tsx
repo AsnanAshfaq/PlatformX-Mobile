@@ -10,7 +10,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
-// import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import Axios from '../../Utils/Axios';
 import Loading from '../../Components/Loading';
@@ -18,6 +17,10 @@ import FormHandlers from '../../Utils/FormHandler';
 import {ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../Store/StateProvider';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 
 type props = {
   navigation: any;
@@ -123,15 +126,19 @@ const SignIn: FC<props> = ({navigation}) => {
                           });
                         }
                         dispatch({type: 'SET_SIGN_IN', payload: true});
+                        // set the loading to false
+                        setIsLoading(false);
                       }
+                      // set the loading to false
+                      setIsLoading(false);
                     })
                     .catch(error => {
                       // set sign in state
+                      // set the loading to false
+                      setIsLoading(false);
                       dispatch({type: 'SET_USER_TYPE', payload: null});
                       return Promise.reject(error);
                     });
-                  // set the loading to false
-                  setIsLoading(false);
                 });
             } else {
               // set the local sign in state to false
@@ -196,16 +203,18 @@ const SignIn: FC<props> = ({navigation}) => {
     navigation.navigate('ResetPassword');
   };
 
+  const offset = useSharedValue(0);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       {/* platformX logo  */}
-      <View style={styles.logoContainer}>
+      <Animated.View style={[styles.logoContainer]}>
         <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'<'}</Text>
         <Text style={[styles.logo, {color: theme.TEXT_COLOR}]}>PlatformX</Text>
         <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'/>'}</Text>
-      </View>
+      </Animated.View>
       <View style={styles.fieldContainer}>
         {/* email field  */}
         <CustomTextField

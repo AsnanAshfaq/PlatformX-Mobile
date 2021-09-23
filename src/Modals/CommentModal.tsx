@@ -137,6 +137,10 @@ const CommentModal: FC<props> = ({
         textInput?.current?.blur();
       }
     });
+
+    return () => {
+      Keyboard.removeCurrentListener();
+    };
   }, []);
 
   return (

@@ -15,8 +15,10 @@ const ICON_SIZE = Width * 0.07;
 
 type prop = {
   navigation: any;
+  handleShare: () => void;
+  handleFollow: () => void;
 };
-const PopUpMenu: FC<prop> = ({navigation}) => {
+const PopUpMenu: FC<prop> = ({navigation, handleShare, handleFollow}) => {
   return (
     <Menu>
       <MenuTrigger>
@@ -45,14 +47,12 @@ const PopUpMenu: FC<prop> = ({navigation}) => {
             height: 35,
           },
         }}>
-        <MenuOption
-          onSelect={() => console.log('Follow Menu has been selected')}>
+        <MenuOption onSelect={() => handleFollow()}>
           <View style={styles.menuOptionContainer}>
             <Text style={styles.menuOptionText}>Follow</Text>
           </View>
         </MenuOption>
-        <MenuOption
-          onSelect={() => console.log('Share Menu has been selected')}>
+        <MenuOption onSelect={() => handleShare()}>
           <View style={styles.menuOptionContainer}>
             <Text style={styles.menuOptionText}>Share</Text>
           </View>

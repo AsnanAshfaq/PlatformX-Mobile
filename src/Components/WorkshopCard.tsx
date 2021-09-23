@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Image,
+  ToastAndroid,
 } from 'react-native';
 // import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
@@ -14,6 +15,7 @@ import PopUpMenu from '../Menu/WorkshopCardPopUpMenu';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {useStateValue} from '../Store/StateProvider';
+import Axios from '../Utils/Axios';
 
 type props = {
   navigation: any;
@@ -28,9 +30,40 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
 
-  useEffect(() => {
-    // console.log(BASE_URL + workshopDetail.poster);
-  }, [workshopDetail]);
+  const handleBookmark = () => {
+    console.log('Handling workshop bookmark');
+  };
+
+  const handleReport = () => {
+    console.log('Handling workshop report');
+  };
+
+  const handleShare = () => {
+    Axios({
+      method: 'post',
+      url: `${BASE_URL}/api/workshop/share/create/`,
+      data: {
+        workshop: workshopDetail.id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(result => {
+        if (result.status === 201) {
+          ToastAndroid.show(result.data.success, 1500);
+        } else {
+          ToastAndroid.show(result.data.error, 1500);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        return Promise.reject();
+      });
+  };
+
   return (
     <View
       style={[
@@ -69,7 +102,12 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
         </View>
         {/* right icon  */}
         <View style={styles.headerIconContainer}>
-          <PopUpMenu navigation={navigation} />
+          <PopUpMenu
+            navigation={navigation}
+            handleBookmark={handleBookmark}
+            handleReport={handleReport}
+            handleShare={handleShare}
+          />
         </View>
       </View>
       {/* content  */}

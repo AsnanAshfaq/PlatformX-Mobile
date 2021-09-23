@@ -13,13 +13,15 @@ import axios from './src/Utils/Axios';
 import {MenuProvider} from 'react-native-popup-menu';
 import Splash from './src/Components/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {darkColors} from './src/Constants/Colors';
+// import {darkColors} from './src/Constants/Colors';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
 const App = () => {
   const [Loading, setLoading] = useState(true);
   const [state, dispatch] = useStateValue();
+
+  const {theme} = state;
 
   useEffect(() => {
     const getUserType = async () => {
@@ -73,7 +75,7 @@ const App = () => {
       <MenuProvider
         customStyles={{
           menuProviderWrapper: {
-            backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
+            backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
           },
         }}>
         <Navigation />

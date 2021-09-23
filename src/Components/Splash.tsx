@@ -1,20 +1,23 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {darkColors} from '../Constants/Colors';
+// import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
+import {useStateValue} from '../Store/StateProvider';
 import Loading from './Loading';
 
 const Splash = () => {
+  const [{theme}, dispatch] = useStateValue();
   return (
-    <View style={styles.parent}>
+    <View
+      style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       <View style={styles.logoContainer}>
-        <Text style={styles.bracket}>{'<'}</Text>
-        <Text style={styles.logo}>PlatformX</Text>
-        <Text style={styles.bracket}>{'/>'}</Text>
+        <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'<'}</Text>
+        <Text style={[styles.logo, {color: theme.TEXT_COLOR}]}>PlatformX</Text>
+        <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'/>'}</Text>
       </View>
       {/* loading view  */}
       <View style={styles.loadingContainer}>
-        <Loading size={Width * 0.15} color={darkColors.TEXT_COLOR} />
+        <Loading size={Width * 0.15} color={theme.TEXT_COLOR} />
       </View>
     </View>
   );
@@ -25,7 +28,6 @@ export default Splash;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -39,11 +41,9 @@ const styles = StyleSheet.create({
     fontSize: Sizes.large * 3,
     // fontWeight: 'bold',
     fontFamily: 'ComicNeue-Regular',
-    color: darkColors.TEXT_COLOR,
   },
   logo: {
     fontSize: Sizes.large * 2,
-    color: darkColors.TEXT_COLOR,
     fontFamily: 'Comfortaa-SemiBold',
   },
   loadingContainer: {

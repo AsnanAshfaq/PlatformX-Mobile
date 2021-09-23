@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {darkColors} from '../Constants/Colors';
+// import {darkColors} from '../Constants/Colors';
 import Axios from '../Utils/Axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../src/Store/StateProvider';
@@ -22,7 +22,7 @@ type props = {
 };
 
 const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
   const [loading, setLoading] = useState(false);
 
   const handleSignOut = () => {
@@ -49,7 +49,7 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
     //   }}>
     <Modal
       isVisible={isShow}
-      style={styles.Modalparent}
+      style={[styles.Modalparent, {backgroundColor: theme.BACKGROUND_COLOR}]}
       animationIn={'slideInUp'}
       animationInTiming={300}
       animationOut={'slideOutDown'}
@@ -62,12 +62,18 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
       useNativeDriverForBackdrop={true}>
       <>
         {/* heading container  */}
-        <View style={styles.headingContainer}>
-          <Text style={styles.heading}>Sign Out of PlatformX ? </Text>
+        <View
+          style={[
+            styles.headingContainer,
+            {borderBottomColor: theme.SHADOW_COLOR},
+          ]}>
+          <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+            Sign Out of PlatformX ?{' '}
+          </Text>
         </View>
         {/* description container  */}
         <View style={styles.descriptionContainer}>
-          <Text style={styles.descriptionText}>
+          <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
             Are you sure that you want to sign out?{' '}
           </Text>
         </View>
@@ -75,13 +81,21 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
         {!loading ? (
           <View style={styles.buttonsContainer}>
             {/*  buttons  */}
-            <TouchableOpacity onPress={toggleModal} style={styles.Button}>
-              <Text style={styles.buttonText}>Cancel</Text>
+            <TouchableOpacity
+              onPress={toggleModal}
+              style={[styles.Button, {backgroundColor: theme.BADGE_COLOR}]}>
+              <Text
+                style={[styles.buttonText, {color: theme.BACKGROUND_COLOR}]}>
+                Cancel
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handleSignOut()}
-              style={styles.Button}>
-              <Text style={styles.buttonText}>Sign Out</Text>
+              style={[styles.Button, {backgroundColor: theme.BADGE_COLOR}]}>
+              <Text
+                style={[styles.buttonText, {color: theme.BACKGROUND_COLOR}]}>
+                Sign Out
+              </Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -99,7 +113,6 @@ const styles = StyleSheet.create({
   Modalparent: {
     // flex: 1,
     maxHeight: Height * 0.3,
-    backgroundColor: darkColors.BACKGROUND_COLOR,
     borderRadius: 20,
     borderWidth: 2,
     // justifyContent: 'center',
@@ -115,14 +128,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
     marginRight: 10,
-    borderBottomColor: darkColors.SHADOW_COLOR,
     borderBottomWidth: 2,
     // justifyContent: 'center',
     // alignItems: 'center',
   },
   heading: {
     fontSize: Sizes.large * 1.3,
-    color: darkColors.TEXT_COLOR,
   },
   descriptionContainer: {
     flex: 0.5,
@@ -132,7 +143,6 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: Sizes.normal,
-    color: darkColors.TEXT_COLOR,
   },
   scroll: {
     marginHorizontal: 20,
@@ -157,11 +167,9 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkColors.BADGE_COLOR,
     borderRadius: 10,
   },
   buttonText: {
-    color: darkColors.BACKGROUND_COLOR,
     fontSize: Sizes.normal,
   },
 });

@@ -37,12 +37,13 @@ const Navigation: FC = () => {
   // get sign in  state from context store
   const [state, dispatch] = useStateValue();
   const {isSignedIn} = state;
+  const {theme} = state;
 
   return (
     <NavigationContainer
       theme={{
         colors: {
-          background: state.theme.BACKGROUND_COLOR,
+          background: theme.BACKGROUND_COLOR,
           border: '#fff',
           card: '#fff',
           notification: '#fff',

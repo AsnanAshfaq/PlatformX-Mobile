@@ -1,7 +1,7 @@
 import {darkColors, lightColors} from '../Constants/Colors';
 export const initialState = {
-  theme: lightColors,
-  isLightTheme: true,
+  theme: darkColors,
+  isLightTheme: false,
   userType: '',
   user: {},
   isSignedIn: false,

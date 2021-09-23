@@ -6,17 +6,17 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
+  ToastAndroid,
 } from 'react-native';
-// import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import {PROFILE_IMAGE,} from '../Constants/sample';
 import PopUpMenu from '../Menu/HackathonCardPopUpMenu';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
+import Axios from '../Utils/Axios';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -60,6 +60,36 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [HackathonImageLoading, setHackathonImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
+
+  const handleShare = () => {
+    Axios({
+      method: 'post',
+      url: `${BASE_URL}/api/hackathon/share/create/`,
+      data: {
+        hackathon: hackathonDetail.id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(result => {
+        if (result.status === 201) {
+          ToastAndroid.show(result.data.success, 1500);
+        } else {
+          ToastAndroid.show(result.data.error, 1500);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        return Promise.reject();
+      });
+  };
+
+  const handleFollow = () => {
+    console.log('Handling hackathon follow ');
+  };
 
   return (
     <View
@@ -105,7 +135,11 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         </View>
         {/* right icon  */}
         <View style={styles.headerIconContainer}>
-          <PopUpMenu navigation={navigation} />
+          <PopUpMenu
+            navigation={navigation}
+            handleFollow={handleFollow}
+            handleShare={handleShare}
+          />
         </View>
       </View>
       {/* content  */}

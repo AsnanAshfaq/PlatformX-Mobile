@@ -9,14 +9,25 @@ import {
   renderers,
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
+import {useStateValue} from '../Store/StateProvider';
+// import {darkColors} from '../Constants/Colors';
 
 const ICON_SIZE = Width * 0.07;
 
 type prop = {
   navigation: any;
+  handleBookmark: () => void;
+  handleReport: () => void;
+  handleShare: () => void;
 };
-const PopUpMenu: FC<prop> = ({navigation}) => {
+const PopUpMenu: FC<prop> = ({
+  navigation,
+  handleBookmark,
+  handleReport,
+  handleShare,
+}) => {
+  const [{theme}, dispatch] = useStateValue();
+
   return (
     <Menu>
       <MenuTrigger>
@@ -24,7 +35,7 @@ const PopUpMenu: FC<prop> = ({navigation}) => {
           <Ionicons
             name={'ellipsis-vertical'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
           />
         </View>
       </MenuTrigger>
@@ -32,7 +43,7 @@ const PopUpMenu: FC<prop> = ({navigation}) => {
       <MenuOptions
         customStyles={{
           optionsContainer: {
-            backgroundColor: darkColors.SHADOW_COLOR,
+            backgroundColor: theme.SHADOW_COLOR,
             borderWidth: 5,
             borderRadius: 20,
             width: 150,
@@ -45,22 +56,25 @@ const PopUpMenu: FC<prop> = ({navigation}) => {
             height: 35,
           },
         }}>
-        <MenuOption
-          onSelect={() => console.log('Bookmark Menu has been selected')}>
+        <MenuOption onSelect={() => handleBookmark()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Bookmark</Text>
+            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+              Bookmark
+            </Text>
           </View>
         </MenuOption>
-        <MenuOption
-          onSelect={() => console.log('Report Menu has been selected')}>
+        <MenuOption onSelect={() => handleReport()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Report</Text>
+            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+              Report
+            </Text>
           </View>
         </MenuOption>
-        <MenuOption
-          onSelect={() => console.log('Share Menu has been selected')}>
+        <MenuOption onSelect={() => handleShare()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Share</Text>
+            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+              Share
+            </Text>
           </View>
         </MenuOption>
       </MenuOptions>
@@ -75,7 +89,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   menuOptionText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     // fontFamily: 'Raleway-Medium',
   },

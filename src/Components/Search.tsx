@@ -8,9 +8,9 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {darkColors} from '../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../Modals/FilterModal';
+import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   placeholder: string;
@@ -21,6 +21,8 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
   const textInputRef = useRef<any>(null);
+
+  const [{theme}, dispatch] = useStateValue();
 
   Keyboard.addListener('keyboardDidHide', e => {
     if (textInputRef.current) {
@@ -38,21 +40,29 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
       <View
         style={[
           styles.searchContainer,
-          {width: showFilterIcon === false ? Width * 0.9 : Width * 0.77},
+          {
+            width: showFilterIcon === false ? Width * 0.9 : Width * 0.77,
+            backgroundColor: theme.SHADOW_COLOR,
+          },
         ]}>
         <TextInput
           value={input}
           ref={textInputRef}
           onChangeText={text => setinput(text)}
           placeholder={placeholder}
-          style={styles.textInput}
-          placeholderTextColor={darkColors.TEXT_COLOR}
+          style={[styles.textInput, {color: theme.TEXT_COLOR}]}
+          placeholderTextColor={theme.TEXT_COLOR}
           maxLength={30}
         />
         <Ionicons
           name={'search'}
           size={Width * 0.06}
-          style={styles.searchIcon}
+          style={[
+            styles.searchIcon,
+            {
+              color: theme.TAB_BAR_ACTIVE_COLOR,
+            },
+          ]}
         />
       </View>
       {showFilterIcon !== false && (
@@ -62,7 +72,7 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
             <Ionicons
               name={'ios-options-outline'}
               size={Width * 0.07}
-              style={styles.filterIcon}
+              style={{color: theme.TAB_BAR_ACTIVE_COLOR}}
             />
           </TouchableWithoutFeedback>
         </View>
@@ -81,8 +91,7 @@ const styles = StyleSheet.create({
     // width: Width * 0.77,
     marginHorizontal: Width * 0.05,
     marginVertical: Width * 0.02,
-    backgroundColor: darkColors.SHADOW_COLOR,
-    borderRadius: 10,
+    borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -91,18 +100,14 @@ const styles = StyleSheet.create({
     flex: 0.85,
     marginHorizontal: Width * 0.01,
     marginLeft: 10,
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.9,
   },
   searchIcon: {
     flex: 0.15,
-    color: darkColors.TAB_BAR_ACTIVE_COLOR,
   },
   filterContainer: {
     width: Width * 0.97,
     justifyContent: 'center',
   },
-  filterIcon: {
-    color: darkColors.TAB_BAR_ACTIVE_COLOR,
-  },
+  filterIcon: {},
 });
