@@ -9,7 +9,7 @@ import {
   renderers,
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
+import {useStateValue} from '../Store/StateProvider';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -19,6 +19,7 @@ type prop = {
   handleFollow: () => void;
 };
 const PopUpMenu: FC<prop> = ({navigation, handleShare, handleFollow}) => {
+  const [{theme}, dispatch] = useStateValue();
   return (
     <Menu>
       <MenuTrigger>
@@ -26,7 +27,7 @@ const PopUpMenu: FC<prop> = ({navigation, handleShare, handleFollow}) => {
           <Ionicons
             name={'ellipsis-vertical'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
           />
         </View>
       </MenuTrigger>
@@ -34,7 +35,7 @@ const PopUpMenu: FC<prop> = ({navigation, handleShare, handleFollow}) => {
       <MenuOptions
         customStyles={{
           optionsContainer: {
-            backgroundColor: darkColors.SHADOW_COLOR,
+            backgroundColor: theme.SHADOW_COLOR,
             borderWidth: 5,
             borderRadius: 20,
             width: 150,
@@ -49,12 +50,16 @@ const PopUpMenu: FC<prop> = ({navigation, handleShare, handleFollow}) => {
         }}>
         <MenuOption onSelect={() => handleFollow()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Follow</Text>
+            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+              Follow
+            </Text>
           </View>
         </MenuOption>
         <MenuOption onSelect={() => handleShare()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Share</Text>
+            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+              Share
+            </Text>
           </View>
         </MenuOption>
       </MenuOptions>
@@ -69,7 +74,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   menuOptionText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     // fontFamily: 'Raleway-Medium',
   },

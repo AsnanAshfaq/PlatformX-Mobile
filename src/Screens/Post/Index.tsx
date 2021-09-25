@@ -46,6 +46,10 @@ const Posts: FC<props> = ({navigation}) => {
       setRefreshing(false);
     });
   };
+
+  const handleSearch = () => {
+    console.log('This is the handle search function ');
+  };
   useEffect(() => {
     getData();
   }, [IsLoading]);
@@ -61,7 +65,11 @@ const Posts: FC<props> = ({navigation}) => {
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
       {Post.length > 0 ? (
         <>
-          <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
+          <CustomSearch
+            placeholder={'Search here'}
+            showFilterIcon={false}
+            hanldeSearch={() => handleSearch()}
+          />
           <FlatList
             data={Post}
             // disableVirtualization

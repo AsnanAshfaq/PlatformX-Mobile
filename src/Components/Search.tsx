@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Keyboard,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
@@ -14,10 +15,11 @@ import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   placeholder: string;
+  hanldeSearch: () => void;
   showFilterIcon?: boolean;
 };
 
-const Search: FC<props> = ({placeholder, showFilterIcon}) => {
+const Search: FC<props> = ({placeholder, showFilterIcon, hanldeSearch}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
   const textInputRef = useRef<any>(null);
@@ -45,25 +47,28 @@ const Search: FC<props> = ({placeholder, showFilterIcon}) => {
             backgroundColor: theme.SHADOW_COLOR,
           },
         ]}>
-        <TextInput
-          value={input}
-          ref={textInputRef}
-          onChangeText={text => setinput(text)}
-          placeholder={placeholder}
-          style={[styles.textInput, {color: theme.TEXT_COLOR}]}
-          placeholderTextColor={theme.TEXT_COLOR}
-          maxLength={30}
-        />
-        <Ionicons
-          name={'search'}
-          size={Width * 0.06}
-          style={[
-            styles.searchIcon,
-            {
-              color: theme.TAB_BAR_ACTIVE_COLOR,
-            },
-          ]}
-        />
+        <View style={styles.textInputContainer}>
+          <TextInput
+            value={input}
+            ref={textInputRef}
+            onChangeText={text => setinput(text)}
+            placeholder={placeholder}
+            style={[styles.textInput, {color: theme.TEXT_COLOR}]}
+            placeholderTextColor={theme.TEXT_COLOR}
+            maxLength={30}
+          />
+        </View>
+        <View style={styles.searchIconContainer}>
+          <TouchableOpacity onPress={hanldeSearch}>
+            <Ionicons
+              name={'search'}
+              size={Width * 0.06}
+              style={{
+                color: theme.TAB_BAR_ACTIVE_COLOR,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       {showFilterIcon !== false && (
         <View style={styles.filterContainer}>
@@ -89,6 +94,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     // width: Width * 0.77,
+    flex: 1,
     marginHorizontal: Width * 0.05,
     marginVertical: Width * 0.02,
     borderRadius: 12,
@@ -96,13 +102,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  textInput: {
+  textInputContainer: {
     flex: 0.85,
+  },
+  textInput: {
     marginHorizontal: Width * 0.01,
     marginLeft: 10,
     fontSize: Sizes.normal * 0.9,
   },
-  searchIcon: {
+  searchIconContainer: {
     flex: 0.15,
   },
   filterContainer: {

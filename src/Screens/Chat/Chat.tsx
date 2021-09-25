@@ -69,15 +69,11 @@ const Chat: FC<props> = ({navigation}) => {
   socket.onmessage = function (e) {
     const response = JSON.parse(e.data);
 
-    const timestamp =
-      response.timestamp.slice(0, 10) +
-      'T' +
-      response.timestamp.slice(11, response.timestamp.length);
     setMessages(prev => [
       {
         _id: response.id,
         text: response.message,
-        createdAt: new Date(timestamp),
+        createdAt: response.created_at,
         user: {
           _id: response.user_name,
           name: response.user_name,
@@ -100,6 +96,7 @@ const Chat: FC<props> = ({navigation}) => {
         console.log('Closing socket connection');
       };
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

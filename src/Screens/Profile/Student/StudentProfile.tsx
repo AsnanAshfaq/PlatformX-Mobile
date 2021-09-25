@@ -64,29 +64,24 @@ type cardProps = {
 };
 
 const Card: FC<cardProps> = ({label, value, onPress}) => {
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   return (
     <View
       style={[
         styles.keyValueContainer,
         {
-          borderColor: state.theme.SHADOW_COLOR,
+          borderColor: theme.SHADOW_COLOR,
           borderRightWidth: label === 'Posts' ? 2 : 0,
-          borderRightColor: label === 'Posts' ? state.theme.SHADOW_COLOR : '',
+          borderRightColor: label === 'Posts' ? theme.SHADOW_COLOR : '',
           borderLeftWidth: label === 'Following' ? 2 : 0,
-          borderLeftColor:
-            label === 'Following' ? state.theme.SHADOW_COLOR : '',
+          borderLeftColor: label === 'Following' ? theme.SHADOW_COLOR : '',
         },
       ]}>
       <TouchableOpacity onPress={onPress}>
         <View style={styles.center}>
-          <Text style={[styles.label, {color: state.theme.TEXT_COLOR}]}>
-            {label}
-          </Text>
-          <Text style={[styles.value, {color: state.theme.TEXT_COLOR}]}>
-            {value}
-          </Text>
+          <Text style={[styles.label, {color: theme.TEXT_COLOR}]}>{label}</Text>
+          <Text style={[styles.value, {color: theme.TEXT_COLOR}]}>{value}</Text>
         </View>
       </TouchableOpacity>
     </View>

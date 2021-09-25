@@ -15,8 +15,9 @@ const instance = Axios.create({
 instance.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('access');
-    if (token != null && token != '')
+    if (token !== null && token !== '') {
       config.headers.Authorization = 'Bearer ' + token;
+    }
     return config;
   },
   function (error) {

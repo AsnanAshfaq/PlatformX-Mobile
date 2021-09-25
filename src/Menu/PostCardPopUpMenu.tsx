@@ -19,7 +19,7 @@ type prop = {
   deleteModal: (prev: boolean) => void;
 };
 const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
   return (
     <Menu>
@@ -28,7 +28,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
           <Ionicons
             name={'ellipsis-vertical'}
             size={ICON_SIZE}
-            color={state.theme.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
           />
         </View>
       </MenuTrigger>
@@ -37,7 +37,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <MenuOptions
           customStyles={{
             optionsContainer: {
-              backgroundColor: state.theme.SHADOW_COLOR,
+              backgroundColor: theme.SHADOW_COLOR,
               borderWidth: 5,
               borderRadius: 20,
               width: 150,
@@ -60,12 +60,28 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
               })
             }>
             <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Edit</Text>
+              <Text
+                style={[
+                  styles.menuOptionText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Edit
+              </Text>
             </View>
           </MenuOption>
           <MenuOption onSelect={() => deleteModal(true)}>
             <View style={styles.menuOptionContainer}>
-              <Text style={styles.menuOptionText}>Delete</Text>
+              <Text
+                style={[
+                  styles.menuOptionText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Delete
+              </Text>
             </View>
           </MenuOption>
         </MenuOptions>
@@ -74,7 +90,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <MenuOptions
           customStyles={{
             optionsContainer: {
-              backgroundColor: state.theme.SHADOW_COLOR,
+              backgroundColor: theme.SHADOW_COLOR,
               borderWidth: 1,
               borderRadius: 20,
               marginRight: 20,
@@ -93,7 +109,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
                 style={[
                   styles.menuOptionText,
                   {
-                    color: state.theme.TEXT_COLOR,
+                    color: theme.TEXT_COLOR,
                   },
                 ]}>
                 Save Post
@@ -106,7 +122,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
                 style={[
                   styles.menuOptionText,
                   {
-                    color: state.theme.TEXT_COLOR,
+                    color: theme.TEXT_COLOR,
                   },
                 ]}>
                 Report

@@ -11,13 +11,13 @@ const SearchSkeleton = () => {
     <ContentLoader
       height={50}
       width={350}
-      viewBox="0 10 350 30"
+      viewBox="0 0 350 30"
       backgroundColor={theme.SHADOW_COLOR}
       foregroundColor={'grey'}
       interval={0.2}
       style={{marginVertical: 10}}
       speed={1}>
-      <Rect x="10" y="0" rx="0" ry="0" width="350" height="50" />
+      <Rect x="40" y="0" rx="0" ry="0" width="350" height="50" />
     </ContentLoader>
   );
 };
