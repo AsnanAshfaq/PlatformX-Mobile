@@ -26,7 +26,14 @@ const Workshop: FC<props> = ({navigation}) => {
   // const isFocuses = useIsFocused();
   const [IsLoading, setIsLoading] = useState(true);
   const [Refreshing, setRefreshing] = useState(false);
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
+  const [Searching, setSearching] = useState<{
+    isSearching: boolean;
+    query: string;
+  }>({
+    isSearching: false,
+    query: '',
+  });
 
   const getData = async () => {
     axios
@@ -34,6 +41,10 @@ const Workshop: FC<props> = ({navigation}) => {
       .then(response => {
         setWorkshops(response.data);
         setIsLoading(false);
+        setSearching({
+          isSearching: false,
+          query: '',
+        });
       })
       .catch(error => {
         setIsLoading(false);
@@ -46,21 +57,56 @@ const Workshop: FC<props> = ({navigation}) => {
   const onRefresh = () => {
     setRefreshing(true);
     getData().then(() => {
-      // console.log(Post);
       setRefreshing(false);
+      // handle seaching state
+      setSearching({
+        isSearching: false,
+        query: '',
+      });
     });
+  };
+
+  const handleSearch = (query: string) => {
+    // set the searching to true
+    setSearching({
+      isSearching: true,
+      query: query,
+    });
+    try {
+      axios.get(`/api/workshop/search/?q=${query}`).then(response => {
+        setWorkshops(response.data);
+        setIsLoading(false);
+        setSearching(props => {
+          return {
+            isSearching: false,
+            query: props.query,
+          };
+        });
+      });
+    } catch (error: any) {
+      setSearching(props => {
+        return {
+          isSearching: false,
+          query: props.query,
+        };
+      });
+      ToastAndroid.show(error.data.response.error, 1500);
+    }
   };
 
   useEffect(() => {
     getData();
   }, [IsLoading]);
 
+  console.log('Is loading is', IsLoading);
+  console.log('Workshops are', Workshops.length);
+
   return (
     <View
       style={[
         styles.parent,
         {
-          backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
       <CustomHeader
@@ -71,9 +117,20 @@ const Workshop: FC<props> = ({navigation}) => {
         bell
       />
 
-      {Workshops.length > 0 ? (
+      {!IsLoading && (
+        <CustomSearch
+          placeholder={'Search workshops'}
+          showFilterIcon={true}
+          handleSearch={handleSearch}
+        />
+      )}
+      {/* if searching  then show post skeleton without search skeleton*/}
+      {Searching.isSearching ? (
         <>
-          <CustomSearch placeholder={'Search here'} showFilterIcon />
+          <WorkshopSkeleton showSearchSkeleton={!Searching.isSearching} />
+        </>
+      ) : Workshops.length > 0 ? (
+        <>
           <FlatList
             data={Workshops}
             // disableVirtualization
@@ -91,8 +148,8 @@ const Workshop: FC<props> = ({navigation}) => {
               <RefreshControl
                 refreshing={Refreshing}
                 onRefresh={onRefresh}
-                colors={[state.theme.TEXT_COLOR]}
-                progressBackgroundColor={state.theme.SHADOW_COLOR}
+                colors={[theme.TEXT_COLOR]}
+                progressBackgroundColor={theme.SHADOW_COLOR}
                 progressViewOffset={20}
                 size={Sizes.large}
               />
@@ -101,20 +158,23 @@ const Workshop: FC<props> = ({navigation}) => {
             contentOffset={{y: -300, x: 0}}
           />
         </>
-      ) : !IsLoading ? (
+      ) : !IsLoading && Workshops.length === 0 ? (
         <View style={styles.center}>
-          <Text style={[styles.noMoreText, {color: state.theme.TEXT_COLOR}]}>
-            No more Workshops
+          <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
+            {Searching.query !== '' && Workshop.length === 0
+              ? `No result Found for ${Searching.query}`
+              : 'No workshops yet'}
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text
-              style={[styles.refreshText, {color: state.theme.TOMATO_COLOR}]}>
+            <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
               Refresh
             </Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <WorkshopSkeleton />
+        <WorkshopSkeleton
+          showSearchSkeleton={!Searching.isSearching || Refreshing}
+        />
       )}
     </View>
   );

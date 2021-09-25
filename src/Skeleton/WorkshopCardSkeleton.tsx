@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import ContentLoader, {Rect, Circle} from 'react-content-loader/native';
 import SearchSkeleton from './SearchSkeleton';
@@ -24,11 +24,15 @@ const Skeleton = () => {
   );
 };
 
-const WorkshopSkeleton = () => {
+type props = {
+  showSearchSkeleton: boolean;
+};
+
+const WorkshopSkeleton: FC<props> = ({showSearchSkeleton}) => {
   return (
     <ScrollView>
       <>
-        <SearchSkeleton />
+        {showSearchSkeleton && <SearchSkeleton />}
         <Skeleton />
         <Skeleton />
       </>
