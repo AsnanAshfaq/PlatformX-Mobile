@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 // import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ContentLoader, {Rect, Circle} from 'react-content-loader/native';
@@ -26,11 +26,16 @@ const Skeleton = () => {
   );
 };
 
-const PostSkeleton = () => {
+type props = {
+  showSearch: boolean;
+};
+const PostSkeleton: FC<props> = ({showSearch}) => {
+  console.log('Searching skeleton state is', showSearch);
   return (
     <ScrollView>
       <>
-        <SearchSkeleton />
+        {/* show search skeleton only if it is required */}
+        {showSearch && <SearchSkeleton />}
         <Skeleton />
         <Skeleton />
       </>

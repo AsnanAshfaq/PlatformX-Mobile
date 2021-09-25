@@ -1,3 +1,15 @@
+//FIXME: Searching Post
+// when the use clicks the search button
+// make api call
+// i need to show the skeleton... HOw??
+// okay
+// so when the screen first loads
+// Post.length === 0 and isLoading is true
+// so the skelton gets showed
+// but when the user clicks on search
+// Post.length !== 0 , so it shows the postCard
+// Make the posts to
+
 import React, {FC, useEffect, useState, useCallback} from 'react';
 import {
   View,
@@ -27,12 +39,26 @@ const Posts: FC<props> = ({navigation}) => {
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   const [{theme}, dispatch] = useStateValue();
+  const [Searching, setSearching] = useState<{
+    isSearching: boolean;
+    query: string;
+    response: '' | 'Empty' | 'Data';
+  }>({
+    isSearching: false,
+    query: '',
+    response: '',
+  });
 
   const getData = async () => {
     try {
       axios.get('/api/posts/').then(response => {
         setPost(response.data);
         setIsLoading(false);
+        setSearching({
+          isSearching: false,
+          query: '',
+          response: '',
+        });
       });
     } catch (error: any) {
       ToastAndroid.show(error.data.response.error, 1500);
@@ -42,14 +68,47 @@ const Posts: FC<props> = ({navigation}) => {
   const onRefresh = () => {
     setRefreshing(true);
     getData().then(() => {
-      // console.log(Post);
       setRefreshing(false);
+      // handle seaching state
+      setSearching({
+        isSearching: false,
+        query: '',
+        response: '',
+      });
     });
   };
 
-  const handleSearch = () => {
-    console.log('This is the handle search function ');
+  const handleSearch = (query: string) => {
+    // set the searching to true
+    setSearching({
+      isSearching: true,
+      query: query,
+      response: '',
+    });
+    try {
+      axios.get(`/api/post/search/?q=${query}`).then(response => {
+        setPost(response.data);
+        setIsLoading(false);
+        setSearching(props => {
+          return {
+            isSearching: false,
+            query: props.query,
+            response: response.data.length === 0 ? 'Empty' : 'Data',
+          };
+        });
+      });
+    } catch (error: any) {
+      setSearching(props => {
+        return {
+          isSearching: false,
+          query: props.query,
+          response: 'Empty',
+        };
+      });
+      ToastAndroid.show(error.data.response.error, 1500);
+    }
   };
+
   useEffect(() => {
     getData();
   }, [IsLoading]);
@@ -63,12 +122,27 @@ const Posts: FC<props> = ({navigation}) => {
         },
       ]}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
-      {Post.length > 0 ? (
+
+      {/* if i am searching  then show post skeleton without search skeleton*/}
+      {Searching.isSearching ? (
         <>
           <CustomSearch
-            placeholder={'Search here'}
+            placeholder={
+              Searching.query === '' ? 'Search here' : Searching.query
+            }
             showFilterIcon={false}
-            hanldeSearch={() => handleSearch()}
+            handleSearch={handleSearch}
+          />
+          <PostSkeleton showSearch={!Searching.isSearching} />
+        </>
+      ) : Post.length > 0 ? (
+        <>
+          <CustomSearch
+            placeholder={
+              Searching.query === '' ? 'Search here' : Searching.query
+            }
+            showFilterIcon={false}
+            handleSearch={handleSearch}
           />
           <FlatList
             data={Post}
@@ -115,25 +189,38 @@ const Posts: FC<props> = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </>
-      ) : !IsLoading ? (
-        <View style={styles.center}>
-          <Text
-            style={[
-              styles.noMoreText,
-              {
-                color: theme.TEXT_COLOR,
-              },
-            ]}>
-            No Posts yet
-          </Text>
-          <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
-              Refresh
+      ) : !IsLoading && Post.length === 0 ? (
+        <>
+          <CustomSearch
+            placeholder={
+              Searching.query === '' ? 'Search here' : Searching.query
+            }
+            showFilterIcon={false}
+            handleSearch={handleSearch}
+          />
+          <View style={styles.center}>
+            <Text
+              style={[
+                styles.noMoreText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              {Searching.query !== '' && Searching.response === 'Empty'
+                ? `No result Found for ${Searching.query}`
+                : 'No posts yet'}
             </Text>
-          </TouchableOpacity>
-        </View>
+            {Searching.query === '' && (
+              <TouchableOpacity onPress={() => setIsLoading(true)}>
+                <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
+                  Refresh
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </>
       ) : (
-        <PostSkeleton />
+        <PostSkeleton showSearch={!Searching.isSearching} />
       )}
     </View>
   );

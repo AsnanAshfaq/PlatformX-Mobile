@@ -15,11 +15,11 @@ import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   placeholder: string;
-  hanldeSearch: () => void;
+  handleSearch: (query: string) => void;
   showFilterIcon?: boolean;
 };
 
-const Search: FC<props> = ({placeholder, showFilterIcon, hanldeSearch}) => {
+const Search: FC<props> = ({placeholder, showFilterIcon, handleSearch}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
   const textInputRef = useRef<any>(null);
@@ -31,6 +31,27 @@ const Search: FC<props> = ({placeholder, showFilterIcon, hanldeSearch}) => {
       textInputRef?.current.blur();
     }
   });
+
+  useEffect(() => {
+    const subscribe = Keyboard.addListener('keyboardDidHide', e => {
+      if (textInputRef.current) {
+        textInputRef?.current.blur();
+      }
+    });
+    return () => {
+      console.log('Unmounting');
+      subscribe.remove();
+    };
+  }, []);
+
+  const hanldeSearch = () => {
+    // hide the keyboard if it is open
+    Keyboard.dismiss();
+    if (input.trim() !== '') {
+      // make api call
+      handleSearch(input.trim());
+    }
+  };
 
   return (
     <View style={styles.parent}>
@@ -59,7 +80,7 @@ const Search: FC<props> = ({placeholder, showFilterIcon, hanldeSearch}) => {
           />
         </View>
         <View style={styles.searchIconContainer}>
-          <TouchableOpacity onPress={hanldeSearch}>
+          <TouchableOpacity onPress={() => hanldeSearch()}>
             <Ionicons
               name={'search'}
               size={Width * 0.06}

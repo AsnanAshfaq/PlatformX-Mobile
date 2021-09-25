@@ -132,14 +132,14 @@ const CommentModal: FC<props> = ({
   }, [isCommentPosted, postID]);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', () => {
+    const subscribe = Keyboard.addListener('keyboardDidHide', () => {
       if (textInput.current && textInput) {
         textInput?.current?.blur();
       }
     });
 
     return () => {
-      Keyboard.removeCurrentListener();
+      subscribe.remove();
     };
   }, []);
 
