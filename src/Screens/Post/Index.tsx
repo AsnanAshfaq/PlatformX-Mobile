@@ -118,9 +118,6 @@ const Posts: FC<props> = ({navigation}) => {
     [],
   );
 
-  console.log('Loading is ', IsLoading);
-  console.log('Refreshing is', Refreshing);
-  console.log('Searching is', Searching.isSearching);
   return (
     <View
       style={[
@@ -138,7 +135,7 @@ const Posts: FC<props> = ({navigation}) => {
           handleSearch={handleSearch}
         />
       )}
-      {/* if i am searching  then show post skeleton without search skeleton*/}
+      {/* if searching  then show post skeleton without search skeleton*/}
       {Searching.isSearching ? (
         <>
           <PostSkeleton showSearchSkeleton={!Searching.isSearching} />

@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     // width: Width * 0.77,
-    flex: 1,
+    // flex: 1,
     marginHorizontal: Width * 0.05,
     marginVertical: Width * 0.02,
     borderRadius: 12,

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
+  ToastAndroid,
 } from 'react-native';
 import HackathonCard from '../../Components/HackathonCard';
 import CustomHeader from '../../Components/CustomHeader';
@@ -25,21 +26,15 @@ const Hackathons: FC<props> = ({navigation}) => {
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
+  const [Searching, setSearching] = useState<{
+    isSearching: boolean;
+    query: string;
+  }>({
+    isSearching: false,
+    query: '',
+  });
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     console.log('is focues', isFocuses);
-  //     // getData();
-  //   }, []),
-  // );
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     console.log('Screen is focused');
-  //     getData();
-  //   }, []),
-  // );
   const getData = async () => {
     axios
       .get('/api/hackathons/')
@@ -58,8 +53,43 @@ const Hackathons: FC<props> = ({navigation}) => {
     getData().then(() => {
       // console.log(Post);
       setRefreshing(false);
+
+      // handle seaching state
+      setSearching({
+        isSearching: false,
+        query: '',
+      });
     });
   };
+
+  const handleSearch = (query: string) => {
+    // set the searching to true
+    setSearching({
+      isSearching: true,
+      query: query,
+    });
+    try {
+      axios.get(`/api/hackathon/search/?q=${query}`).then(response => {
+        setHackathons(response.data);
+        setIsLoading(false);
+        setSearching(props => {
+          return {
+            isSearching: false,
+            query: props.query,
+          };
+        });
+      });
+    } catch (error: any) {
+      setSearching(props => {
+        return {
+          isSearching: false,
+          query: props.query,
+        };
+      });
+      ToastAndroid.show(error.data.response.error, 1500);
+    }
+  };
+
   useEffect(() => {
     getData();
   }, [IsLoading]);
@@ -69,7 +99,7 @@ const Hackathons: FC<props> = ({navigation}) => {
       style={[
         styles.parent,
         {
-          backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
       <CustomHeader
@@ -80,9 +110,20 @@ const Hackathons: FC<props> = ({navigation}) => {
         bell
       />
 
-      {Hackathons.length > 0 ? (
+      {!IsLoading && (
+        <CustomSearch
+          placeholder={'Search hackathons'}
+          showFilterIcon={true}
+          handleSearch={handleSearch}
+        />
+      )}
+
+      {Searching.isSearching ? (
         <>
-          <CustomSearch placeholder={'Search here'} showFilterIcon />
+          <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
+        </>
+      ) : Hackathons.length > 0 ? (
+        <>
           <FlatList
             data={Hackathons}
             // disableVirtualization
@@ -101,8 +142,8 @@ const Hackathons: FC<props> = ({navigation}) => {
               <RefreshControl
                 refreshing={Refreshing}
                 onRefresh={onRefresh}
-                colors={[state.theme.TEXT_COLOR]}
-                progressBackgroundColor={state.theme.SHADOW_COLOR}
+                colors={[theme.TEXT_COLOR]}
+                progressBackgroundColor={theme.SHADOW_COLOR}
                 progressViewOffset={20}
                 size={Sizes.large}
               />
@@ -110,20 +151,23 @@ const Hackathons: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
         </>
-      ) : !IsLoading ? (
+      ) : !IsLoading && Hackathons.length === 0 ? (
         <View style={styles.center}>
-          <Text style={[styles.noMoreText, {color: state.theme.TEXT_COLOR}]}>
-            No more hackathons
+          <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
+            {Searching.query !== '' && Hackathons.length === 0
+              ? `No result Found for ${Searching.query}`
+              : 'No hackathons yet'}
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text
-              style={[styles.refreshText, {color: state.theme.TOMATO_COLOR}]}>
+            <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
               Refresh
             </Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <HackathonSkeleton />
+        <HackathonSkeleton
+          showSearchSkeleton={!Searching.isSearching || Refreshing}
+        />
       )}
     </View>
   );
@@ -138,19 +182,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // floatingButtonContainer: {
-  //   position: 'absolute',
-  //   width: 60,
-  //   height: 60,
-  //   borderWidth: 2,
-  //   borderRadius: 30,
-  //   bottom: 20,
-  //   right: 5,
-  //   borderColor: 'transparent',
-  //   backgroundColor: darkColors.TOMATO_COLOR,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
   noMoreText: {
     fontSize: Sizes.normal,
   },
