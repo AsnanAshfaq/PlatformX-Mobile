@@ -42,11 +42,9 @@ const Posts: FC<props> = ({navigation}) => {
   const [Searching, setSearching] = useState<{
     isSearching: boolean;
     query: string;
-    response: '' | 'Empty' | 'Data';
   }>({
     isSearching: false,
     query: '',
-    response: '',
   });
 
   const getData = async () => {
@@ -57,7 +55,6 @@ const Posts: FC<props> = ({navigation}) => {
         setSearching({
           isSearching: false,
           query: '',
-          response: '',
         });
       });
     } catch (error: any) {
@@ -73,7 +70,6 @@ const Posts: FC<props> = ({navigation}) => {
       setSearching({
         isSearching: false,
         query: '',
-        response: '',
       });
     });
   };
@@ -83,7 +79,6 @@ const Posts: FC<props> = ({navigation}) => {
     setSearching({
       isSearching: true,
       query: query,
-      response: '',
     });
     try {
       axios.get(`/api/post/search/?q=${query}`).then(response => {
@@ -93,7 +88,6 @@ const Posts: FC<props> = ({navigation}) => {
           return {
             isSearching: false,
             query: props.query,
-            response: response.data.length === 0 ? 'Empty' : 'Data',
           };
         });
       });
@@ -102,7 +96,6 @@ const Posts: FC<props> = ({navigation}) => {
         return {
           isSearching: false,
           query: props.query,
-          response: 'Empty',
         };
       });
       ToastAndroid.show(error.data.response.error, 1500);
@@ -113,6 +106,21 @@ const Posts: FC<props> = ({navigation}) => {
     getData();
   }, [IsLoading]);
 
+  const renderItem = useCallback(
+    ({item: post, index}: any) => (
+      <PostCard postDetail={post} navigation={navigation} />
+    ),
+    [navigation],
+  );
+
+  const keyExtractor = useCallback(
+    (item: any, index) => `${item.id}-${index}`,
+    [],
+  );
+
+  console.log('Loading is ', IsLoading);
+  console.log('Refreshing is', Refreshing);
+  console.log('Searching is', Searching.isSearching);
   return (
     <View
       style={[
@@ -123,34 +131,25 @@ const Posts: FC<props> = ({navigation}) => {
       ]}>
       <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
 
+      {!IsLoading && (
+        <CustomSearch
+          placeholder={'Search posts'}
+          showFilterIcon={false}
+          handleSearch={handleSearch}
+        />
+      )}
       {/* if i am searching  then show post skeleton without search skeleton*/}
       {Searching.isSearching ? (
         <>
-          <CustomSearch
-            placeholder={
-              Searching.query === '' ? 'Search here' : Searching.query
-            }
-            showFilterIcon={false}
-            handleSearch={handleSearch}
-          />
-          <PostSkeleton showSearch={!Searching.isSearching} />
+          <PostSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
       ) : Post.length > 0 ? (
         <>
-          <CustomSearch
-            placeholder={
-              Searching.query === '' ? 'Search here' : Searching.query
-            }
-            showFilterIcon={false}
-            handleSearch={handleSearch}
-          />
           <FlatList
             data={Post}
             // disableVirtualization
-            keyExtractor={(item: any, index) => `${item.id}-${index}`}
-            renderItem={({item: post, index}: any) => {
-              return <PostCard postDetail={post} navigation={navigation} />;
-            }}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
             // progressViewOffset={10}
             refreshControl={
               <RefreshControl
@@ -191,13 +190,6 @@ const Posts: FC<props> = ({navigation}) => {
         </>
       ) : !IsLoading && Post.length === 0 ? (
         <>
-          <CustomSearch
-            placeholder={
-              Searching.query === '' ? 'Search here' : Searching.query
-            }
-            showFilterIcon={false}
-            handleSearch={handleSearch}
-          />
           <View style={styles.center}>
             <Text
               style={[
@@ -206,21 +198,21 @@ const Posts: FC<props> = ({navigation}) => {
                   color: theme.TEXT_COLOR,
                 },
               ]}>
-              {Searching.query !== '' && Searching.response === 'Empty'
+              {Searching.query !== '' && Post.length === 0
                 ? `No result Found for ${Searching.query}`
                 : 'No posts yet'}
             </Text>
-            {Searching.query === '' && (
-              <TouchableOpacity onPress={() => setIsLoading(true)}>
-                <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
-                  Refresh
-                </Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity onPress={() => setIsLoading(true)}>
+              <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
+                Refresh
+              </Text>
+            </TouchableOpacity>
           </View>
         </>
       ) : (
-        <PostSkeleton showSearch={!Searching.isSearching} />
+        <PostSkeleton
+          showSearchSkeleton={!Searching.isSearching || Refreshing}
+        />
       )}
     </View>
   );

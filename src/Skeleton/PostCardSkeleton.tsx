@@ -27,15 +27,14 @@ const Skeleton = () => {
 };
 
 type props = {
-  showSearch: boolean;
+  showSearchSkeleton: boolean;
 };
-const PostSkeleton: FC<props> = ({showSearch}) => {
-  console.log('Searching skeleton state is', showSearch);
+const PostSkeleton: FC<props> = ({showSearchSkeleton}) => {
   return (
     <ScrollView>
       <>
         {/* show search skeleton only if it is required */}
-        {showSearch && <SearchSkeleton />}
+        {showSearchSkeleton && <SearchSkeleton />}
         <Skeleton />
         <Skeleton />
       </>

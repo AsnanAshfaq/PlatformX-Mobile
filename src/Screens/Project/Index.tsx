@@ -43,6 +43,10 @@ const Projects: FC<props> = ({navigation}) => {
     }
   };
 
+  const handleSearch = () => {
+    console.log('Handling search for projects');
+  };
+
   const onRefresh = () => {
     setRefreshing(true);
 
@@ -65,7 +69,11 @@ const Projects: FC<props> = ({navigation}) => {
         chat
         bell
       />
-      <CustomSearch placeholder={'Search here'} showFilterIcon={false} />
+      <CustomSearch
+        placeholder={'Search here'}
+        showFilterIcon={false}
+        handleSearch={handleSearch}
+      />
       {Project.length > 0 ? (
         <>
           <FlatList
@@ -103,7 +111,7 @@ const Projects: FC<props> = ({navigation}) => {
           </TouchableOpacity>
         </View>
       ) : (
-        <PostSkeleton />
+        <PostSkeleton showSearchSkeleton={true} />
       )}
     </View>
   );

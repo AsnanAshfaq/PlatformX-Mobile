@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import FilterModal from '../Modals/FilterModal';
 import {useStateValue} from '../Store/StateProvider';
 
@@ -53,6 +54,10 @@ const Search: FC<props> = ({placeholder, showFilterIcon, handleSearch}) => {
     }
   };
 
+  const emptyInput = () => {
+    setinput('');
+  };
+
   return (
     <View style={styles.parent}>
       <FilterModal
@@ -89,6 +94,19 @@ const Search: FC<props> = ({placeholder, showFilterIcon, handleSearch}) => {
               }}
             />
           </TouchableOpacity>
+
+          {/* show the cross sign when the input is !== '' */}
+          {input.trim() !== '' && (
+            <TouchableOpacity onPress={() => emptyInput()}>
+              <Entypo
+                name={'cross'}
+                size={Width * 0.065}
+                style={{
+                  color: theme.TAB_BAR_ACTIVE_COLOR,
+                }}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       {showFilterIcon !== false && (
@@ -133,6 +151,8 @@ const styles = StyleSheet.create({
   },
   searchIconContainer: {
     flex: 0.15,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   filterContainer: {
     width: Width * 0.97,
