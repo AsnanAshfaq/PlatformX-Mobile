@@ -18,9 +18,15 @@ type props = {
   placeholder: string;
   handleSearch: (query: string) => void;
   showFilterIcon?: boolean;
+  applyFilters?: () => void | undefined;
 };
 
-const Search: FC<props> = ({placeholder, showFilterIcon, handleSearch}) => {
+const Search: FC<props> = ({
+  placeholder,
+  showFilterIcon,
+  handleSearch,
+  applyFilters,
+}) => {
   const [input, setinput] = useState('');
   const [isModalOpen, setisModalOpen] = useState(false);
   const textInputRef = useRef<any>(null);
@@ -40,7 +46,6 @@ const Search: FC<props> = ({placeholder, showFilterIcon, handleSearch}) => {
       }
     });
     return () => {
-      console.log('Unmounting');
       subscribe.remove();
     };
   }, []);
@@ -63,7 +68,10 @@ const Search: FC<props> = ({placeholder, showFilterIcon, handleSearch}) => {
       <FilterModal
         isShow={isModalOpen}
         toggleModal={() => setisModalOpen(!isModalOpen)}
-        // Data={filterData}
+        applyFilters={() => {
+          setisModalOpen(!isModalOpen);
+          typeof applyFilters !== 'undefined' && applyFilters();
+        }}
       />
       <View
         style={[

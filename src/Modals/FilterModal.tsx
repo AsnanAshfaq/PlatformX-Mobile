@@ -14,19 +14,69 @@ import {hackathonFilterData} from '../Constants/sample';
 import CheckBox from '../Components/CheckBox';
 
 type Props = {
+  tag: string;
   list: Array<string>;
+  CheckedValues: Array<{
+    tag: string;
+    subtag: Array<string>;
+  }>;
 };
 
-const SubTagList: FC<Props> = ({list}) => {
+const SubTagList: FC<Props> = ({tag, list, CheckedValues}) => {
   return (
     <View style={styles.subtagContainer}>
-      {list.map(item => (
-        <View style={{flexDirection: 'row'}} key={item}>
+      {list.map(subtag => (
+        <View style={{flexDirection: 'row'}} key={subtag}>
           <CheckBox
             size={25}
-            onPress={isCheck => console.log('Checked value', isCheck)}
+            onPress={isCheck => {
+              let isTagExist = false;
+              let isSubTagExist = false;
+              let tagIndex = -1;
+              let subTagIndex = -1;
+
+              if (CheckedValues.length !== 0) {
+                CheckedValues.forEach((value, index) => {
+                  if (value.tag === tag) {
+                    isTagExist = true;
+                    tagIndex = index;
+                  }
+                  // check for subtags
+                  for (let i = 0; i < value.subtag.length; i++) {
+                    if (value.subtag[i] === subtag) {
+                      subTagIndex = i;
+                      isSubTagExist = true;
+                    }
+                  }
+                });
+
+                // if tag does not exist, push tab and subtag
+                if (isCheck) {
+                  if (!isTagExist) {
+                    CheckedValues.push({tag: tag, subtag: [subtag]});
+                  }
+
+                  // if tag exist but sub tag does not exist
+                  else if (isTagExist && !isSubTagExist) {
+                    // push subtag only
+                    CheckedValues[tagIndex].subtag.push(subtag);
+                  }
+                } else {
+                  // remove subtag from subtag array
+                  CheckedValues[tagIndex].subtag.splice(subTagIndex, 1);
+                }
+              } else {
+                // push tag and subtag if CheckValues array is empty
+                CheckedValues.push({
+                  tag: tag,
+                  subtag: [subtag],
+                });
+              }
+
+              console.log('Array is', CheckedValues);
+            }}
           />
-          <Text style={styles.subtag}>{item}</Text>
+          <Text style={styles.subtag}>{subtag}</Text>
         </View>
       ))}
     </View>
@@ -36,10 +86,21 @@ const SubTagList: FC<Props> = ({list}) => {
 type props = {
   isShow: boolean;
   toggleModal: () => void;
+  applyFilters?: () => void | undefined;
   // Data: Array<any>;
 };
 
-const FilterModal: FC<props> = ({isShow, toggleModal}) => {
+const FilterModal: FC<props> = ({isShow, toggleModal, applyFilters}) => {
+  const CheckedValues: Array<{
+    tag: string;
+    subtag: Array<string>;
+  }> = [
+    {
+      tag: '',
+      subtag: [],
+    },
+  ];
+
   return (
     <Modal
       isVisible={isShow}
@@ -67,7 +128,11 @@ const FilterModal: FC<props> = ({isShow, toggleModal}) => {
                   {filterItem.tag}
                 </Text>
                 {/* list of subtags  */}
-                <SubTagList list={filterItem.subtag} />
+                <SubTagList
+                  tag={filterItem.tag}
+                  list={filterItem.subtag}
+                  CheckedValues={CheckedValues}
+                />
               </View>
             );
           })}
@@ -75,7 +140,9 @@ const FilterModal: FC<props> = ({isShow, toggleModal}) => {
         {/* apply filters button  */}
         <View style={styles.applyButtonContainer}>
           <TouchableOpacity
-            onPress={() => console.log('Apply filters')}
+            onPress={() =>
+              typeof applyFilters === 'undefined' ? undefined : applyFilters()
+            }
             style={styles.applyButton}>
             <Text style={styles.apply}>Apply Filters</Text>
           </TouchableOpacity>
@@ -97,7 +164,11 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     marginVertical: Height * 0.15,
   },
-  headingContainer: {justifyContent: 'center', alignItems: 'center'},
+  headingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 3,
+  },
   heading: {
     fontSize: Sizes.large * 1.3,
     color: darkColors.TEXT_COLOR,

@@ -90,6 +90,10 @@ const Hackathons: FC<props> = ({navigation}) => {
     }
   };
 
+  const applyFilters = () => {
+    console.log('Applying hackathon filters');
+  };
+
   useEffect(() => {
     getData();
   }, [IsLoading]);
@@ -115,6 +119,7 @@ const Hackathons: FC<props> = ({navigation}) => {
           placeholder={'Search hackathons'}
           showFilterIcon={true}
           handleSearch={handleSearch}
+          applyFilters={applyFilters}
         />
       )}
 

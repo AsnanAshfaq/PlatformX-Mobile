@@ -94,6 +94,10 @@ const Workshop: FC<props> = ({navigation}) => {
     }
   };
 
+  const applyFilters = () => {
+    console.log('Applying workshop filters');
+  };
+
   useEffect(() => {
     getData();
   }, [IsLoading]);
@@ -122,6 +126,7 @@ const Workshop: FC<props> = ({navigation}) => {
           placeholder={'Search workshops'}
           showFilterIcon={true}
           handleSearch={handleSearch}
+          applyFilters={applyFilters}
         />
       )}
       {/* if searching  then show post skeleton without search skeleton*/}
