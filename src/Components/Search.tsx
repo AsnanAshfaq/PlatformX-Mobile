@@ -18,7 +18,7 @@ type props = {
   placeholder: string;
   handleSearch: (query: string) => void;
   showFilterIcon?: boolean;
-  applyFilters?: () => void | undefined;
+  applyFilters?: (filter: Array<{subtag: Array<string>; tag: string}>) => void;
 };
 
 const Search: FC<props> = ({
@@ -68,10 +68,7 @@ const Search: FC<props> = ({
       <FilterModal
         isShow={isModalOpen}
         toggleModal={() => setisModalOpen(!isModalOpen)}
-        applyFilters={() => {
-          setisModalOpen(!isModalOpen);
-          typeof applyFilters !== 'undefined' && applyFilters();
-        }}
+        applyFilters={applyFilters}
       />
       <View
         style={[

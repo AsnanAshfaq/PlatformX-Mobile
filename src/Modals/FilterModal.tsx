@@ -72,8 +72,6 @@ const SubTagList: FC<Props> = ({tag, list, CheckedValues}) => {
                   subtag: [subtag],
                 });
               }
-
-              console.log('Array is', CheckedValues);
             }}
           />
           <Text style={styles.subtag}>{subtag}</Text>
@@ -86,7 +84,7 @@ const SubTagList: FC<Props> = ({tag, list, CheckedValues}) => {
 type props = {
   isShow: boolean;
   toggleModal: () => void;
-  applyFilters?: () => void | undefined;
+  applyFilters?: (filter: Array<{subtag: Array<string>; tag: string}>) => void;
   // Data: Array<any>;
 };
 
@@ -94,12 +92,7 @@ const FilterModal: FC<props> = ({isShow, toggleModal, applyFilters}) => {
   const CheckedValues: Array<{
     tag: string;
     subtag: Array<string>;
-  }> = [
-    {
-      tag: '',
-      subtag: [],
-    },
-  ];
+  }> = [];
 
   return (
     <Modal
@@ -140,9 +133,13 @@ const FilterModal: FC<props> = ({isShow, toggleModal, applyFilters}) => {
         {/* apply filters button  */}
         <View style={styles.applyButtonContainer}>
           <TouchableOpacity
-            onPress={() =>
-              typeof applyFilters === 'undefined' ? undefined : applyFilters()
-            }
+            onPress={() => {
+              // toggle modal first
+              toggleModal();
+              typeof applyFilters === 'undefined'
+                ? undefined
+                : applyFilters(CheckedValues);
+            }}
             style={styles.applyButton}>
             <Text style={styles.apply}>Apply Filters</Text>
           </TouchableOpacity>

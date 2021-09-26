@@ -90,8 +90,11 @@ const Hackathons: FC<props> = ({navigation}) => {
     }
   };
 
-  const applyFilters = () => {
-    console.log('Applying hackathon filters');
+  const applyFilters = (
+    filter: Array<{subtag: Array<string>; tag: string}>,
+  ) => {
+    console.log('OO chal ja');
+    console.log('Filters to apply are ', filter);
   };
 
   useEffect(() => {

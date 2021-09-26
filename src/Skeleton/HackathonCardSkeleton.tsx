@@ -14,7 +14,7 @@ const Skeleton = () => {
       viewBox="0 0 380 350"
       backgroundColor={theme.SHADOW_COLOR}
       foregroundColor={'grey'}
-      interval={1.2}
+      interval={0.2}
       speed={1}>
       <Circle cx="40" cy="30" r="30" />
       <Rect x="80" y="17" rx="4" ry="4" width="250" height="13" />
