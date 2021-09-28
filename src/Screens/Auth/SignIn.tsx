@@ -125,6 +125,7 @@ const SignIn: FC<props> = ({navigation}) => {
                             payload: 'organization',
                           });
                         }
+                        console.log('Signing in');
                         dispatch({type: 'SET_SIGN_IN', payload: true});
                         // set the loading to false
                         setIsLoading(false);
@@ -210,11 +211,11 @@ const SignIn: FC<props> = ({navigation}) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       {/* platformX logo  */}
-      <Animated.View style={[styles.logoContainer]}>
+      <View style={[styles.logoContainer]}>
         <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'<'}</Text>
         <Text style={[styles.logo, {color: theme.TEXT_COLOR}]}>PlatformX</Text>
         <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>{'/>'}</Text>
-      </Animated.View>
+      </View>
       <View style={styles.fieldContainer}>
         {/* email field  */}
         <CustomTextField
@@ -286,7 +287,7 @@ const SignIn: FC<props> = ({navigation}) => {
             Don't have an account?{' '}
             <Text
               style={[styles.signUp, {color: theme.TOMATO_COLOR}]}
-              onPress={() => navigation.navigate('SignUp')}>
+              onPress={() => navigation.navigate('UserType')}>
               {' '}
               Sign Up
             </Text>

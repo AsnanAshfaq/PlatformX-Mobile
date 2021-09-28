@@ -22,7 +22,7 @@ import Loading from '../../Components/Loading';
 // import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import FormHandlers from '../../Utils/FormHandler';
-import Axios from '../../Utils/Axios';
+import axios from '../../Utils/Axios';
 import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
@@ -190,13 +190,14 @@ const SignUp: FC<props> = ({navigation}) => {
 
     // check if all inputs are valid or not
     if (isAllInputsValid) {
-      Axios.post('/user/signup/', {
-        first_name: Registration.first_name.value.trim(),
-        last_name: Registration.last_name.value.trim(),
-        username: Registration.username.value.trim(),
-        email: Registration.email.value.trim(),
-        password: Registration.password.value.trim(),
-      })
+      axios
+        .post('/user/signup/', {
+          first_name: Registration.first_name.value.trim(),
+          last_name: Registration.last_name.value.trim(),
+          username: Registration.username.value.trim(),
+          email: Registration.email.value.trim(),
+          password: Registration.password.value.trim(),
+        })
         .then(response => {
           if (response.status === 201) {
             // account has been created

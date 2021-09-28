@@ -94,16 +94,47 @@ const Workshop: FC<props> = ({navigation}) => {
     }
   };
 
-  const applyFilters = () => {
-    console.log('Applying workshop filters');
+  const applyFilters = (
+    filter: Array<{subtag: Array<string>; tag: string}>,
+  ) => {
+    // make query string to be included in api call
+    let filterQuery = '';
+    // only if filter is not empty
+    if (filter.length > 0) {
+      for (let i = 0; i < filter.length; i++) {
+        // get tag
+        const tag = filter[i].tag.toLowerCase();
+        // get subtags
+        filter[i].subtag.forEach(subtag => {
+          // add tag and subtag in query string if subtag is not empty
+          if (subtag !== '') {
+            if (filterQuery === '') {
+              filterQuery += `${tag}=${subtag.toLowerCase()}`;
+            } else {
+              // append & if query is not empty
+              filterQuery += `&${tag}=${subtag.toLowerCase()}`;
+            }
+          }
+        });
+      }
+    }
+    if (filterQuery !== '') {
+      console.log('Search query is', Searching.query);
+      // call the api if query is not empty and also append search query
+      if (Searching.query !== '') {
+        filterQuery += `q=${Searching.query}&${filterQuery}`;
+      }
+
+      console.log('final query is', filterQuery);
+      // try {
+      //   axios.get(`/api/workshop/search/?${filterQuery}`).then(response => {});
+      // } catch (error) {}
+    }
   };
 
   useEffect(() => {
     getData();
   }, [IsLoading]);
-
-  console.log('Is loading is', IsLoading);
-  console.log('Workshops are', Workshops.length);
 
   return (
     <View

@@ -17,6 +17,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import Modal from 'react-native-modal';
+
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {darkColors} from '../Constants/Colors';
@@ -90,18 +91,19 @@ const CommentModal: FC<props> = ({
   const [isCommentPosted, setisCommentPosted] = useState(false);
 
   const postComment = () => {
-    console.log('Input is ', Input);
+    console.log('Pressed on button');
     if (Input.trim() !== '') {
-      setInput('');
-      // Keyboard.addListener('keyboardDidHide', e => {
+      // const sub = Keyboard.addListener('keyboardDidHide', e => {
       //   if (textInput.current) {
       //     textInput?.current?.blur();
       //   }
       // });
 
+      // sub.remove();
+
       // post the comment
       axios
-        .post('/api/post/comment/create', {
+        .post('/api/post/comment/create/', {
           post: postID,
           text: Input,
         })
@@ -110,8 +112,14 @@ const CommentModal: FC<props> = ({
           // to re-run the component
           // and fetch newly added comment
           setisCommentPosted(true);
+          setInput('');
         })
-        .catch(error => ToastAndroid.show(error, 1500));
+        .catch(error => {
+          setInput('');
+          if (error.response.data) {
+            ToastAndroid.show(error.response.data.error, 1500);
+          }
+        });
     } else {
       ToastAndroid.show('Comment is empty', 1500);
     }
@@ -126,22 +134,26 @@ const CommentModal: FC<props> = ({
         .then(response => {
           setComment(response.data);
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          if (error.response.data) {
+            ToastAndroid.show(error.response.data.error, 1500);
+          }
+        });
     }
     // if (textInput && textInput.current) textInput.current.onFocus();
   }, [isCommentPosted, postID]);
 
-  useEffect(() => {
-    const subscribe = Keyboard.addListener('keyboardDidHide', () => {
-      if (textInput.current && textInput) {
-        textInput?.current?.blur();
-      }
-    });
+  // useEffect(() => {
+  //   const subscribe = Keyboard.addListener('keyboardDidHide', () => {
+  //     if (textInput.current && textInput) {
+  //       textInput?.current?.blur();
+  //     }
+  //   });
 
-    return () => {
-      subscribe.remove();
-    };
-  }, []);
+  //   return () => {
+  //     subscribe.remove();
+  //   };
+  // }, []);
 
   return (
     <Modal
@@ -182,8 +194,8 @@ const CommentModal: FC<props> = ({
               data={Comment}
               // style={{flex: 0.8}}
               keyExtractor={(item, index) => `${index}`}
-              keyboardShouldPersistTaps="always"
-              keyboardDismissMode={'interactive'}
+              keyboardShouldPersistTaps="handled" // always
+              // keyboardDismissMode={'none'} // interactive
               renderItem={({item, index}: any) => (
                 <CommentView comment={item} index={index} key={item.id} />
               )}
@@ -191,8 +203,7 @@ const CommentModal: FC<props> = ({
             />
           </>
         ) : (
-          <View
-            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <View style={styles.center}>
             <Text style={styles.commentText}>No Comments yet </Text>
           </View>
         )}
@@ -210,13 +221,13 @@ const CommentModal: FC<props> = ({
               placeholderTextColor={darkColors.TEXT_COLOR}
               value={Input.trim() === '' ? '' : Input}
               onChangeText={setInput}
-              onFocus={e => {
-                console.log('Text input focus');
-                // Keyboard.addListener('keyboardWillShow', () =>
-                //   console.log('Opening keyboard'),
-                // );
-              }}
-              onBlur={e => console.log('text input  blur')}
+              // onFocus={e => {
+              //   console.log('Text input focus');
+              //   // Keyboard.addListener('keyboardWillShow', () =>
+              //   //   console.log('Opening keyboard'),
+              //   // );
+              // }}
+              // onBlur={e => console.log('text input  blur')}
               multiline
               autoFocus={focusTextInput ? true : false}
               scrollEnabled
@@ -272,6 +283,11 @@ const styles = StyleSheet.create({
     borderBottomColor: darkColors.SHADOW_COLOR,
   },
 
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   commentContainer: {
     flexDirection: 'row',
     marginHorizontal: 10,

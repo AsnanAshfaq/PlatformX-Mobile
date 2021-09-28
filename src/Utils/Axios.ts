@@ -3,7 +3,7 @@ import Axios from 'react-native-axios';
 import {BASE_URL} from 'react-native-dotenv';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const instance = Axios.create({
+const axios = Axios.create({
   baseURL: BASE_URL,
   timeout: 1000,
   // headers: {
@@ -12,7 +12,7 @@ const instance = Axios.create({
 });
 
 // adding token from local storage in axios headers
-instance.interceptors.request.use(
+axios.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('access');
     if (token !== null && token !== '') {
@@ -43,4 +43,4 @@ instance.interceptors.request.use(
 //     return Promise.reject(error);
 //   },
 // );
-export default instance;
+export default axios;

@@ -58,14 +58,6 @@ const Chat: FC<props> = ({navigation}) => {
     }
   };
 
-  // lose the focus of text input when keyboard is not showing
-  Keyboard.addListener('keyboardDidHide', e => {
-    console.log('Listening to keyboard');
-    if (textInput !== null && textInput.current !== null) {
-      textInput.current.blur();
-    }
-  });
-
   socket.onmessage = function (e) {
     const response = JSON.parse(e.data);
 
@@ -86,12 +78,19 @@ const Chat: FC<props> = ({navigation}) => {
   };
 
   useEffect(() => {
+    // lose the focus of text input when keyboard is not showing
+    const subscribe = Keyboard.addListener('keyboardDidHide', e => {
+      if (textInput !== null && textInput.current !== null) {
+        textInput.current.blur();
+      }
+    });
     socket.onopen = function () {
       console.log('Socket connection');
     };
 
     return () => {
-      console.log('Unmounting');
+      // unsubscribe keyboard event
+      subscribe.remove();
       socket.onclose = function () {
         console.log('Closing socket connection');
       };

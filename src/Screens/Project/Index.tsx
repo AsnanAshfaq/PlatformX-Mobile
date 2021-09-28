@@ -25,7 +25,13 @@ const Projects: FC<props> = ({navigation}) => {
   const [Refreshing, setRefreshing] = useState(false);
   const [{theme}, dispatch] = useStateValue();
   const [IsLoading, setIsLoading] = useState(true);
-
+  const [Searching, setSearching] = useState<{
+    isSearching: boolean;
+    query: string;
+  }>({
+    isSearching: false,
+    query: '',
+  });
   // useFocusEffect(
   //   useCallback(() => {
   //     // getData();
@@ -69,12 +75,18 @@ const Projects: FC<props> = ({navigation}) => {
         chat
         bell
       />
-      <CustomSearch
-        placeholder={'Search here'}
-        showFilterIcon={false}
-        handleSearch={handleSearch}
-      />
-      {Project.length > 0 ? (
+      {!IsLoading && (
+        <CustomSearch
+          placeholder={'Search here'}
+          showFilterIcon={false}
+          handleSearch={handleSearch}
+        />
+      )}
+      {Searching.isSearching ? (
+        <>
+          <PostSkeleton showSearchSkeleton={!Searching.isSearching} />
+        </>
+      ) : Project.length > 0 ? (
         <>
           <FlatList
             data={Project}

@@ -5,6 +5,7 @@ import SignUp from '../Screens/Auth/SignUp';
 import ResetPassword from '../Screens/Auth/ResetPassword';
 import CodeConfirmation from '../Screens/Auth/CodeConfirmation';
 import NewPassword from '../Screens/Auth/NewPassword';
+import UserType from '../Screens/Auth/UserType';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const AuthScreens = () => {
       initialRouteName={'SignIn'}>
       <Stack.Screen name={'SignIn'} component={SignIn} />
       <Stack.Screen name={'SignUp'} component={SignUp} />
+      <Stack.Screen name={'UserType'} component={UserType} />
       <Stack.Screen name={'ResetPassword'} component={ResetPassword} />
       <Stack.Screen name={'codeConfirmation'} component={CodeConfirmation} />
       <Stack.Screen name={'NewPassword'} component={NewPassword} />

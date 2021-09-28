@@ -171,7 +171,9 @@ const Posts: FC<props> = ({navigation}) => {
             ]}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('Create_Edit_Post', {screen: 'Create'})
+                navigation.navigate('Create_Edit_Post', {
+                  screen: 'Create',
+                })
               }>
               <Text
                 style={[

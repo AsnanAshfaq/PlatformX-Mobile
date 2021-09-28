@@ -161,23 +161,17 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
 
   const handleLike = () => {
     // make connection first
-
     const socket = new WebSocket(
       `ws://${BASE_ADDRESS}/ws/like/${postDetail.id}/${state.user.userName}/`,
     );
-
     socket.onopen = function () {
       console.log('Opening post like socket connection');
       socket.send('Like');
     };
-
     socket.onmessage = function (e) {
       const response = JSON.parse(e.data);
-
       const likeCount = Number.parseInt(response.likeCount);
-
       response.likeCount = likeCount;
-
       setLike(response);
       // change the like state
       socket.close = function () {

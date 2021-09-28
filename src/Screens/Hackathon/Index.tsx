@@ -115,7 +115,7 @@ const Hackathons: FC<props> = ({navigation}) => {
     if (query !== '') {
       // call the api if query is not empty
       try {
-        axios.get(`/api/post/search/?q=${query}`).then(response => {});
+        axios.get(`/api/hackathon/search/?q=${query}`).then(response => {});
       } catch (error) {}
     }
   };
@@ -159,11 +159,11 @@ const Hackathons: FC<props> = ({navigation}) => {
             data={Hackathon}
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
-            renderItem={({item: Hackathon, index}: any) => {
+            renderItem={({item: hackathon, index}: any) => {
               return (
                 <HackathonCard
-                  key={Hackathon?.id}
-                  hackathonDetail={Hackathon}
+                  key={hackathon?.id}
+                  hackathonDetail={hackathon}
                   navigation={navigation}
                 />
               );
@@ -196,9 +196,7 @@ const Hackathons: FC<props> = ({navigation}) => {
           </TouchableOpacity>
         </View>
       ) : (
-        <HackathonSkeleton
-          showSearchSkeleton={!Searching.isSearching || Refreshing}
-        />
+        <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
       )}
     </View>
   );

@@ -24,7 +24,7 @@ import {POST_TYPE} from '../../Constants/sample';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import {darkColors} from '../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from '../../Utils/Axios';
+import Axios from '../../Utils/Axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
@@ -119,7 +119,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
         if (method === 'edit') {
           bodyFormData.append('post', data.id);
         }
-        axios({
+        Axios({
           method: 'post',
           url: `${BASE_URL}/api/post/${method}/`,
           data: bodyFormData,
@@ -215,12 +215,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
                 <View style={styles.imageContainer} key={index}>
                   <Image
                     source={{uri: image?.path}}
-                    style={{
-                      width: 200,
-                      height: 300,
-                      marginHorizontal: 7,
-                      borderRadius: 10,
-                    }}
+                    style={styles.imageSelected}
                     resizeMode={'cover'}
                   />
 
@@ -299,6 +294,12 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     margin: 0,
+  },
+  imageSelected: {
+    width: 200,
+    height: 300,
+    marginHorizontal: 7,
+    borderRadius: 10,
   },
   image: {
     width: Width * 0.9,
