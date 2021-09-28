@@ -13,7 +13,6 @@ import CustomHeader from '../../Components/CustomHeader';
 import CustomSearch from '../../Components/Search';
 import axios from '../../Utils/Axios';
 import {Sizes} from '../../Constants/Size';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import HackathonSkeleton from '../../Skeleton/HackathonCardSkeleton';
 import {useStateValue} from '../../Store/StateProvider';
 
@@ -22,8 +21,7 @@ type props = {
 };
 
 const Hackathons: FC<props> = ({navigation}) => {
-  const [Hackathons, setHackathons] = useState([]);
-  const isFocuses = useIsFocused();
+  const [Hackathon, setHackathons] = useState([]);
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   const [{theme}, dispatch] = useStateValue();
@@ -93,8 +91,33 @@ const Hackathons: FC<props> = ({navigation}) => {
   const applyFilters = (
     filter: Array<{subtag: Array<string>; tag: string}>,
   ) => {
-    console.log('OO chal ja');
-    console.log('Filters to apply are ', filter);
+    // make query string to be included in api call
+    let query = '';
+    // only if filter is not empty
+    if (filter.length > 0) {
+      for (let i = 0; i < filter.length; i++) {
+        // get tag
+        const tag = filter[i].tag.toLowerCase();
+        // get subtags
+        filter[i].subtag.forEach(subtag => {
+          // add tag and subtag in query string if subtag is not empty
+          if (subtag !== '') {
+            if (query === '') {
+              query += `${tag}=${subtag.toLowerCase()}`;
+            } else {
+              // append & if query is not empty
+              query += `&${tag}=${subtag.toLowerCase()}`;
+            }
+          }
+        });
+      }
+    }
+    if (query !== '') {
+      // call the api if query is not empty
+      try {
+        axios.get(`/api/post/search/?q=${query}`).then(response => {});
+      } catch (error) {}
+    }
   };
 
   useEffect(() => {
@@ -130,10 +153,10 @@ const Hackathons: FC<props> = ({navigation}) => {
         <>
           <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
-      ) : Hackathons.length > 0 ? (
+      ) : Hackathon.length > 0 ? (
         <>
           <FlatList
-            data={Hackathons}
+            data={Hackathon}
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: Hackathon, index}: any) => {
@@ -159,10 +182,10 @@ const Hackathons: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
         </>
-      ) : !IsLoading && Hackathons.length === 0 ? (
+      ) : !IsLoading && Hackathon.length === 0 ? (
         <View style={styles.center}>
           <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
-            {Searching.query !== '' && Hackathons.length === 0
+            {Searching.query !== '' && Hackathon.length === 0
               ? `No result Found for ${Searching.query}`
               : 'No hackathons yet'}
           </Text>

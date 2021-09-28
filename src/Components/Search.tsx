@@ -50,7 +50,7 @@ const Search: FC<props> = ({
     };
   }, []);
 
-  const hanldeSearch = () => {
+  const search = () => {
     // hide the keyboard if it is open
     Keyboard.dismiss();
     if (input.trim() !== '') {
@@ -90,7 +90,7 @@ const Search: FC<props> = ({
           />
         </View>
         <View style={styles.searchIconContainer}>
-          <TouchableOpacity onPress={() => hanldeSearch()}>
+          <TouchableOpacity onPress={() => search()}>
             <Ionicons
               name={'search'}
               size={Width * 0.06}

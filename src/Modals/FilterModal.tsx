@@ -14,7 +14,7 @@ import {hackathonFilterData} from '../Constants/sample';
 import CheckBox from '../Components/CheckBox';
 
 type Props = {
-  tag: string;
+  Tag: string;
   list: Array<string>;
   CheckedValues: Array<{
     tag: string;
@@ -22,7 +22,55 @@ type Props = {
   }>;
 };
 
-const SubTagList: FC<Props> = ({tag, list, CheckedValues}) => {
+const SubTagList: FC<Props> = ({Tag, list, CheckedValues}) => {
+  const handleCheckedValues = (
+    isCheck: boolean | undefined,
+    tag: string,
+    subtag: string,
+  ) => {
+    let isTagExist = false;
+    let isSubTagExist = false;
+    let tagIndex = -1;
+    let subTagIndex = -1;
+
+    if (CheckedValues.length !== 0) {
+      CheckedValues.forEach((value, index) => {
+        if (value.tag === tag) {
+          isTagExist = true;
+          tagIndex = index;
+        }
+        // check for subtags
+        for (let i = 0; i < value.subtag.length; i++) {
+          if (value.subtag[i] === subtag) {
+            subTagIndex = i;
+            isSubTagExist = true;
+          }
+        }
+      });
+
+      // if tag does not exist, push tab and subtag
+      if (isCheck) {
+        if (!isTagExist) {
+          CheckedValues.push({tag: tag, subtag: [subtag]});
+        }
+
+        // if tag exist but sub tag does not exist
+        else if (isTagExist && !isSubTagExist) {
+          // push subtag only
+          CheckedValues[tagIndex].subtag.push(subtag);
+        }
+      } else {
+        // remove subtag from subtag array
+        CheckedValues[tagIndex].subtag.splice(subTagIndex, 1);
+      }
+    } else {
+      // push tag and subtag if CheckValues array is empty
+      CheckedValues.push({
+        tag: tag,
+        subtag: [subtag],
+      });
+    }
+  };
   return (
     <View style={styles.subtagContainer}>
       {list.map(subtag => (
@@ -30,48 +78,7 @@ const SubTagList: FC<Props> = ({tag, list, CheckedValues}) => {
           <CheckBox
             size={25}
             onPress={isCheck => {
-              let isTagExist = false;
-              let isSubTagExist = false;
-              let tagIndex = -1;
-              let subTagIndex = -1;
-
-              if (CheckedValues.length !== 0) {
-                CheckedValues.forEach((value, index) => {
-                  if (value.tag === tag) {
-                    isTagExist = true;
-                    tagIndex = index;
-                  }
-                  // check for subtags
-                  for (let i = 0; i < value.subtag.length; i++) {
-                    if (value.subtag[i] === subtag) {
-                      subTagIndex = i;
-                      isSubTagExist = true;
-                    }
-                  }
-                });
-
-                // if tag does not exist, push tab and subtag
-                if (isCheck) {
-                  if (!isTagExist) {
-                    CheckedValues.push({tag: tag, subtag: [subtag]});
-                  }
-
-                  // if tag exist but sub tag does not exist
-                  else if (isTagExist && !isSubTagExist) {
-                    // push subtag only
-                    CheckedValues[tagIndex].subtag.push(subtag);
-                  }
-                } else {
-                  // remove subtag from subtag array
-                  CheckedValues[tagIndex].subtag.splice(subTagIndex, 1);
-                }
-              } else {
-                // push tag and subtag if CheckValues array is empty
-                CheckedValues.push({
-                  tag: tag,
-                  subtag: [subtag],
-                });
-              }
+              handleCheckedValues(isCheck, Tag, subtag);
             }}
           />
           <Text style={styles.subtag}>{subtag}</Text>
@@ -122,7 +129,7 @@ const FilterModal: FC<props> = ({isShow, toggleModal, applyFilters}) => {
                 </Text>
                 {/* list of subtags  */}
                 <SubTagList
-                  tag={filterItem.tag}
+                  Tag={filterItem.tag}
                   list={filterItem.subtag}
                   CheckedValues={CheckedValues}
                 />
