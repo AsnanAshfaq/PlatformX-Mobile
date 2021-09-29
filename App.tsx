@@ -29,36 +29,36 @@ const App = () => {
       const accessToken = await AsyncStorage.getItem('access');
       if (accessToken !== null && accessToken !== '') {
         // make api call
-        axios
-          .get('/user/')
-          .then(result => {
-            if (result.status === 200) {
-              // get result and store in context state
-              dispatch({type: 'SET_SIGN_IN', payload: true});
-              if (result.data.student) {
-                dispatch({type: 'SET_USER_TYPE', payload: 'student'});
-                // store student related data
-                const userData = {
-                  firstName: result.data.first_name,
-                  lastName: result.data.last_name,
-                  email: result.data.email,
-                  userName: result.data.username,
-                  profilePic: result.data.user_profile_image.path,
-                };
-                dispatch({type: 'SET_USER', payload: userData});
-              } else if (result.data.organization) {
-                dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
-              }
+        try {
+          const userReseponse = await axios.get('/user/');
+          if (userReseponse.status === 200) {
+            // get result and store in context state
+            dispatch({type: 'SET_SIGN_IN', payload: true});
+            if (userReseponse.data.student) {
+              dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+              // store student related data
+              const userData = {
+                firstName: userReseponse.data.first_name,
+                lastName: userReseponse.data.last_name,
+                email: userReseponse.data.email,
+                userName: userReseponse.data.username,
+                profilePic: userReseponse.data.user_profile_image.path,
+              };
+              dispatch({type: 'SET_USER', payload: userData});
+            } else if (userReseponse.data.organization) {
+              dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
+
+              //TODO: add organization data here
             }
-            setLoading(false);
-          })
-          .catch(error => {
-            // set sign in state
-            dispatch({type: 'SET_USER_TYPE', payload: null});
-            dispatch({type: 'SET_SIGN_IN', payload: false});
-            setLoading(false);
-            return Promise.reject(error);
-          });
+          }
+          setLoading(false);
+        } catch (error) {
+          // set sign in state
+          dispatch({type: 'SET_USER_TYPE', payload: null});
+          dispatch({type: 'SET_SIGN_IN', payload: false});
+          setLoading(false);
+          return Promise.reject(error);
+        }
       } else {
         // set sign in state
         dispatch({type: 'SET_USER_TYPE', payload: null});

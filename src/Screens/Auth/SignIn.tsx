@@ -11,16 +11,12 @@ import {
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import {Height, Sizes, Width} from '../../Constants/Size';
-import Axios from '../../Utils/Axios';
 import Loading from '../../Components/Loading';
 import FormHandlers from '../../Utils/FormHandler';
 import {ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../Store/StateProvider';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+import Axios from '../../Utils/Axios';
 
 type props = {
   navigation: any;
@@ -47,7 +43,7 @@ const SignIn: FC<props> = ({navigation}) => {
     }
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     // set the loading to true
     let x = signIn;
     let isAllInputsValid = true;
@@ -88,106 +84,81 @@ const SignIn: FC<props> = ({navigation}) => {
     }
 
     if (isAllInputsValid) {
-      Axios.post('/user/signin/', {
-        email: signIn.email.value,
-        password: signIn.password.value,
-      })
-        .then(function (response) {
-          // handle success
-          if (response.status === 200) {
-            // user is valid
-            // get user token
-            if (response.data.access && response.data.refresh) {
-              // if access and refresh token exist
-              // store them in local storage
-              storeTokenLocally('access', response.data.access)
-                .then(() => storeTokenLocally('refresh', response.data.refresh))
-                .then(() => {
-                  // set the local sign in state to true
-                  Axios.get('/user/')
-                    .then(result => {
-                      if (result.status === 200) {
-                        // if token is valid
-                        if (result.data.student) {
-                          dispatch({type: 'SET_USER_TYPE', payload: 'student'});
-                          // set user details
-                          const userData = {
-                            firstName: result.data.first_name,
-                            lastName: result.data.last_name,
-                            email: result.data.email,
-                            userName: result.data.username,
-                            profilePic: result.data.user_profile_image.path,
-                          };
-                          dispatch({type: 'SET_USER', payload: userData});
-                        } else if (result.data.organization) {
-                          dispatch({
-                            type: 'SET_USER_TYPE',
-                            payload: 'organization',
-                          });
-                        }
-                        console.log('Signing in');
-                        dispatch({type: 'SET_SIGN_IN', payload: true});
-                        // set the loading to false
-                        setIsLoading(false);
-                      }
-                      // set the loading to false
-                      setIsLoading(false);
-                    })
-                    .catch(error => {
-                      // set sign in state
-                      // set the loading to false
-                      setIsLoading(false);
-                      dispatch({type: 'SET_USER_TYPE', payload: null});
-                      return Promise.reject(error);
-                    });
-                });
-            } else {
-              // set the local sign in state to false
-              dispatch({type: 'SET_SIGN_IN', payload: false});
-              ToastAndroid.show('Error occured while signing in', 500);
-            }
-          } else {
-            // set the local sign in state to false
-            dispatch({type: 'SET_SIGN_IN', payload: false});
-            ToastAndroid.show(response.data, 1500);
-          }
-        })
-        .catch(function (error) {
-          // set the local sign in state to false
-          dispatch({type: 'SET_SIGN_IN', payload: false});
-          // if there is exist email error
-          if (error.response.data.email_error) {
-            // set email error
-            setsignIn(props => {
-              return {
-                ...props,
-                email: {
-                  value: props.email.value,
-                  error: error.response.data.email_error,
-                },
-              };
-            });
-          } else if (error.response.data.password_error) {
-            // set password error
-            setsignIn(props => {
-              return {
-                ...props,
-                password: {
-                  value: props.password.value,
-                  error: error.response.data.password_error,
-                },
-              };
-            });
-          }
-          // else if there is any other error
-          else if (error.response.data.error) {
-            ToastAndroid.show(error.response.data.error, 1500);
-          }
-          // set the loading to false
-          setIsLoading(false);
-          // throw error;
-          return Promise.reject(error);
+      try {
+        const signInResponse = await Axios.post('/user/signin/', {
+          email: signIn.email.value,
+          password: signIn.password.value,
         });
+
+        if (signInResponse.status === 200) {
+          if (signInResponse.data.access && signInResponse.data.refresh) {
+            await storeTokenLocally('access', signInResponse.data.access);
+            await storeTokenLocally('refresh', signInResponse.data.refresh);
+            try {
+              const userResponse = await Axios.get('/user/');
+              if (userResponse.status === 200) {
+                if (userResponse.data.student) {
+                  dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+                  const userData = {
+                    firstName: userResponse.data.first_name,
+                    lastName: userResponse.data.last_name,
+                    email: userResponse.data.email,
+                    userName: userResponse.data.username,
+                    profilePic: userResponse.data.user_profile_image.path,
+                  };
+                  dispatch({type: 'SET_USER', payload: userData});
+                } else if (userResponse.data.organization) {
+                  dispatch({
+                    type: 'SET_USER_TYPE',
+                    payload: 'organization',
+                  });
+                }
+                dispatch({type: 'SET_SIGN_IN', payload: true});
+              } else {
+                ToastAndroid.show('Error occured while signing in', 1500);
+              }
+              // set the loading to false
+              setIsLoading(false);
+            } catch (error) {
+              ToastAndroid.show('Error occured while signing in', 1500);
+              setIsLoading(false);
+              return Promise.reject(error);
+            }
+          }
+        } else {
+          ToastAndroid.show('Error occured while signing in', 1500);
+        }
+      } catch (error: any) {
+        if (error.response.data.email_error) {
+          // set email error
+          setsignIn(props => {
+            return {
+              ...props,
+              email: {
+                value: props.email.value,
+                error: error.response.data.email_error,
+              },
+            };
+          });
+        } else if (error.response.data.password_error) {
+          // set password error
+          setsignIn(props => {
+            return {
+              ...props,
+              password: {
+                value: props.password.value,
+                error: error.response.data.password_error,
+              },
+            };
+          });
+        }
+        // else if there is any other error
+        else if (error.response.data.error) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        setIsLoading(false);
+        return Promise.reject(error);
+      }
     } else {
       setIsLoading(false);
     }
@@ -203,8 +174,6 @@ const SignIn: FC<props> = ({navigation}) => {
     });
     navigation.navigate('ResetPassword');
   };
-
-  const offset = useSharedValue(0);
 
   return (
     <KeyboardAvoidingView

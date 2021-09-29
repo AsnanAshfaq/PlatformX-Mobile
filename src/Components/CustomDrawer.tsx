@@ -117,7 +117,9 @@ const CustomDrawer: FC<props> = (props: any) => {
           source={{
             uri: LoadProfileImage
               ? PROFILE_IMAGE
-              : BASE_URL + state.user.profilePic,
+              : state.user.profilePic !== ''
+              ? BASE_URL + state.user.profilePic
+              : PROFILE_IMAGE,
           }}
           onLoadEnd={() => setLoadProfileImage(false)}
           onError={() => {

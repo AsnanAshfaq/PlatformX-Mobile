@@ -19,7 +19,6 @@ import {
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import Loading from '../../Components/Loading';
-// import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import FormHandlers from '../../Utils/FormHandler';
 import axios from '../../Utils/Axios';
@@ -51,7 +50,7 @@ const SignUp: FC<props> = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [state, dispatch] = useStateValue();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     let x = Registration;
     let isAllInputsValid = true;
 
@@ -190,33 +189,66 @@ const SignUp: FC<props> = ({navigation}) => {
 
     // check if all inputs are valid or not
     if (isAllInputsValid) {
-      axios
-        .post('/user/signup/', {
+      try {
+        const signUpResponse = await axios.post('/user/signup/', {
           first_name: Registration.first_name.value.trim(),
           last_name: Registration.last_name.value.trim(),
           username: Registration.username.value.trim(),
           email: Registration.email.value.trim(),
           password: Registration.password.value.trim(),
-        })
-        .then(response => {
-          if (response.status === 201) {
-            // account has been created
-            ToastAndroid.show(response.data.success, 1500);
-            //TODO:
-            //navigate to on boarding screen
-          } else {
-            ToastAndroid.show(response.data.error, 1500);
-          }
-          // set the loading to false
-          setIsLoading(false);
-        })
-        .catch(error => {
-          ToastAndroid.show(error.response.data.error, 1500);
-          // set the loading to false
-          setIsLoading(false);
-          // throw error;
-          return Promise.reject(error);
         });
+        if (signUpResponse.status === 201) {
+          const userData = {
+            firstName: Registration.first_name.value.trim(),
+            lastName: Registration.last_name.value.trim(),
+            userName: Registration.username.value.trim(),
+            email: Registration.email.value.trim(),
+            profilePic: '',
+          };
+          dispatch({type: 'SET_USER', payload: userData});
+          dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+          dispatch({type: 'SET_SIGN_IN', payload: true});
+          // account has been created
+          ToastAndroid.show(signUpResponse.data.success, 1500);
+        } else {
+          ToastAndroid.show(signUpResponse.data.error, 1500);
+        }
+        setIsLoading(false);
+      } catch (error: any) {
+        if (error.response.data.email_error) {
+          // set email error
+          setRegistration(props => {
+            return {
+              ...props,
+              email: {
+                value: props.email.value,
+                error: error.response.data.email_error,
+              },
+            };
+          });
+        } else if (error.response.data.user_name) {
+          // set email error
+          setRegistration(props => {
+            return {
+              ...props,
+              username: {
+                value: props.username.value,
+                error: error.response.data.user_name,
+              },
+            };
+          });
+        }
+        // else if there is any other error
+        else if (error.response.data.error) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        // set the loading to false
+        setIsLoading(false);
+        // throw error;
+        return Promise.reject(error);
+      }
+    } else {
+      setIsLoading(false);
     }
   };
 

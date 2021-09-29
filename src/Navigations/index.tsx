@@ -65,7 +65,6 @@ const Navigation: FC = () => {
         }}>
         {isSignedIn ? (
           <>
-            <Stack.Screen name="Auth" component={AuthScreens} />
             <Stack.Screen name="Main" component={DrawerScreens} />
             <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
             <Stack.Screen name="Chat" component={Chat} />
@@ -79,7 +78,9 @@ const Navigation: FC = () => {
             /> */}
           </>
         ) : (
-          <></>
+          <>
+            <Stack.Screen name="Auth" component={AuthScreens} />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>
