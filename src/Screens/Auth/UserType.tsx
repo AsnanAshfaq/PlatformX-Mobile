@@ -3,13 +3,20 @@
 // Heading
 // Two images
 
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import {useStateValue} from '../../Store/StateProvider';
 
-const UserType = () => {
+type props = {
+  navigation: any;
+};
+const UserType: FC<props> = ({navigation}) => {
   const [{theme}, dispatch] = useStateValue();
+
+  const navigateTo = (screen: string) => {
+    navigation.navigate(screen);
+  };
 
   return (
     <View
@@ -26,10 +33,11 @@ const UserType = () => {
           Who are you?
         </Text>
       </View>
-      {/* image container */}
-      <View style={styles.imagesContainer}>
+      {/* image containers  */}
+      <View style={styles.imagesContainers}>
         <TouchableOpacity
-          style={[styles.imageContainer, {borderColor: theme.SHADOW_COLOR}]}>
+          style={[styles.imageContainer, {borderColor: theme.SHADOW_COLOR}]}
+          onPress={() => navigateTo('StudentSignUp')}>
           <Image
             style={styles.image}
             source={{
@@ -44,7 +52,8 @@ const UserType = () => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.imageContainer, {borderColor: theme.SHADOW_COLOR}]}>
+          style={[styles.imageContainer, {borderColor: theme.SHADOW_COLOR}]}
+          onPress={() => navigateTo('OrganizationSignUp')}>
           <Image
             style={styles.image}
             source={{
@@ -68,8 +77,6 @@ export default UserType;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flexDirection: 'column',
   },
   logoContainer: {
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: Sizes.large * 1.5,
   },
-  imagesContainer: {
+  imagesContainers: {
     flex: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -107,12 +114,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 3,
     borderRadius: 40,
-    padding: 15,
-    marginHorizontal: 4,
+    padding: 13,
+    marginHorizontal: 5,
   },
   image: {
     width: Width * 0.4,
-    height: Width * 0.45,
+    height: Width * 0.5,
     borderWidth: 1,
     borderRadius: 40,
   },
