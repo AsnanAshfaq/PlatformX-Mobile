@@ -24,8 +24,8 @@ type props = {
 
 const SignIn: FC<props> = ({navigation}) => {
   const [signIn, setsignIn] = useState({
-    email: {value: 'glazier@gmail.com', error: ''},
-    password: {value: 'glazecake', error: ''},
+    email: {value: 'netsol@gmail.com', error: ''},
+    password: {value: 'netsol@123', error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -108,6 +108,17 @@ const SignIn: FC<props> = ({navigation}) => {
                   };
                   dispatch({type: 'SET_USER', payload: userData});
                 } else if (userResponse.data.organization) {
+                  const userData = {
+                    name: userResponse.data.organization.name,
+                    regNo: userResponse.data.organization.reg_no,
+                    email: userResponse.data.email,
+                    location: userResponse.data.organization.location,
+                    profilePic:
+                      userResponse.data.user_profile_image !== undefined
+                        ? userResponse.data.user_profile_image.path
+                        : '',
+                  };
+                  dispatch({type: 'SET_USER', payload: userData});
                   dispatch({
                     type: 'SET_USER_TYPE',
                     payload: 'organization',

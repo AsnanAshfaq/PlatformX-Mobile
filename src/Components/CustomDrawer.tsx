@@ -48,14 +48,12 @@ const CustomDrawerItem: FC<Props> = ({label, icon_name, onPress}) => {
 type props = {
   navigation?: any;
 };
-
-const CustomDrawer: FC<props> = (props: any) => {
-  const {navigation} = props;
+const StudentDrawer: FC<props> = ({navigation}) => {
+  const [state, dispatch] = useStateValue();
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
   const [signOutModal, setSignOutModal] = useState(false);
-  const [state, dispatch] = useStateValue();
 
-  const drawerItems = [
+  const StudentDrawerItems = [
     {
       id: 1,
       label: 'My Activities',
@@ -84,33 +82,8 @@ const CustomDrawer: FC<props> = (props: any) => {
       },
     },
   ];
-
   return (
-    <DrawerContentScrollView
-      {...props}
-      style={[
-        styles.parent,
-        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
-      ]}>
-      {/* <DrawerItemList {...props} /> */}
-      {/* header  */}
-      <View
-        style={[
-          styles.headerContainer,
-          {
-            borderBottomColor: state.theme.SHADOW_COLOR,
-          },
-        ]}>
-        <Text style={[styles.headerTitle, {color: state.theme.TEXT_COLOR}]}>
-          PlatformX
-        </Text>
-      </View>
-
-      <SignOutModal
-        isShow={signOutModal}
-        toggleModal={() => setSignOutModal(false)}
-      />
-
+    <>
       {/* profile section  */}
       <View style={styles.profileContainer}>
         <Image
@@ -150,7 +123,7 @@ const CustomDrawer: FC<props> = (props: any) => {
         </TouchableOpacity>
       </View>
       {/* drawer items list  */}
-      {drawerItems.map(item => (
+      {StudentDrawerItems.map(item => (
         <CustomDrawerItem
           key={item.id}
           icon_name={item.icon_name}
@@ -158,6 +131,141 @@ const CustomDrawer: FC<props> = (props: any) => {
           onPress={item.onPress}
         />
       ))}
+
+      <SignOutModal
+        isShow={signOutModal}
+        toggleModal={() => setSignOutModal(false)}
+      />
+    </>
+  );
+};
+
+const OrganizationDrawer: FC<props> = ({navigation}) => {
+  const [state, dispatch] = useStateValue();
+  const [LoadProfileImage, setLoadProfileImage] = useState(true);
+  const [signOutModal, setSignOutModal] = useState(false);
+
+  const OrganizationDrawerItems = [
+    {
+      id: 1,
+      label: 'Activities',
+      icon_name: 'home-sharp',
+      onPress: () => navigation.navigate('Activites'),
+    },
+    {
+      id: 2,
+      label: 'Saved',
+      icon_name: 'bookmarks',
+      onPress: () => console.log('Pressed on Bookmarks'),
+    },
+    {
+      id: 3,
+      label: 'Settings',
+      icon_name: 'ios-settings-sharp',
+      onPress: () => console.log('Pressed on Settings'),
+    },
+    {
+      id: 4,
+      label: 'Sign Out',
+      icon_name: 'md-log-out-outline',
+      onPress: () => {
+        navigation.closeDrawer();
+        setSignOutModal(true);
+      },
+    },
+  ];
+
+  return (
+    <>
+      {/* profile section  */}
+      <View style={styles.profileContainer}>
+        <Image
+          source={{
+            uri: LoadProfileImage
+              ? PROFILE_IMAGE
+              : state.user.profilePic !== ''
+              ? BASE_URL + state.user.profilePic
+              : PROFILE_IMAGE,
+          }}
+          onLoadEnd={() => setLoadProfileImage(false)}
+          onError={() => {
+            setLoadProfileImage(false);
+            ToastAndroid.show("Couldn't load profile image", 1500);
+          }}
+          style={styles.profileImage}
+        />
+        <Text style={[styles.fullName, {color: state.theme.TEXT_COLOR}]}>
+          {state.user.name}
+        </Text>
+        <Text style={[styles.location, {color: state.theme.TEXT_COLOR}]}>
+          {state.user.location}
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            // navigation.closeDrawer();
+            navigation.navigate('Profile_Home');
+          }}
+          style={[
+            styles.profileButtonContainer,
+            {backgroundColor: state.theme.SHADOW_COLOR},
+          ]}>
+          <Text
+            style={[styles.profileButtonText, {color: state.theme.TEXT_COLOR}]}>
+            View Profile
+          </Text>
+        </TouchableOpacity>
+      </View>
+      {/* drawer items list  */}
+      {OrganizationDrawerItems.map(item => (
+        <CustomDrawerItem
+          key={item.id}
+          icon_name={item.icon_name}
+          label={item.label}
+          onPress={item.onPress}
+        />
+      ))}
+
+      <SignOutModal
+        isShow={signOutModal}
+        toggleModal={() => setSignOutModal(false)}
+      />
+    </>
+  );
+};
+
+const CustomDrawer: FC<props> = (props: any) => {
+  const {navigation} = props;
+  const [state, dispatch] = useStateValue();
+
+  return (
+    <DrawerContentScrollView
+      {...props}
+      style={[
+        styles.parent,
+        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
+      ]}>
+      {/* <DrawerItemList {...props} /> */}
+      {/* header  */}
+      <View
+        style={[
+          styles.headerContainer,
+          {
+            borderBottomColor: state.theme.SHADOW_COLOR,
+          },
+        ]}>
+        <Text style={[styles.headerTitle, {color: state.theme.TEXT_COLOR}]}>
+          PlatformX
+        </Text>
+      </View>
+
+      {/* if student is signed in  */}
+      {/* show student drawer  */}
+      {/* else show organization  */}
+      {state.userType === 'student' ? (
+        <StudentDrawer navigation={navigation} />
+      ) : (
+        <OrganizationDrawer navigation={navigation} />
+      )}
     </DrawerContentScrollView>
   );
 };
@@ -189,6 +297,9 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 1.3,
   },
   userName: {
+    fontSize: Sizes.normal * 0.9,
+  },
+  location: {
     fontSize: Sizes.normal * 0.9,
   },
   profileButtonContainer: {

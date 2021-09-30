@@ -126,21 +126,26 @@ const CommentModal: FC<props> = ({
   };
 
   useEffect(() => {
-    // get all the comments of a post
-    setisCommentPosted(false);
-    if (!isCommentPosted) {
-      axios
-        .get(`/api/post/${postID}/comments/`)
-        .then(response => {
+    const getComments = async () => {
+      // get all the comments of a post
+      setisCommentPosted(false);
+      try {
+        if (!isCommentPosted) {
+          const response = await axios.get(`/api/post/${postID}/comments/`);
           setComment(response.data);
-        })
-        .catch(error => {
-          if (error.response.data) {
-            ToastAndroid.show(error.response.data.error, 1500);
-          }
-        });
-    }
-    // if (textInput && textInput.current) textInput.current.onFocus();
+        }
+      } catch (error: any) {
+        if (error.response.data) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+      }
+    };
+
+    getComments();
+
+    return () => {
+      setComment([]);
+    };
   }, [isCommentPosted, postID]);
 
   // useEffect(() => {
