@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Notification from '../Screens/Notification/Index';
-import {config} from './index';
+import Notification from '../../Screens/Notification/Index';
+import {config} from '../index';
 
 const Stack = createStackNavigator();
 

@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,

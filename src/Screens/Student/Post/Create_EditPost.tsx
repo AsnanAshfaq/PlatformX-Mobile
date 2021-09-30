@@ -17,14 +17,14 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import CustomHeader from '../../Components/CustomHeader';
-import CustomDropDown from '../../Components/CustomDropDown';
+import CustomHeader from '../../../Components/CustomHeader';
+import CustomDropDown from '../../../Components/CustomDropDown';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import {POST_TYPE} from '../../Constants/sample';
-import {Height, Sizes, Width} from '../../Constants/Size';
-import {darkColors} from '../../Constants/Colors';
+import {POST_TYPE} from '../../../Constants/sample';
+import {Height, Sizes, Width} from '../../../Constants/Size';
+import {darkColors} from '../../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Axios from '../../Utils/Axios';
+import Axios from '../../../Utils/Axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 

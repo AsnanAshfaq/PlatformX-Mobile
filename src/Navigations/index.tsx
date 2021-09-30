@@ -8,11 +8,11 @@ import DrawerScreens from './Drawer';
 // other imports
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 import {useStateValue} from '../Store/StateProvider';
-import Create_EditPost from '../Screens/Post/Create_EditPost';
-import Chat from './Chat';
-import Notification from './Notification';
-import Settings from './Settings';
-import ViewHackathon from '../Screens/Hackathon/ViewHackathon';
+import Create_EditPost from '../Screens/Student/Post/Create_EditPost';
+import Chat from './Student/Chat';
+import Notification from './Student/Notification';
+import Settings from './Student/Settings';
+import ViewHackathon from '../Screens/Student/Hackathon/ViewHackathon';
 
 // declaring navigators
 const Stack = createStackNavigator();

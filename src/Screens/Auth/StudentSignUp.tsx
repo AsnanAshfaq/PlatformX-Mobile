@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 //FIELDS :TODO:
 // first name
 // last name
@@ -77,10 +78,11 @@ const SignUp: FC<props> = ({navigation}) => {
         // if first name and last name contains values other than alphabets
         // then raise error
         if (Key === 'first_name' || Key === 'last_name') {
-          if (!isOnylAlphabets(value))
+          if (!isOnylAlphabets(value)) {
             y[Key]['error'] = `${
               Key === 'first_name' ? 'First' : 'Last'
             } Name is invalid`;
+          }
         }
         // if password contains values other than alphabets
         // then also raise error
@@ -90,9 +92,9 @@ const SignUp: FC<props> = ({navigation}) => {
           }
         }
         const MinMax = checkLength(value, minValue, maxValue);
-        if (MinMax == 'min') {
+        if (MinMax === 'min') {
           y[Key]['error'] = minError;
-        } else if (MinMax == 'max') {
+        } else if (MinMax === 'max') {
           y[Key]['error'] = maxError;
         }
       }
@@ -181,8 +183,9 @@ const SignUp: FC<props> = ({navigation}) => {
           Registration.password.value.trim(),
           Registration.confirm_password.value.trim(),
         )
-      )
+      ) {
         x['confirm_password']['error'] = 'Passwords do not match';
+      }
     }
     if (Registration['confirm_password']['error'] !== '') {
       setRegistration(props => {

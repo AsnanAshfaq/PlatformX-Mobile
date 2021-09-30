@@ -30,25 +30,34 @@ const App = () => {
       if (accessToken !== null && accessToken !== '') {
         // make api call
         try {
-          const userReseponse = await axios.get('/user/');
-          if (userReseponse.status === 200) {
+          const userResponse = await axios.get('/user/');
+          if (userResponse.status === 200) {
             // get result and store in context state
             dispatch({type: 'SET_SIGN_IN', payload: true});
-            if (userReseponse.data.student) {
-              dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+            if (userResponse.data.student) {
               // store student related data
               const userData = {
-                firstName: userReseponse.data.first_name,
-                lastName: userReseponse.data.last_name,
-                email: userReseponse.data.email,
-                userName: userReseponse.data.username,
-                profilePic: userReseponse.data.user_profile_image.path,
+                firstName: userResponse.data.first_name,
+                lastName: userResponse.data.last_name,
+                email: userResponse.data.email,
+                userName: userResponse.data.username,
+                profilePic: userResponse.data.user_profile_image.path,
+              };
+              dispatch({type: 'SET_USER_TYPE', payload: 'student'});
+              dispatch({type: 'SET_USER', payload: userData});
+            } else if (userResponse.data.organization) {
+              const userData = {
+                name: userResponse.data.organization.name,
+                regNo: userResponse.data.organization.reg_no,
+                email: userResponse.data.email,
+                location: userResponse.data.organization.location,
+                profilePic:
+                  userResponse.data.user_profile_image !== undefined
+                    ? userResponse.data.user_profile_image.path
+                    : '',
               };
               dispatch({type: 'SET_USER', payload: userData});
-            } else if (userReseponse.data.organization) {
               dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
-
-              //TODO: add organization data here
             }
           }
           setLoading(false);

@@ -1,12 +1,12 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Hackathon from '../Screens/Hackathon/Index';
-import Workshop from '../Screens/Workshop/Index';
-import Projects from '../Screens/Project/Index';
+import Hackathon from '../../Screens/Student/Hackathon/Index';
+import Workshop from '../../Screens/Student/Workshop/Index';
+import Projects from '../../Screens/Student/Project/Index';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Width} from '../Constants/Size';
-import Post from '../Screens/Post/Index';
-import {useStateValue} from '../Store/StateProvider';
+import {Width} from '../../Constants/Size';
+import Post from '../../Screens/Student/Post/Index';
+import {useStateValue} from '../../Store/StateProvider';
 
 const Tab = createBottomTabNavigator();
 

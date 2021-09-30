@@ -21,19 +21,19 @@ import {
   Keyboard,
   ToastAndroid,
 } from 'react-native';
-import PostCard from '../../Components/PostCard';
-import CustomHeader from '../../Components/CustomHeader';
-import CustomSearch from '../../Components/Search';
-import axios from '../../Utils/Axios';
-import {Sizes} from '../../Constants/Size';
+import PostCard from '../../../Components/PostCard';
+import CustomHeader from '../../../Components/CustomHeader';
+import CustomSearch from '../../../Components/Search';
+import axios from '../../../Utils/Axios';
+import {Sizes} from '../../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import PostSkeleton from '../../Skeleton/PostCardSkeleton';
-import {useStateValue} from '../../Store/StateProvider';
+import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
+import {useStateValue} from '../../../Store/StateProvider';
 
 type props = {
   navigation: any;
 };
-const Posts: FC<props> = ({navigation}) => {
+const Index: FC<props> = ({navigation}) => {
   const [Post, setPost] = useState([]);
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
@@ -249,4 +249,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Posts;
+export default Index;

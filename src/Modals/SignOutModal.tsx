@@ -25,20 +25,18 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
   const [{theme}, dispatch] = useStateValue();
   const [loading, setLoading] = useState(false);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     // set the loading to true
     setLoading(true);
     // clear local storage tokens
-    AsyncStorage.setItem('access', '')
-      .then(() => AsyncStorage.setItem('refresh', ''))
-      .then(() => {
-        // close the modal
-        toggleModal();
-        //   set loading to false
-        setLoading(false);
-        // call the local state
-        dispatch({type: 'SET_SIGN_OUT'});
-      });
+    await AsyncStorage.setItem('access', '');
+    await AsyncStorage.setItem('refresh', '');
+    // close the modal
+    toggleModal();
+    //   set loading to false
+    setLoading(false);
+    // call the local state
+    dispatch({type: 'SET_SIGN_OUT'});
   };
   return (
     // <View
@@ -99,7 +97,7 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={styles.center}>
             <Loading size={'small'} />
           </View>
         )}
@@ -129,8 +127,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginRight: 10,
     borderBottomWidth: 2,
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   heading: {
     fontSize: Sizes.large * 1.3,
@@ -143,6 +141,10 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: Sizes.normal,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scroll: {
     marginHorizontal: 20,

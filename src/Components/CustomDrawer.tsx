@@ -7,11 +7,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-} from '@react-navigation/drawer';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';

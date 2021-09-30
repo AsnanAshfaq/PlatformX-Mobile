@@ -1,9 +1,9 @@
 import React from 'react';
-import MyProfile from '../Screens/Profile/Index';
+import MyProfile from '../../Screens/Profile/Index';
 import {createStackNavigator} from '@react-navigation/stack';
-import Tab from '../Screens/Profile/Tab';
-import {config} from './index';
-import ViewProfile from '../Screens/Profile/Student/ViewProfile';
+import Tab from '../../Screens/Profile/Tab';
+import {config} from '../index';
+import ViewProfile from '../../Screens/Profile/Student/ViewProfile';
 
 const Stack = createStackNavigator();
 
@@ -16,19 +16,6 @@ const ProfileScreens = () => {
       <Stack.Screen
         name="Home"
         component={MyProfile}
-        options={{
-          animationEnabled: true,
-          gestureDirection: 'horizontal',
-          gestureEnabled: true,
-          transitionSpec: {
-            open: config,
-            close: config,
-          },
-        }}
-      />
-      <Stack.Screen
-        name="Follow_Tab"
-        component={Tab}
         options={{
           animationEnabled: true,
           gestureDirection: 'horizontal',

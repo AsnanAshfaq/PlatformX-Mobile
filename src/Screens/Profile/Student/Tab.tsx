@@ -7,18 +7,18 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import CustomHeader from '../../Components/CustomHeader';
-import Search from '../../Components/Search';
-import FollowingModal from '../../Modals/FollowingModal';
-import Axios from '../../Utils/Axios';
+import CustomHeader from '../../../Components/CustomHeader';
+import Search from '../../../Components/Search';
+import FollowingModal from '../../../Modals/FollowingModal';
+import Axios from '../../../Utils/Axios';
 import {TabView, TabBar} from 'react-native-tab-view';
-import {Sizes, Width} from '../../Constants/Size';
-import PopUpMenu from '../../Menu/FollowingCardPopUpMenu';
-import {PROFILE_IMAGE} from '../../Constants/sample';
+import {Sizes, Width} from '../../../Constants/Size';
+import PopUpMenu from '../../../Menu/FollowingCardPopUpMenu';
+import {PROFILE_IMAGE} from '../../../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import Loading from '../../Components/Loading';
-import {useStateValue} from '../../Store/StateProvider';
+import Loading from '../../../Components/Loading';
+import {useStateValue} from '../../../Store/StateProvider';
 
 type cardProps = {
   id: string;
@@ -115,7 +115,11 @@ const Followers: FC = () => {
         <NoDataView screen={'Followers'} />
       ) : (
         <>
-          <Search placeholder={'Search Followers'} showFilterIcon={false} />
+          <Search
+            placeholder={'Search Followers'}
+            showFilterIcon={false}
+            handleSearch={query => console.log('Query is', query)}
+          />
           <FlatList
             data={followers}
             renderItem={({item}: any) => (
@@ -178,7 +182,11 @@ const Following: FC = () => {
               })
             }
           />
-          <Search placeholder={'Search Following'} showFilterIcon={false} />
+          <Search
+            placeholder={'Search Following'}
+            showFilterIcon={false}
+            handleSearch={query => console.log('Query is', query)}
+          />
           <FlatList
             data={following}
             keyExtractor={(item: any, _) => `${item.id}`}

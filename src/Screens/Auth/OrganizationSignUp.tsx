@@ -147,7 +147,6 @@ const SignUp: FC<props> = ({navigation}) => {
         });
 
         if (signUpResponse.status === 201) {
-          console.log('Organization account has been created ');
           const userData = {
             name: Registration.name.value.trim(),
             regNo: Registration.reg_no.value.trim(),

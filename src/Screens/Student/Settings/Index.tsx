@@ -1,13 +1,13 @@
 import React, {FC, useState} from 'react';
 import {StyleSheet, Text, View, Switch} from 'react-native';
-import CustomHeader from '../../Components/CustomHeader';
+import CustomHeader from '../../../Components/CustomHeader';
 // import {darkColors} from '../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Height, Sizes, Width} from '../../Constants/Size';
-import {useStateValue} from '../../Store/StateProvider';
-import Axios from '../../Utils/Axios';
+import {Height, Sizes, Width} from '../../../Constants/Size';
+import {useStateValue} from '../../../Store/StateProvider';
+import Axios from '../../../Utils/Axios';
 
 type cardProps = {
   IconComponent: FC;
