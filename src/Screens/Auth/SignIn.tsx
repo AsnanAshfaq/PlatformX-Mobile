@@ -24,8 +24,8 @@ type props = {
 
 const SignIn: FC<props> = ({navigation}) => {
   const [signIn, setsignIn] = useState({
-    email: {value: '18asnan@gmail.com', error: ''},
-    password: {value: 'Test123456', error: ''},
+    email: {value: 'glazier@gmail.com', error: ''},
+    password: {value: 'glazecake', error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);

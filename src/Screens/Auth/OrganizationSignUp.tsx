@@ -188,7 +188,6 @@ const SignUp: FC<props> = ({navigation}) => {
         return Promise.reject(error);
       }
     } else {
-      console.log('Not valid inputs');
       setIsLoading(false);
     }
   };

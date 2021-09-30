@@ -23,6 +23,7 @@ type props = {
 const Index: FC<props> = ({navigation}) => {
   // Load profile based on current user from global state
   const [state, dispatch] = useStateValue();
+  console.log('User type is', state.userType);
   if (state.userType === 'student') {
     return <StudentProfile navigation={navigation} />;
   } else {
