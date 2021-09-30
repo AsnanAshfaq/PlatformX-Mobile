@@ -73,6 +73,13 @@ const ResetPassword: FC<props> = ({navigation}) => {
                 error: error.response.data.email_error,
               };
             });
+          } else if (error.response.data.user_error) {
+            setEmail(props => {
+              return {
+                ...props,
+                error: error.response.data.user_error,
+              };
+            });
           } else if (error.response.data.error) {
             ToastAndroid.show(error.response.data.error, 1500);
           }

@@ -24,8 +24,8 @@ type props = {
 
 const SignIn: FC<props> = ({navigation}) => {
   const [signIn, setsignIn] = useState({
-    email: {value: 'glazier@gmail.com', error: ''},
-    password: {value: 'glazecake', error: ''},
+    email: {value: '18asnan@gmail.com', error: ''},
+    password: {value: 'Test123456', error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -86,8 +86,8 @@ const SignIn: FC<props> = ({navigation}) => {
     if (isAllInputsValid) {
       try {
         const signInResponse = await Axios.post('/user/signin/', {
-          email: signIn.email.value,
-          password: signIn.password.value,
+          email: signIn.email.value.trim(),
+          password: signIn.password.value.trim(),
         });
 
         if (signInResponse.status === 200) {

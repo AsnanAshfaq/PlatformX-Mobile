@@ -2,9 +2,13 @@
 // first name
 // last name
 // user name
-// email
+// email (FIXME: confirmation of email)
 // password
 // confirm password
+// phone number
+// date of birth  (modal)
+
+// Check for terms and condition
 
 import React, {FC, useState, useEffect} from 'react';
 import {
@@ -70,13 +74,20 @@ const SignUp: FC<props> = ({navigation}) => {
       if (isEmpty(value)) {
         y[Key]['error'] = emptyError;
       } else {
-        // if it is the first name and last name
-        // then also raise error if it contains values other than alphabets
+        // if first name and last name contains values other than alphabets
+        // then raise error
         if (Key === 'first_name' || Key === 'last_name') {
           if (!isOnylAlphabets(value))
             y[Key]['error'] = `${
               Key === 'first_name' ? 'First' : 'Last'
             } Name is invalid`;
+        }
+        // if password contains values other than alphabets
+        // then also raise error
+        if (Key === 'password') {
+          if (!isOnylAlphabets(value)) {
+            y[Key]['error'] = 'Password cannot contain special characters';
+          }
         }
         const MinMax = checkLength(value, minValue, maxValue);
         if (MinMax == 'min') {
@@ -190,7 +201,7 @@ const SignUp: FC<props> = ({navigation}) => {
     // check if all inputs are valid or not
     if (isAllInputsValid) {
       try {
-        const signUpResponse = await axios.post('/user/signup/', {
+        const signUpResponse = await axios.post('/user/student/signup/', {
           first_name: Registration.first_name.value.trim(),
           last_name: Registration.last_name.value.trim(),
           username: Registration.username.value.trim(),

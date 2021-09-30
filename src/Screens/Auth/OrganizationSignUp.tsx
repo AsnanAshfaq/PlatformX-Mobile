@@ -1,10 +1,15 @@
+/* eslint-disable dot-notation */
 //FIELDS :TODO:
-// first name
-// last name
-// user name
-// email
+// organization name
+// reg number
+// email address (FIXME: confirmation of email)
 // password
 // confirm password
+// phone number (FIXME: why phone number)
+// location (modal)
+// incorporation date (modal)
+
+// Check for terms and condition
 
 import React, {FC, useState, useEffect} from 'react';
 import {
@@ -19,7 +24,6 @@ import {
 } from 'react-native';
 import CustomTextField from '../../Components/CustomTextField';
 import Loading from '../../Components/Loading';
-// import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import FormHandlers from '../../Utils/FormHandler';
 import axios from '../../Utils/Axios';
@@ -40,183 +44,152 @@ const SignUp: FC<props> = ({navigation}) => {
   } = FormHandlers();
 
   const [Registration, setRegistration] = useState({
-    first_name: {value: 'Asnan', error: ''},
-    last_name: {value: 'Ashfaq', error: ''},
-    username: {value: 'shanay_asnan', error: ''},
-    email: {value: 'shanay@gmail.com', error: ''},
-    password: {value: 'asnanashfaq', error: ''},
-    confirm_password: {value: 'asnanashfaq', error: ''},
+    name: {value: 'Netsol', error: ''},
+    reg_no: {value: '9242301', error: ''},
+    email: {value: 'netsol@gmail.com', error: ''},
+    password: {value: 'netsol@123', error: ''},
+    confirm_password: {value: 'netsol@123', error: ''},
+    location: {value: 'Lahore', error: ''},
+    incorpDate: {value: new Date(), error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [state, dispatch] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
 
-  const handleSignUp = () => {
-    let x = Registration;
+  const handleSignUp = async () => {
+    // creating reference of registaions
+    let y = Registration;
     let isAllInputsValid = true;
 
     // set the loading to true
     setIsLoading(true);
 
-    const customChecks = (
-      Key: string,
-      emptyError: string,
-      minError: string,
-      maxError: string,
-      minValue: number,
-      maxValue: number,
-    ) => {
-      const value = Registration[Key]['value'].trim();
-      let y = Registration;
-      if (isEmpty(value)) {
-        y[Key]['error'] = emptyError;
-      } else {
-        // if it is the first name and last name
-        // then also raise error if it contains values other than alphabets
-        if (Key === 'first_name' || Key === 'last_name') {
-          if (!isOnylAlphabets(value))
-            y[Key]['error'] = `${
-              Key === 'first_name' ? 'First' : 'Last'
-            } Name is invalid`;
-        }
-        const MinMax = checkLength(value, minValue, maxValue);
-        if (MinMax == 'min') {
-          y[Key]['error'] = minError;
-        } else if (MinMax == 'max') {
-          y[Key]['error'] = maxError;
-        }
-      }
-      const error = y[Key]['error'];
-      if (error !== '') {
-        Registration[Key]['error'] = error;
-        Registration[Key]['value'] = value;
-        setRegistration(props => {
-          return {
-            ...Registration,
-          };
-        });
-        // make the input validation variable false
-        isAllInputsValid = false;
-      }
-    };
-
-    // check for first name
-    customChecks(
-      'first_name',
-      'First Name cannot be Empty',
-      'First Name should be atleast 5 characters.',
-      'First Name should be less than 14 characters.',
-      5,
-      14,
-    );
-
-    // check for last name
-    customChecks(
-      'last_name',
-      'Last Name cannot be Empty',
-      'Last Name should be atleast 5 characters.',
-      'Last Name should be less than 14 characters.',
-      5,
-      14,
-    );
-
-    // check for user name
-    customChecks(
-      'username',
-      'User Name cannot be Empty',
-      'User Name should be atleast 5 characters.',
-      'User Name should be less than 14 characters.',
-      5,
-      14,
-    );
-
-    // check's for email
-    if (isEmpty(Registration.email.value.trim())) {
-      x['email']['error'] = 'Email cannnot be Empty';
-    } else {
-      if (!isEmailValid(Registration.email.value.trim())) {
-        x['email']['error'] = 'Please enter a valid email address';
-      }
-    }
-    if (Registration['email']['error'] !== '') {
-      setRegistration(props => {
-        return {
-          ...props,
-          email: {
-            value: props.email.value,
-            error: props.email.error,
-          },
-        };
-      });
-      // make the input validation variable false
+    // check for organization name
+    if (isEmpty(Registration.name.value.trim())) {
+      y['name']['error'] = 'Organization name cannot be empty';
       isAllInputsValid = false;
     }
 
-    // check's for password
-    customChecks(
-      'password',
-      'Password cannot be empty',
-      'Password should be atleast 8 characters.',
-      'Password should be less than 14 characters.',
-      8,
-      14,
-    );
+    // check for organization registraion number
+    if (isEmpty(Registration.reg_no.value.trim())) {
+      y['reg_no']['error'] = 'Registration Number cannot be empty';
+      isAllInputsValid = false;
+    }
+
+    // check's for email
+    if (isEmpty(Registration.email.value.trim())) {
+      y['email']['error'] = 'Email cannnot be Empty';
+      isAllInputsValid = false;
+    } else {
+      if (!isEmailValid(Registration.email.value.trim())) {
+        y['email']['error'] = 'Please enter a valid email address';
+        isAllInputsValid = false;
+      }
+      //TODO:
+      // check for -- email should belong to organization personal domain
+    }
+
+    // check for password
+    if (isEmpty(Registration.password.value.trim())) {
+      y['password']['error'] = 'Password cannot be empty';
+      isAllInputsValid = false;
+    } else {
+      const MinMax = checkLength(Registration.password.value.trim(), 8, 14);
+      if (MinMax === 'min') {
+        y['password']['error'] = 'Password should be atleast 8 characters.';
+        isAllInputsValid = false;
+      } else if (MinMax === 'max') {
+        y['password']['error'] = 'Password should be less than 14 characters.';
+        isAllInputsValid = false;
+      }
+    }
 
     // check's for confirm password
     if (isEmpty(Registration.confirm_password.value.trim())) {
-      x['confirm_password']['error'] = 'Confirm Password cannnot be Empty';
+      y['confirm_password']['error'] = 'Confirm Password cannnot be empty';
+      isAllInputsValid = false;
     } else {
       if (
         !isSame(
           Registration.password.value.trim(),
           Registration.confirm_password.value.trim(),
         )
-      )
-        x['confirm_password']['error'] = 'Passwords do not match';
+      ) {
+        y['confirm_password']['error'] = 'Passwords do not match';
+        isAllInputsValid = false;
+      }
     }
-    if (Registration['confirm_password']['error'] !== '') {
-      setRegistration(props => {
-        return {
-          ...props,
-          confirm_password: {
-            value: props.confirm_password.value,
-            error: props.confirm_password.error,
-          },
-        };
-      });
-      // make the input validation variable false
+
+    // check for location
+    if (isEmpty(Registration.location.value.trim())) {
+      y['location']['error'] = 'Location cannot be empty';
       isAllInputsValid = false;
     }
 
+    // set registration
+    setRegistration(props => {
+      return {
+        ...props,
+        y,
+      };
+    });
+
     // check if all inputs are valid or not
     if (isAllInputsValid) {
-      axios
-        .post('/user/signup/', {
-          first_name: Registration.first_name.value.trim(),
-          last_name: Registration.last_name.value.trim(),
-          username: Registration.username.value.trim(),
+      try {
+        const signUpResponse = await axios.post('/user/organization/signup/', {
+          name: Registration.name.value.trim(),
+          reg_no: Registration.reg_no.value,
           email: Registration.email.value.trim(),
           password: Registration.password.value.trim(),
-        })
-        .then(response => {
-          if (response.status === 201) {
-            // account has been created
-            ToastAndroid.show(response.data.success, 1500);
-            //TODO:
-            //navigate to on boarding screen
-          } else {
-            ToastAndroid.show(response.data.error, 1500);
-          }
-          // set the loading to false
-          setIsLoading(false);
-        })
-        .catch(error => {
-          ToastAndroid.show(error.response.data.error, 1500);
-          // set the loading to false
-          setIsLoading(false);
-          // throw error;
-          return Promise.reject(error);
+          location: Registration.location.value.trim(),
+          incorporation_date: Registration.incorpDate.value,
         });
+
+        if (signUpResponse.status === 201) {
+          console.log('Organization account has been created ');
+          const userData = {
+            name: Registration.name.value.trim(),
+            regNo: Registration.reg_no.value.trim(),
+            email: Registration.email.value.trim(),
+            location: Registration.location.value.trim(),
+            profilePic: '',
+          };
+          dispatch({type: 'SET_USER', payload: userData});
+          dispatch({type: 'SET_USER_TYPE', payload: 'organization'});
+          dispatch({type: 'SET_SIGN_IN', payload: true});
+
+          // account has been created
+          ToastAndroid.show(signUpResponse.data.success, 1500);
+        } else {
+          ToastAndroid.show(signUpResponse.data.error, 1500);
+        }
+        setIsLoading(false);
+      } catch (error: any) {
+        if (error.response.data.email_error) {
+          // set email error
+          setRegistration(props => {
+            return {
+              ...props,
+              email: {
+                value: props.email.value,
+                error: error.response.data.email_error,
+              },
+            };
+          });
+        }
+        // else if there is any other error
+        else if (error.response.data.error) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        // set the loading to false
+        setIsLoading(false);
+        // throw error;
+        return Promise.reject(error);
+      }
+    } else {
+      console.log('Not valid inputs');
+      setIsLoading(false);
     }
   };
 
@@ -224,21 +197,18 @@ const SignUp: FC<props> = ({navigation}) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       // keyboardVerticalOffset={20}
-      style={[
-        styles.parent,
-        {backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR},
-      ]}>
+      style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       <ScrollView keyboardShouldPersistTaps={'never'}>
         <>
           {/* platformX logo  */}
           <View style={styles.logoContainer}>
-            <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
+            <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>
               {'<'}
             </Text>
-            <Text style={[styles.logo, {color: state.theme.TEXT_COLOR}]}>
+            <Text style={[styles.logo, {color: theme.TEXT_COLOR}]}>
               PlatformX
             </Text>
-            <Text style={[styles.bracket, {color: state.theme.TEXT_COLOR}]}>
+            <Text style={[styles.bracket, {color: theme.TEXT_COLOR}]}>
               {'/>'}
             </Text>
           </View>
@@ -246,13 +216,13 @@ const SignUp: FC<props> = ({navigation}) => {
           <View style={styles.fieldContainer}>
             {/* first name field  */}
             <CustomTextField
-              placeholder={'First Name'}
-              defaultValue={Registration.first_name.value}
+              placeholder={'Organization Full Name'}
+              defaultValue={Registration.name.value}
               onChangeText={text => {
                 setRegistration(props => {
                   return {
                     ...props,
-                    first_name: {
+                    name: {
                       value: text,
                       error: '',
                     },
@@ -262,48 +232,30 @@ const SignUp: FC<props> = ({navigation}) => {
               textContentType={'name'}
               keyboardType={'default'}
               autoFocus
-              error={Registration.first_name.error}
+              error={Registration.name.error}
             />
-            {/* last name field  */}
+            {/* registration number field  */}
             <CustomTextField
-              placeholder={'Last Name'}
-              defaultValue={Registration.last_name.value}
+              placeholder={'Registation Number'}
+              defaultValue={Registration.reg_no.value}
               onChangeText={text =>
                 setRegistration(props => {
                   return {
                     ...props,
-                    last_name: {
+                    reg_no: {
                       value: text,
                       error: '',
                     },
                   };
                 })
               }
-              textContentType={'name'}
-              keyboardType={'default'}
-              error={Registration.last_name.error}
+              textContentType={'organizationName'}
+              keyboardType={'decimal-pad'}
+              error={Registration.reg_no.error}
             />
-            {/* username field  */}
+            {/* email  */}
             <CustomTextField
-              placeholder={'User Name'}
-              defaultValue={Registration.username.value}
-              onChangeText={text =>
-                setRegistration(props => {
-                  return {
-                    ...props,
-                    username: {
-                      value: text,
-                      error: '',
-                    },
-                  };
-                })
-              }
-              textContentType={'username'}
-              keyboardType={'default'}
-              error={Registration.username.error}
-            />
-            <CustomTextField
-              placeholder={'Email'}
+              placeholder={'Business Email'}
               defaultValue={Registration.email.value}
               onChangeText={text =>
                 setRegistration(props => {
@@ -364,37 +316,50 @@ const SignUp: FC<props> = ({navigation}) => {
               secureTextEntry={true}
               error={Registration.confirm_password.error}
             />
+
+            {/* organization location  */}
+            <CustomTextField
+              placeholder={'Location'}
+              defaultValue={Registration.location.value}
+              onChangeText={text =>
+                setRegistration(props => {
+                  return {
+                    ...props,
+                    location: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+              textContentType={'addressCity'}
+              keyboardType={'default'}
+              error={Registration.location.error}
+            />
           </View>
           {/* submit button container  */}
           <View style={styles.submitButtonContainer}>
             <TouchableOpacity
               style={[
                 styles.submitButton,
-                {backgroundColor: state.theme.SHADOW_COLOR},
+                {backgroundColor: theme.SHADOW_COLOR},
               ]}
               onPress={handleSignUp}>
               {isLoading ? (
-                <Loading
-                  size={'small'}
-                  color={state.theme.SCREEN_BACKGROUND_COLOR}
-                />
+                <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
               ) : (
                 <Text
-                  style={[
-                    styles.submitButtonText,
-                    {color: state.theme.TEXT_COLOR},
-                  ]}>
+                  style={[styles.submitButtonText, {color: theme.TEXT_COLOR}]}>
                   Sign Up
                 </Text>
               )}
             </TouchableOpacity>
             {/* sign up container  */}
             <View style={styles.signInContainer}>
-              <Text
-                style={[styles.signInText, {color: state.theme.TEXT_COLOR}]}>
+              <Text style={[styles.signInText, {color: theme.TEXT_COLOR}]}>
                 Already have an account?
                 <Text
-                  style={[styles.signIn, {color: state.theme.TOMATO_COLOR}]}
+                  style={[styles.signIn, {color: theme.TOMATO_COLOR}]}
                   onPress={() => navigation.navigate('SignIn')}>
                   {' '}
                   Sign In

@@ -75,12 +75,11 @@ const CustomTextField: FC<props> = ({
   const ref = useRef<any>(null);
   const [{theme}, dispatch] = useStateValue();
 
-  Keyboard.addListener('keyboardDidHide', e => {
+  const subscribe = Keyboard.addListener('keyboardDidHide', e => {
     if (ref.current) {
       ref?.current.blur();
     }
   });
-
   return (
     <>
       <View
