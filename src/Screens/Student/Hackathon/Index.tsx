@@ -8,7 +8,7 @@ import {
   RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import HackathonCard from '../../../Components/HackathonCard';
+import HackathonCard from '../../../Components/StudentHackathonCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';

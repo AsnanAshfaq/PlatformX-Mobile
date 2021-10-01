@@ -32,21 +32,21 @@ const DrawerScreens = () => {
         <>
           <Drawer.Screen name="Tabs" component={StudentTabScreens} />
           <Drawer.Screen
-            name="Profile_Home"
+            name="Student_Profile_Home"
             component={StudentProfileScreens}
           />
+          <Drawer.Screen name="Student_Activites" component={Activities} />
         </>
       ) : (
         <>
           <Drawer.Screen name="Tabs" component={OrganizationTabScreens} />
           <Drawer.Screen
-            name="Profile_Home"
+            name="Organization_Profile_Home"
             component={OrganizationProfileScreens}
           />
+          <Drawer.Screen name="Organizaiton_Activites" component={Activities} />
         </>
       )}
-
-      <Drawer.Screen name="Activites" component={Activities} />
     </Drawer.Navigator>
   );
 };

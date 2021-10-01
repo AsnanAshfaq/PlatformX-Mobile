@@ -3,7 +3,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Hackathon from '../../Screens/Organization/Hackathon/Index';
 import Workshop from '../../Screens/Organization/Workshop/Index';
 import Projects from '../../Screens/Organization/Project/Index';
-import Home from '../../Screens/Organization/Home/Index';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Width} from '../../Constants/Size';
 import {useStateValue} from '../../Store/StateProvider';
@@ -19,10 +18,7 @@ const TabScreens = () => {
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           const ICON_SIZE = Width * 0.07;
-
-          if (route.name === 'Home') {
-            iconName = focused ? 'home-sharp' : 'home-outline';
-          } else if (route.name === 'Hackathons') {
+          if (route.name === 'Hackathons') {
             iconName = focused ? 'code-slash' : 'code-sharp';
           } else if (route.name === 'Workshops') {
             iconName = focused ? 'ios-build' : 'ios-build-outline';
@@ -49,19 +45,8 @@ const TabScreens = () => {
           // position: 'absolute',
         },
       }}>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{tabBarLabel: 'Home'}}
-        // options={{
-        //   tabBarBadge: 1,
-        //   tabBarBadgeStyle: {
-        //     backgroundColor: darkColors.BADGE_COLOR,
-        //   },
-        // }}
-      />
-      {/* <Tab.Screen name="Hackathons" component={Hackathon} />
-      <Tab.Screen name="Workshops" component={Workshop} />
+      <Tab.Screen name="Hackathons" component={Hackathon} />
+      {/* <Tab.Screen name="Workshops" component={Workshop} />
       <Tab.Screen name="Projects" component={Projects} /> */}
     </Tab.Navigator>
   );

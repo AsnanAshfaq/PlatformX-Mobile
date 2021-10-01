@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import PopUpMenu from '../Menu/HackathonCardPopUpMenu';
+import PopUpMenu from '../Menu/StudentHackathonCardPopUpMenu';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
@@ -130,7 +130,12 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
             {hackathonDetail.organization.name}
           </Text>
           <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
-            {new Date(hackathonDetail.created_at).toDateString()}
+            {new Date(hackathonDetail.created_at).toDateString() ===
+            new Date(hackathonDetail.updated_at).toDateString()
+              ? `${new Date(hackathonDetail.created_at).toDateString()}`
+              : `Updated at ${new Date(
+                  hackathonDetail.updated_at,
+                ).toDateString()}`}
           </Text>
         </View>
         {/* right icon  */}

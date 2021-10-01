@@ -8,13 +8,13 @@ import {
   RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import HackathonCard from '../../Components/HackathonCard';
-import CustomHeader from '../../Components/CustomHeader';
-import CustomSearch from '../../Components/Search';
-import axios from '../../Utils/Axios';
-import {Sizes} from '../../Constants/Size';
-import HackathonSkeleton from '../../Skeleton/HackathonCardSkeleton';
-import {useStateValue} from '../../Store/StateProvider';
+import HackathonCard from '../../../Components/OrganizationHackathonCard';
+import CustomHeader from '../../../Components/CustomHeader';
+import CustomSearch from '../../../Components/Search';
+import axios from '../../../Utils/Axios';
+import {Sizes} from '../../../Constants/Size';
+import HackathonSkeleton from '../../../Skeleton/HackathonCardSkeleton';
+import {useStateValue} from '../../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -35,7 +35,7 @@ const Hackathons: FC<props> = ({navigation}) => {
 
   const getData = async () => {
     axios
-      .get('/api/hackathons/')
+      .get('/api/hackathon/')
       .then(response => {
         setHackathons(response.data);
         setIsLoading(false);
@@ -88,38 +88,6 @@ const Hackathons: FC<props> = ({navigation}) => {
     }
   };
 
-  const applyFilters = (
-    filter: Array<{subtag: Array<string>; tag: string}>,
-  ) => {
-    // make query string to be included in api call
-    let query = '';
-    // only if filter is not empty
-    if (filter.length > 0) {
-      for (let i = 0; i < filter.length; i++) {
-        // get tag
-        const tag = filter[i].tag.toLowerCase();
-        // get subtags
-        filter[i].subtag.forEach(subtag => {
-          // add tag and subtag in query string if subtag is not empty
-          if (subtag !== '') {
-            if (query === '') {
-              query += `${tag}=${subtag.toLowerCase()}`;
-            } else {
-              // append & if query is not empty
-              query += `&${tag}=${subtag.toLowerCase()}`;
-            }
-          }
-        });
-      }
-    }
-    if (query !== '') {
-      // call the api if query is not empty
-      try {
-        axios.get(`/api/hackathon/search/?q=${query}`).then(response => {});
-      } catch (error) {}
-    }
-  };
-
   useEffect(() => {
     getData();
   }, [IsLoading]);
@@ -143,9 +111,8 @@ const Hackathons: FC<props> = ({navigation}) => {
       {!IsLoading && (
         <CustomSearch
           placeholder={'Search hackathons'}
-          showFilterIcon={true}
           handleSearch={handleSearch}
-          applyFilters={applyFilters}
+          showFilterIcon={false}
         />
       )}
 

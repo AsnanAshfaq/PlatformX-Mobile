@@ -132,20 +132,16 @@ const StudentProfile: FC<props> = ({navigation}) => {
   };
 
   const getUserDetails = async () => {
-    axios
-      .get('/user/')
-      .then(result => setProfileData(result.data))
-      .then(() => {
-        // get posts related to current user
-        axios
-          .get('/api/post/')
-          .then(result => setPost(result.data))
-          .then(() => setLoading(false));
-      })
-      .catch(error => {
-        // error while fetching data
-        ToastAndroid.show('Error while fetching data', 1500);
-      });
+    try {
+      const userResponse = await axios.get('/user/');
+      setProfileData(userResponse.data);
+      //  get user posts
+      const postResponse = await axios.get('/api/post/');
+      setPost(postResponse.data);
+      setLoading(false);
+    } catch (error) {
+      ToastAndroid.show('Error while fetching data', 1500);
+    }
   };
 
   const onRefresh = () => {
@@ -444,7 +440,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
       </View>
     );
   }
-  return <Loading size={'large'} />;
+  return <Loading size={'large'} color={state.theme.TEXT_COLOR} />;
 };
 
 const styles = StyleSheet.create({

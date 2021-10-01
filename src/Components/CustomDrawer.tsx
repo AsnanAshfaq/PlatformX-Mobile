@@ -54,7 +54,7 @@ const StudentDrawer: FC<props> = ({navigation}) => {
       id: 1,
       label: 'My Activities',
       icon_name: 'home-sharp',
-      onPress: () => navigation.navigate('Activites'),
+      onPress: () => navigation.navigate('Student_Activites'),
     },
     {
       id: 2,
@@ -106,7 +106,7 @@ const StudentDrawer: FC<props> = ({navigation}) => {
         <TouchableOpacity
           onPress={() => {
             // navigation.closeDrawer();
-            navigation.navigate('Profile_Home');
+            navigation.navigate('Student_Profile_Home');
           }}
           style={[
             styles.profileButtonContainer,
@@ -146,7 +146,7 @@ const OrganizationDrawer: FC<props> = ({navigation}) => {
       id: 1,
       label: 'Activities',
       icon_name: 'home-sharp',
-      onPress: () => navigation.navigate('Activites'),
+      onPress: () => navigation.navigate('Organizaiton_Activites'),
     },
     {
       id: 2,
@@ -199,7 +199,7 @@ const OrganizationDrawer: FC<props> = ({navigation}) => {
         <TouchableOpacity
           onPress={() => {
             // navigation.closeDrawer();
-            navigation.navigate('Profile_Home');
+            navigation.navigate('Organization_Profile_Home');
           }}
           style={[
             styles.profileButtonContainer,
