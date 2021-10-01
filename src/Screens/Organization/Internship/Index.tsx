@@ -1,15 +1,3 @@
-//FIXME: Searching Post
-// when the use clicks the search button
-// make api call
-// i need to show the skeleton... HOw??
-// okay
-// so when the screen first loads
-// Post.length === 0 and isLoading is true
-// so the skelton gets showed
-// but when the user clicks on search
-// Post.length !== 0 , so it shows the postCard
-// Make the posts to
-
 import React, {FC, useEffect, useState, useCallback} from 'react';
 import {
   View,
@@ -18,24 +6,22 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
-  Keyboard,
   ToastAndroid,
 } from 'react-native';
-import PostCard from '../../../Components/PostCard';
+import HackathonCard from '../../../Components/OrganizationHackathonCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
 import {Sizes} from '../../../Constants/Size';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
+import HackathonSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 
 type props = {
   navigation: any;
 };
-const Index: FC<props> = ({navigation}) => {
-  const [Post, setPost] = useState([]);
-  const isFocuses = useIsFocused();
+
+const Internship: FC<props> = ({navigation}) => {
+  const [Internships, setInterships] = useState([]);
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   const [{theme}, dispatch] = useStateValue();
@@ -48,24 +34,26 @@ const Index: FC<props> = ({navigation}) => {
   });
 
   const getData = async () => {
-    try {
-      axios.get('/api/posts/').then(response => {
-        setPost(response.data);
-        setIsLoading(false);
-        setSearching({
-          isSearching: false,
-          query: '',
-        });
-      });
-    } catch (error: any) {
-      ToastAndroid.show(error.data.response.error, 1500);
-    }
+    // axios
+    //   .get('/api/hackathon/')
+    //   .then(response => {
+    //     setHackathons(response.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch(error => {
+    //     setIsLoading(false);
+    //     console.log('Error is', error);
+    //   });
+    setIsLoading(false);
+    console.log('Getting data for Internships');
   };
 
   const onRefresh = () => {
     setRefreshing(true);
     getData().then(() => {
+      // console.log(Post);
       setRefreshing(false);
+
       // handle seaching state
       setSearching({
         isSearching: false,
@@ -81,8 +69,8 @@ const Index: FC<props> = ({navigation}) => {
       query: query,
     });
     try {
-      axios.get(`/api/post/search/?q=${query}`).then(response => {
-        setPost(response.data);
+      axios.get(`/api/hackathon/search/?q=${query}`).then(response => {
+        setInterships(response.data);
         setIsLoading(false);
         setSearching(props => {
           return {
@@ -106,18 +94,6 @@ const Index: FC<props> = ({navigation}) => {
     getData();
   }, [IsLoading]);
 
-  const renderItem = useCallback(
-    ({item: post, index}: any) => (
-      <PostCard postDetail={post} navigation={navigation} />
-    ),
-    [navigation],
-  );
-
-  const keyExtractor = useCallback(
-    (item: any, index) => `${item.id}-${index}`,
-    [],
-  );
-
   return (
     <View
       style={[
@@ -126,27 +102,35 @@ const Index: FC<props> = ({navigation}) => {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
-      <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
+      <CustomHeader title={'Internships'} navigation={navigation} drawer bell />
 
       {!IsLoading && (
         <CustomSearch
-          placeholder={'Search posts'}
-          showFilterIcon={false}
+          placeholder={'Search internships'}
           handleSearch={handleSearch}
+          showFilterIcon={false}
         />
       )}
-      {/* if searching  then show post skeleton without search skeleton*/}
+
       {Searching.isSearching ? (
         <>
-          <PostSkeleton showSearchSkeleton={!Searching.isSearching} />
+          <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
-      ) : Post.length > 0 ? (
+      ) : Internships.length > 0 ? (
         <>
           <FlatList
-            data={Post}
+            data={Internships}
             // disableVirtualization
-            keyExtractor={keyExtractor}
-            renderItem={renderItem}
+            keyExtractor={(item: any, index) => `${item.id}-${index}`}
+            renderItem={({item: hackathon, index}: any) => {
+              return (
+                <HackathonCard
+                  key={hackathon?.id}
+                  hackathonDetail={hackathon}
+                  navigation={navigation}
+                />
+              );
+            }}
             // progressViewOffset={10}
             refreshControl={
               <RefreshControl
@@ -158,8 +142,7 @@ const Index: FC<props> = ({navigation}) => {
                 size={Sizes.large}
               />
             }
-            // inverted
-            contentOffset={{y: -300, x: 0}}
+            // contentOffset={{y: -300, x: 0}}
           />
           {/* floating action button  */}
           <View
@@ -187,31 +170,21 @@ const Index: FC<props> = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </>
-      ) : !IsLoading && Post.length === 0 ? (
-        <>
-          <View style={styles.center}>
-            <Text
-              style={[
-                styles.noMoreText,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              {Searching.query !== '' && Post.length === 0
-                ? `No result Found for ${Searching.query}`
-                : 'No posts yet'}
+      ) : !IsLoading && Internships.length === 0 ? (
+        <View style={styles.center}>
+          <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
+            {Searching.query !== '' && Internships.length === 0
+              ? `No result Found for ${Searching.query}`
+              : 'No internships yet'}
+          </Text>
+          <TouchableOpacity onPress={() => setIsLoading(true)}>
+            <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
+              Refresh
             </Text>
-            <TouchableOpacity onPress={() => setIsLoading(true)}>
-              <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
-                Refresh
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </>
+          </TouchableOpacity>
+        </View>
       ) : (
-        <PostSkeleton
-          showSearchSkeleton={!Searching.isSearching || Refreshing}
-        />
+        <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
       )}
     </View>
   );
@@ -220,6 +193,17 @@ const Index: FC<props> = ({navigation}) => {
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noMoreText: {
+    fontSize: Sizes.normal,
+  },
+  refreshText: {
+    fontSize: Sizes.normal,
   },
   floatingButtonContainer: {
     position: 'absolute',
@@ -233,20 +217,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  center: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   plusText: {
     fontSize: Sizes.large * 1.4,
   },
-  noMoreText: {
-    fontSize: Sizes.normal,
-  },
-  refreshText: {
-    fontSize: Sizes.normal,
-  },
 });
 
-export default Index;
+export default Internship;

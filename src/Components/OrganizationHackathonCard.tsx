@@ -91,15 +91,6 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
     console.log('Handling hackathon edit option');
   };
 
-  console.log(
-    'Created date is',
-    new Date(hackathonDetail.created_at).toDateString(),
-  );
-  console.log(
-    'Updated date is',
-    new Date(hackathonDetail.updated_at).toDateString(),
-  );
-
   return (
     <View
       style={[

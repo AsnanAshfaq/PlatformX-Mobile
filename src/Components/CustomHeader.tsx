@@ -81,7 +81,14 @@ const CustomHeader: FunctionComponent<props> = ({
         </Text>
       </View>
       {/* right icons  */}
-      <View style={styles.RightIconContainer}>
+      <View
+        style={[
+          styles.RightIconContainer,
+          {
+            justifyContent: chat && bell ? 'center' : 'flex-end',
+            marginHorizontal: chat && bell ? 0 : 8,
+          },
+        ]}>
         {chat && (
           <TouchableWithoutFeedback onPress={() => navigation.navigate('Chat')}>
             <View style={styles.row}>
@@ -139,7 +146,7 @@ const styles = StyleSheet.create({
   RightIconContainer: {
     flex: 0.25,
     flexDirection: 'row',
-    // marginHorizontal: 5,
+    justifyContent: 'center',
   },
   iconPadding: {
     padding: 8,

@@ -8,16 +8,16 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import axios from '../../Utils/Axios';
-import CustomHeader from '../../Components/CustomHeader';
+import axios from '../../../Utils/Axios';
+import CustomHeader from '../../../Components/CustomHeader';
 
-import {GREY_IMAGE, PROFILE_IMAGE} from '../../Constants/sample';
+import {GREY_IMAGE, PROFILE_IMAGE} from '../../../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import HackathonCardSkeleton from '../../Skeleton/HackathonCardSkeleton';
-import {Height, Sizes, Width} from '../../Constants/Size';
-import {darkColors} from '../../Constants/Colors';
-import {commaSeperator} from '../../Utils/Numbers';
+import HackathonCardSkeleton from '../../../Skeleton/HackathonCardSkeleton';
+import {Height, Sizes, Width} from '../../../Constants/Size';
+import {darkColors} from '../../../Constants/Colors';
+import {commaSeperator} from '../../../Utils/Numbers';
 
 type prize = {
   prize: any;
@@ -222,7 +222,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
         chat
         bell
       />
-      <HackathonCardSkeleton />
+      <HackathonCardSkeleton showSearchSkeleton={false} />
     </View>
   );
 };

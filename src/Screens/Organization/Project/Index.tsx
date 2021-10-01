@@ -8,13 +8,13 @@ import {
   RefreshControl,
   Keyboard,
 } from 'react-native';
-import CustomHeader from '../../Components/CustomHeader';
-import CustomSearch from '../../Components/Search';
-import axios from '../../Utils/Axios';
-import {Sizes} from '../../Constants/Size';
+import CustomHeader from '../../../Components/CustomHeader';
+import CustomSearch from '../../../Components/Search';
+import axios from '../../../Utils/Axios';
+import {Sizes} from '../../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import PostSkeleton from '../../Skeleton/PostCardSkeleton';
-import {useStateValue} from '../../Store/StateProvider';
+import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
+import {useStateValue} from '../../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -68,13 +68,7 @@ const Projects: FC<props> = ({navigation}) => {
   return (
     <View
       style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
-      <CustomHeader
-        title={'Projects'}
-        navigation={navigation}
-        drawer
-        chat
-        bell
-      />
+      <CustomHeader title={'Projects'} navigation={navigation} drawer bell />
       {!IsLoading && (
         <CustomSearch
           placeholder={'Search here'}
@@ -110,11 +104,38 @@ const Projects: FC<props> = ({navigation}) => {
             // inverted
             contentOffset={{y: -300, x: 0}}
           />
+          {/* floating action button  */}
+          <View
+            style={[
+              styles.floatingButtonContainer,
+              {
+                backgroundColor: theme.TOMATO_COLOR,
+              },
+            ]}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Create_Edit_Post', {
+                  screen: 'Create',
+                })
+              }>
+              <Text
+                style={[
+                  styles.plusText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                +
+              </Text>
+            </TouchableOpacity>
+          </View>
         </>
       ) : !IsLoading ? (
         <View style={styles.center}>
           <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
-            No more Projects
+            {Searching.query !== '' && Project.length === 0
+              ? `No result Found for ${Searching.query}`
+              : 'No projects yet'}
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
             <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
@@ -138,26 +159,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // floatingButtonContainer: {
-  //   position: 'absolute',
-  //   width: 60,
-  //   height: 60,
-  //   borderWidth: 2,
-  //   borderRadius: 30,
-  //   bottom: 20,
-  //   right: 12,
-  //   borderColor: 'transparent',
-  //   backgroundColor: darkColors.TOMATO_COLOR,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // plusText: {
-  //   fontSize: Sizes.large * 1.4,
-  //   color: darkColors.TEXT_COLOR,
-  // },
-  // skeleton: {
-  //   height: 10,
-  // },
+  floatingButtonContainer: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    borderWidth: 2,
+    borderRadius: 30,
+    bottom: 20,
+    right: 12,
+    borderColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  plusText: {
+    fontSize: Sizes.large * 1.4,
+  },
   noMoreText: {
     fontSize: Sizes.normal,
   },

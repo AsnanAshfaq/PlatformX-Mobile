@@ -100,13 +100,7 @@ const Hackathons: FC<props> = ({navigation}) => {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
-      <CustomHeader
-        title={'Hackathons'}
-        navigation={navigation}
-        drawer
-        chat
-        bell
-      />
+      <CustomHeader title={'Hackathons'} navigation={navigation} drawer bell />
 
       {!IsLoading && (
         <CustomSearch
@@ -148,6 +142,31 @@ const Hackathons: FC<props> = ({navigation}) => {
             }
             // contentOffset={{y: -300, x: 0}}
           />
+          {/* floating action button  */}
+          <View
+            style={[
+              styles.floatingButtonContainer,
+              {
+                backgroundColor: theme.TOMATO_COLOR,
+              },
+            ]}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Create_Edit_Post', {
+                  screen: 'Create',
+                })
+              }>
+              <Text
+                style={[
+                  styles.plusText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                +
+              </Text>
+            </TouchableOpacity>
+          </View>
         </>
       ) : !IsLoading && Hackathon.length === 0 ? (
         <View style={styles.center}>
@@ -183,6 +202,21 @@ const styles = StyleSheet.create({
   },
   refreshText: {
     fontSize: Sizes.normal,
+  },
+  floatingButtonContainer: {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    borderWidth: 2,
+    borderRadius: 30,
+    bottom: 20,
+    right: 12,
+    borderColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  plusText: {
+    fontSize: Sizes.large * 1.4,
   },
 });
 

@@ -30,7 +30,7 @@ const TabScreens = () => {
             iconName = focused ? 'ios-build' : 'ios-build-outline';
           } else if (route.name === 'Projects') {
             iconName = focused ? 'ios-bulb-sharp' : 'ios-bulb-outline';
-          } else if (route.name === 'Internship') {
+          } else if (route.name === 'Internships') {
             iconName = focused
               ? 'card-account-details'
               : 'card-account-details-outline';
@@ -78,7 +78,7 @@ const TabScreens = () => {
       <Tab.Screen name="Hackathons" component={Hackathon} />
       <Tab.Screen name="Workshops" component={Workshop} />
       <Tab.Screen name="Projects" component={Projects} />
-      <Tab.Screen name="Internship" component={Internship} />
+      <Tab.Screen name="Internships" component={Internship} />
     </Tab.Navigator>
   );
 };
