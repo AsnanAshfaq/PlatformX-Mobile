@@ -91,6 +91,15 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
     console.log('Handling hackathon edit option');
   };
 
+  console.log(
+    'Created date is',
+    new Date(hackathonDetail.created_at).toDateString(),
+  );
+  console.log(
+    'Updated date is',
+    new Date(hackathonDetail.updated_at).toDateString(),
+  );
+
   return (
     <View
       style={[
@@ -200,6 +209,26 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           }}
           resizeMode={'contain'}
         />
+      </View>
+      {/* apply now button  */}
+      <View style={styles.applyButtonContainer}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('View_Hackathon', {
+              ID: hackathonDetail.id,
+            })
+          }
+          style={[styles.applyButton, {backgroundColor: theme.SHADOW_COLOR}]}>
+          <Text
+            style={[
+              styles.applyButtonText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            View Details{' '}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

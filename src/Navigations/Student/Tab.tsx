@@ -1,5 +1,6 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Hackathon from '../../Screens/Student/Hackathon/Index';
 import Workshop from '../../Screens/Student/Workshop/Index';
 import Projects from '../../Screens/Student/Project/Index';
@@ -7,6 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Width} from '../../Constants/Size';
 import Post from '../../Screens/Student/Post/Index';
 import {useStateValue} from '../../Store/StateProvider';
+import Internship from '../../Screens/Student/Internship/Index';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,8 +30,21 @@ const TabScreens = () => {
             iconName = focused ? 'ios-build' : 'ios-build-outline';
           } else if (route.name === 'Projects') {
             iconName = focused ? 'ios-bulb-sharp' : 'ios-bulb-outline';
+          } else if (route.name === 'Internship') {
+            iconName = focused
+              ? 'card-account-details'
+              : 'card-account-details-outline';
           }
           // You can return any component that you like here!
+          if (route.name === 'Internship') {
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={ICON_SIZE}
+                color={color}
+              />
+            );
+          }
           return <Ionicons name={iconName} size={ICON_SIZE} color={color} />;
         },
       })}
@@ -63,6 +78,7 @@ const TabScreens = () => {
       <Tab.Screen name="Hackathons" component={Hackathon} />
       <Tab.Screen name="Workshops" component={Workshop} />
       <Tab.Screen name="Projects" component={Projects} />
+      <Tab.Screen name="Internship" component={Internship} />
     </Tab.Navigator>
   );
 };

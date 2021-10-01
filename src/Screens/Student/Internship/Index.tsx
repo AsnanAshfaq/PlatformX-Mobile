@@ -8,7 +8,7 @@ import {
   RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import HackathonCard from '../../../Components/StudentHackathonCard';
+import HackathonCard from '../../../Components/OrganizationHackathonCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
@@ -20,8 +20,8 @@ type props = {
   navigation: any;
 };
 
-const Hackathons: FC<props> = ({navigation}) => {
-  const [Hackathon, setHackathons] = useState([]);
+const Internship: FC<props> = ({navigation}) => {
+  const [Internships, setInterships] = useState([]);
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   const [{theme}, dispatch] = useStateValue();
@@ -34,16 +34,18 @@ const Hackathons: FC<props> = ({navigation}) => {
   });
 
   const getData = async () => {
-    axios
-      .get('/api/hackathons/')
-      .then(response => {
-        setHackathons(response.data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setIsLoading(false);
-        console.log('Error is', error);
-      });
+    // axios
+    //   .get('/api/hackathon/')
+    //   .then(response => {
+    //     setHackathons(response.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch(error => {
+    //     setIsLoading(false);
+    //     console.log('Error is', error);
+    //   });
+    setIsLoading(false);
+    console.log('Getting data for Internships');
   };
 
   const onRefresh = () => {
@@ -68,7 +70,7 @@ const Hackathons: FC<props> = ({navigation}) => {
     });
     try {
       axios.get(`/api/hackathon/search/?q=${query}`).then(response => {
-        setHackathons(response.data);
+        setInterships(response.data);
         setIsLoading(false);
         setSearching(props => {
           return {
@@ -88,40 +90,6 @@ const Hackathons: FC<props> = ({navigation}) => {
     }
   };
 
-  const applyFilters = (
-    filter: Array<{subtag: Array<string>; tag: string}>,
-  ) => {
-    // make query string to be included in api call
-    let filterQuery = '';
-    // only if filter is not empty
-    if (filter.length > 0) {
-      for (let i = 0; i < filter.length; i++) {
-        // get tag
-        const tag = filter[i].tag.toLowerCase();
-        // get subtags
-        filter[i].subtag.forEach(subtag => {
-          // add tag and subtag in filter query string if subtag is not empty
-          if (subtag !== '') {
-            if (filterQuery === '') {
-              filterQuery += `${tag}=${subtag.toLowerCase()}`;
-            } else {
-              // append & if filter query is not empty
-              filterQuery += `&${tag}=${subtag.toLowerCase()}`;
-            }
-          }
-        });
-      }
-    }
-    if (filterQuery !== '') {
-      // call the api if query is not empty
-      try {
-        axios
-          .get(`/api/hackathon/search/?q=${filterQuery}`)
-          .then(response => {});
-      } catch (error) {}
-    }
-  };
-
   useEffect(() => {
     getData();
   }, [IsLoading]);
@@ -135,7 +103,7 @@ const Hackathons: FC<props> = ({navigation}) => {
         },
       ]}>
       <CustomHeader
-        title={'Hackathons'}
+        title={'Internships'}
         navigation={navigation}
         drawer
         chat
@@ -144,10 +112,9 @@ const Hackathons: FC<props> = ({navigation}) => {
 
       {!IsLoading && (
         <CustomSearch
-          placeholder={'Search hackathons'}
-          showFilterIcon={true}
+          placeholder={'Search internships'}
           handleSearch={handleSearch}
-          applyFilters={applyFilters}
+          showFilterIcon={false}
         />
       )}
 
@@ -155,10 +122,10 @@ const Hackathons: FC<props> = ({navigation}) => {
         <>
           <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
-      ) : Hackathon.length > 0 ? (
+      ) : Internships.length > 0 ? (
         <>
           <FlatList
-            data={Hackathon}
+            data={Internships}
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: hackathon, index}: any) => {
@@ -184,12 +151,12 @@ const Hackathons: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
         </>
-      ) : !IsLoading && Hackathon.length === 0 ? (
+      ) : !IsLoading && Internships.length === 0 ? (
         <View style={styles.center}>
           <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
-            {Searching.query !== '' && Hackathon.length === 0
+            {Searching.query !== '' && Internships.length === 0
               ? `No result Found for ${Searching.query}`
-              : 'No hackathons yet'}
+              : 'No internships yet'}
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
             <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
@@ -221,4 +188,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Hackathons;
+export default Internship;

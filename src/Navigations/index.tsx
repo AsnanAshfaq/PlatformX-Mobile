@@ -13,7 +13,7 @@ import Chat from './Student/Chat';
 import Notification from './Student/Notification';
 import Settings from './Student/Settings';
 import ViewHackathon from '../Screens/Student/Hackathon/ViewHackathon';
-
+import RegisterHackathon from '../Screens/Student/Hackathon/Register';
 // declaring navigators
 const Stack = createStackNavigator();
 
@@ -72,10 +72,10 @@ const Navigation: FC = () => {
             {/* <Stack.Screen name="Settings" component={Settings} /> */}
 
             <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
-            {/* <Stack.Screen
+            <Stack.Screen
               name="Register_Hackathon"
               component={RegisterHackathon}
-            /> */}
+            />
           </>
         ) : (
           <>
