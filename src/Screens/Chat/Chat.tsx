@@ -70,20 +70,25 @@ const Chat: FC<props> = ({navigation, route}) => {
 
   socket.onmessage = function (e) {
     const response = JSON.parse(e.data);
+    console.log('Response is', response);
 
+    const created_at =
+      response.created_at.slice(0, 10) +
+      'T' +
+      response.created_at.slice(11, response.created_at.length);
     setMessages(prev => [
+      ...prev,
       {
         _id: response.id,
         text: response.message,
-        createdAt: response.created_at,
+        createdAt: created_at,
         user: {
-          _id: response.user_name,
+          _id: response.user_id,
           name: response.user_name,
           avatar: BASE_URL + response.profile_image,
         },
         sent: true,
       },
-      ...prev,
     ]);
   };
 
@@ -146,9 +151,9 @@ const Chat: FC<props> = ({navigation, route}) => {
         back
         onBackPress={() => {
           // close the socket connection
-          socket.close = function () {
-            console.log('Closing socket connection');
-          };
+          // socket.close = function () {
+          //   console.log('Closing socket connection');
+          // };
           navigation.goBack();
         }}
       />
@@ -159,10 +164,11 @@ const Chat: FC<props> = ({navigation, route}) => {
         <GiftedChat
           messages={Messages}
           user={{
-            _id: state.user.userName,
+            _id: '14d039e0-6618-4430-af10-329b62b814fd',
             name: state.user.userName,
           }}
           // onSend={message => onSend(message)}
+          inverted={false}
           scrollToBottom
           alignTop
           alwaysShowSend

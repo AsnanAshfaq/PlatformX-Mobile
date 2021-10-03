@@ -43,7 +43,6 @@ const Navigation: FC = () => {
   const {theme} = state;
   const {userType} = state;
 
-  console.log(userType);
   return (
     <NavigationContainer
       theme={{
