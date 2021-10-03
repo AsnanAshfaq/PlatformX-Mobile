@@ -37,10 +37,9 @@ const Chat: FC<props> = ({navigation}) => {
 
   const getChatList = async () => {
     try {
-      axios.get('/chat/list/').then(response => {
-        setChatList(response.data);
-        setIsLoading(false);
-      });
+      const response = await axios.get('/chat/list/');
+      setChatList(response.data);
+      setIsLoading(false);
     } catch (error: any) {
       ToastAndroid.show(error.data.response.error, 1500);
     }
@@ -99,12 +98,7 @@ const Chat: FC<props> = ({navigation}) => {
           }>
           <>
             {ChatList.map((chat: any) => (
-              <ChatCard
-                chat={chat}
-                navigation={navigation}
-                key={chat.id}
-                onPress={e => navigation.navigate('ChatScreen')}
-              />
+              <ChatCard chat={chat} navigation={navigation} key={chat.id} />
             ))}
           </>
         </ScrollView>

@@ -11,7 +11,6 @@ import {BASE_URL} from 'react-native-dotenv';
 type props = {
   navigation: any;
   chat: any;
-  onPress: (e: any) => void;
 };
 
 const MAX_TEXT_LENGTH = Width * 0.09;
@@ -19,10 +18,13 @@ const MAX_TEXT_LENGTH = Width * 0.09;
 //icon size
 const ICON_SIZE = Width * 0.07;
 
-const ChatCard: FC<props> = ({navigation, chat, onPress}) => {
+const ChatCard: FC<props> = ({navigation, chat}) => {
   const [ImageLoading, setImageLoading] = useState(true);
   const [state, dispatch] = useStateValue();
 
+  const onPress = () => {
+    navigation.navigate('ChatScreen', {username: chat.user.username});
+  };
   return (
     <TouchableOpacity onPress={onPress}>
       <View

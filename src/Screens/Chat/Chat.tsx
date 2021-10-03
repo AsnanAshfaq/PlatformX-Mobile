@@ -29,14 +29,19 @@ import {BASE_ADDRESS} from 'react-native-dotenv';
 import {useStateValue} from '../../Store/StateProvider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Sizes, Width} from '../../Constants/Size';
+import axios from '../../Utils/Axios';
+import Loading from '../../Components/Loading';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 type props = {
   navigation: any;
+  route: any;
 };
 
 const ICON_SIZE = Width * 0.07;
 
-const Chat: FC<props> = ({navigation}) => {
+const Chat: FC<props> = ({navigation, route}) => {
   const [Messages, setMessages] = useState<Array<any>>([]);
   const [isLoading, setisLoading] = useState(true);
   const [Input, setInput] = useState('');
@@ -45,9 +50,14 @@ const Chat: FC<props> = ({navigation}) => {
 
   const textInput = useRef<any>(null);
 
+  const {username} = route.params;
+
   const socket = useMemo(
-    () => new WebSocket(`ws://${BASE_ADDRESS}/ws/chat/cakemonster/testing/`),
-    [],
+    () =>
+      new WebSocket(
+        `ws://${BASE_ADDRESS}/ws/chat/${state.user.userName}/${username}/`,
+      ),
+    [state, username],
   );
 
   const onSend = message => {
@@ -69,7 +79,7 @@ const Chat: FC<props> = ({navigation}) => {
         user: {
           _id: response.user_name,
           name: response.user_name,
-          // avatar: 'https://placeimg.com/140/140/any',
+          avatar: BASE_URL + response.profile_image,
         },
         sent: true,
       },
@@ -84,6 +94,29 @@ const Chat: FC<props> = ({navigation}) => {
         textInput.current.blur();
       }
     });
+
+    // get data
+    const loadMessages = async () => {
+      const response = await axios.get(`/chat/messages/${username}`);
+      response.data.map(message => {
+        setMessages(prev => [
+          {
+            _id: message.id,
+            text: message.message,
+            createdAt: message.created_at,
+            user: {
+              _id: message.author.id,
+              name: message.username,
+              avatar: BASE_URL + message.author.profile_image.path,
+            },
+            sent: true,
+          },
+          ...prev,
+        ]);
+      });
+    };
+
+    loadMessages().then(() => setisLoading(false));
     socket.onopen = function () {
       console.log('Socket connection');
     };
@@ -109,7 +142,7 @@ const Chat: FC<props> = ({navigation}) => {
       {/* header  */}
       <CustomHeader
         navigation
-        title={'Angelic'}
+        title={username}
         back
         onBackPress={() => {
           // close the socket connection
@@ -120,87 +153,91 @@ const Chat: FC<props> = ({navigation}) => {
         }}
       />
 
-      <GiftedChat
-        messages={Messages}
-        user={{
-          _id: state.user.userName,
-          name: 'Angelic',
-        }}
-        // onSend={message => onSend(message)}
-        scrollToBottom
-        alignTop
-        alwaysShowSend
-        bottomOffset={10}
-        // keyboardShouldPersistTaps="never"
-        renderSend={props => {
-          return (
-            <Send
-              {...props}
-              containerStyle={styles.sendContainer}
-              onSend={message => onSend(message)}>
-              <TouchableOpacity
-                style={{
-                  paddingVertical: 20,
-                }}
-                onPress={e => onSend(Input.trim())}>
-                <Text
+      {isLoading ? (
+        <Loading size={'large'} color={state.theme.TEXT_COLOR} />
+      ) : (
+        <GiftedChat
+          messages={Messages}
+          user={{
+            _id: state.user.userName,
+            name: state.user.userName,
+          }}
+          // onSend={message => onSend(message)}
+          scrollToBottom
+          alignTop
+          alwaysShowSend
+          bottomOffset={10}
+          // keyboardShouldPersistTaps="never"
+          renderSend={props => {
+            return (
+              <Send
+                {...props}
+                containerStyle={styles.sendContainer}
+                onSend={message => onSend(message)}>
+                <TouchableOpacity
                   style={{
-                    color: state.theme.TOMATO_COLOR,
-                    fontSize: Sizes.normal,
-                  }}>
-                  Send
-                </Text>
-              </TouchableOpacity>
-            </Send>
-          );
-        }}
-        renderInputToolbar={props => (
-          <InputToolbar
-            {...props}
-            containerStyle={{
-              borderTopColor: state.theme.TOMATO_COLOR,
-              backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
-            }}
-          />
-        )}
-        renderComposer={() => {
-          return (
-            <View
-              style={[
-                styles.messageInputContainer,
-                {
-                  backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
-                },
-              ]}>
-              <TextInput
-                placeholder={'Type a message...'}
+                    paddingVertical: 20,
+                  }}
+                  onPress={e => onSend(Input.trim())}>
+                  <Text
+                    style={{
+                      color: state.theme.TOMATO_COLOR,
+                      fontSize: Sizes.normal,
+                    }}>
+                    Send
+                  </Text>
+                </TouchableOpacity>
+              </Send>
+            );
+          }}
+          renderInputToolbar={props => (
+            <InputToolbar
+              {...props}
+              containerStyle={{
+                borderTopColor: state.theme.TOMATO_COLOR,
+                backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
+              }}
+            />
+          )}
+          renderComposer={() => {
+            return (
+              <View
                 style={[
-                  styles.messageInputField,
+                  styles.messageInputContainer,
                   {
-                    borderColor: state.theme.TOMATO_COLOR,
-                    color: state.theme.TEXT_COLOR,
+                    backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
                   },
-                ]}
-                ref={textInput}
-                placeholderTextColor={state.theme.TEXT_COLOR}
-                value={Input}
-                onChangeText={setInput}
-                onFocus={e => {
-                  console.log('Text input focus');
-                  // Keyboard.addListener('keyboardWillShow', () =>
-                  //   console.log('Opening keyboard'),
-                  // );
-                }}
-                onBlur={e => console.log('text input  blur')}
-                multiline
-                // autoFocus={focusTextInput ? true : false}
-                scrollEnabled
-                showSoftInputOnFocus={true}
-              />
-            </View>
-          );
-        }}
-      />
+                ]}>
+                <TextInput
+                  placeholder={'Type a message...'}
+                  style={[
+                    styles.messageInputField,
+                    {
+                      borderColor: state.theme.TOMATO_COLOR,
+                      color: state.theme.TEXT_COLOR,
+                    },
+                  ]}
+                  ref={textInput}
+                  placeholderTextColor={state.theme.TEXT_COLOR}
+                  value={Input}
+                  onChangeText={setInput}
+                  onFocus={e => {
+                    console.log('Text input focus');
+                    // Keyboard.addListener('keyboardWillShow', () =>
+                    //   console.log('Opening keyboard'),
+                    // );
+                  }}
+                  onBlur={e => console.log('text input  blur')}
+                  multiline
+                  // autoFocus={focusTextInput ? true : false}
+                  scrollEnabled
+                  showSoftInputOnFocus={true}
+                />
+              </View>
+            );
+          }}
+        />
+      )}
     </View>
   );
 };
