@@ -86,7 +86,7 @@ const CustomHeader: FunctionComponent<props> = ({
           styles.RightIconContainer,
           {
             justifyContent: chat && bell ? 'center' : 'flex-end',
-            marginHorizontal: chat && bell ? 0 : 8,
+            marginHorizontal: chat && bell ? 0 : 10,
           },
         ]}>
         {chat && (

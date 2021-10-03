@@ -15,6 +15,7 @@ import {Sizes} from '../../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import FloatingActionButton from '../../../Components/FloatingActionButton';
 
 type props = {
   navigation: any;
@@ -105,30 +106,13 @@ const Projects: FC<props> = ({navigation}) => {
             contentOffset={{y: -300, x: 0}}
           />
           {/* floating action button  */}
-          <View
-            style={[
-              styles.floatingButtonContainer,
-              {
-                backgroundColor: theme.TOMATO_COLOR,
-              },
-            ]}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Create_Edit_Post', {
-                  screen: 'Create',
-                })
-              }>
-              <Text
-                style={[
-                  styles.plusText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <FloatingActionButton
+            onPress={() =>
+              navigation.navigate('Create_Edit_Post', {
+                screen: 'Create',
+              })
+            }
+          />
         </>
       ) : !IsLoading ? (
         <View style={styles.center}>

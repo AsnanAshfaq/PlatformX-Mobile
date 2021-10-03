@@ -8,12 +8,15 @@ import DrawerScreens from './Drawer';
 // other imports
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 import {useStateValue} from '../Store/StateProvider';
-import Create_EditPost from '../Screens/Student/Post/Create_EditPost';
+import Create_EditPost from '../Screens/Student/Post/CreateEdit';
 import Chat from './Student/Chat';
 import Notification from './Student/Notification';
 import Settings from './Student/Settings';
-import ViewHackathon from '../Screens/Student/Hackathon/ViewHackathon';
+import ViewHackathon from '../Screens/Student/Hackathon/View';
 import RegisterHackathon from '../Screens/Student/Hackathon/Register';
+import CreateEditHackathon from '../Screens/Organization/Hackathon/CreateEdit';
+import StudentScreens from './Student/Index';
+import OrganizationScreens from './Organization/Index';
 // declaring navigators
 const Stack = createStackNavigator();
 
@@ -38,7 +41,9 @@ const Navigation: FC = () => {
   const [state, dispatch] = useStateValue();
   const {isSignedIn} = state;
   const {theme} = state;
+  const {userType} = state;
 
+  console.log(userType);
   return (
     <NavigationContainer
       theme={{
@@ -65,17 +70,16 @@ const Navigation: FC = () => {
         }}>
         {isSignedIn ? (
           <>
-            <Stack.Screen name="Main" component={DrawerScreens} />
-            <Stack.Screen name="Create_Edit_Post" component={Create_EditPost} />
-            <Stack.Screen name="Chat" component={Chat} />
-            {/* <Stack.Screen name="Notification" component={Notification} /> */}
-            {/* <Stack.Screen name="Settings" component={Settings} /> */}
-
-            <Stack.Screen name="View_Hackathon" component={ViewHackathon} />
-            <Stack.Screen
-              name="Register_Hackathon"
-              component={RegisterHackathon}
-            />
+            {userType === 'student' ? (
+              <Stack.Screen name={'Student'} component={StudentScreens} />
+            ) : userType === 'organization' ? (
+              <Stack.Screen
+                name={'organization'}
+                component={OrganizationScreens}
+              />
+            ) : (
+              <Stack.Screen name="Auth" component={AuthScreens} />
+            )}
           </>
         ) : (
           <>

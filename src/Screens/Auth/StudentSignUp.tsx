@@ -44,12 +44,12 @@ const SignUp: FC<props> = ({navigation}) => {
   } = FormHandlers();
 
   const [Registration, setRegistration] = useState({
-    first_name: {value: 'Asnan', error: ''},
-    last_name: {value: 'Ashfaq', error: ''},
-    username: {value: 'shanay_asnan', error: ''},
-    email: {value: 'shanay@gmail.com', error: ''},
-    password: {value: 'asnanashfaq', error: ''},
-    confirm_password: {value: 'asnanashfaq', error: ''},
+    first_name: {value: '', error: ''},
+    last_name: {value: '', error: ''},
+    username: {value: '', error: ''},
+    email: {value: '', error: ''},
+    password: {value: '', error: ''},
+    confirm_password: {value: '', error: ''},
   });
 
   const [isLoading, setIsLoading] = useState(false);

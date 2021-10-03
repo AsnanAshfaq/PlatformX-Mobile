@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -66,7 +66,7 @@ const StudentDrawer: FC<props> = ({navigation}) => {
       id: 3,
       label: 'Settings',
       icon_name: 'ios-settings-sharp',
-      onPress: () => console.log('Pressed on Settings'),
+      onPress: () => navigation.navigate('Settings'),
     },
     {
       id: 4,
@@ -78,6 +78,13 @@ const StudentDrawer: FC<props> = ({navigation}) => {
       },
     },
   ];
+
+  useEffect(() => {
+    return () => {
+      setLoadProfileImage(false);
+      setSignOutModal(false);
+    };
+  }, []);
   return (
     <>
       {/* profile section  */}
@@ -170,6 +177,13 @@ const OrganizationDrawer: FC<props> = ({navigation}) => {
       },
     },
   ];
+
+  useEffect(() => {
+    return () => {
+      setLoadProfileImage(false);
+      setSignOutModal(false);
+    };
+  }, []);
 
   return (
     <>

@@ -16,6 +16,7 @@ import {ToastAndroid} from 'react-native';
 import WorkshopCard from '../../../Components/WorkshopCard';
 import WorkshopSkeleton from '../../../Skeleton/WorkshopCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import FloatingActionButton from '../../../Components/FloatingActionButton';
 
 type props = {
   navigation: any;
@@ -187,30 +188,13 @@ const Workshop: FC<props> = ({navigation}) => {
             contentOffset={{y: -300, x: 0}}
           />
           {/* floating action button  */}
-          <View
-            style={[
-              styles.floatingButtonContainer,
-              {
-                backgroundColor: theme.TOMATO_COLOR,
-              },
-            ]}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Create_Edit_Post', {
-                  screen: 'Create',
-                })
-              }>
-              <Text
-                style={[
-                  styles.plusText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <FloatingActionButton
+            onPress={() =>
+              navigation.navigate('Create_Edit_Post', {
+                screen: 'Create',
+              })
+            }
+          />
         </>
       ) : !IsLoading && Workshops.length === 0 ? (
         <View style={styles.center}>

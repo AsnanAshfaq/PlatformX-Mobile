@@ -20,34 +20,6 @@ import Axios from '../Utils/Axios';
 
 const ICON_SIZE = Width * 0.07;
 
-type Props = {
-  name: string;
-  label: string | number;
-};
-
-const HackathonCardIcons: FC<Props> = ({name, label}) => {
-  const [{theme}, dispatch] = useStateValue();
-
-  return (
-    <View style={{flex: 1, flexDirection: 'row'}}>
-      <Ionicons
-        name={name}
-        size={ICON_SIZE}
-        color={theme.TAB_BAR_ACTIVE_COLOR}
-      />
-      <Text
-        style={[
-          styles.iconText,
-          {
-            color: theme.TEXT_COLOR,
-          },
-        ]}>
-        {label}
-      </Text>
-    </View>
-  );
-};
-
 type props = {
   navigation: any;
   hackathonDetail: any;

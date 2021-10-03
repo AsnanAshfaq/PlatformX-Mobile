@@ -3,7 +3,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Hackathon from '../../Screens/Organization/Hackathon/Index';
 import Workshop from '../../Screens/Organization/Workshop/Index';
-import Projects from '../../Screens/Organization/Project/Index';
+import Project from '../../Screens/Organization/Project/Index';
 import Internship from '../../Screens/Organization/Internship/Index';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Width} from '../../Constants/Size';
@@ -62,7 +62,7 @@ const TabScreens = () => {
       }}>
       <Tab.Screen name="Hackathons" component={Hackathon} />
       <Tab.Screen name="Workshops" component={Workshop} />
-      <Tab.Screen name="Projects" component={Projects} />
+      <Tab.Screen name="Projects" component={Project} />
       <Tab.Screen name="Internships" component={Internship} />
     </Tab.Navigator>
   );

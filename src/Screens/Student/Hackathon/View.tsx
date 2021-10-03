@@ -28,7 +28,7 @@ const Prize: FC<prize> = ({prize}) => {
       {/* badge container  */}
       <View style={styles.prizeBadgeContainer}>
         <Image
-          source={require('../../../assets/images/badge.png')}
+          source={require('../../../../assets/images/badge.png')}
           style={{width: Width * 0.15, height: Width * 0.15}}
         />
       </View>

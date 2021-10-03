@@ -1,11 +1,22 @@
-import React, {FC, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, RefreshControl} from 'react-native';
+import React, {FC, useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  RefreshControl,
+  ToastAndroid,
+  TouchableOpacity,
+} from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import ChatCard from './ChatCard';
 import {chatData} from '../../Constants/sample';
 import {darkColors} from '../../Constants/Colors';
 import {Sizes} from '../../Constants/Size';
 import {useStateValue} from '../../Store/StateProvider';
+import axios from '../../Utils/Axios';
+import CustomSearch from '../../Components/Search';
+import PostSkeleton from '../../Skeleton/PostCardSkeleton';
 
 type props = {
   navigation: any;
@@ -13,15 +24,44 @@ type props = {
 
 const Chat: FC<props> = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
-  const [state, dispatch] = useStateValue();
+  const [ChatList, setChatList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [{theme}, dispatch] = useStateValue();
+  const [Searching, setSearching] = useState<{
+    isSearching: boolean;
+    query: string;
+  }>({
+    isSearching: false,
+    query: '',
+  });
+
+  const getChatList = async () => {
+    try {
+      axios.get('/chat/list/').then(response => {
+        setChatList(response.data);
+        setIsLoading(false);
+      });
+    } catch (error: any) {
+      ToastAndroid.show(error.data.response.error, 1500);
+    }
+  };
 
   const onRefresh = () => {
     setRefreshing(true);
-
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
+    getChatList().then(() => setRefreshing(false));
   };
+
+  const handleSearch = () => {
+    console.log('Handling search');
+  };
+
+  useEffect(() => {
+    getChatList();
+    return () => {
+      setIsLoading(true);
+      setChatList([]);
+    };
+  }, []);
   return (
     <View style={styles.parent}>
       <CustomHeader
@@ -30,29 +70,70 @@ const Chat: FC<props> = ({navigation}) => {
         back
         onBackPress={() => navigation.goBack()}
       />
-      <ScrollView
-        style={styles.scrollViewContainer}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[state.theme.TEXT_COLOR]}
-            progressBackgroundColor={state.theme.SHADOW_COLOR}
-            progressViewOffset={20}
-            size={Sizes.large}
-          />
-        }>
+
+      {!isLoading && (
+        <CustomSearch
+          placeholder={'Search chats'}
+          showFilterIcon={false}
+          handleSearch={handleSearch}
+        />
+      )}
+
+      {/* if searching  then show post skeleton without search skeleton*/}
+      {Searching.isSearching ? (
         <>
-          {chatData.map(chat => (
-            <ChatCard
-              chat={chat}
-              navigation={navigation}
-              key={chat.id}
-              onPress={e => navigation.navigate('ChatScreen')}
-            />
-          ))}
+          <PostSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
-      </ScrollView>
+      ) : ChatList.length > 0 ? (
+        <ScrollView
+          style={styles.scrollViewContainer}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[theme.TEXT_COLOR]}
+              progressBackgroundColor={theme.SHADOW_COLOR}
+              progressViewOffset={20}
+              size={Sizes.large}
+            />
+          }>
+          <>
+            {ChatList.map((chat: any) => (
+              <ChatCard
+                chat={chat}
+                navigation={navigation}
+                key={chat.id}
+                onPress={e => navigation.navigate('ChatScreen')}
+              />
+            ))}
+          </>
+        </ScrollView>
+      ) : !isLoading && ChatList.length === 0 ? (
+        <>
+          <View style={styles.center}>
+            <Text
+              style={[
+                styles.noMoreText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              {Searching.query !== '' && ChatList.length === 0
+                ? `No result Found for ${Searching.query}`
+                : 'No posts yet'}
+            </Text>
+            <TouchableOpacity onPress={() => setIsLoading(true)}>
+              <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
+                Refresh
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <PostSkeleton
+          showSearchSkeleton={!Searching.isSearching || refreshing}
+        />
+      )}
     </View>
   );
 };
@@ -65,5 +146,16 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flex: 1,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noMoreText: {
+    fontSize: Sizes.normal,
+  },
+  refreshText: {
+    fontSize: Sizes.normal,
   },
 });

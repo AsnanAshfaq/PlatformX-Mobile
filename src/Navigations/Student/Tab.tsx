@@ -36,7 +36,7 @@ const TabScreens = () => {
               : 'card-account-details-outline';
           }
           // You can return any component that you like here!
-          if (route.name === 'Internship') {
+          if (route.name === 'Internships') {
             return (
               <MaterialCommunityIcons
                 name={iconName}

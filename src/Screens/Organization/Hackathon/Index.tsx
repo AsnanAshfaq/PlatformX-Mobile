@@ -15,6 +15,7 @@ import axios from '../../../Utils/Axios';
 import {Sizes} from '../../../Constants/Size';
 import HackathonSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import FloatingActionButton from '../../../Components/FloatingActionButton';
 
 type props = {
   navigation: any;
@@ -143,30 +144,13 @@ const Hackathons: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
           {/* floating action button  */}
-          <View
-            style={[
-              styles.floatingButtonContainer,
-              {
-                backgroundColor: theme.TOMATO_COLOR,
-              },
-            ]}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Create_Edit_Post', {
-                  screen: 'Create',
-                })
-              }>
-              <Text
-                style={[
-                  styles.plusText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <FloatingActionButton
+            onPress={() => {
+              navigation.navigate('Create_Edit_Hackathon', {
+                screen: 'Create',
+              });
+            }}
+          />
         </>
       ) : !IsLoading && Hackathon.length === 0 ? (
         <View style={styles.center}>
