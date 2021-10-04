@@ -7,13 +7,13 @@ import {
   TouchableWithoutFeedback,
   ToastAndroid,
 } from 'react-native';
-import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomTextField from '../../Components/CustomTextField';
 import Loading from '../../Components/Loading';
 import FormHandlers from '../../Utils/FormHandler';
 import Axios from '../../Utils/Axios';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -28,7 +28,7 @@ const NewPassword: FC<props> = ({navigation, route}) => {
     confirmPassword: {value: '', error: ''},
   });
   const [isLoading, setisLoading] = useState(false);
-
+  const [{theme}, dispatch] = useStateValue();
   const resetPasword = () => {
     let isAllInputsValid = true;
     setisLoading(true);
@@ -128,20 +128,34 @@ const NewPassword: FC<props> = ({navigation, route}) => {
     }
   };
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       {/* Back button  */}
       <View style={styles.backContainer}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <FontAwesome
             name={'arrow-left'}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
             size={ICON_SIZE}
           />
         </TouchableWithoutFeedback>
       </View>
       {/* title  */}
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Create New Password</Text>
+        <Text
+          style={[
+            styles.titleText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          Create New Password
+        </Text>
       </View>
       <View style={styles.mainContainer}>
         <CustomTextField
@@ -186,22 +200,37 @@ const NewPassword: FC<props> = ({navigation, route}) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => resetPasword()}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            {
+              backgroundColor: theme.TOMATO_COLOR,
+            },
+          ]}
+          onPress={() => resetPasword()}>
           {isLoading ? (
-            <Loading
-              size={'small'}
-              color={darkColors.SCREEN_BACKGROUND_COLOR}
-            />
+            <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
           ) : (
-            <Text style={styles.buttonText}>
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
               {' '}
               {isLoading ? (
-                <Loading
-                  size={'small'}
-                  color={darkColors.SCREEN_BACKGROUND_COLOR}
-                />
+                <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
               ) : (
-                <Text style={styles.buttonText}>Reset Password Code</Text>
+                <Text
+                  style={[
+                    styles.buttonText,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Reset Password Code
+                </Text>
               )}
             </Text>
           )}
@@ -216,7 +245,6 @@ export default NewPassword;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   backContainer: {
     paddingVertical: (Height * 0.09) / 4,
@@ -230,7 +258,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.06,
   },
   titleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large * 1.5,
   },
   mainContainer: {
@@ -242,10 +269,10 @@ const styles = StyleSheet.create({
   textContainer: {
     marginVertical: 20,
   },
-  simpleText: {
-    color: darkColors.TEXT_COLOR,
-    fontSize: Sizes.normal * 0.8,
-  },
+  // simpleText: {
+  //   // color: darkColors.TEXT_COLOR,
+  //   fontSize: Sizes.normal * 0.8,
+  // },
   buttonContainer: {
     flex: 0.2,
     justifyContent: 'center',
@@ -255,7 +282,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   button: {
-    backgroundColor: darkColors.TOMATO_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
@@ -266,7 +292,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
 });

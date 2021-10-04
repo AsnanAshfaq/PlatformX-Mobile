@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {darkColors} from '../../Constants/Colors';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomTextField from '../../Components/CustomTextField';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -22,6 +22,7 @@ const ICON_SIZE = Width * 0.07;
 const CodeConfirmation: FC<props> = ({navigation, route}) => {
   const [code, setcode] = useState<number>(route.params.otp);
   const [Input, setInput] = useState<number>();
+  const [{theme}, dispatch] = useStateValue();
 
   const [countDown, setcountDown] = useState<number>(60);
 
@@ -50,20 +51,34 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
     });
   };
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       {/* Back button  */}
       <View style={styles.backContainer}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <FontAwesome
             name={'arrow-left'}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
             size={ICON_SIZE}
           />
         </TouchableWithoutFeedback>
       </View>
       {/* title  */}
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Verify Code</Text>
+        <Text
+          style={[
+            styles.titleText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          Verify Code
+        </Text>
       </View>
       <View style={styles.mainContainer}>
         <CustomTextField
@@ -75,9 +90,21 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
           maxLength={6}
         />
         <View style={styles.noteContainer}>
-          <Text style={styles.simpleText}>
+          <Text
+            style={[
+              styles.simpleText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
             Enter the code you just recieved in your email.{'\n'}
-            <Text style={styles.noteText}>
+            <Text
+              style={[
+                styles.noteText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
               Note: The code is valid only for a short time (60 seconds)
             </Text>
           </Text>
@@ -85,25 +112,42 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
       </View>
       {countDown !== 1 ? (
         <View style={styles.countDownContainer}>
-          <Text style={styles.simpleText}>
+          <Text
+            style={[
+              styles.simpleText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
             Time left{' '}
-            <Text style={{color: darkColors.TOMATO_COLOR}}> {countDown}</Text>
+            <Text style={{color: theme.TOMATO_COLOR}}> {countDown}</Text>
           </Text>
         </View>
       ) : (
         <View style={styles.countDownContainer}>
-          <Text style={{color: darkColors.TOMATO_COLOR}}>
-            Code has been expired
-          </Text>
+          <Text style={{color: theme.TOMATO_COLOR}}>Code has been expired</Text>
         </View>
       )}
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[
+            styles.button,
+            {
+              backgroundColor: theme.TOMATO_COLOR,
+            },
+          ]}
           onPress={() => verifyCode()}
           disabled={countDown === 1 ? true : false}>
-          <Text style={styles.buttonText}>Verify Code</Text>
+          <Text
+            style={[
+              styles.buttonText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            Verify Code
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -115,7 +159,6 @@ export default CodeConfirmation;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   backContainer: {
     paddingVertical: (Height * 0.09) / 4,
@@ -129,7 +172,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.06,
   },
   titleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large * 1.5,
   },
   mainContainer: {
@@ -142,11 +184,9 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   simpleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.8,
   },
   noteText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.small,
   },
   countDownContainer: {},
@@ -159,7 +199,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   button: {
-    backgroundColor: darkColors.TOMATO_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
@@ -170,7 +209,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
 });

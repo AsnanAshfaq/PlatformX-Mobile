@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontSize: Sizes.large * 2,
-    fontFamily: 'Comfortaa-SemiBold',
+    fontFamily: 'Agustina-Demo',
   },
   loadingContainer: {
     flex: 0.1,

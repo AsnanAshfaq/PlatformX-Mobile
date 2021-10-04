@@ -32,7 +32,7 @@ const StudentDrawerScreens = () => {
         name="Student_Profile_Home"
         component={StudentProfileScreens}
       />
-      {/* <Drawer.Screen name="Student_Activites" component={Activities} /> */}
+      <Drawer.Screen name="Student_Activites" component={Activities} />
     </Drawer.Navigator>
   );
 };

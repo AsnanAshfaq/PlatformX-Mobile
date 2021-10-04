@@ -371,7 +371,9 @@ const StudentProfile: FC<props> = ({navigation}) => {
               styles.viewButtonContainer,
               {backgroundColor: state.theme.SHADOW_COLOR},
             ]}
-            onPress={() => navigation.navigate('Edit_Profile')}>
+            onPress={() =>
+              navigation.navigate('Edit_Profile', {user: ProfileData})
+            }>
             <Text
               style={[
                 styles.viewButtonText,

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {darkColors} from '../Constants/Colors';
+import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
 type unFollow = {
   id: string;
@@ -23,6 +23,7 @@ type props = {
   heading: string;
 };
 const FilterModal: FC<props> = ({toggleModal, unFollow, heading}) => {
+  const [{theme}, dispatch] = useStateValue();
   const unFollowUser = () => {
     console.log('Un following user', unFollow.id);
     // setshowModal(false);
@@ -54,7 +55,12 @@ const FilterModal: FC<props> = ({toggleModal, unFollow, heading}) => {
     //   }}>
     <Modal
       isVisible={unFollow.show}
-      style={styles.Modalparent}
+      style={[
+        styles.Modalparent,
+        {
+          backgroundColor: theme.BACKGROUND_COLOR,
+        },
+      ]}
       animationIn={'slideInUp'}
       animationInTiming={300}
       animationOut={'slideOutDown'}
@@ -68,21 +74,65 @@ const FilterModal: FC<props> = ({toggleModal, unFollow, heading}) => {
       <>
         {/* heading container  */}
         <View style={styles.headingContainer}>
-          <Text style={styles.heading}>{heading} </Text>
+          <Text
+            style={[
+              styles.heading,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {heading}{' '}
+          </Text>
         </View>
         {/* description container  */}
         <View style={styles.descriptionContainer}>
-          <Text style={styles.descriptionText}>{unFollow.description} </Text>
+          <Text
+            style={[
+              styles.descriptionText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {unFollow.description}{' '}
+          </Text>
         </View>
         {/*  buttons  */}
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity onPress={toggleModal} style={styles.Button}>
-            <Text style={styles.buttonText}>Cancel</Text>
+          <TouchableOpacity
+            onPress={toggleModal}
+            style={[
+              styles.Button,
+              {
+                backgroundColor: theme.BADGE_COLOR,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  color: theme.BACKGROUND_COLOR,
+                },
+              ]}>
+              Cancel
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => unFollowUser()}
-            style={styles.Button}>
-            <Text style={styles.buttonText}>Unfollow</Text>
+            style={[
+              styles.Button,
+              {
+                backgroundColor: theme.BADGE_COLOR,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  color: theme.BACKGROUND_COLOR,
+                },
+              ]}>
+              Unfollow
+            </Text>
           </TouchableOpacity>
         </View>
       </>
@@ -95,7 +145,6 @@ const styles = StyleSheet.create({
   Modalparent: {
     // flex: 1,
     maxHeight: Height * 0.3,
-    backgroundColor: darkColors.BACKGROUND_COLOR,
     borderRadius: 20,
     borderWidth: 2,
     // justifyContent: 'center',
@@ -113,7 +162,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: Sizes.large * 1.3,
-    color: darkColors.TEXT_COLOR,
   },
   descriptionContainer: {
     flex: 0.5,
@@ -123,7 +171,6 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: Sizes.normal,
-    color: darkColors.TEXT_COLOR,
   },
   scroll: {
     marginHorizontal: 20,
@@ -148,11 +195,9 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkColors.BADGE_COLOR,
     borderRadius: 10,
   },
   buttonText: {
-    color: darkColors.BACKGROUND_COLOR,
     fontSize: Sizes.normal,
   },
 });
