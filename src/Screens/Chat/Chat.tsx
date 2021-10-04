@@ -23,7 +23,6 @@ import {
   Message,
 } from 'react-native-gifted-chat';
 import CustomHeader from '../../Components/CustomHeader';
-import {darkColors} from '../../Constants/Colors';
 //@ts-ignore
 import {BASE_ADDRESS} from 'react-native-dotenv';
 import {useStateValue} from '../../Store/StateProvider';

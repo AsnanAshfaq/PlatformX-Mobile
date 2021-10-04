@@ -22,11 +22,11 @@ import CustomDropDown from '../../../Components/CustomDropDown';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {POST_TYPE} from '../../../Constants/sample';
 import {Height, Sizes, Width} from '../../../Constants/Size';
-import {darkColors} from '../../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Axios from '../../../Utils/Axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
+import {useStateValue} from '../../../Store/StateProvider';
 
 type base = {
   navigation: any;
@@ -43,7 +43,7 @@ const ICON_SIZE = Width * 0.07;
 
 const Create_Edit: FC<base> = ({navigation, route}) => {
   const {screen}: {screen: screen} = route.params;
-
+  const [{theme}, dispatch] = useStateValue();
   var data: props = {
     id: '', // id of the post to be edited
     text: '',
@@ -158,7 +158,13 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       <CustomHeader
         navigation={navigation}
         title={`${screen} Post`}
@@ -170,7 +176,14 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
         <View style={styles.textInputContainer}>
           <TextInput
             ref={textInputRef}
-            style={styles.text}
+            style={[
+              styles.text,
+              {
+                backgroundColor: theme.LIGHT_BACKGROUND,
+                borderColor: theme.LIGHT_BACKGROUND,
+                color: theme.TEXT_COLOR,
+              },
+            ]}
             onChangeText={text =>
               setPost(prev => {
                 return {
@@ -182,7 +195,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
             value={Post.text}
             multiline
             placeholder={Post.textPlacholder}
-            placeholderTextColor={darkColors.TEXT_COLOR}
+            placeholderTextColor={theme.TEXT_COLOR}
             // onFocus={() => {
             //   if (textInputRef && textInputRef.current) {
             //     setPost(prev => {
@@ -224,7 +237,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
                       <Ionicons
                         name={'close-circle-outline'}
                         size={ICON_SIZE}
-                        color={darkColors.ICON_COLOR}
+                        color={theme.ICON_COLOR}
                       />
                     </TouchableOpacity>
                   </View>
@@ -240,18 +253,39 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
             <Ionicons
               name={'add-circle-outline'}
               size={ICON_SIZE * 2.7}
-              color={darkColors.SHADOW_COLOR}
+              color={theme.SHADOW_COLOR}
             />
           </TouchableOpacity>
-          <Text style={styles.addImageText}>Add Image</Text>
+          <Text
+            style={[
+              styles.addImageText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            Add Image
+          </Text>
         </View>
 
         {/* post button view  */}
         <View style={styles.postButtonContainer}>
           <TouchableOpacity
-            style={styles.postButton}
+            style={[
+              styles.postButton,
+              {
+                backgroundColor: theme.SHADOW_COLOR,
+              },
+            ]}
             onPress={() => handlePost(screen)}>
-            <Text style={styles.postButtonText}>Post</Text>
+            <Text
+              style={[
+                styles.postButtonText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Post
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -264,7 +298,6 @@ export default Create_Edit;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   textInputContainer: {
     marginVertical: 10,
@@ -273,13 +306,10 @@ const styles = StyleSheet.create({
   text: {
     width: Width * 0.9,
     marginHorizontal: Width * 0.01,
-    backgroundColor: darkColors.LIGHT_BACKGROUND,
     marginVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: darkColors.LIGHT_BACKGROUND,
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
   },
   addImageContainer: {
@@ -288,7 +318,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   addImageText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     fontFamily: 'ComicNeue-Light',
   },
@@ -311,11 +340,10 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 10,
   },
-  cross: {
-    color: darkColors.SHADOW_COLOR,
-    fontSize: Sizes.large * 1.2,
-    fontFamily: 'ComicNeue-Bold',
-  },
+  // cross: {
+  //   fontSize: Sizes.large * 1.2,
+  //   fontFamily: 'ComicNeue-Bold',
+  // },
   postButtonContainer: {
     marginHorizontal: Width * 0.04,
     marginVertical: 5,
@@ -324,7 +352,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   postButton: {
-    backgroundColor: darkColors.SHADOW_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
@@ -335,7 +362,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   postButtonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.1,
     paddingVertical: 2,
   },

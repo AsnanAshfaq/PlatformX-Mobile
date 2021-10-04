@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-// import {darkColors} from '../Constants/Colors';
 import {useStateValue} from '../Store/StateProvider';
 
 type props = {

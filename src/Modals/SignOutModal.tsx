@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
-// import {darkColors} from '../Constants/Colors';
 import Axios from '../Utils/Axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../src/Store/StateProvider';

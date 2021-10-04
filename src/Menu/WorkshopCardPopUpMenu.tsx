@@ -10,7 +10,6 @@ import {
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useStateValue} from '../Store/StateProvider';
-// import {darkColors} from '../Constants/Colors';
 
 const ICON_SIZE = Width * 0.07;
 

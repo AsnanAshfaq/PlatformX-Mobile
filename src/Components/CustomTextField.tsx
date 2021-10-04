@@ -1,6 +1,5 @@
 import React, {FC, useState, useEffect, useRef} from 'react';
 import {StyleSheet, Text, View, TextInput, Keyboard} from 'react-native';
-// import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';

@@ -371,7 +371,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
               styles.viewButtonContainer,
               {backgroundColor: state.theme.SHADOW_COLOR},
             ]}
-            onPress={() => navigation.navigate('View_Profile')}>
+            onPress={() => navigation.navigate('Edit_Profile')}>
             <Text
               style={[
                 styles.viewButtonText,
@@ -379,7 +379,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   color: state.theme.TEXT_COLOR,
                 },
               ]}>
-              View Profile
+              Edit Profile
             </Text>
           </TouchableOpacity>
           {/* activities button  */}

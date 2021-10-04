@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
-// import {darkColors} from '../Constants/Colors';
 import {useStateValue} from '../Store/StateProvider';
 
 type props = {

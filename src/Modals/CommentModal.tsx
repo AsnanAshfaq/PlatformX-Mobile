@@ -20,12 +20,12 @@ import Modal from 'react-native-modal';
 
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE} from '../Constants/sample';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from '../Utils/Axios';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
+import {useStateValue} from '../Store/StateProvider';
 
 type Props = {
   comment: any;
@@ -34,9 +34,17 @@ type Props = {
 
 const CommentView: FC<Props> = ({comment, index}) => {
   const [ImageLoading, setImageLoading] = useState(true);
-
+  const [{theme}, dispatch] = useStateValue();
   return (
-    <View style={[styles.commentContainer, styles.divider]} key={comment.id}>
+    <View
+      style={[
+        styles.commentContainer,
+        styles.divider,
+        {
+          borderBottomColor: theme.SHADOW_COLOR,
+        },
+      ]}
+      key={comment.id}>
       <View style={styles.commentImageContainer}>
         <Image
           source={{
@@ -49,7 +57,15 @@ const CommentView: FC<Props> = ({comment, index}) => {
         />
       </View>
       <View style={styles.commentTextContainer}>
-        <Text style={styles.commentText}>{comment.text}</Text>
+        <Text
+          style={[
+            styles.commentText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {comment.text}
+        </Text>
       </View>
       <TouchableOpacity
         style={styles.commentVoteContainer}
@@ -58,12 +74,12 @@ const CommentView: FC<Props> = ({comment, index}) => {
         <Ionicons
           name={'arrow-down-outline'}
           size={ICON_SIZE * 0.85}
-          color={darkColors.GREEN_COLOR}
+          color={theme.GREEN_COLOR}
         />
         <Ionicons
           name={'arrow-up-outline'}
           size={ICON_SIZE * 0.85}
-          color={darkColors.RED_COLOR}
+          color={theme.RED_COLOR}
         />
       </TouchableOpacity>
     </View>
@@ -89,7 +105,7 @@ const CommentModal: FC<props> = ({
   const [Input, setInput] = useState('');
   const textInput = useRef<any>(null);
   const [isCommentPosted, setisCommentPosted] = useState(false);
-
+  const [{theme}, dispatch] = useStateValue();
   const postComment = () => {
     console.log('Pressed on button');
     if (Input.trim() !== '') {
@@ -163,7 +179,12 @@ const CommentModal: FC<props> = ({
   return (
     <Modal
       isVisible={isShow}
-      style={styles.Modalparent}
+      style={[
+        styles.Modalparent,
+        {
+          backgroundColor: theme.BACKGROUND_COLOR,
+        },
+      ]}
       animationIn={'slideInUp'}
       animationInTiming={300}
       animationOut={'slideOutDown'}
@@ -189,8 +210,21 @@ const CommentModal: FC<props> = ({
       <>
         {Comment.length > 0 ? (
           <>
-            <View style={[styles.headingContainer, styles.divider]}>
-              <Text style={styles.heading}>
+            <View
+              style={[
+                styles.headingContainer,
+                styles.divider,
+                {
+                  borderBottomColor: theme.SHADOW_COLOR,
+                },
+              ]}>
+              <Text
+                style={[
+                  styles.heading,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
                 {' '}
                 {Comment.length > 1 ? 'Comments' : 'Comment'}
               </Text>
@@ -209,7 +243,15 @@ const CommentModal: FC<props> = ({
           </>
         ) : (
           <View style={styles.center}>
-            <Text style={styles.commentText}>No Comments yet </Text>
+            <Text
+              style={[
+                styles.commentText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              No Comments yet{' '}
+            </Text>
           </View>
         )}
 
@@ -218,12 +260,24 @@ const CommentModal: FC<props> = ({
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           // enabled
           style={styles.keyboardAvoidingView}>
-          <View style={styles.commentInputContainer}>
+          <View
+            style={[
+              styles.commentInputContainer,
+              {
+                backgroundColor: theme.SHADOW_COLOR,
+              },
+            ]}>
             <TextInput
               placeholder={'Write your comment here'}
-              style={styles.commentInputField}
+              style={[
+                styles.commentInputField,
+                {
+                  borderColor: theme.TOMATO_COLOR,
+                  color: theme.TEXT_COLOR,
+                },
+              ]}
               ref={textInput}
-              placeholderTextColor={darkColors.TEXT_COLOR}
+              placeholderTextColor={theme.TEXT_COLOR}
               value={Input.trim() === '' ? '' : Input}
               onChangeText={setInput}
               // onFocus={e => {
@@ -243,7 +297,7 @@ const CommentModal: FC<props> = ({
                 <Ionicons
                   name={'send-outline'}
                   size={ICON_SIZE}
-                  color={darkColors.TOMATO_COLOR}
+                  color={theme.TOMATO_COLOR}
                 />
               </TouchableOpacity>
             </View>
@@ -256,7 +310,6 @@ const CommentModal: FC<props> = ({
 
 const styles = StyleSheet.create({
   Modalparent: {
-    backgroundColor: darkColors.BACKGROUND_COLOR,
     justifyContent: 'flex-end',
     margin: 0,
     marginTop: Height * 0.001,
@@ -277,7 +330,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: Sizes.normal * 1.2,
-    color: darkColors.TEXT_COLOR,
   },
   scroll: {
     // marginHorizontal: 20,
@@ -285,7 +337,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: darkColors.SHADOW_COLOR,
   },
 
   center: {
@@ -315,7 +366,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   commentText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.9,
   },
 
@@ -332,7 +382,6 @@ const styles = StyleSheet.create({
   commentInputContainer: {
     minHeight: Height * 0.09,
     maxHeight: Height * 0.15,
-    backgroundColor: darkColors.SHADOW_COLOR,
     flexDirection: 'row',
     padding: 0,
   },
@@ -343,8 +392,6 @@ const styles = StyleSheet.create({
     flex: 0.9,
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: darkColors.TOMATO_COLOR,
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   iconContainer: {

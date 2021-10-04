@@ -1,7 +1,6 @@
 import React, {FC, useState} from 'react';
 import {StyleSheet, Text, View, Switch} from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
-// import {darkColors} from '../../Constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

@@ -7,13 +7,13 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
-import {darkColors} from '../../Constants/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import CustomTextField from '../../Components/CustomTextField';
 import Axios from '../../Utils/Axios';
 import FormHandlers from '../../Utils/FormHandler';
 import Loading from '../../Components/Loading';
+import {useStateValue} from '../../Store/StateProvider';
 
 type props = {
   navigation: any;
@@ -27,7 +27,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
     error: '',
   });
   const [isLoading, setisLoading] = useState(false);
-
+  const [{theme}, dispatch] = useStateValue();
   // get some handlers
   const {isEmailValid, isEmpty} = FormHandlers();
 
@@ -88,20 +88,34 @@ const ResetPassword: FC<props> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       {/* Back button  */}
       <View style={styles.backContainer}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <FontAwesome
             name={'arrow-left'}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
             size={ICON_SIZE}
           />
         </TouchableWithoutFeedback>
       </View>
       {/* title  */}
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Reset Password</Text>
+        <Text
+          style={[
+            styles.titleText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          Reset Password
+        </Text>
       </View>
       <View style={styles.mainContainer}>
         <CustomTextField
@@ -120,21 +134,39 @@ const ResetPassword: FC<props> = ({navigation}) => {
           error={Email.error}
         />
         <View style={styles.textContainer}>
-          <Text style={styles.simpleText}>
+          <Text
+            style={[
+              styles.simpleText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
             Enter the email associated with your account and we'll send an email
             with a code to reset your password.
           </Text>
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => sendCode()}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            {
+              backgroundColor: theme.TOMATO_COLOR,
+            },
+          ]}
+          onPress={() => sendCode()}>
           {isLoading ? (
-            <Loading
-              size={'small'}
-              color={darkColors.SCREEN_BACKGROUND_COLOR}
-            />
+            <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
           ) : (
-            <Text style={styles.buttonText}>Send Code</Text>
+            <Text
+              style={[
+                styles.buttonText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Send Code
+            </Text>
           )}
         </TouchableOpacity>
       </View>
@@ -147,7 +179,6 @@ export default ResetPassword;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   backContainer: {
     paddingVertical: (Height * 0.09) / 4,
@@ -161,7 +192,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.06,
   },
   titleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large * 1.5,
   },
   mainContainer: {
@@ -174,7 +204,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   simpleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.8,
   },
   buttonContainer: {
@@ -186,7 +215,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   button: {
-    backgroundColor: darkColors.TOMATO_COLOR,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
@@ -197,7 +225,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
 });

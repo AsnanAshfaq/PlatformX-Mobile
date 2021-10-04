@@ -16,13 +16,14 @@ import {GREY_IMAGE, PROFILE_IMAGE} from '../../../Constants/sample';
 import {BASE_URL} from 'react-native-dotenv';
 import HackathonCardSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {Height, Sizes, Width} from '../../../Constants/Size';
-import {darkColors} from '../../../Constants/Colors';
 import {commaSeperator} from '../../../Utils/Numbers';
+import {useStateValue} from '../../../Store/StateProvider';
 
 type prize = {
   prize: any;
 };
 const Prize: FC<prize> = ({prize}) => {
+  const [{theme}, dispatch] = useStateValue();
   return (
     <View style={styles.prizeContainer}>
       {/* badge container  */}
@@ -33,9 +34,33 @@ const Prize: FC<prize> = ({prize}) => {
         />
       </View>
       <View style={styles.prizeDetailContainer}>
-        <Text style={styles.prizeTitleText}>{prize.title}</Text>
-        <Text style={styles.prizeValueText}>{commaSeperator(prize.value)}</Text>
-        <Text style={styles.prizeDescText}>{prize.description}</Text>
+        <Text
+          style={[
+            styles.prizeTitleText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {prize.title}
+        </Text>
+        <Text
+          style={[
+            styles.prizeValueText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {commaSeperator(prize.value)}
+        </Text>
+        <Text
+          style={[
+            styles.prizeDescText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {prize.description}
+        </Text>
       </View>
     </View>
   );
@@ -47,7 +72,7 @@ type Props = {
 // common view for showing judges and sponsors views
 const CommonView: FC<Props> = ({component, details}) => {
   const [ImageLoading, setImageLoading] = useState(true);
-
+  const [{theme}, dispatch] = useStateValue();
   return (
     <View style={styles.viewContainer}>
       <View style={styles.viewImageContainer}>
@@ -65,12 +90,36 @@ const CommonView: FC<Props> = ({component, details}) => {
         />
       </View>
       <View style={styles.viewTextContainer}>
-        <Text style={styles.viewNameText}>{details.name}</Text>
+        <Text
+          style={[
+            styles.viewNameText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {details.name}
+        </Text>
         {component === 'judges' && (
-          <Text style={styles.viewCompanyText}>{details.company}</Text>
+          <Text
+            style={[
+              styles.viewCompanyText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {details.company}
+          </Text>
         )}
         {component === 'sponsors' && (
-          <Text style={styles.sponsorURL}>{details.url}</Text>
+          <Text
+            style={[
+              styles.sponsorURL,
+              {
+                color: theme.TOMATO_COLOR,
+              },
+            ]}>
+            {details.url}
+          </Text>
         )}
       </View>
     </View>
@@ -89,6 +138,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
   const [BackgroundImageLoading, setBackgroundImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [Loading, setLoading] = useState(true);
+  const [{theme}, dispatch] = useStateValue();
 
   useEffect(() => {
     // fetch hackathon data
@@ -103,7 +153,13 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
 
   if (!Loading) {
     return (
-      <View style={styles.parent}>
+      <View
+        style={[
+          styles.parent,
+          {
+            backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+          },
+        ]}>
         <CustomHeader
           title={'Detail'}
           navigation={navigation}
@@ -138,21 +194,73 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
             />
           </View>
           <View style={{alignItems: 'center'}}>
-            <Text style={styles.titleText}>{HackathonData.title}</Text>
-            <Text style={styles.tagLineText}>{HackathonData.tag_line}</Text>
+            <Text
+              style={[
+                styles.titleText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              {HackathonData.title}
+            </Text>
+            <Text
+              style={[
+                styles.tagLineText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              {HackathonData.tag_line}
+            </Text>
           </View>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Description</Text>
+          <View
+            style={[
+              styles.labelContainer,
+              {
+                backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+                borderBottomColor: theme.SHADOW_COLOR,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Description
+            </Text>
           </View>
           <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionText}>
+            <Text
+              style={[
+                styles.descriptionText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
               {HackathonData.description}
             </Text>
           </View>
           {/* prizes  */}
 
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Prizes</Text>
+          <View
+            style={[
+              styles.labelContainer,
+              {
+                backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+                borderBottomColor: theme.SHADOW_COLOR,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Prizes
+            </Text>
           </View>
           <FlatList
             numColumns={2}
@@ -165,8 +273,23 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
 
           {/* judges  */}
           {HackathonData?.judges && (
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Judges</Text>
+            <View
+              style={[
+                styles.labelContainer,
+                {
+                  backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+                  borderBottomColor: theme.SHADOW_COLOR,
+                },
+              ]}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Judges
+              </Text>
             </View>
           )}
           {HackathonData?.judges &&
@@ -176,8 +299,23 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           {/* sponsors  */}
           {HackathonData?.sponsors && (
             <>
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>Sponsors</Text>
+              <View
+                style={[
+                  styles.labelContainer,
+                  {
+                    backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+                    borderBottomColor: theme.SHADOW_COLOR,
+                  },
+                ]}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Sponsors
+                </Text>
               </View>
               {HackathonData?.sponsors.map(sponsor => (
                 <CommonView
@@ -198,14 +336,27 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
         {/* join now  */}
         <View style={styles.joinNowButtonContainer}>
           <TouchableOpacity
-            style={styles.joinNowButton}
+            style={[
+              styles.joinNowButton,
+              {
+                backgroundColor: theme.TOMATO_COLOR,
+              },
+            ]}
             activeOpacity={0.5}
             onPress={() =>
               navigation.navigate('Register_Hackathon', {
                 ID: ID, // pass the hackathon data
               })
             }>
-            <Text style={styles.joinNowText}>Join Now </Text>
+            <Text
+              style={[
+                styles.joinNowText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Join Now{' '}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -213,7 +364,13 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
   }
 
   return (
-    <View style={styles.parent}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
       <CustomHeader
         title={'Detail'}
         navigation={navigation}
@@ -232,15 +389,12 @@ export default ViewHackathon;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
   },
   titleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.7,
     fontFamily: 'Raleway-Light',
   },
   tagLineText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.15,
     fontStyle: 'italic',
     // fontFamily: 'Raleway-Light',
@@ -250,7 +404,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   descriptionText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   prizeContainer: {
@@ -267,30 +420,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   prizeTitleText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.3,
     fontWeight: 'bold',
   },
   prizeValueText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.25,
   },
   prizeDescText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
   },
   labelContainer: {
-    backgroundColor: darkColors.SCREEN_BACKGROUND_COLOR,
     marginHorizontal: Width * 0.02,
     marginVertical: 10,
     width: Width * 0.95,
     padding: 5,
-    borderBottomColor: darkColors.SHADOW_COLOR,
     borderBottomWidth: 1,
   },
   label: {
     fontSize: Sizes.large * 1.3,
-    color: darkColors.TEXT_COLOR,
     // fontFamily: 'Cindyrella',
   },
   viewContainer: {
@@ -308,11 +455,9 @@ const styles = StyleSheet.create({
     flex: 0.67,
   },
   viewNameText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 1.3,
   },
   viewCompanyText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     // fontWeight: 'bold',
     fontStyle: 'italic',
@@ -327,12 +472,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sponsorURL: {
-    color: darkColors.TOMATO_COLOR,
     fontSize: Sizes.normal,
   },
   joinNowButtonContainer: {
     height: Width * 0.14,
-    // backgroundColor: darkColors.BACKGROUND_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
@@ -340,13 +483,11 @@ const styles = StyleSheet.create({
   joinNowButton: {
     width: Width * 0.9,
     height: Width * 0.12,
-    backgroundColor: darkColors.TOMATO_COLOR,
     justifyContent: 'center',
     borderRadius: 10,
     alignItems: 'center',
   },
   joinNowText: {
     fontSize: Sizes.large,
-    color: darkColors.TEXT_COLOR,
   },
 });

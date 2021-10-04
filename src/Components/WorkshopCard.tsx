@@ -8,7 +8,6 @@ import {
   Image,
   ToastAndroid,
 } from 'react-native';
-// import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 import {Height, Sizes, Width} from '../Constants/Size';
 import PopUpMenu from '../Menu/WorkshopCardPopUpMenu';

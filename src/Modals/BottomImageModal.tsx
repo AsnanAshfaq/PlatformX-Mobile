@@ -7,11 +7,11 @@ import {
   ToastAndroid,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from '../Utils/Axios';
+import {useStateValue} from '../Store/StateProvider';
 //@ts-ignore
 
 type props = {
@@ -33,6 +33,7 @@ const BottomImageModal: FC<props> = ({
   refresh,
   imageID,
 }) => {
+  const [{theme}, dispatch] = useStateValue();
   const handleOpenGallery = () => {
     //   toggle the modal first
     toggleModal();
@@ -118,7 +119,12 @@ const BottomImageModal: FC<props> = ({
   return (
     <Modal
       isVisible={isShow}
-      style={styles.Modalparent}
+      style={[
+        styles.Modalparent,
+        {
+          backgroundColor: theme.BACKGROUND_COLOR,
+        },
+      ]}
       animationIn={'slideInUp'}
       animationInTiming={300}
       animationOut={'slideOutDown'}
@@ -144,46 +150,88 @@ const BottomImageModal: FC<props> = ({
       <>
         <View style={styles.container}>
           <View style={styles.roundContainer}>
-            <View style={styles.iconContainer}>
+            <View
+              style={[
+                styles.iconContainer,
+                {
+                  borderColor: theme.TAB_BAR_ICON_COLOR,
+                },
+              ]}>
               <TouchableWithoutFeedback onPress={() => handleOpenGallery()}>
                 <Ionicons
                   name={'md-image-outline'}
                   size={ICON_SIZE}
-                  color={darkColors.ICON_COLOR}
+                  color={theme.ICON_COLOR}
                   style={styles.icon}
                 />
               </TouchableWithoutFeedback>
             </View>
-            <Text style={styles.text}>Open Gallery</Text>
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Open Gallery
+            </Text>
           </View>
           {isImageSet !== false && (
             <View style={styles.roundContainer}>
-              <View style={styles.iconContainer}>
+              <View
+                style={[
+                  styles.iconContainer,
+                  {
+                    borderColor: theme.TAB_BAR_ICON_COLOR,
+                  },
+                ]}>
                 <TouchableWithoutFeedback onPress={() => handleViewImage()}>
                   <Ionicons
                     name={'person'}
                     size={ICON_SIZE}
-                    color={darkColors.ICON_COLOR}
+                    color={theme.ICON_COLOR}
                     style={styles.icon}
                   />
                 </TouchableWithoutFeedback>
               </View>
-              <Text style={styles.text}>View Image</Text>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                View Image
+              </Text>
             </View>
           )}
           {isImageSet !== false && (
             <View style={styles.roundContainer}>
-              <View style={styles.iconContainer}>
+              <View
+                style={[
+                  styles.iconContainer,
+                  {
+                    borderColor: theme.TAB_BAR_ICON_COLOR,
+                  },
+                ]}>
                 <TouchableWithoutFeedback onPress={() => handleRemoveImage()}>
                   <Ionicons
                     name={'trash'}
                     size={ICON_SIZE}
-                    color={darkColors.ICON_COLOR}
+                    color={theme.ICON_COLOR}
                     style={styles.icon}
                   />
                 </TouchableWithoutFeedback>
               </View>
-              <Text style={styles.text}>Remove Image</Text>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Remove Image
+              </Text>
             </View>
           )}
         </View>
@@ -196,7 +244,6 @@ export default BottomImageModal;
 
 const styles = StyleSheet.create({
   Modalparent: {
-    backgroundColor: darkColors.BACKGROUND_COLOR,
     justifyContent: 'flex-end',
     margin: 0,
     marginTop: Height * 0.83,
@@ -224,11 +271,9 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     padding: 10,
     borderWidth: 2,
-    borderColor: darkColors.TAB_BAR_ICON_COLOR,
   },
   icon: {},
   text: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal * 0.8,
   },
 });

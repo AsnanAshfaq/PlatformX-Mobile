@@ -13,7 +13,6 @@ import axios from './src/Utils/Axios';
 import {MenuProvider} from 'react-native-popup-menu';
 import Splash from './src/Components/Splash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import {darkColors} from './src/Constants/Colors';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
@@ -79,7 +78,7 @@ const App = () => {
     getUserType();
   }, [dispatch]);
 
-  if (!Loading)
+  if (!Loading) {
     return (
       <MenuProvider
         customStyles={{
@@ -90,6 +89,7 @@ const App = () => {
         <Navigation />
       </MenuProvider>
     );
+  }
   return <Splash />;
 };
 

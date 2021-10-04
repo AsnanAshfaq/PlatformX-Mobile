@@ -225,26 +225,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // floatingButtonContainer: {
-  //   position: 'absolute',
-  //   width: 60,
-  //   height: 60,
-  //   borderWidth: 2,
-  //   borderRadius: 30,
-  //   bottom: 20,
-  //   right: 12,
-  //   borderColor: 'transparent',
-  //   backgroundColor: darkColors.TOMATO_COLOR,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // plusText: {
-  //   fontSize: Sizes.large * 1.4,
-  //   color: darkColors.TEXT_COLOR,
-  // },
-  // skeleton: {
-  // height: 10,
-  // },
   noMoreText: {
     fontSize: Sizes.normal,
   },

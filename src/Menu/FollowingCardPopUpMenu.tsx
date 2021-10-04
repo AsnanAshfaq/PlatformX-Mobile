@@ -9,7 +9,7 @@ import {
   renderers,
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../Constants/Colors';
+import {useStateValue} from '../Store/StateProvider';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -17,6 +17,7 @@ type prop = {
   Modal: () => void;
 };
 const PopUpMenu: FC<prop> = ({Modal}) => {
+  const [{theme}, dispatch] = useStateValue();
   return (
     <Menu>
       <MenuTrigger>
@@ -24,7 +25,7 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
           <Ionicons
             name={'ellipsis-vertical'}
             size={ICON_SIZE}
-            color={darkColors.TAB_BAR_ACTIVE_COLOR}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
           />
         </View>
       </MenuTrigger>
@@ -33,7 +34,7 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
       <MenuOptions
         customStyles={{
           optionsContainer: {
-            backgroundColor: darkColors.SHADOW_COLOR,
+            backgroundColor: theme.SHADOW_COLOR,
             borderWidth: 5,
             borderRadius: 20,
             width: 120,
@@ -48,7 +49,15 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
         }}>
         <MenuOption onSelect={() => Modal()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={styles.menuOptionText}>Unfollow</Text>
+            <Text
+              style={[
+                styles.menuOptionText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Unfollow
+            </Text>
           </View>
         </MenuOption>
         {/* <MenuOption onSelect={() => handleUnFollow()}>
@@ -70,7 +79,6 @@ const styles = StyleSheet.create({
     // marginVertical: 20,
   },
   menuOptionText: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     // fontFamily: 'Raleway-Medium',
   },

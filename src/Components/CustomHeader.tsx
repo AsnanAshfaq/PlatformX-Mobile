@@ -14,7 +14,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {Height, Width, Sizes} from '../Constants/Size';
-import {darkColors} from '../Constants/Colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';

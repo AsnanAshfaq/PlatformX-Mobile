@@ -1,7 +1,6 @@
 import React, {FC, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {darkColors} from '../../Constants/Colors';
 import {Sizes, Width} from '../../Constants/Size';
 import {PROFILE_IMAGE} from '../../Constants/sample';
 import {useStateValue} from '../../Store/StateProvider';
@@ -64,7 +63,7 @@ const ChatCard: FC<props> = ({navigation, chat}) => {
               <Ionicons
                 name={'ellipsis-vertical'}
                 size={ICON_SIZE}
-                color={darkColors.TAB_BAR_ACTIVE_COLOR}
+                color={state.theme.TAB_BAR_ACTIVE_COLOR}
               />
             </TouchableOpacity>
           </View>

@@ -8,7 +8,6 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {Width, Height, Sizes} from '../Constants/Size';
-// import {darkColors} from '../Constants/Colors';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
 import DeleteModal from '../Modals/DeleteModal';

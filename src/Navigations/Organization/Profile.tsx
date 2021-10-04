@@ -1,9 +1,9 @@
 import React from 'react';
 import MyProfile from '../../Screens/Profile/Index';
 import {createStackNavigator} from '@react-navigation/stack';
-import Tab from '../../Screens/Profile/Tab';
+// import Tab from '../../Screens/Profile/Tab';
 import {config} from '../index';
-import ViewProfile from '../../Screens/Profile/Student/ViewProfile';
+import EditProfile from '../../Screens/Profile/Student/EditProfile';
 
 const Stack = createStackNavigator();
 
@@ -28,7 +28,7 @@ const ProfileScreens = () => {
       />
       <Stack.Screen
         name="View_Profile"
-        component={ViewProfile}
+        component={EditProfile}
         options={{
           animationEnabled: true,
           gestureDirection: 'horizontal',

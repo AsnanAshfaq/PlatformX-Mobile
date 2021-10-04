@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-// import {darkColors} from '../Constants/Colors';
 import {Sizes, Width} from '../Constants/Size';
 import {useStateValue} from '../Store/StateProvider';
 import Loading from './Loading';

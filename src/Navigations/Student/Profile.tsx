@@ -3,7 +3,7 @@ import MyProfile from '../../Screens/Profile/Index';
 import {createStackNavigator} from '@react-navigation/stack';
 import Tab from '../../Screens/Profile/Student/Tab';
 import {config} from '../index';
-import ViewProfile from '../../Screens/Profile/Student/ViewProfile';
+import EditProfile from '../../Screens/Profile/Student/EditProfile';
 
 const Stack = createStackNavigator();
 
@@ -26,7 +26,7 @@ const ProfileScreens = () => {
           },
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Follow_Tab"
         component={Tab}
         options={{
@@ -38,10 +38,10 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      />
+      /> */}
       <Stack.Screen
-        name="View_Profile"
-        component={ViewProfile}
+        name="Edit_Profile"
+        component={EditProfile}
         options={{
           animationEnabled: true,
           gestureDirection: 'horizontal',

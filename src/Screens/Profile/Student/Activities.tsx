@@ -2,7 +2,6 @@ import React, {FC, useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TabView, TabBar} from 'react-native-tab-view';
 import CustomHeader from '../../../Components/CustomHeader';
-// import {darkColors} from '../../../Constants/Colors';
 import {Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 

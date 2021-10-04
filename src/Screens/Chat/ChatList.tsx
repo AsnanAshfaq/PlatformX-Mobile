@@ -10,8 +10,6 @@ import {
 } from 'react-native';
 import CustomHeader from '../../Components/CustomHeader';
 import ChatCard from './ChatCard';
-import {chatData} from '../../Constants/sample';
-import {darkColors} from '../../Constants/Colors';
 import {Sizes} from '../../Constants/Size';
 import {useStateValue} from '../../Store/StateProvider';
 import axios from '../../Utils/Axios';

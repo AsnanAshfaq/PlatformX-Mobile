@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {darkColors} from '../Constants/Colors';
 import {hackathonFilterData} from '../Constants/sample';
 import CheckBox from '../Components/CheckBox';
+import {useStateValue} from '../Store/StateProvider';
 
 type Props = {
   Tag: string;
@@ -23,6 +23,7 @@ type Props = {
 };
 
 const SubTagList: FC<Props> = ({Tag, list, CheckedValues}) => {
+  const [{theme}, dispatch] = useStateValue();
   const handleCheckedValues = (
     isCheck: boolean | undefined,
     tag: string,
@@ -81,7 +82,15 @@ const SubTagList: FC<Props> = ({Tag, list, CheckedValues}) => {
               handleCheckedValues(isCheck, Tag, subtag);
             }}
           />
-          <Text style={styles.subtag}>{subtag}</Text>
+          <Text
+            style={[
+              styles.subtag,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {subtag}
+          </Text>
         </View>
       ))}
     </View>
@@ -101,10 +110,16 @@ const FilterModal: FC<props> = ({isShow, toggleModal, applyFilters}) => {
     subtag: Array<string>;
   }> = [];
 
+  const [{theme}, dispatch] = useStateValue();
   return (
     <Modal
       isVisible={isShow}
-      style={styles.Modalparent}
+      style={[
+        styles.Modalparent,
+        {
+          backgroundColor: theme.BACKGROUND_COLOR,
+        },
+      ]}
       animationIn={'slideInUp'}
       animationInTiming={300}
       animationOut={'slideOutDown'}
@@ -117,14 +132,29 @@ const FilterModal: FC<props> = ({isShow, toggleModal, applyFilters}) => {
       useNativeDriverForBackdrop={true}>
       <>
         <View style={styles.headingContainer}>
-          <Text style={styles.heading}>Filters </Text>
+          <Text
+            style={[
+              styles.heading,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            Filters{' '}
+          </Text>
         </View>
         <ScrollView style={styles.scroll}>
           {hackathonFilterData.map((filterItem, index) => {
             return (
               <View key={filterItem.id}>
                 {/* label of the filter  */}
-                <Text style={[styles.tag, styles.divider]}>
+                <Text
+                  style={[
+                    styles.tag,
+                    styles.divider,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
                   {filterItem.tag}
                 </Text>
                 {/* list of subtags  */}
@@ -147,8 +177,21 @@ const FilterModal: FC<props> = ({isShow, toggleModal, applyFilters}) => {
                 ? undefined
                 : applyFilters(CheckedValues);
             }}
-            style={styles.applyButton}>
-            <Text style={styles.apply}>Apply Filters</Text>
+            style={[
+              styles.applyButton,
+              {
+                backgroundColor: theme.BADGE_COLOR,
+              },
+            ]}>
+            <Text
+              style={[
+                styles.apply,
+                {
+                  color: theme.BACKGROUND_COLOR,
+                },
+              ]}>
+              Apply Filters
+            </Text>
           </TouchableOpacity>
         </View>
       </>
@@ -160,7 +203,6 @@ const styles = StyleSheet.create({
   Modalparent: {
     flex: 1,
     maxHeight: Height * 0.85,
-    backgroundColor: darkColors.BACKGROUND_COLOR,
     borderRadius: 20,
     borderWidth: 2,
     justifyContent: 'center',
@@ -175,7 +217,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: Sizes.large * 1.3,
-    color: darkColors.TEXT_COLOR,
   },
   scroll: {
     marginHorizontal: 20,
@@ -187,7 +228,6 @@ const styles = StyleSheet.create({
     // backgroundColor: 'grey',
   },
   tag: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.large,
     marginRight: 30,
     padding: 3,
@@ -197,7 +237,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   subtag: {
-    color: darkColors.TEXT_COLOR,
     fontSize: Sizes.normal,
     paddingVertical: 5,
   },
@@ -213,11 +252,9 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: darkColors.BADGE_COLOR,
     borderRadius: 10,
   },
   apply: {
-    color: darkColors.BACKGROUND_COLOR,
     fontSize: Sizes.normal,
   },
 });
