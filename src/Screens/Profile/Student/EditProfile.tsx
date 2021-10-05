@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 // TODO:
 // Personal Informatoion
 // first name (done)
@@ -26,11 +27,14 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomTextField from '../../../Components/CustomTextField';
+import Loading from '../../../Components/Loading';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
+import axios from '../../../Utils/Axios';
 import FormHandler from '../../../Utils/FormHandler';
 
 type Props = {
@@ -129,45 +133,192 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
     lastName: {value: user.last_name, error: ''},
     userName: {value: user.username, error: ''},
     bio: {value: user.bio ? user.bio : '', error: ''},
-    dateOfBirth: {value: '', error: ''},
-    phoneNumber: {value: '', error: ''},
+    dateOfBirth: {value: user?.student?.date_of_birth, error: ''},
+    phoneNumber: {value: user?.student?.phone_number, error: ''},
     skills: {value: '', error: ''},
     interest: {value: '', error: ''},
     livesIn: {value: user?.student?.lives_in, error: ''},
     education: {value: user?.student?.education, error: ''},
-    linkedIn: {value: '', error: ''},
-    github: {value: '', error: ''},
-    twitter: {value: '', error: ''},
-    portfolio: {value: '', error: ''},
+    linkedIn: {value: user?.student?.linked_in, error: ''},
+    github: {value: user?.student?.github, error: ''},
+    twitter: {value: user?.student?.twitter, error: ''},
+    portfolio: {value: user?.student?.portfolio, error: ''},
   });
-  const [{theme}, dispatch] = useStateValue();
 
+  const [IsLoading, seIsLoading] = useState(false);
+  const [state, dispatch] = useStateValue();
+  const {theme} = state;
   // get some handlers
-  // const {
-  //   checkLength,
-  //   isEmailValid,
-  //   isEmpty,
-  //   isOnylAlphabets,
-  //   isSame,
-  //   isLinkValid,
-  //   isPhoneNumberValid,
-  // } = FormHandler();
+  const {
+    checkLength,
+    isEmailValid,
+    isEmpty,
+    isOnylAlphabets,
+    isSame,
+    isLinkValid,
+    isPhoneNumberValid,
+  } = FormHandler();
   const handleInputChange = (key: string, text: any) => {
     const x = Input;
-    x[key] = text;
+    x[key]['value'] = text;
     setInput(props => {
       return {
-        ...props,
-        x,
+        ...x,
       };
     });
   };
 
-  const handleEditProfile = () => {
-    console.log('Handling edit profile');
+  const handleEditProfile = async () => {
+    const y = Input;
+    let isInputValid = true;
+    // check for urls
 
-    // const isPhoneValid = isLinkValid('03001234567');
-    // console.log(isPhoneValid);
+    seIsLoading(true);
+
+    const checkURLS = (value: string, key: string) => {
+      if (!isEmpty(value) && !isLinkValid(value)) {
+        y[key]['error'] = 'Invalid link';
+        isInputValid = false;
+      } else {
+        y[key]['error'] = '';
+      }
+    };
+
+    checkURLS(Input.linkedIn.value, 'linkedIn');
+
+    checkURLS(Input.github.value, 'github');
+
+    checkURLS(Input.twitter.value, 'twitter');
+
+    checkURLS(Input.portfolio.value, 'portfolio');
+
+    // check for first and last name
+    // 5,
+    // 14,
+
+    const checkFields = (
+      value: string,
+      key: string,
+      emptyError: string,
+      minError: string,
+      maxError: string,
+    ) => {
+      if (isEmpty(value)) {
+        y[key]['error'] = emptyError;
+        isInputValid = false;
+      } else {
+        if (key === 'firstName' || key === 'lastName') {
+          if (!isOnylAlphabets(value)) {
+            y[key]['error'] = `${
+              key === 'firstName' ? 'First' : 'Last'
+            } Name is invalid`;
+            isInputValid = false;
+          }
+        } else {
+          // check length
+          const MinMax = checkLength(value, 5, 14);
+          if (MinMax === 'min') {
+            y[key]['error'] = minError;
+            isInputValid = false;
+          } else if (MinMax === 'max') {
+            y[key]['error'] = maxError;
+            isInputValid = false;
+          }
+        }
+      }
+    };
+
+    checkFields(
+      Input.firstName.value,
+      'firstName',
+      'First Name cannot be Empty',
+      'First Name should be atleast 5 characters.',
+      'First Name should be less than 14 characters.',
+    );
+
+    checkFields(
+      Input.lastName.value,
+      'lastName',
+      'Last Name cannot be Empty',
+      'Last Name should be atleast 5 characters.',
+      'Last Name should be less than 14 characters.',
+    );
+
+    checkFields(
+      Input.userName.value,
+      'userName',
+      'User Name cannot be Empty',
+      'Last Name should be atleast 5 characters.',
+      'Last Name should be less than 14 characters.',
+    );
+
+    if (!isEmpty(Input.bio.value)) {
+      // check length
+      const MinMax = checkLength(Input.bio.value, 3, 16);
+      if (MinMax === 'min') {
+        y['bio']['error'] = 'Bio should be atleast 3 characters.';
+        isInputValid = false;
+      } else if (MinMax === 'max') {
+        y['bio']['error'] = 'Bio should be less than 16 characters.';
+        isInputValid = false;
+      }
+    }
+
+    setInput(props => {
+      return {
+        ...y,
+      };
+    });
+
+    if (isInputValid) {
+      // make api request
+      try {
+        const response = await axios.post('/user/student/edit/', {
+          first_name: Input.firstName.value,
+          last_name: Input.lastName.value,
+          username: Input.userName.value,
+          bio: Input.bio.value,
+          date_of_birth: Input.dateOfBirth.value,
+          phone_number: Input.phoneNumber.value,
+          lives_in: Input.livesIn.value,
+          education: Input.education.value,
+          linked_in: Input.linkedIn.value,
+          github: Input.github.value,
+          twitter: Input.twitter.value,
+          portfolio: Input.portfolio.value,
+        });
+        if (response.status === 201) {
+          ToastAndroid.show(response.data.success, 1500);
+          // update local state
+          const userData = {
+            firstName: Input.firstName.value.trim(),
+            lastName: Input.lastName.value.trim(),
+            userName: Input.userName.value.trim(),
+            email: state.user.email,
+            profilePic: state.user.profilePic,
+          };
+          dispatch({type: 'SET_USER', payload: userData});
+          // navigate to old screen
+        } else {
+          ToastAndroid.show('Error occured while updating profile', 1500);
+        }
+      } catch (error: any) {
+        if (error.response.data.user_name) {
+          setInput(props => {
+            return {
+              ...props,
+              userName: {
+                value: props.userName.value,
+                error: error.response.data.user_name,
+              },
+            };
+          });
+        }
+      }
+      seIsLoading(false);
+    } else {
+      seIsLoading(false);
+    }
   };
 
   return (
@@ -325,15 +476,13 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
           ]}
           activeOpacity={0.5}
           onPress={() => handleEditProfile()}>
-          <Text
-            style={[
-              styles.editButtonText,
-              {
-                color: theme.TEXT_COLOR,
-              },
-            ]}>
-            Edit Profile{' '}
-          </Text>
+          {IsLoading ? (
+            <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
+          ) : (
+            <Text style={[styles.editButtonText, {color: theme.TEXT_COLOR}]}>
+              Edit Profile
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

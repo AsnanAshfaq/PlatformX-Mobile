@@ -15,7 +15,7 @@ const StudentDrawerScreens = () => {
   const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator
-      initialRouteName="Student_Profile_Home"
+      initialRouteName="Tabs"
       openByDefault={false}
       drawerContent={props => <CustomDrawer {...props} />}
       drawerStyle={{
@@ -27,7 +27,7 @@ const StudentDrawerScreens = () => {
       }}
       // overlayColor={'grey'}
       drawerType={'slide'}>
-      {/* <Drawer.Screen name="Tabs" component={StudentTabScreens} /> */}
+      <Drawer.Screen name="Tabs" component={StudentTabScreens} />
       <Drawer.Screen
         name="Student_Profile_Home"
         component={StudentProfileScreens}
