@@ -1,11 +1,13 @@
+/* eslint-disable react/self-closing-comp */
 import React, {FC} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   value?: number;
+  position?: any;
 };
-const CustomBadge: FC<props> = ({value}) => {
+const CustomBadge: FC<props> = ({value, position}) => {
   const [{theme}, dispatch] = useStateValue();
 
   return (
@@ -15,12 +17,9 @@ const CustomBadge: FC<props> = ({value}) => {
         {
           backgroundColor: theme.BADGE_COLOR,
           borderColor: theme.BADGE_COLOR,
+          ...position,
         },
-      ]}>
-      <Text style={{color: theme.BADGE_TEXT_COLOR}}>
-        {value !== undefined ? value : 2}
-      </Text>
-    </View>
+      ]}></View>
   );
 };
 
@@ -29,10 +28,10 @@ export default CustomBadge;
 const styles = StyleSheet.create({
   badgeStyle: {
     position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 21,
-    height: 21,
+    top: 5,
+    right: 6,
+    width: 12,
+    height: 12,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

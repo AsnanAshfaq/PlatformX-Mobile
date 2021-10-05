@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState, useRef, useEffect} from 'react';
 import {
   View,
@@ -11,7 +12,9 @@ import {Width, Height, Sizes} from '../Constants/Size';
 import {PROFILE_IMAGE, POST_IMAGE} from '../Constants/sample';
 import CommentModal from '../Modals/CommentModal';
 import DeleteModal from '../Modals/DeleteModal';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import PopUpMenu from '../Menu/PostCardPopUpMenu';
@@ -40,7 +43,7 @@ const PostCardButtons: FC<Props> = ({
   handleLike,
 }) => {
   const [state, dispatch] = useStateValue();
-
+  const {theme} = state;
   return (
     <View style={styles.postButtonContainer}>
       <TouchableOpacity
@@ -48,12 +51,18 @@ const PostCardButtons: FC<Props> = ({
         style={[
           styles.PostButton,
           {
-            backgroundColor:
-              isLiked === 'Liked'
-                ? state.theme.SCREEN_BACKGROUND_COLOR
-                : state.theme.SHADOW_COLOR,
+            // backgroundColor:
+            //   isLiked === 'Liked'
+            //     ? state.theme.SCREEN_BACKGROUND_COLOR
+            //     : state.theme.SHADOW_COLOR,
+            flexDirection: 'row',
           },
         ]}>
+        <AntDesign
+          name={`${isLiked === 'Liked' ? 'like1' : 'like2'}`}
+          color={theme.TAB_BAR_ACTIVE_COLOR}
+          size={ICON_SIZE * 0.8}
+        />
         <Text
           style={[
             styles.PostButtonText,
@@ -61,6 +70,7 @@ const PostCardButtons: FC<Props> = ({
               color: state.theme.TEXT_COLOR,
             },
           ]}>
+          {'  '}
           {isLiked === 'Liked' ? 'Liked' : 'Like'}
         </Text>
       </TouchableOpacity>
@@ -71,12 +81,12 @@ const PostCardButtons: FC<Props> = ({
             showModal: true,
           });
         }}
-        style={[
-          styles.PostButton,
-          {
-            backgroundColor: state.theme.SHADOW_COLOR,
-          },
-        ]}>
+        style={[styles.PostButton, {flexDirection: 'row'}]}>
+        <Octicons
+          name={'comment-discussion'}
+          color={theme.TAB_BAR_ACTIVE_COLOR}
+          size={ICON_SIZE * 0.8}
+        />
         <Text
           style={[
             styles.PostButtonText,
@@ -84,17 +94,17 @@ const PostCardButtons: FC<Props> = ({
               color: state.theme.TEXT_COLOR,
             },
           ]}>
-          Comment
+          {'  '}Comment
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => setShareModal(true)}
-        style={[
-          styles.PostButton,
-          {
-            backgroundColor: state.theme.SHADOW_COLOR,
-          },
-        ]}>
+        style={[styles.PostButton, {flexDirection: 'row'}]}>
+        <MaterialCommunityIcons
+          name={'share-outline'}
+          color={theme.TAB_BAR_ACTIVE_COLOR}
+          size={ICON_SIZE * 0.9}
+        />
         <Text
           style={[
             styles.PostButtonText,
@@ -102,7 +112,7 @@ const PostCardButtons: FC<Props> = ({
               color: state.theme.TEXT_COLOR,
             },
           ]}>
-          Share
+          {'  '}Share
         </Text>
       </TouchableOpacity>
     </View>
@@ -274,7 +284,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         </View>
         <View style={styles.headerTextContainer}>
           <Text style={[styles.username, {color: theme.TEXT_COLOR}]}>
-            {postDetail?.user?.username}
+            {postDetail?.user?.username.toLowerCase()}
           </Text>
           <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
             {new Date(postDetail.created_at).toDateString()}
@@ -321,7 +331,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
             showModal: true,
           })
         }>
-        <View style={styles.likeContainer}>
+        <View style={[styles.likeContainer]}>
           <Text
             style={[
               styles.PostButtonText,
@@ -329,11 +339,17 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
                 color: theme.TEXT_COLOR,
               },
             ]}>
-            {Like.likeCount} Likes
+            {Like.likeCount}
+            {'  '}
           </Text>
+          <AntDesign
+            name={'like2'}
+            color={theme.TEXT_COLOR}
+            size={ICON_SIZE * 0.6}
+          />
         </View>
 
-        <View style={styles.commentConatiner}>
+        <View style={[styles.commentConatiner]}>
           <Text
             style={[
               styles.PostButtonText,
@@ -341,13 +357,32 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
                 color: theme.TEXT_COLOR,
               },
             ]}>
-            {postDetail.comments.length} Comments
+            {postDetail.comments.length}
+            {'  '}
           </Text>
+          <Octicons
+            name={'comment-discussion'}
+            color={theme.TEXT_COLOR}
+            size={ICON_SIZE * 0.73}
+          />
         </View>
 
-        <View style={styles.sharContainer}>
-          {/* <Text style={styles.PostButtonText}>{postDetail.shares} Share</Text> */}
-        </View>
+        {/* <View style={styles.sharContainer}>
+          <Text
+            style={[
+              styles.PostButtonText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            3{'  '}
+          </Text>
+          <MaterialCommunityIcons
+            name={'share-outline'}
+            color={theme.TAB_BAR_ACTIVE_COLOR}
+            size={ICON_SIZE * 0.6}
+          />
+        </View> */}
       </TouchableOpacity>
       {/* post buttons   */}
       <PostCardButtons
@@ -363,10 +398,10 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
 const styles = StyleSheet.create({
   parent: {
     marginHorizontal: Width * 0.04,
-    marginVertical: Width * 0.01,
+    marginVertical: Width * 0.03,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.4,
-    borderRadius: 20,
+    borderRadius: 8,
     // padding: 5,
     shadowOpacity: 1,
     shadowRadius: 25,
@@ -378,15 +413,16 @@ const styles = StyleSheet.create({
     maxHeight: Height * 0.15,
     borderBottomWidth: 2,
     flexDirection: 'row',
-    padding: 7,
+    paddingHorizontal: 7,
+    paddingVertical: 10,
   },
   headerImageContainer: {
     // width: Width * 0.3,
     flex: 0.2,
   },
   userImage: {
-    height: Height * 0.07,
-    width: Width * 0.14,
+    height: Width * 0.12,
+    width: Width * 0.12,
     borderRadius: 40,
   },
   headerTextContainer: {
@@ -408,7 +444,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     // minHeight: Height * 0.15,
     maxHeight: Height * 0.2,
-    marginVertical: 7,
+    marginVertical: 10,
     // padding: 7,
     paddingHorizontal: 7,
   },
@@ -428,25 +464,24 @@ const styles = StyleSheet.create({
   numberContainer: {
     flexDirection: 'row',
     borderBottomWidth: 2,
+    // alignItems: 'stretch',
+    justifyContent: 'flex-end',
     // borderTopWidth: 2,
     padding: 5,
     paddingVertical: 10,
     // marginTop: 10,
   },
   likeContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginHorizontal: 8,
+    flexDirection: 'row',
   },
   commentConatiner: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginHorizontal: 8,
+    flexDirection: 'row',
   },
   sharContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginHorizontal: 8,
+    flexDirection: 'row',
   },
   postButtonContainer: {
     // height: Height * 0.06,

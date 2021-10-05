@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 //TODO:
 // drawer icon
 // back button
@@ -5,26 +6,34 @@
 // messaging screen icon
 // notification icon
 
-import React, {FunctionComponent, useEffect} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {
   Platform,
   StyleSheet,
   Text,
   View,
   TouchableWithoutFeedback,
+  Image,
 } from 'react-native';
 import {Height, Width, Sizes} from '../Constants/Size';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Badge} from 'react-native-elements';
 import CustomBadge from './CustomBadge';
 import {useStateValue} from '../Store/StateProvider';
+import {PROFILE_IMAGE} from '../Constants/sample';
+import Search from './Search';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 type props = {
-  title: string;
+  title?: string;
   navigation: any;
+  image?: boolean;
+  saerch?: boolean;
   bell?: boolean;
   chat?: boolean;
   back?: boolean;
@@ -38,16 +47,20 @@ const CustomHeader: FunctionComponent<props> = ({
   navigation,
   title,
   back,
+  image,
+  saerch,
   drawer,
   chat,
   bell,
   onBackPress,
 }) => {
-  const [{theme}, dispatch] = useStateValue();
+  const [state, dispatch] = useStateValue();
+  const [LoadProfileImage, setLoadProfileImage] = useState(true);
+  const {theme} = state;
   return (
     <View style={[styles.parent, {backgroundColor: theme.BACKGROUND_COLOR}]}>
       {/* drawer navigation  or back button*/}
-      {drawer && (
+      {/* {drawer && (
         <View style={styles.leftIconContainer}>
           <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
             <FontAwesome
@@ -58,13 +71,45 @@ const CustomHeader: FunctionComponent<props> = ({
             />
           </TouchableWithoutFeedback>
         </View>
+      )} */}
+
+      {image && (
+        <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+          <View style={styles.leftIconContainer}>
+            <Image
+              source={{
+                uri: LoadProfileImage
+                  ? PROFILE_IMAGE
+                  : state.user.profilePic !== ''
+                  ? BASE_URL + state.user.profilePic
+                  : PROFILE_IMAGE,
+              }}
+              onLoadEnd={() => setLoadProfileImage(false)}
+              onError={() => {
+                setLoadProfileImage(false);
+              }}
+              style={styles.profileImage}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+
+      {/* saerch bar  */}
+      {saerch && (
+        <View style={styles.searchContainer}>
+          <Search
+            handleSearch={() => console.log('Handling search')}
+            placeholder={'Type something...'}
+            showFilterIcon={false}
+          />
+        </View>
       )}
 
       {back && (
         <View style={styles.leftIconContainer}>
           <TouchableWithoutFeedback onPress={onBackPress}>
-            <FontAwesome
-              name={'arrow-left'}
+            <Ionicons
+              name={'chevron-back'}
               color={theme.TAB_BAR_ACTIVE_COLOR}
               size={ICON_SIZE}
               style={styles.iconPadding}
@@ -74,44 +119,46 @@ const CustomHeader: FunctionComponent<props> = ({
       )}
 
       {/* title of the screen  */}
-      <View style={styles.headerContainer}>
-        <Text style={[styles.headerTitle, {color: theme.TEXT_COLOR}]}>
-          {title}
-        </Text>
-      </View>
+      {title !== undefined && (
+        <View style={styles.headerContainer}>
+          <Text style={[styles.headerTitle, {color: theme.TEXT_COLOR}]}>
+            {title}
+          </Text>
+        </View>
+      )}
+
       {/* right icons  */}
       <View
         style={[
           styles.RightIconContainer,
           {
             justifyContent: chat && bell ? 'center' : 'flex-end',
-            marginHorizontal: chat && bell ? 0 : 10,
+            marginHorizontal: chat && bell ? 0 : 0,
           },
         ]}>
         {chat && (
           <TouchableWithoutFeedback onPress={() => navigation.navigate('Chat')}>
             <View style={styles.row}>
-              <Ionicons
-                name={'chatbubble-outline'}
-                size={ICON_SIZE}
+              <AntDesign
+                name={'message1'}
+                size={ICON_SIZE * 0.9}
                 color={theme.TAB_BAR_ACTIVE_COLOR}
                 style={styles.iconPadding}
               />
               {/* badge  */}
-              <CustomBadge value={5} />
+              <CustomBadge position={{right: 0}} />
             </View>
           </TouchableWithoutFeedback>
         )}
-
         {bell && (
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate('Notification')}>
             <View style={styles.row}>
-              <Entypo
-                name={'bell'}
+              <Ionicons
+                name={'notifications-outline'}
                 size={ICON_SIZE}
                 color={theme.TAB_BAR_ACTIVE_COLOR}
-                style={styles.iconPadding}
+                style={[styles.iconPadding, {transform: [{rotateZ: '-15deg'}]}]}
               />
               {/* badge  */}
               <CustomBadge />
@@ -127,7 +174,8 @@ export default CustomHeader;
 
 const styles = StyleSheet.create({
   parent: {
-    height: Height * 0.09,
+    // flex: 1,
+    height: Height * 0.07,
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -136,11 +184,20 @@ const styles = StyleSheet.create({
     // paddingLeft: 5,
   },
   headerTitle: {
-    fontSize: Sizes.large * 1.2,
+    fontSize: Sizes.large,
+  },
+  profileImage: {
+    height: Width * 0.09,
+    width: Width * 0.09,
+    borderRadius: 40,
+    marginHorizontal: 10,
   },
   leftIconContainer: {
     flex: 0.15,
     paddingLeft: 5,
+  },
+  searchContainer: {
+    flex: 0.6,
   },
   RightIconContainer: {
     flex: 0.25,
@@ -148,7 +205,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconPadding: {
-    padding: 8,
+    // padding: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 8,
   },
   row: {
     flexDirection: 'row',

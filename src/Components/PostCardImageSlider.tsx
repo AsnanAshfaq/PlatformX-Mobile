@@ -54,6 +54,7 @@ const PostCarImageSlider: FC<props> = ({postImages}) => {
       contentContainerStyle={{
         height: 300,
         flexGrow: 1,
+        marginVertical: 13,
       }}
       // onContentSizeChange={(w, h) => console.log('Width and height ', w, hinde)}
       pagingEnabled
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     // maxHeight: Height * 0.3,
     // height: 'auto',
     marginRight: 4,
+    // marginVertical: 15,
     // flex: 1,
     // height: Width * (9 / 16),
     // justifyContent: 'center',

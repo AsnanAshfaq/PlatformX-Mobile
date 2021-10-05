@@ -26,7 +26,7 @@ const ProfileScreens = () => {
           },
         }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Follow_Tab"
         component={Tab}
         options={{
@@ -38,7 +38,7 @@ const ProfileScreens = () => {
             close: config,
           },
         }}
-      /> */}
+      />
       <Stack.Screen
         name="Edit_Profile"
         component={EditProfile}

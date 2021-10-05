@@ -74,7 +74,7 @@ const Search: FC<props> = ({
         style={[
           styles.searchContainer,
           {
-            width: showFilterIcon === false ? Width * 0.9 : Width * 0.77,
+            width: showFilterIcon === false ? Width * 0.6 : Width * 0.5,
             backgroundColor: theme.SHADOW_COLOR,
           },
         ]}>
@@ -139,9 +139,10 @@ const styles = StyleSheet.create({
   searchContainer: {
     // width: Width * 0.77,
     // flex: 1,
-    marginHorizontal: Width * 0.05,
+    // marginHorizontal: Width * 0.001,
+
     marginVertical: Width * 0.02,
-    borderRadius: 12,
+    borderRadius: 8,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

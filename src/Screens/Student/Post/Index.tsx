@@ -20,15 +20,20 @@ import {
   RefreshControl,
   Keyboard,
   ToastAndroid,
+  Image,
 } from 'react-native';
 import PostCard from '../../../Components/PostCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
-import {Sizes} from '../../../Constants/Size';
+import {Sizes, Width} from '../../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import FloatingActionButton from '../../../Components/FloatingActionButton';
+import {PROFILE_IMAGE} from '../../../Constants/sample';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 type props = {
   navigation: any;
@@ -38,7 +43,9 @@ const Posts: FC<props> = ({navigation}) => {
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
-  const [{theme}, dispatch] = useStateValue();
+  const [LoadProfileImage, setLoadProfileImage] = useState(true);
+  const [state, dispatch] = useStateValue();
+  const {theme} = state;
   const [Searching, setSearching] = useState<{
     isSearching: boolean;
     query: string;
@@ -118,6 +125,64 @@ const Posts: FC<props> = ({navigation}) => {
     [],
   );
 
+  const writeNewPost = () => {
+    return (
+      <View
+        style={[
+          styles.listHeaderContainer,
+          {
+            shadowColor: theme.SHADOW_COLOR,
+            backgroundColor: theme.LIGHT_BACKGROUND,
+          },
+        ]}>
+        <View style={styles.listHeaderImageContainer}>
+          <Image
+            source={{
+              uri: LoadProfileImage
+                ? PROFILE_IMAGE
+                : state.user.profilePic !== ''
+                ? BASE_URL + state.user.profilePic
+                : PROFILE_IMAGE,
+            }}
+            onLoadEnd={() => setLoadProfileImage(false)}
+            onError={() => {
+              setLoadProfileImage(false);
+              ToastAndroid.show("Couldn't load profile image", 1500);
+            }}
+            style={styles.profileImage}
+          />
+        </View>
+
+        <View
+          style={[
+            styles.listHeaderTextContainer,
+            {borderColor: theme.SHADOW_COLOR},
+          ]}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Create_Edit_Post', {screen: 'Create'})
+            }>
+            <Text style={[styles.listHeaderText, {color: theme.TEXT_COLOR}]}>
+              Share something with us ...
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.emptyView} />
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Create_Edit_Post', {screen: 'Create'})
+          }
+          style={[
+            styles.plusTextContainer,
+            {backgroundColor: theme.TOMATO_COLOR},
+          ]}>
+          <Text style={[styles.plusText, {color: theme.TEXT_COLOR}]}>+</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View
       style={[
@@ -126,15 +191,8 @@ const Posts: FC<props> = ({navigation}) => {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
-      <CustomHeader title={'Home'} navigation={navigation} drawer chat bell />
+      <CustomHeader navigation={navigation} image chat bell saerch />
 
-      {!IsLoading && (
-        <CustomSearch
-          placeholder={'Search posts'}
-          showFilterIcon={false}
-          handleSearch={handleSearch}
-        />
-      )}
       {/* if searching  then show post skeleton without search skeleton*/}
       {Searching.isSearching ? (
         <>
@@ -146,6 +204,7 @@ const Posts: FC<props> = ({navigation}) => {
             data={Post}
             // disableVirtualization
             keyExtractor={keyExtractor}
+            ListHeaderComponent={writeNewPost}
             renderItem={renderItem}
             // progressViewOffset={10}
             refreshControl={
@@ -161,31 +220,6 @@ const Posts: FC<props> = ({navigation}) => {
             // inverted
             contentOffset={{y: -300, x: 0}}
           />
-          {/* floating action button  */}
-          <View
-            style={[
-              styles.floatingButtonContainer,
-              {
-                backgroundColor: theme.TOMATO_COLOR,
-              },
-            ]}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Create_Edit_Post', {
-                  screen: 'Create',
-                })
-              }>
-              <Text
-                style={[
-                  styles.plusText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
         </>
       ) : !IsLoading && Post.length === 0 ? (
         <>
@@ -221,25 +255,55 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
   },
-  floatingButtonContainer: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderWidth: 2,
-    borderRadius: 30,
-    bottom: 20,
-    right: 12,
-    borderColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   center: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  listHeaderContainer: {
+    flexDirection: 'row',
+    marginHorizontal: Width * 0.04,
+    marginVertical: Width * 0.03,
+    // minHeight: Height * 0.35,
+    // maxHeight: Height * 0.4,
+    borderRadius: 8,
+    padding: 5,
+    paddingVertical: 12,
+    shadowOpacity: 1,
+    shadowRadius: 25,
+    shadowOffset: {width: 10, height: 12},
+    elevation: 30,
+  },
+  listHeaderImageContainer: {
+    flex: 0.2,
+  },
+  listHeaderTextContainer: {
+    borderWidth: 1,
+    flex: 0.65,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  listHeaderText: {
+    fontSize: Sizes.normal * 0.8,
+  },
+  emptyView: {
+    flex: 0.05,
+  },
+  plusTextContainer: {
+    flex: 0.1,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   plusText: {
-    fontSize: Sizes.large * 1.4,
+    fontSize: Sizes.normal,
+  },
+  profileImage: {
+    height: Width * 0.09,
+    width: Width * 0.09,
+    borderRadius: 40,
+    marginHorizontal: 10,
   },
   noMoreText: {
     fontSize: Sizes.normal,

@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.01,
     marginVertical: 4,
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: 8,
     borderWidth: 1,
     fontSize: Sizes.normal * 1.1,
   },
