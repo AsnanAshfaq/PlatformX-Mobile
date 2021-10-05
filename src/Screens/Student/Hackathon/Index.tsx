@@ -145,6 +145,7 @@ const Hackathons: FC<props> = ({navigation}) => {
       {!IsLoading && (
         <CustomSearch
           placeholder={'Search hackathons'}
+          isShownInHeader={false}
           showFilterIcon={true}
           handleSearch={handleSearch}
           applyFilters={applyFilters}

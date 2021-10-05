@@ -60,7 +60,7 @@ const CustomHeader: FunctionComponent<props> = ({
   return (
     <View style={[styles.parent, {backgroundColor: theme.BACKGROUND_COLOR}]}>
       {/* drawer navigation  or back button*/}
-      {/* {drawer && (
+      {drawer && (
         <View style={styles.leftIconContainer}>
           <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
             <FontAwesome
@@ -71,7 +71,7 @@ const CustomHeader: FunctionComponent<props> = ({
             />
           </TouchableWithoutFeedback>
         </View>
-      )} */}
+      )}
 
       {image && (
         <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
@@ -100,6 +100,7 @@ const CustomHeader: FunctionComponent<props> = ({
           <Search
             handleSearch={() => console.log('Handling search')}
             placeholder={'Type something...'}
+            isShownInHeader={true}
             showFilterIcon={false}
           />
         </View>

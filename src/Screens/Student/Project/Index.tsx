@@ -78,7 +78,8 @@ const Projects: FC<props> = ({navigation}) => {
       {!IsLoading && (
         <CustomSearch
           placeholder={'Search here'}
-          showFilterIcon={false}
+          isShownInHeader={false}
+          showFilterIcon={true}
           handleSearch={handleSearch}
         />
       )}

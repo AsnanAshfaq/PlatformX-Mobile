@@ -155,9 +155,10 @@ const Workshop: FC<props> = ({navigation}) => {
       {!IsLoading && (
         <CustomSearch
           placeholder={'Search workshops'}
-          showFilterIcon={true}
           handleSearch={handleSearch}
           applyFilters={applyFilters}
+          isShownInHeader={false}
+          showFilterIcon={true}
         />
       )}
       {/* if searching  then show post skeleton without search skeleton*/}

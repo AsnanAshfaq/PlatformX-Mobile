@@ -243,9 +243,7 @@ const Posts: FC<props> = ({navigation}) => {
           </View>
         </>
       ) : (
-        <PostSkeleton
-          showSearchSkeleton={!Searching.isSearching || Refreshing}
-        />
+        <PostSkeleton showSearchSkeleton={false} />
       )}
     </View>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState, useEffect, useRef} from 'react';
 import {
   View,
@@ -16,6 +17,7 @@ import {useStateValue} from '../Store/StateProvider';
 
 type props = {
   placeholder: string;
+  isShownInHeader: boolean;
   handleSearch: (query: string) => void;
   showFilterIcon?: boolean;
   applyFilters?: (filter: Array<{subtag: Array<string>; tag: string}>) => void;
@@ -23,6 +25,7 @@ type props = {
 
 const Search: FC<props> = ({
   placeholder,
+  isShownInHeader,
   showFilterIcon,
   handleSearch,
   applyFilters,
@@ -74,7 +77,15 @@ const Search: FC<props> = ({
         style={[
           styles.searchContainer,
           {
-            width: showFilterIcon === false ? Width * 0.6 : Width * 0.5,
+            width: isShownInHeader
+              ? showFilterIcon === false
+                ? Width * 0.56
+                : Width * 0.5
+              : showFilterIcon === true
+              ? Width * 0.75
+              : Width * 0.8,
+            marginHorizontal:
+              !isShownInHeader && !showFilterIcon ? Width * 0.05 : Width * 0.05,
             backgroundColor: theme.SHADOW_COLOR,
           },
         ]}>
@@ -102,7 +113,9 @@ const Search: FC<props> = ({
 
           {/* show the cross sign when the input is !== '' */}
           {input.trim() !== '' && (
-            <TouchableOpacity onPress={() => emptyInput()}>
+            <TouchableOpacity
+              onPress={() => emptyInput()}
+              style={{marginRight: 8}}>
               <Entypo
                 name={'cross'}
                 size={Width * 0.065}
@@ -135,12 +148,10 @@ export default Search;
 const styles = StyleSheet.create({
   parent: {
     flexDirection: 'row',
+    // flex: 1,
   },
   searchContainer: {
-    // width: Width * 0.77,
     // flex: 1,
-    // marginHorizontal: Width * 0.001,
-
     marginVertical: Width * 0.02,
     borderRadius: 8,
     flexDirection: 'row',

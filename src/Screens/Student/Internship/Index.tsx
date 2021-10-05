@@ -114,7 +114,8 @@ const Internship: FC<props> = ({navigation}) => {
         <CustomSearch
           placeholder={'Search internships'}
           handleSearch={handleSearch}
-          showFilterIcon={false}
+          isShownInHeader={false}
+          showFilterIcon={true}
         />
       )}
 
