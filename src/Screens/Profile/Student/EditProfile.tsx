@@ -299,6 +299,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
           };
           dispatch({type: 'SET_USER', payload: userData});
           // navigate to old screen
+          navigation.goBack();
         } else {
           ToastAndroid.show('Error occured while updating profile', 1500);
         }
