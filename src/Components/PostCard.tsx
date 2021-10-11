@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     marginVertical: Width * 0.03,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.4,
-    borderRadius: 8,
+    borderRadius: 10,
     // padding: 5,
     shadowOpacity: 1,
     shadowRadius: 25,
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     // minHeight: Height * 0.15,
     maxHeight: Height * 0.2,
-    marginVertical: 10,
+    marginVertical: 7,
     // padding: 7,
     paddingHorizontal: 7,
   },
@@ -468,7 +468,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     // borderTopWidth: 2,
     padding: 5,
-    paddingVertical: 10,
+    paddingVertical: 4,
+    // paddingBottom: 10,
     // marginTop: 10,
   },
   likeContainer: {

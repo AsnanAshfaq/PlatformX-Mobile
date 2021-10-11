@@ -12,7 +12,7 @@ type props = {
   chat: any;
 };
 
-const MAX_TEXT_LENGTH = Width * 0.09;
+const MAX_TEXT_LENGTH = Width * 0.089;
 
 //icon size
 const ICON_SIZE = Width * 0.07;
@@ -48,10 +48,13 @@ const ChatCard: FC<props> = ({navigation, chat}) => {
         </View>
         {/* name container  */}
         <View style={styles.messageContainer}>
-          <Text style={[styles.title, {color: state.theme.TEXT_COLOR}]}>
-            {chat.user.username}
+          <Text style={[styles.username, {color: state.theme.TEXT_COLOR}]}>
+            {chat.user.username.slice(0, 1).toUpperCase() +
+              chat.user.username
+                .slice(1, chat.user.username.length)
+                .toLowerCase()}
           </Text>
-          <Text style={[styles.desc, {color: state.theme.TEXT_COLOR}]}>
+          <Text style={[styles.message, {color: state.theme.TEXT_COLOR}]}>
             {chat.message.message.length > MAX_TEXT_LENGTH
               ? chat.message.message.substring(0, MAX_TEXT_LENGTH - 4) + '....'
               : chat.message.message}
@@ -62,7 +65,7 @@ const ChatCard: FC<props> = ({navigation, chat}) => {
             <TouchableOpacity>
               <Ionicons
                 name={'ellipsis-vertical'}
-                size={ICON_SIZE}
+                size={ICON_SIZE * 0.8}
                 color={state.theme.TAB_BAR_ACTIVE_COLOR}
               />
             </TouchableOpacity>
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
   parent: {
     flexDirection: 'row',
     marginHorizontal: Width * 0.04,
-    marginVertical: Width * 0.01,
+    marginVertical: Width * 0.02,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.4,
     borderRadius: 20,
@@ -111,12 +114,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'column',
   },
-  title: {
-    fontSize: Sizes.normal * 1.3,
+  username: {
+    fontSize: Sizes.normal * 1.2,
     // fontWeight: 'bold',
   },
-  desc: {
-    fontSize: Sizes.normal * 0.8,
+  message: {
+    fontSize: Sizes.normal * 0.9,
   },
   sideContainer: {
     flex: 0.2,

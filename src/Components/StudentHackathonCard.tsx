@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PopUpMenu from '../Menu/StudentHackathonCardPopUpMenu';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 // @ts-ignore
@@ -23,27 +24,37 @@ const ICON_SIZE = Width * 0.07;
 type Props = {
   name: string;
   label: string | number;
+  cash?: boolean;
 };
-
-const HackathonCardIcons: FC<Props> = ({name, label}) => {
+const HackathonCardIcons: FC<Props> = ({name, label, cash}) => {
   const [{theme}, dispatch] = useStateValue();
 
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
-      <Ionicons
-        name={name}
-        size={ICON_SIZE}
-        color={theme.TAB_BAR_ACTIVE_COLOR}
-      />
-      <Text
-        style={[
-          styles.iconText,
-          {
-            color: theme.TEXT_COLOR,
-          },
-        ]}>
-        {label}
-      </Text>
+      {cash ? (
+        <FontAwesome
+          name={'money'}
+          size={ICON_SIZE}
+          color={theme.TAB_BAR_ACTIVE_COLOR}
+        />
+      ) : (
+        <Ionicons
+          name={name}
+          size={ICON_SIZE}
+          color={theme.TAB_BAR_ACTIVE_COLOR}
+        />
+      )}
+      <View style={styles.iconTextContainer}>
+        <Text
+          style={[
+            styles.iconText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {label}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -153,6 +164,17 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         <Text style={[styles.titleText, {color: theme.TEXT_COLOR}]}>
           {hackathonDetail.title}
         </Text>
+        <View style={styles.tagLineContainer}>
+          <Text
+            style={[
+              styles.tagLineText,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {hackathonDetail.tag_line}
+          </Text>
+        </View>
         {/* description  */}
         {hackathonDetail.description.length > MAX_TEXT_LENGTH ? (
           <Text>
@@ -211,10 +233,16 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           />
         </View>
         <View style={styles.iconsRow}>
-          <HackathonCardIcons name={'time-outline'} label={'20 Days left'} />
+          <HackathonCardIcons
+            name={'time-outline'}
+            label={`${hackathonDetail.days_left}${' '}${
+              hackathonDetail.days_left !== 1 ? 'days' : 'day'
+            } left `}
+          />
           <HackathonCardIcons
             name={'cash-outline'}
             label={commaSeperator(hackathonDetail.total_prize)}
+            cash
           />
         </View>
       </View>
@@ -289,28 +317,27 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 0.75,
   },
   contentContainer: {
-    // minHeight: Height * 0.15,
-    // maxHeight: Height * 0.2,
     paddingHorizontal: 5,
     marginVertical: 7,
   },
   titleText: {
-    fontSize: Sizes.normal * 1.7,
-    fontFamily: 'Raleway-Light',
+    fontSize: Sizes.normal * 1.2,
+    fontFamily: 'Segoe-UI-Bold',
+  },
+  tagLineContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  tagLineText: {
+    fontSize: Sizes.normal * 1.2,
+    fontFamily: 'Segoe-UI-Italic',
   },
   descriptionText: {
     fontSize: Sizes.normal,
+    fontFamily: 'Segoe-UI',
   },
   thumbnailContainer: {
-    // width: Width * 0.9,
-    // minHeight: Height * 0.25,
-    // maxHeight: Height * 0.3,
-    // // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'flex-start',
-    // backgroundColor: 'red',
-    // marginRight: 20,
-    // marginRight: 20,
     marginHorizontal: 0,
   },
   thumbnail: {
@@ -324,7 +351,12 @@ const styles = StyleSheet.create({
   },
   iconsRow: {
     flexDirection: 'row',
-    paddingVertical: 3,
+    paddingVertical: 5,
+  },
+  iconTextContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 5,
   },
   iconText: {
     fontSize: Sizes.normal,

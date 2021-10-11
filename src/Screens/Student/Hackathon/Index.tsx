@@ -126,6 +126,18 @@ const Hackathons: FC<props> = ({navigation}) => {
     getData();
   }, [IsLoading]);
 
+  const listHeaderComponent = () => {
+    return (
+      <CustomSearch
+        placeholder={'Search hackathons'}
+        isShownInHeader={false}
+        showFilterIcon={true}
+        handleSearch={handleSearch}
+        applyFilters={applyFilters}
+      />
+    );
+  };
+
   return (
     <View
       style={[
@@ -142,16 +154,6 @@ const Hackathons: FC<props> = ({navigation}) => {
         bell
       />
 
-      {!IsLoading && (
-        <CustomSearch
-          placeholder={'Search hackathons'}
-          isShownInHeader={false}
-          showFilterIcon={true}
-          handleSearch={handleSearch}
-          applyFilters={applyFilters}
-        />
-      )}
-
       {Searching.isSearching ? (
         <>
           <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
@@ -161,6 +163,7 @@ const Hackathons: FC<props> = ({navigation}) => {
           <FlatList
             data={Hackathon}
             // disableVirtualization
+            ListHeaderComponent={listHeaderComponent}
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: hackathon, index}: any) => {
               return (

@@ -39,6 +39,7 @@ type props = {
   back?: boolean;
   drawer?: boolean;
   onBackPress?: () => void;
+  handleSearch?: (query: string) => void;
 };
 
 const ICON_SIZE = Width * 0.07;
@@ -53,6 +54,7 @@ const CustomHeader: FunctionComponent<props> = ({
   chat,
   bell,
   onBackPress,
+  handleSearch,
 }) => {
   const [state, dispatch] = useStateValue();
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
@@ -98,8 +100,8 @@ const CustomHeader: FunctionComponent<props> = ({
       {saerch && (
         <View style={styles.searchContainer}>
           <Search
-            handleSearch={() => console.log('Handling search')}
-            placeholder={'Type something...'}
+            handleSearch={query => console.log(query)}
+            placeholder={'Search something...'}
             isShownInHeader={true}
             showFilterIcon={false}
           />

@@ -1,3 +1,11 @@
+// isShownInHeader === true
+//                 ? showFilterIcon === false
+//                   ? Width * 0.56
+//                   : Width * 0.5
+//                 : showFilterIcon === true
+//                 ? Width * 0.8
+//                 : Width * 0.8,
+
 /* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState, useEffect, useRef} from 'react';
 import {
@@ -77,15 +85,20 @@ const Search: FC<props> = ({
         style={[
           styles.searchContainer,
           {
-            width: isShownInHeader
-              ? showFilterIcon === false
-                ? Width * 0.56
-                : Width * 0.5
-              : showFilterIcon === true
-              ? Width * 0.75
-              : Width * 0.8,
+            // isShownInHeader true, showFilterIcon false
+            // isShownInHeader false, showFilterIcon true
+            // isShownInHeader false, showFilterIcon false
+
+            width:
+              !isShownInHeader && !showFilterIcon
+                ? Width * 0.9
+                : !isShownInHeader && showFilterIcon
+                ? Width * 0.79
+                : Width * 0.5,
             marginHorizontal:
-              !isShownInHeader && !showFilterIcon ? Width * 0.05 : Width * 0.05,
+              !isShownInHeader && !showFilterIcon
+                ? Width * 0.05
+                : Width * 0.045,
             backgroundColor: theme.SHADOW_COLOR,
           },
         ]}>

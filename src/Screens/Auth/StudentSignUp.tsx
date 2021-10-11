@@ -207,7 +207,7 @@ const SignUp: FC<props> = ({navigation}) => {
         const signUpResponse = await axios.post('/user/student/signup/', {
           first_name: Registration.first_name.value.trim(),
           last_name: Registration.last_name.value.trim(),
-          username: Registration.username.value.trim(),
+          username: Registration.username.value.toLowerCase().trim(),
           email: Registration.email.value.trim(),
           password: Registration.password.value.trim(),
         });
@@ -215,7 +215,7 @@ const SignUp: FC<props> = ({navigation}) => {
           const userData = {
             firstName: Registration.first_name.value.trim(),
             lastName: Registration.last_name.value.trim(),
-            userName: Registration.username.value.trim(),
+            userName: Registration.username.value.toLowerCase().trim(),
             email: Registration.email.value.trim(),
             profilePic: '',
           };

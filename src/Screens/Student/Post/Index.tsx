@@ -1,15 +1,3 @@
-//FIXME: Searching Post
-// when the use clicks the search button
-// make api call
-// i need to show the skeleton... HOw??
-// okay
-// so when the screen first loads
-// Post.length === 0 and isLoading is true
-// so the skelton gets showed
-// but when the user clicks on search
-// Post.length !== 0 , so it shows the postCard
-// Make the posts to
-
 import React, {FC, useEffect, useState, useCallback} from 'react';
 import {
   View,
@@ -160,6 +148,7 @@ const Posts: FC<props> = ({navigation}) => {
           ]}>
           <TouchableOpacity
             onPress={() =>
+              // opacity.value = Math.random();
               navigation.navigate('Create_Edit_Post', {screen: 'Create'})
             }>
             <Text style={[styles.listHeaderText, {color: theme.TEXT_COLOR}]}>
@@ -191,7 +180,14 @@ const Posts: FC<props> = ({navigation}) => {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
-      <CustomHeader navigation={navigation} image chat bell saerch />
+      <CustomHeader
+        navigation={navigation}
+        image
+        chat
+        bell
+        saerch
+        // handleSearch={handleSearch}
+      />
 
       {/* if searching  then show post skeleton without search skeleton*/}
       {Searching.isSearching ? (
@@ -264,7 +260,7 @@ const styles = StyleSheet.create({
     marginVertical: Width * 0.03,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.4,
-    borderRadius: 8,
+    borderRadius: 10,
     padding: 5,
     paddingVertical: 12,
     shadowOpacity: 1,

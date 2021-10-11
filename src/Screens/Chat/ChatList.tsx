@@ -15,6 +15,7 @@ import {useStateValue} from '../../Store/StateProvider';
 import axios from '../../Utils/Axios';
 import CustomSearch from '../../Components/Search';
 import PostSkeleton from '../../Skeleton/PostCardSkeleton';
+import ChatSkeleton from '../../Skeleton/UserCardSkeleton';
 
 type props = {
   navigation: any;
@@ -63,15 +64,16 @@ const Chat: FC<props> = ({navigation}) => {
     <View style={styles.parent}>
       <CustomHeader
         navigation={navigation}
-        title={'Chat'}
+        title={'Messages'}
         back
         onBackPress={() => navigation.goBack()}
       />
 
       {!isLoading && (
         <CustomSearch
-          placeholder={'Search chats'}
+          placeholder={'Search'}
           showFilterIcon={false}
+          isShownInHeader={false}
           handleSearch={handleSearch}
         />
       )}
@@ -122,7 +124,7 @@ const Chat: FC<props> = ({navigation}) => {
           </View>
         </>
       ) : (
-        <PostSkeleton
+        <ChatSkeleton
           showSearchSkeleton={!Searching.isSearching || refreshing}
         />
       )}
@@ -138,6 +140,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flex: 1,
+    marginVertical: 10,
   },
   center: {
     flex: 1,

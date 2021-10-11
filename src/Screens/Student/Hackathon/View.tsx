@@ -161,7 +161,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           },
         ]}>
         <CustomHeader
-          title={'Detail'}
+          title={'Details'}
           navigation={navigation}
           back
           onBackPress={() => navigation.goBack()}

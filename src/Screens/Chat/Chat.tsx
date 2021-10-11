@@ -46,10 +46,9 @@ const Chat: FC<props> = ({navigation, route}) => {
   const [Input, setInput] = useState('');
   // global state
   const [state, dispatch] = useStateValue();
+  const {username} = route.params;
 
   const textInput = useRef<any>(null);
-
-  const {username} = route.params;
 
   const socket = useMemo(
     () =>
@@ -120,15 +119,21 @@ const Chat: FC<props> = ({navigation, route}) => {
       });
     };
 
-    loadMessages().then(() => setisLoading(false));
-    socket.onopen = function () {
-      console.log('Socket connection');
-    };
+    setisLoading(false);
+
+    // loadMessages().then(() => setisLoading(false));
+    // socket.onopen = function () {
+    //   console.log('Socket connection');
+    // };
 
     return () => {
       // unsubscribe keyboard event
+      console.log('Unmounting');
       subscribe.remove();
-      socket.onclose = function () {
+
+      // close the socket connection
+      socket.close();
+      socket.close = function () {
         console.log('Closing socket connection');
       };
     };
@@ -150,9 +155,10 @@ const Chat: FC<props> = ({navigation, route}) => {
         back
         onBackPress={() => {
           // close the socket connection
-          // socket.close = function () {
-          //   console.log('Closing socket connection');
-          // };
+          socket.close();
+          socket.close = function () {
+            console.log('Closing socket connection');
+          };
           navigation.goBack();
         }}
       />
@@ -171,7 +177,7 @@ const Chat: FC<props> = ({navigation, route}) => {
           scrollToBottom
           alignTop
           alwaysShowSend
-          bottomOffset={10}
+          bottomOffset={44}
           // keyboardShouldPersistTaps="never"
           renderSend={props => {
             return (
@@ -180,16 +186,18 @@ const Chat: FC<props> = ({navigation, route}) => {
                 containerStyle={styles.sendContainer}
                 onSend={message => onSend(message)}>
                 <TouchableOpacity
-                  style={{
-                    paddingVertical: 20,
-                  }}
+                  style={
+                    {
+                      // paddingVertical: ,
+                    }
+                  }
                   onPress={e => onSend(Input.trim())}>
                   <Text
                     style={{
                       color: state.theme.TOMATO_COLOR,
-                      fontSize: Sizes.normal,
+                      fontSize: Sizes.large * 2,
                     }}>
-                    Send
+                    {'>'}
                   </Text>
                 </TouchableOpacity>
               </Send>
@@ -241,6 +249,10 @@ const Chat: FC<props> = ({navigation, route}) => {
               </View>
             );
           }}
+          scrollToBottomStyle={{
+            bottom: 45,
+            backgroundColor: state.theme.ICON_COLOR,
+          }}
         />
       )}
     </View>
@@ -267,7 +279,7 @@ const styles = StyleSheet.create({
   sendContainer: {
     flex: 0.1,
     marginRight: 10,
-    marginBottom: 5,
+    marginBottom: 10,
     height: 60,
     width: 70,
     justifyContent: 'center',

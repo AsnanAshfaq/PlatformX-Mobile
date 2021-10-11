@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontSize: Sizes.large * 2,
-    fontFamily: 'Agustina-Demo',
+    fontFamily: 'ComicNeue-Regular',
   },
   loadingContainer: {
     flex: 0.1,
