@@ -137,7 +137,7 @@ const NewPassword: FC<props> = ({navigation, route}) => {
       ]}>
       {/* Back button  */}
       <View style={styles.backContainer}>
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+        <TouchableWithoutFeedback onPress={() => navigation.pop(2)}>
           <FontAwesome
             name={'arrow-left'}
             color={theme.TAB_BAR_ACTIVE_COLOR}

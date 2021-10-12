@@ -11,6 +11,12 @@ import {Height, Sizes, Width} from '../../Constants/Size';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomTextField from '../../Components/CustomTextField';
 import {useStateValue} from '../../Store/StateProvider';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
 
 type props = {
   navigation: any;
@@ -19,11 +25,18 @@ type props = {
 
 const ICON_SIZE = Width * 0.07;
 
+const CELL_COUNT = 6;
+
 const CodeConfirmation: FC<props> = ({navigation, route}) => {
   const [code, setcode] = useState<number>(route.params.otp);
-  const [Input, setInput] = useState<number>();
+  const [value, setValue] = useState('');
+  const [Error, setError] = useState('');
   const [{theme}, dispatch] = useStateValue();
-
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
   const [countDown, setcountDown] = useState<number>(60);
 
   useEffect(() => {
@@ -44,11 +57,21 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
 
   const verifyCode = () => {
     // dismiss the keyboard first
+    setError('');
     Keyboard.dismiss();
-    // then navigate to new password screen
-    navigation.navigate('NewPassword', {
-      email: route.params.email,
-    });
+    // verify the code
+
+    if (code.toString().trim() === value.trim()) {
+      // code is valid
+      // navigate to other screen
+      // then navigate to new password screen
+      navigation.navigate('NewPassword', {
+        email: route.params.email,
+      });
+    } else {
+      // set error
+      setError('Invalid Code');
+    }
   };
   return (
     <View
@@ -81,14 +104,55 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
         </Text>
       </View>
       <View style={styles.mainContainer}>
-        <CustomTextField
+        {/* <CustomTextField
           defaultValue={Input}
           onChangeText={input => setInput(input)}
           placeholder={'Verification Code'}
           textContentType={'creditCardNumber'}
           keyboardType={'number-pad'}
           maxLength={6}
+        /> */}
+        <CodeField
+          ref={ref}
+          {...props}
+          // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+          value={value}
+          onChangeText={setValue}
+          cellCount={6}
+          rootStyle={styles.codeFieldRoot}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          renderCell={({index, symbol, isFocused}) => (
+            <Text
+              key={index}
+              style={[
+                styles.cell,
+                isFocused && {
+                  borderColor: theme.TOMATO_COLOR,
+                },
+                {
+                  borderColor: theme.SHADOW_COLOR,
+                  color: theme.TEXT_COLOR,
+                },
+              ]}
+              onLayout={getCellOnLayoutHandler(index)}>
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Text>
+          )}
         />
+        {Error.length > 0 && (
+          <View
+            style={{
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              marginTop: 10,
+            }}>
+            <Text
+              style={{color: theme.TOMATO_COLOR, fontSize: Sizes.normal * 0.8}}>
+              {Error}
+            </Text>
+          </View>
+        )}
         <View style={styles.noteContainer}>
           <Text
             style={[
@@ -180,6 +244,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: Width * 0.08,
   },
+  codeFieldRoot: {
+    marginTop: 0,
+  },
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 24,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginHorizontal: 4,
+    textAlign: 'center',
+  },
+  focusCell: {
+    borderColor: '#000',
+  },
   noteContainer: {
     marginVertical: 20,
   },
@@ -189,7 +269,10 @@ const styles = StyleSheet.create({
   noteText: {
     fontSize: Sizes.small,
   },
-  countDownContainer: {},
+  countDownContainer: {
+    alignItems: 'flex-start',
+    marginHorizontal: Width * 0.099,
+  },
   buttonContainer: {
     flex: 0.2,
     justifyContent: 'center',

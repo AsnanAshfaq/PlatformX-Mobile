@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     padding: 10,
     shadowOpacity: 1,
     shadowRadius: 25,
-    shadowOffset: {width: 10, height: 12},
-    elevation: 30,
+    // shadowOffset: {width: 10, height: 12},
+    elevation: 5,
   },
   imageContainer: {
     margin: 2,

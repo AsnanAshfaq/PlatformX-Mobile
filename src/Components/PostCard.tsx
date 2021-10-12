@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
-    elevation: 30,
+    elevation: 5,
   },
   headerContainer: {
     minHeight: Height * 0.08,

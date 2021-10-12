@@ -61,7 +61,8 @@ const Chat: FC<props> = ({navigation}) => {
     };
   }, []);
   return (
-    <View style={styles.parent}>
+    <View
+      style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       <CustomHeader
         navigation={navigation}
         title={'Messages'}

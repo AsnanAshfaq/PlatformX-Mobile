@@ -119,16 +119,13 @@ const Chat: FC<props> = ({navigation, route}) => {
       });
     };
 
-    setisLoading(false);
-
-    // loadMessages().then(() => setisLoading(false));
-    // socket.onopen = function () {
-    //   console.log('Socket connection');
-    // };
+    loadMessages().then(() => setisLoading(false));
+    socket.onopen = function () {
+      console.log('Socket connection');
+    };
 
     return () => {
       // unsubscribe keyboard event
-      console.log('Unmounting');
       subscribe.remove();
 
       // close the socket connection

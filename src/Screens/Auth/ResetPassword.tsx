@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -86,6 +86,17 @@ const ResetPassword: FC<props> = ({navigation}) => {
         });
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setEmail(props => {
+        return {
+          error: '',
+          value: '',
+        };
+      });
+    };
+  }, []);
 
   return (
     <View
