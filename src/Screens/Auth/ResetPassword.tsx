@@ -7,13 +7,13 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import CustomTextField from '../../Components/CustomTextField';
 import Axios from '../../Utils/Axios';
 import FormHandlers from '../../Utils/FormHandler';
 import Loading from '../../Components/Loading';
 import {useStateValue} from '../../Store/StateProvider';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type props = {
   navigation: any;
@@ -109,8 +109,8 @@ const ResetPassword: FC<props> = ({navigation}) => {
       {/* Back button  */}
       <View style={styles.backContainer}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-          <FontAwesome
-            name={'arrow-left'}
+          <Ionicons
+            name={'chevron-back'}
             color={theme.TAB_BAR_ACTIVE_COLOR}
             size={ICON_SIZE}
           />
@@ -136,6 +136,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
               return {
                 ...props,
                 value: text,
+                error: '',
               };
             })
           }

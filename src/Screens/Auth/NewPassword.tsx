@@ -8,7 +8,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {Height, Sizes, Width} from '../../Constants/Size';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomTextField from '../../Components/CustomTextField';
 import Loading from '../../Components/Loading';
 import FormHandlers from '../../Utils/FormHandler';
@@ -138,8 +138,8 @@ const NewPassword: FC<props> = ({navigation, route}) => {
       {/* Back button  */}
       <View style={styles.backContainer}>
         <TouchableWithoutFeedback onPress={() => navigation.pop(2)}>
-          <FontAwesome
-            name={'arrow-left'}
+          <Ionicons
+            name={'chevron-back'}
             color={theme.TAB_BAR_ACTIVE_COLOR}
             size={ICON_SIZE}
           />

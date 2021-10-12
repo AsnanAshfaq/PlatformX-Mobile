@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {Height, Sizes, Width} from '../../Constants/Size';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomTextField from '../../Components/CustomTextField';
 import {useStateValue} from '../../Store/StateProvider';
 import {
@@ -84,8 +84,8 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
       {/* Back button  */}
       <View style={styles.backContainer}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-          <FontAwesome
-            name={'arrow-left'}
+          <Ionicons
+            name={'chevron-back'}
             color={theme.TAB_BAR_ACTIVE_COLOR}
             size={ICON_SIZE}
           />
