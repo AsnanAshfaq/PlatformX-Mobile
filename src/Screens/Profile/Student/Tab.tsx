@@ -118,6 +118,7 @@ const Followers: FC = () => {
           <Search
             placeholder={'Search Followers'}
             showFilterIcon={false}
+            isShownInHeader={false}
             handleSearch={query => console.log('Query is', query)}
           />
           <FlatList
@@ -185,6 +186,7 @@ const Following: FC = () => {
           <Search
             placeholder={'Search Following'}
             showFilterIcon={false}
+            isShownInHeader={false}
             handleSearch={query => console.log('Query is', query)}
           />
           <FlatList

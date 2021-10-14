@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Sizes, Width} from '../Constants/Size';
 import {
   Menu,
@@ -24,13 +24,11 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
   return (
     <Menu>
       <MenuTrigger>
-        <View>
-          <Ionicons
-            name={'ellipsis-vertical'}
-            size={ICON_SIZE * 0.8}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
-          />
-        </View>
+        <Ionicons
+          name={'ellipsis-vertical'}
+          size={ICON_SIZE * 0.8}
+          color={theme.TAB_BAR_ACTIVE_COLOR}
+        />
       </MenuTrigger>
       {/* if the post is editable  */}
       {isEditable ? (

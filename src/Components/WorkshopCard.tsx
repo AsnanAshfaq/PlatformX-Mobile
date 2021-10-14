@@ -179,7 +179,8 @@ export default WorkshopCard;
 const styles = StyleSheet.create({
   parent: {
     marginHorizontal: Width * 0.04,
-    marginVertical: Width * 0.01,
+    marginVertical: Width * 0.03,
+    // marginVertical: Width * 0.01,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.8,
     borderRadius: 20,

@@ -65,12 +65,45 @@ const CustomHeader: FunctionComponent<props> = ({
       {drawer && (
         <View style={styles.leftIconContainer}>
           <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-            <FontAwesome
+            {/* <FontAwesome
               name={'navicon'}
               color={theme.TAB_BAR_ACTIVE_COLOR}
               size={ICON_SIZE}
               style={styles.iconPadding}
-            />
+            /> */}
+            <View style={{flexDirection: 'column'}}>
+              <View
+                style={{
+                  width: 29,
+                  height: 5.5,
+                  borderRadius: 4,
+                  borderWidth: 1,
+                  borderColor: 'transparent',
+                  backgroundColor: theme.TEXT_COLOR,
+                }}
+              />
+              <View
+                style={{
+                  width: 21,
+                  height: 5,
+                  marginVertical: 4,
+                  borderRadius: 4,
+                  borderWidth: 1,
+                  borderColor: 'transparent',
+                  backgroundColor: theme.TEXT_COLOR,
+                }}
+              />
+              <View
+                style={{
+                  width: 29,
+                  height: 5.5,
+                  borderRadius: 4,
+                  borderWidth: 1,
+                  borderColor: 'transparent',
+                  backgroundColor: theme.TEXT_COLOR,
+                }}
+              />
+            </View>
           </TouchableWithoutFeedback>
         </View>
       )}
@@ -184,10 +217,12 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flex: 0.6,
-    // paddingLeft: 5,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    paddingLeft: 15,
   },
   headerTitle: {
-    fontSize: Sizes.large,
+    fontSize: Sizes.large * 1.1,
   },
   profileImage: {
     height: Width * 0.09,
@@ -196,7 +231,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   leftIconContainer: {
-    flex: 0.15,
+    flex: 0.1,
     paddingLeft: 5,
   },
   searchContainer: {

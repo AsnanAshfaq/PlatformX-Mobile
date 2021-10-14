@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState, useCallback} from 'react';
+import React, {FC, useEffect, useState, useCallback, useRef} from 'react';
 import {
   View,
   Text,
@@ -20,6 +20,8 @@ import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 import FloatingActionButton from '../../../Components/FloatingActionButton';
 import {PROFILE_IMAGE} from '../../../Constants/sample';
+import {useScrollToTop} from '@react-navigation/native';
+
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
@@ -41,6 +43,8 @@ const Posts: FC<props> = ({navigation}) => {
     isSearching: false,
     query: '',
   });
+
+  const ref = useRef<any>();
 
   const getData = async () => {
     try {
@@ -172,6 +176,8 @@ const Posts: FC<props> = ({navigation}) => {
     );
   };
 
+  useScrollToTop(ref);
+
   return (
     <View
       style={[
@@ -203,6 +209,7 @@ const Posts: FC<props> = ({navigation}) => {
             ListHeaderComponent={writeNewPost}
             renderItem={renderItem}
             // progressViewOffset={10}
+            ref={ref}
             refreshControl={
               <RefreshControl
                 refreshing={Refreshing}

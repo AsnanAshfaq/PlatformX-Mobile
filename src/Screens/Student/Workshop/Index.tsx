@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState, useCallback} from 'react';
+import React, {FC, useEffect, useState, useCallback, useRef} from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import {ToastAndroid} from 'react-native';
 import WorkshopCard from '../../../Components/WorkshopCard';
 import WorkshopSkeleton from '../../../Skeleton/WorkshopCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import {useScrollToTop} from '@react-navigation/native';
 
 type props = {
   navigation: any;
@@ -34,6 +35,7 @@ const Workshop: FC<props> = ({navigation}) => {
     isSearching: false,
     query: '',
   });
+  const ref = useRef<any>();
 
   const getData = async () => {
     axios
@@ -136,6 +138,8 @@ const Workshop: FC<props> = ({navigation}) => {
     getData();
   }, [IsLoading]);
 
+  useScrollToTop(ref);
+
   return (
     <View
       style={[
@@ -172,6 +176,7 @@ const Workshop: FC<props> = ({navigation}) => {
             data={Workshops}
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
+            ref={ref}
             renderItem={({item: workshop, index}: any) => {
               return (
                 <WorkshopCard

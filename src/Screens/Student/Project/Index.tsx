@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState, useCallback} from 'react';
+import React, {FC, useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import {Sizes} from '../../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import {useScrollToTop} from '@react-navigation/native';
 
 type props = {
   navigation: any;
@@ -32,6 +33,8 @@ const Projects: FC<props> = ({navigation}) => {
     isSearching: false,
     query: '',
   });
+  const ref = useRef<any>();
+
   // useFocusEffect(
   //   useCallback(() => {
   //     // getData();
@@ -65,6 +68,8 @@ const Projects: FC<props> = ({navigation}) => {
     getData();
   }, [IsLoading]);
 
+  useScrollToTop(ref);
+
   return (
     <View
       style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
@@ -93,6 +98,7 @@ const Projects: FC<props> = ({navigation}) => {
             data={Project}
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
+            ref={ref}
             renderItem={({item: Project, index}: any) => {
               return <Text>This is the project screen</Text>;
               // return <PostCard key={Project?.id} postDetail={Project} />;

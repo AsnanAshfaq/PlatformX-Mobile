@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import axios from '../../../Utils/Axios';
 import CustomHeader from '../../../Components/CustomHeader';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Foundation from 'react-native-vector-icons/Foundation';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {GREY_IMAGE, PROFILE_IMAGE} from '../../../Constants/sample';
 //@ts-ignore
@@ -19,109 +22,177 @@ import {Height, Sizes, Width} from '../../../Constants/Size';
 import {commaSeperator} from '../../../Utils/Numbers';
 import {useStateValue} from '../../../Store/StateProvider';
 
-type prize = {
-  prize: any;
-};
-const Prize: FC<prize> = ({prize}) => {
+const ICON_SIZE = Width * 0.07;
+
+const Divider: FC<{size: 'large' | 'medium' | 'small'}> = ({size}) => {
   const [{theme}, dispatch] = useStateValue();
+
   return (
-    <View style={styles.prizeContainer}>
-      {/* badge container  */}
-      <View style={styles.prizeBadgeContainer}>
+    <View
+      style={{
+        width:
+          size === 'large'
+            ? Width * 0.8
+            : size === 'medium'
+            ? Width * 0.6
+            : size === 'small'
+            ? Width * 0.45
+            : 0,
+        height: 1.5,
+        marginHorizontal:
+          size === 'large'
+            ? Width * 0.04
+            : size === 'medium'
+            ? Width * 0.14
+            : size === 'small'
+            ? Width * 0.22
+            : 0,
+        marginVertical: 10,
+        backgroundColor: theme.TEXT_COLOR,
+      }}
+    />
+  );
+};
+
+const Bullet: FC = () => {
+  const [{theme}, dispatch] = useStateValue();
+
+  return (
+    <View
+      style={[
+        styles.bulletView,
+        {
+          backgroundColor: theme.TEXT_COLOR,
+        },
+      ]}
+    />
+  );
+};
+
+const PrizeCard: FC = () => {
+  const [{theme}, dispatch] = useStateValue();
+
+  return (
+    <View
+      style={[
+        styles.prizeCard,
+        {
+          borderColor: theme.TEXT_COLOR,
+          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+        },
+      ]}>
+      {/* title  */}
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={[styles.prizeTitleText, {color: theme.TEXT_COLOR}]}>
+          First Prize
+        </Text>
+        <AntDesign name={'star'} color={'gold'} size={ICON_SIZE * 1.1} />
+        <Text style={[styles.prizeMoneyText, {color: theme.TEXT_COLOR}]}>
+          ${commaSeperator(30000)}
+        </Text>
+      </View>
+      <View style={{marginLeft: Width * 0.06, marginTop: 10}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginHorizontal: 2,
+            marginTop: 2,
+          }}>
+          <Bullet />
+          <Text
+            style={{
+              color: theme.TEXT_COLOR,
+              fontSize: Sizes.normal,
+            }}>
+            Overall winner Certificate
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginHorizontal: 2,
+            marginTop: 2,
+          }}>
+          <Bullet />
+          <Text
+            style={{
+              color: theme.TEXT_COLOR,
+              fontSize: Sizes.normal,
+            }}>
+            Job Offer
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginHorizontal: 2,
+            marginTop: 2,
+          }}>
+          <Bullet />
+          <Text
+            style={{
+              color: theme.TEXT_COLOR,
+              fontSize: Sizes.normal,
+            }}>
+            IPhone 13 Pro Max
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const JudgeCard: FC = () => {
+  const [{theme}, dispatch] = useStateValue();
+
+  return (
+    <View style={styles.judgeCard}>
+      {/* image  */}
+      <View style={styles.judgeImageContainer}>
         <Image
-          source={require('../../../../assets/images/badge.png')}
-          style={{width: Width * 0.15, height: Width * 0.15}}
+          source={{
+            uri:
+              'https://scontent.fisb1-2.fna.fbcdn.net/v/t1.6435-9/95260674_2556673724590700_5847535705068142592_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeFiRRsHNV54VEgiUYuRAKbChzk7UcgGVvyHOTtRyAZW_GRbwC3kA0cf6z_pHq1Qd71FS3MNYPDPT8ur3Yx3T_46&_nc_ohc=_5FfqkhyvLUAX_O8itn&_nc_ht=scontent.fisb1-2.fna&oh=16eaafbad2bde501f29168658183a74b&oe=618C6AA4',
+          }}
+          style={styles.judgeImage}
         />
       </View>
-      <View style={styles.prizeDetailContainer}>
+      <View style={[styles.judgeDetailContainer]}>
         <Text
           style={[
-            styles.prizeTitleText,
             {
               color: theme.TEXT_COLOR,
+              fontSize: Sizes.normal,
             },
           ]}>
-          {prize.title}
+          Asnan Ashfaq
         </Text>
         <Text
           style={[
-            styles.prizeValueText,
             {
               color: theme.TEXT_COLOR,
+              fontSize: Sizes.small,
             },
           ]}>
-          {commaSeperator(prize.value)}
-        </Text>
-        <Text
-          style={[
-            styles.prizeDescText,
-            {
-              color: theme.TEXT_COLOR,
-            },
-          ]}>
-          {prize.description}
+          CEO at Netsol Technologies
         </Text>
       </View>
     </View>
   );
 };
-type Props = {
-  component: 'judges' | 'sponsors';
-  details: any;
-};
-// common view for showing judges and sponsors views
-const CommonView: FC<Props> = ({component, details}) => {
-  const [ImageLoading, setImageLoading] = useState(true);
+
+const JudgingCriteria: FC<{title: string; desc: string}> = ({title, desc}) => {
   const [{theme}, dispatch] = useStateValue();
+
   return (
-    <View style={styles.viewContainer}>
-      <View style={styles.viewImageContainer}>
-        <Image
-          style={styles.commonViewImage}
-          resizeMode="cover"
-          source={{
-            uri: ImageLoading
-              ? PROFILE_IMAGE
-              : component === 'judges'
-              ? BASE_URL + details.photo
-              : BASE_URL + details.logo,
-          }}
-          onLoadEnd={() => setImageLoading(false)}
-        />
-      </View>
-      <View style={styles.viewTextContainer}>
-        <Text
-          style={[
-            styles.viewNameText,
-            {
-              color: theme.TEXT_COLOR,
-            },
-          ]}>
-          {details.name}
-        </Text>
-        {component === 'judges' && (
-          <Text
-            style={[
-              styles.viewCompanyText,
-              {
-                color: theme.TEXT_COLOR,
-              },
-            ]}>
-            {details.company}
-          </Text>
-        )}
-        {component === 'sponsors' && (
-          <Text
-            style={[
-              styles.sponsorURL,
-              {
-                color: theme.TOMATO_COLOR,
-              },
-            ]}>
-            {details.url}
-          </Text>
-        )}
-      </View>
+    <View style={styles.judgingCriteriaContainer}>
+      <Text
+        style={[styles.judgingCriteriaTitleText, {color: theme.TEXT_COLOR}]}>
+        {title}
+      </Text>
+      <Text style={[styles.judgingCriteriaDescText, {color: theme.TEXT_COLOR}]}>
+        {desc}
+      </Text>
     </View>
   );
 };
@@ -130,6 +201,7 @@ type props = {
   navigation: any;
   route: any;
 };
+
 const ViewHackathon: FC<props> = ({navigation, route}) => {
   // get hackathon id from params
   const {ID} = route.params;
@@ -168,13 +240,13 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
           chat
           bell
         />
-        <ScrollView stickyHeaderIndices={[2, 4]} removeClippedSubviews>
+        <ScrollView removeClippedSubviews>
           {/* background image  */}
           <View>
             <Image
               style={{
                 width: Width,
-                height: Width * ImageAspectRatio,
+                height: Width * ImageAspectRatio * 0.75,
               }}
               source={{
                 uri: BackgroundImageLoading
@@ -191,96 +263,223 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
                   },
                 );
               }}
+              resizeMode={'cover'}
             />
           </View>
-          <View style={{alignItems: 'center'}}>
-            <Text
-              style={[
-                styles.titleText,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              {HackathonData.title}
-            </Text>
-            <Text
-              style={[
-                styles.tagLineText,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              {HackathonData.tag_line}
-            </Text>
-          </View>
+
+          {/* card  */}
           <View
             style={[
-              styles.labelContainer,
+              styles.card,
               {
-                backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-                borderBottomColor: theme.SHADOW_COLOR,
+                backgroundColor: theme.BACKGROUND_COLOR,
+                marginHorizontal: Width * 0.05,
               },
             ]}>
-            <Text
-              style={[
-                styles.label,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              Description
-            </Text>
-          </View>
-          <View style={styles.descriptionContainer}>
-            <Text
-              style={[
-                styles.descriptionText,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              {HackathonData.description}
-            </Text>
-          </View>
-          {/* prizes  */}
+            {/* title and tagline container  */}
+            <View style={[styles.titleContainer, styles.center]}>
+              <Text
+                style={[
+                  styles.titleText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                {HackathonData.title}
+              </Text>
+              <Text
+                style={[
+                  styles.tagLineText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                {HackathonData.tag_line}
+              </Text>
+            </View>
+            <Divider size={'large'} />
 
-          <View
-            style={[
-              styles.labelContainer,
-              {
-                backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-                borderBottomColor: theme.SHADOW_COLOR,
-              },
-            ]}>
-            <Text
-              style={[
-                styles.label,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              Prizes
-            </Text>
-          </View>
-          <FlatList
-            numColumns={2}
-            data={HackathonData.prizes}
-            keyExtractor={(item: any, index) => `${item.id}`}
-            renderItem={({item: prize}) => (
-              <Prize prize={prize} key={prize.id} />
-            )}
-          />
+            {/* description container  */}
+            <View style={styles.container}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Description
+              </Text>
+              <View
+                style={{
+                  marginLeft: Width * 0.04,
+                  marginTop: 10,
+                }}>
+                <Text
+                  style={[
+                    styles.descriptionText,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  {HackathonData.description}
+                </Text>
+              </View>
+            </View>
+            <Divider size={'small'} />
+            {/* contact email  */}
+            <View style={styles.container}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Contact Email
+              </Text>
+              <View style={styles.iconTextContainer}>
+                <MaterialCommunityIcons
+                  name={'email'}
+                  color={theme.TAB_BAR_ACTIVE_COLOR}
+                  size={ICON_SIZE * 1.1}
+                />
+                <Text
+                  style={{
+                    color: theme.TEXT_COLOR,
+                    fontSize: Sizes.normal,
+                    marginHorizontal: Width * 0.02,
+                  }}>
+                  18asnan@gmail.com
+                </Text>
+              </View>
+            </View>
+            <Divider size={'small'} />
 
-          {/* judges  */}
-          {HackathonData?.judges && (
-            <View
-              style={[
-                styles.labelContainer,
-                {
-                  backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-                  borderBottomColor: theme.SHADOW_COLOR,
-                },
-              ]}>
+            {/* starting from container  */}
+            <View style={styles.container}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Starting from
+              </Text>
+              <View style={styles.iconTextContainer}>
+                <Foundation
+                  name={'calendar'}
+                  color={theme.TAB_BAR_ACTIVE_COLOR}
+                  size={ICON_SIZE * 1.3}
+                />
+                <Text
+                  style={{
+                    color: theme.TEXT_COLOR,
+                    fontSize: Sizes.normal,
+                    marginHorizontal: Width * 0.04,
+                    marginTop: 3,
+                  }}>
+                  Oct 11, 2021 @ 11:45 PM
+                </Text>
+              </View>
+            </View>
+            <Divider size={'small'} />
+
+            {/* Theme tags container  */}
+            <View style={styles.container}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Theme Tags
+              </Text>
+              <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
+                <View style={styles.themeTagTextContainer}>
+                  <Bullet />
+                  <Text
+                    style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
+                    Online
+                  </Text>
+                </View>
+                <View style={styles.themeTagTextContainer}>
+                  <Bullet />
+                  <Text
+                    style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
+                    React Native Development
+                  </Text>
+                </View>
+                <View style={styles.themeTagTextContainer}>
+                  <Bullet />
+                  <Text
+                    style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
+                    Public
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <Divider size={'small'} />
+            {/* rules container  */}
+            <View style={styles.container}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Rules
+              </Text>
+              <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
+                <View style={styles.ruleTextContainer}>
+                  <Bullet />
+                  <Text
+                    style={[
+                      styles.rulesText,
+                      {
+                        color: theme.TEXT_COLOR,
+                      },
+                    ]}>
+                    Create an app built on the Daml framework that strives to
+                    solve a simple problem in Finance, Insurance, Healthcare,
+                    Supply Chain, or a closely related space.
+                  </Text>
+                </View>
+                <View style={styles.ruleTextContainer}>
+                  <Bullet />
+                  <Text
+                    style={[
+                      styles.rulesText,
+                      {
+                        color: theme.TEXT_COLOR,
+                      },
+                    ]}>
+                    Create an app built on the Daml framework that strives to
+                    solve a simple problem in Finance, Insurance, Healthcare,
+                    Supply Chain, or a closely related space.
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <Divider size={'small'} />
+            <View style={styles.container}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Prizes
+              </Text>
+              {/* flat list */}
+              <PrizeCard />
+            </View>
+            <Divider size={'small'} />
+            <View style={styles.container}>
               <Text
                 style={[
                   styles.label,
@@ -290,98 +489,80 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
                 ]}>
                 Judges
               </Text>
+              <JudgeCard />
+              <JudgeCard />
             </View>
-          )}
-          {HackathonData?.judges &&
-            HackathonData?.judges.map(judge => (
-              <CommonView component="judges" details={judge} key={judge.id} />
-            ))}
-          {/* sponsors  */}
-          {HackathonData?.sponsors && (
-            <>
-              <View
+            <Divider size={'small'} />
+            <View style={styles.container}>
+              <Text
                 style={[
-                  styles.labelContainer,
+                  styles.label,
                   {
-                    backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-                    borderBottomColor: theme.SHADOW_COLOR,
+                    color: theme.TEXT_COLOR,
                   },
                 ]}>
-                <Text
-                  style={[
-                    styles.label,
-                    {
-                      color: theme.TEXT_COLOR,
-                    },
-                  ]}>
-                  Sponsors
-                </Text>
-              </View>
-              {HackathonData?.sponsors.map(sponsor => (
-                <CommonView
-                  component="sponsors"
-                  details={sponsor}
-                  key={sponsor.id}
-                />
-              ))}
-            </>
-          )}
-          {/* requirements  */}
-          {/* criteria  */}
-          {/* Contact us  */}
-          <Text>{HackathonData.contact_email}</Text>
-          <Text>{HackathonData.contact_email}</Text>
-        </ScrollView>
+                Judging Criteria
+              </Text>
+              <JudgingCriteria
+                title={'Potential Impact'}
+                desc={
+                  'How will this project impact the growth of the Solana ecosystem?'
+                }
+              />
+              <JudgingCriteria
+                title={'Design'}
+                desc={
+                  'Is the user experience and design of the project well thought out?. will this project impact the growth of the Solana ecosystem?'
+                }
+              />
+            </View>
+            <Divider size={'small'} />
+            <View style={styles.container}>
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Sponsors
+              </Text>
+            </View>
+          </View>
 
-        {/* join now  */}
-        <View style={styles.joinNowButtonContainer}>
-          <TouchableOpacity
-            style={[
-              styles.joinNowButton,
-              {
-                backgroundColor: theme.TOMATO_COLOR,
-              },
-            ]}
-            activeOpacity={0.5}
-            onPress={() =>
-              navigation.navigate('Register_Hackathon', {
-                ID: ID, // pass the hackathon data
-              })
-            }>
-            <Text
+          {/* join now  */}
+          <View style={styles.joinNowButtonContainer}>
+            <TouchableOpacity
               style={[
-                styles.joinNowText,
+                styles.joinNowButton,
                 {
-                  color: theme.TEXT_COLOR,
+                  backgroundColor: theme.TOMATO_COLOR,
                 },
-              ]}>
-              Join Now{' '}
-            </Text>
-          </TouchableOpacity>
-        </View>
+              ]}
+              activeOpacity={0.5}
+              onPress={
+                () => {}
+                // navigation.navigate('Register_Hackathon', {
+                //   ID: ID, // pass the hackathon data
+                // })
+              }>
+              <Text
+                style={[
+                  styles.joinNowText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                Join Now{' '}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
     );
   }
 
-  return (
-    <View
-      style={[
-        styles.parent,
-        {
-          backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-        },
-      ]}>
-      <CustomHeader
-        title={'Detail'}
-        navigation={navigation}
-        back
-        onBackPress={() => navigation.goBack()}
-        chat
-        bell
-      />
-      <HackathonCardSkeleton showSearchSkeleton={false} />
-    </View>
-  );
+  return <HackathonCardSkeleton showSearchSkeleton={false} />;
 };
 
 export default ViewHackathon;
@@ -389,6 +570,19 @@ export default ViewHackathon;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
+  },
+  card: {
+    marginTop: -20,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: 'transparent',
+  },
+  center: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleContainer: {
+    marginTop: 15,
   },
   titleText: {
     fontSize: Sizes.normal * 1.7,
@@ -399,21 +593,73 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     // fontFamily: 'Raleway-Light',
   },
-  descriptionContainer: {
-    marginHorizontal: Width * 0.025,
+  container: {
+    marginHorizontal: Width * 0.03,
     marginVertical: 10,
+  },
+  iconTextContainer: {
+    flexDirection: 'row',
+    marginLeft: Width * 0.04,
+    marginTop: 10,
   },
   descriptionText: {
     fontSize: Sizes.normal,
+    lineHeight: 25,
   },
-  prizeContainer: {
-    flex: 1,
+  bulletView: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    marginTop: 5,
+    marginRight: 10,
+  },
+  prizeCard: {
+    borderWidth: 1,
+    borderRadius: 15,
+    padding: 5,
+    paddingVertical: 10,
+    marginTop: 10,
+    marginHorizontal: Width * 0.02,
+  },
+  judgeCard: {
     flexDirection: 'row',
-    marginVertical: 10,
-    // marginHorizontal: Width * 0.01,
+    // marginHorizontal: Width * 0.02,
+    marginLeft: Width * 0.04,
+    marginTop: 10,
   },
-  prizeBadgeContainer: {
-    // flex: 0.1,
+  judgeImageContainer: {
+    flex: 0.2,
+  },
+  judgeImage: {
+    width: Width * 0.14,
+    height: Width * 0.14,
+    borderWidth: 1,
+    borderRadius: 40,
+    borderColor: 'transparent',
+  },
+  judgeDetailContainer: {
+    flex: 0.8,
+    marginLeft: 10,
+  },
+  judgingCriteriaContainer: {
+    marginLeft: Width * 0.04,
+    marginTop: 10,
+  },
+  judgingCriteriaTitleText: {
+    fontSize: Sizes.normal * 1.1,
+    fontWeight: 'bold',
+  },
+  judgingCriteriaDescText: {
+    lineHeight: 22,
+    fontSize: Sizes.normal * 0.8,
+  },
+
+  themeTagTextContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 2,
+    marginTop: 2,
   },
   prizeDetailContainer: {
     flex: 0.95,
@@ -423,53 +669,21 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 1.3,
     fontWeight: 'bold',
   },
-  prizeValueText: {
-    fontSize: Sizes.normal * 1.25,
-  },
-  prizeDescText: {
+  prizeMoneyText: {
     fontSize: Sizes.normal,
-  },
-  labelContainer: {
-    marginHorizontal: Width * 0.02,
-    marginVertical: 10,
-    width: Width * 0.95,
-    padding: 5,
-    borderBottomWidth: 1,
   },
   label: {
-    fontSize: Sizes.large * 1.3,
+    fontSize: Sizes.large * 1.1,
     // fontFamily: 'Cindyrella',
   },
-  viewContainer: {
+  ruleTextContainer: {
     flexDirection: 'row',
-    marginVertical: 10,
+    marginHorizontal: 2,
+    marginTop: 2,
   },
-  viewImageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 0.33,
-  },
-  viewTextContainer: {
-    paddingHorizontal: Width * 0.04,
-    justifyContent: 'space-around',
-    flex: 0.67,
-  },
-  viewNameText: {
-    fontSize: Sizes.normal * 1.3,
-  },
-  viewCompanyText: {
+  rulesText: {
     fontSize: Sizes.normal,
-    // fontWeight: 'bold',
-    fontStyle: 'italic',
-  },
-  commonViewImage: {
-    width: Width * 0.25,
-    height: Width * 0.25,
-    borderRadius: 45,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
+    lineHeight: 25,
   },
   sponsorURL: {
     fontSize: Sizes.normal,

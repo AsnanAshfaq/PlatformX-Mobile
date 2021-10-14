@@ -64,7 +64,7 @@ type props = {
   hackathonDetail: any;
 };
 
-const MAX_TEXT_LENGTH = 250;
+const MAX_TEXT_LENGTH = 140;
 
 const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
@@ -275,7 +275,8 @@ export default HackathonCard;
 const styles = StyleSheet.create({
   parent: {
     marginHorizontal: Width * 0.04,
-    marginVertical: Width * 0.01,
+    // marginVertical: Width * 0.01,
+    marginVertical: Width * 0.03,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.8,
     borderRadius: 20,
@@ -351,7 +352,7 @@ const styles = StyleSheet.create({
   },
   iconsRow: {
     flexDirection: 'row',
-    paddingVertical: 5,
+    paddingVertical: 3,
   },
   iconTextContainer: {
     justifyContent: 'center',
@@ -366,7 +367,7 @@ const styles = StyleSheet.create({
     // minHeight: Height * 0.05,
     // maxHeight: Height * 0.07,
     flexDirection: 'row',
-    marginTop: Height * 0.02,
+    marginTop: Height * 0.015,
     justifyContent: 'flex-end',
   },
   applyButton: {

@@ -113,7 +113,13 @@ const Search: FC<props> = ({
             maxLength={30}
           />
         </View>
-        <View style={styles.searchIconContainer}>
+        <View
+          style={[
+            styles.searchIconContainer,
+            {
+              marginHorizontal: isShownInHeader ? 8 : 0,
+            },
+          ]}>
           <TouchableOpacity onPress={() => search()}>
             <Ionicons
               name={'search'}
@@ -131,7 +137,7 @@ const Search: FC<props> = ({
               style={{marginRight: 8}}>
               <Entypo
                 name={'cross'}
-                size={Width * 0.065}
+                size={Width * 0.06}
                 style={{
                   color: theme.TAB_BAR_ACTIVE_COLOR,
                 }}

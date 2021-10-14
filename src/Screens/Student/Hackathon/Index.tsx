@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState, useCallback} from 'react';
+import React, {FC, useEffect, useState, useCallback, useRef} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import axios from '../../../Utils/Axios';
 import {Sizes} from '../../../Constants/Size';
 import HackathonSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import {useScrollToTop} from '@react-navigation/native';
 
 type props = {
   navigation: any;
@@ -32,6 +33,7 @@ const Hackathons: FC<props> = ({navigation}) => {
     isSearching: false,
     query: '',
   });
+  const ref = useRef<any>();
 
   const getData = async () => {
     axios
@@ -126,6 +128,8 @@ const Hackathons: FC<props> = ({navigation}) => {
     getData();
   }, [IsLoading]);
 
+  useScrollToTop(ref);
+
   const listHeaderComponent = () => {
     return (
       <CustomSearch
@@ -165,6 +169,7 @@ const Hackathons: FC<props> = ({navigation}) => {
             // disableVirtualization
             ListHeaderComponent={listHeaderComponent}
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
+            ref={ref}
             renderItem={({item: hackathon, index}: any) => {
               return (
                 <HackathonCard
