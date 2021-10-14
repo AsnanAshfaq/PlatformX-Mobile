@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   Image,
+  ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
 import axios from '../../../Utils/Axios';
@@ -14,7 +15,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Foundation from 'react-native-vector-icons/Foundation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {GREY_IMAGE, PROFILE_IMAGE} from '../../../Constants/sample';
+import {
+  GREY_IMAGE,
+  BACKGROUND_IMAGE,
+  PROFILE_IMAGE,
+} from '../../../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import HackathonCardSkeleton from '../../../Skeleton/HackathonCardSkeleton';
@@ -82,7 +87,7 @@ const PrizeCard: FC = () => {
         },
       ]}>
       {/* title  */}
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+      <View style={styles.center}>
         <Text style={[styles.prizeTitleText, {color: theme.TEXT_COLOR}]}>
           First Prize
         </Text>
@@ -92,12 +97,7 @@ const PrizeCard: FC = () => {
         </Text>
       </View>
       <View style={{marginLeft: Width * 0.06, marginTop: 10}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: 2,
-            marginTop: 2,
-          }}>
+        <View style={styles.prizeCardTextContainer}>
           <Bullet />
           <Text
             style={{
@@ -107,12 +107,7 @@ const PrizeCard: FC = () => {
             Overall winner Certificate
           </Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: 2,
-            marginTop: 2,
-          }}>
+        <View style={styles.prizeCardTextContainer}>
           <Bullet />
           <Text
             style={{
@@ -122,12 +117,7 @@ const PrizeCard: FC = () => {
             Job Offer
           </Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: 2,
-            marginTop: 2,
-          }}>
+        <View style={styles.prizeCardTextContainer}>
           <Bullet />
           <Text
             style={{
@@ -162,7 +152,7 @@ const JudgeCard: FC = () => {
           style={[
             {
               color: theme.TEXT_COLOR,
-              fontSize: Sizes.normal,
+              fontSize: Sizes.normal * 1.1,
             },
           ]}>
           Asnan Ashfaq
@@ -171,7 +161,7 @@ const JudgeCard: FC = () => {
           style={[
             {
               color: theme.TEXT_COLOR,
-              fontSize: Sizes.small,
+              fontSize: Sizes.small * 1.1,
             },
           ]}>
           CEO at Netsol Technologies
@@ -220,7 +210,11 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
         setHackathonData(result.data);
         setLoading(false);
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        if (error.response.data) {
+          ToastAndroid.show(error.data.response.error, 1500);
+        }
+      });
   }, [ID]);
 
   if (!Loading) {
@@ -242,26 +236,25 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
         />
         <ScrollView removeClippedSubviews>
           {/* background image  */}
-          <View>
+          <View style={styles.backgroundImageContainer}>
             <Image
               style={{
                 width: Width,
-                height: Width * ImageAspectRatio * 0.75,
+                height: Height * 0.3, //Width * ImageAspectRatio * 0.75,
               }}
               source={{
                 uri: BackgroundImageLoading
-                  ? GREY_IMAGE
-                  : BASE_URL + HackathonData?.background_image,
+                  ? BACKGROUND_IMAGE
+                  : HackathonData?.background_image
+                  ? BASE_URL + HackathonData?.background_image
+                  : BACKGROUND_IMAGE,
               }}
               onLoadEnd={() => {
-                Image.getSize(
-                  BASE_URL + HackathonData?.background_image,
-                  (width, heigth) => {
-                    // calculate aspect ratio of image
-                    setImageAspectRatio(heigth / width);
-                    setBackgroundImageLoading(false);
-                  },
-                );
+                setBackgroundImageLoading(false);
+              }}
+              onError={() => {
+                setBackgroundImageLoading(false);
+                ToastAndroid.show("Couldn't load background image", 1500);
               }}
               resizeMode={'cover'}
             />
@@ -529,35 +522,36 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
               </Text>
             </View>
           </View>
-
-          {/* join now  */}
-          <View style={styles.joinNowButtonContainer}>
-            <TouchableOpacity
-              style={[
-                styles.joinNowButton,
-                {
-                  backgroundColor: theme.TOMATO_COLOR,
-                },
-              ]}
-              activeOpacity={0.5}
-              onPress={
-                () => {}
-                // navigation.navigate('Register_Hackathon', {
-                //   ID: ID, // pass the hackathon data
-                // })
-              }>
-              <Text
-                style={[
-                  styles.joinNowText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Join Now{' '}
-              </Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
+        {/* join now  */}
+        <View style={styles.joinNowButtonContainer}>
+          <TouchableOpacity
+            style={[
+              styles.joinNowButton,
+              {
+                backgroundColor: theme.TOMATO_COLOR,
+              },
+            ]}
+            activeOpacity={0.5}
+            onPress={() =>
+              navigation.navigate('Register_Hackathon', {
+                ID: ID, // pass the hackathon data,
+                backgroundImage: HackathonData?.background_image,
+                title: HackathonData.title,
+                tagline: HackathonData.tag_line,
+              })
+            }>
+            <Text
+              style={[
+                styles.joinNowText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              Join Now{' '}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -571,8 +565,11 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
   },
+  backgroundImageContainer: {
+    // flex: 1,
+  },
   card: {
-    marginTop: -20,
+    marginTop: -45,
     borderWidth: 1,
     borderRadius: 20,
     borderColor: 'transparent',
@@ -585,13 +582,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   titleText: {
-    fontSize: Sizes.normal * 1.7,
-    fontFamily: 'Raleway-Light',
+    fontSize: Sizes.normal * 1.4,
+    fontFamily: 'OpenSans-Bold',
   },
   tagLineText: {
     fontSize: Sizes.normal * 1.15,
-    fontStyle: 'italic',
-    // fontFamily: 'Raleway-Light',
+    fontFamily: 'OpenSans-Light',
   },
   container: {
     marginHorizontal: Width * 0.03,
@@ -623,11 +619,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: Width * 0.02,
   },
+  prizeCardTextContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 2,
+    marginTop: 2,
+  },
   judgeCard: {
     flexDirection: 'row',
     // marginHorizontal: Width * 0.02,
     marginLeft: Width * 0.04,
-    marginTop: 10,
+    marginTop: 18,
   },
   judgeImageContainer: {
     flex: 0.2,
@@ -696,6 +697,7 @@ const styles = StyleSheet.create({
   },
   joinNowButton: {
     width: Width * 0.9,
+    // marginHorizontal: Width * 0.05,
     height: Width * 0.12,
     justifyContent: 'center',
     borderRadius: 10,

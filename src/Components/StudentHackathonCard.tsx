@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: Sizes.normal * 1.2,
-    fontFamily: 'Segoe-UI-Bold',
+    fontFamily: 'OpenSans-Bold',
   },
   tagLineContainer: {
     justifyContent: 'center',

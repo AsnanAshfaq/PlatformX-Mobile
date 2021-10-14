@@ -106,7 +106,9 @@ const Followers: FC = () => {
       });
   }, []);
 
-  if (isLoading) return <Loading size={Width * 0.15} />;
+  if (isLoading) {
+    return <Loading size={Width * 0.15} />;
+  }
 
   return (
     <View style={styles.parent}>
@@ -160,7 +162,9 @@ const Following: FC = () => {
       });
   }, []);
 
-  if (isLoading) return <Loading size={Width * 0.15} />;
+  if (isLoading) {
+    return <Loading size={Width * 0.15} />;
+  }
 
   return (
     <View style={styles.parent}>

@@ -77,7 +77,7 @@ const SubTagList: FC<Props> = ({Tag, list, CheckedValues}) => {
       {list.map(subtag => (
         <View style={{flexDirection: 'row'}} key={subtag}>
           <CheckBox
-            size={25}
+            size={20}
             onPress={isCheck => {
               handleCheckedValues(isCheck, Tag, subtag);
             }}

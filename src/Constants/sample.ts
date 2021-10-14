@@ -192,7 +192,7 @@ export const PROFILE_IMAGE =
   'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 
 export const BACKGROUND_IMAGE =
-  'https://images.unsplash.com/photo-1593371256584-ac70d0ab43d1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80';
+  'https://svs.gsfc.nasa.gov/vis/a000000/a003400/a003472/HDStateLines09999_print.jpg';
 
 export const POST_IMAGE = 'https://wallpaperaccess.com/full/1397755.jpg';
 
