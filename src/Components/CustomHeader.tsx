@@ -65,17 +65,14 @@ const CustomHeader: FunctionComponent<props> = ({
       {drawer && (
         <View style={styles.leftIconContainer}>
           <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
-            {/* <FontAwesome
-              name={'navicon'}
-              color={theme.TAB_BAR_ACTIVE_COLOR}
-              size={ICON_SIZE}
-              style={styles.iconPadding}
-            /> */}
-            <View style={{flexDirection: 'column'}}>
+            <View
+              style={{
+                flexDirection: 'column',
+              }}>
               <View
                 style={{
                   width: 29,
-                  height: 5.5,
+                  height: 4.2,
                   borderRadius: 4,
                   borderWidth: 1,
                   borderColor: 'transparent',
@@ -84,19 +81,9 @@ const CustomHeader: FunctionComponent<props> = ({
               />
               <View
                 style={{
-                  width: 21,
-                  height: 5,
+                  width: 19,
+                  height: 4.2,
                   marginVertical: 4,
-                  borderRadius: 4,
-                  borderWidth: 1,
-                  borderColor: 'transparent',
-                  backgroundColor: theme.TEXT_COLOR,
-                }}
-              />
-              <View
-                style={{
-                  width: 29,
-                  height: 5.5,
                   borderRadius: 4,
                   borderWidth: 1,
                   borderColor: 'transparent',
@@ -178,7 +165,7 @@ const CustomHeader: FunctionComponent<props> = ({
               <AntDesign
                 name={'message1'}
                 size={ICON_SIZE * 0.9}
-                color={theme.TAB_BAR_ACTIVE_COLOR}
+                color={theme.TEXT_COLOR}
                 style={styles.iconPadding}
               />
               {/* badge  */}
@@ -193,7 +180,7 @@ const CustomHeader: FunctionComponent<props> = ({
               <Ionicons
                 name={'notifications-outline'}
                 size={ICON_SIZE}
-                color={theme.TAB_BAR_ACTIVE_COLOR}
+                color={theme.TEXT_COLOR}
                 style={[styles.iconPadding, {transform: [{rotateZ: '-15deg'}]}]}
               />
               {/* badge  */}

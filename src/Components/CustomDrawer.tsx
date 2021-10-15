@@ -33,7 +33,7 @@ const CustomDrawerItem: FC<Props> = ({label, icon_name, onPress}) => {
         </Text>
       )}
       icon={({focused, color, size}) => (
-        <Ionicons name={icon_name} size={25} color={theme.TEXT_COLOR} />
+        <Ionicons name={icon_name} size={25} color={theme.GREEN_COLOR} />
       )}
       onPress={() => onPress()}
     />
@@ -116,7 +116,7 @@ const StudentDrawer: FC<props> = ({navigation}) => {
           }}
           style={[
             styles.profileButtonContainer,
-            {backgroundColor: state.theme.SHADOW_COLOR},
+            {backgroundColor: state.theme.GREEN_COLOR},
           ]}>
           <Text
             style={[styles.profileButtonText, {color: state.theme.TEXT_COLOR}]}>

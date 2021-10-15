@@ -62,7 +62,10 @@ const RulesAndRegistration: FC = () => {
       </Text>
       <View style={styles.checkBoxContainer}>
         <View style={styles.rulesCheckBoxContainer}>
-          <CheckBox onPress={() => console.log('Working on solo')} size={20} />
+          <CheckBox
+            onPress={() => console.log('agreement selected')}
+            size={20}
+          />
         </View>
         <View style={styles.rulesTextContainer}>
           <Text style={[styles.rulesText, {color: theme.TEXT_COLOR}]}>
@@ -73,13 +76,16 @@ const RulesAndRegistration: FC = () => {
       </View>
       <View style={styles.checkBoxContainer}>
         <View style={styles.rulesCheckBoxContainer}>
-          <CheckBox onPress={() => console.log('Working on solo')} size={20} />
+          <CheckBox
+            onPress={() => console.log('agreement selected')}
+            size={20}
+          />
         </View>
         <View style={styles.rulesTextContainer}>
           <Text style={[styles.rulesText, {color: theme.TEXT_COLOR}]}>
             I have read and agree to be bound by the Official Rules and the
             PlatformX{' '}
-            <Text style={{color: theme.TOMATO_COLOR}}> Terms and Services</Text>
+            <Text style={{color: theme.GREEN_COLOR}}> Terms and Services</Text>
           </Text>
         </View>
       </View>
@@ -102,13 +108,13 @@ const TeamMates: FC = () => {
         Do you have teammates?
       </Text>
       <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('Working on solo')} size={20} />
+        <CheckBox onPress={() => console.log('Solo selected')} size={20} />
         <Text style={[styles.teamText, {color: theme.TEXT_COLOR}]}>
           Working Solo
         </Text>
       </View>
       <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('Working on solo')} size={20} />
+        <CheckBox onPress={() => console.log('teammate selected')} size={20} />
         <Text style={[styles.teamText, {color: theme.TEXT_COLOR}]}>
           Add Teammate
         </Text>
@@ -133,21 +139,21 @@ const KnowHows: FC<{title: string}> = ({title}) => {
         How did you know about {title}?
       </Text>
       <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('Working on solo')} size={20} />
+        <CheckBox onPress={() => console.log('platformx selected')} size={20} />
         <Text style={[styles.knowHowText, {color: theme.TEXT_COLOR}]}>
           PlatformX
         </Text>
       </View>
       <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('Working on solo')} size={20} />
+        <CheckBox onPress={() => console.log('friend selected')} size={20} />
         <Text style={[styles.knowHowText, {color: theme.TEXT_COLOR}]}>
           A friend
         </Text>
       </View>
       <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('Working on solo')} size={20} />
+        <CheckBox onPress={() => console.log('others selected')} size={20} />
         <Text style={[styles.knowHowText, {color: theme.TEXT_COLOR}]}>
-          Other
+          Others
         </Text>
       </View>
     </View>
@@ -280,7 +286,7 @@ const Register: FC<props> = ({navigation, route}) => {
           style={[
             styles.registerButton,
             {
-              backgroundColor: theme.TOMATO_COLOR,
+              backgroundColor: theme.GREEN_COLOR,
             },
           ]}
           activeOpacity={0.5}

@@ -389,7 +389,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
             <TouchableOpacity
               style={[
                 styles.activitiesButtonContainer,
-                {backgroundColor: state.theme.TOMATO_COLOR},
+                {backgroundColor: state.theme.GREEN_COLOR},
               ]}>
               <Text
                 style={[

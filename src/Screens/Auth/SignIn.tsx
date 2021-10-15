@@ -242,7 +242,7 @@ const SignIn: FC<props> = ({navigation}) => {
         {/* forgot password container  */}
         <View style={styles.forgotContainer}>
           <TouchableWithoutFeedback onPress={() => forgotPassword()}>
-            <Text style={[styles.forgotText, {color: theme.TOMATO_COLOR}]}>
+            <Text style={[styles.forgotText, {color: theme.GREEN_COLOR}]}>
               Forgot password?
             </Text>
           </TouchableWithoutFeedback>
@@ -267,7 +267,7 @@ const SignIn: FC<props> = ({navigation}) => {
           <Text style={[styles.signUpText, {color: theme.TEXT_COLOR}]}>
             Don't have an account?{' '}
             <Text
-              style={[styles.signUp, {color: theme.TOMATO_COLOR}]}
+              style={[styles.signUp, {color: theme.GREEN_COLOR}]}
               onPress={() => navigation.navigate('UserType')}>
               {' '}
               Sign Up

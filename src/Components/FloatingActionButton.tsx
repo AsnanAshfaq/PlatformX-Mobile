@@ -13,7 +13,7 @@ const FloatingActionButton: FC<props> = ({onPress}) => {
       style={[
         styles.floatingButtonContainer,
         {
-          backgroundColor: theme.TOMATO_COLOR,
+          backgroundColor: theme.GREEN_COLOR,
         },
       ]}>
       <TouchableOpacity onPress={onPress}>

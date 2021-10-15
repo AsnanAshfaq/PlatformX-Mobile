@@ -163,7 +163,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
           style={[
             styles.button,
             {
-              backgroundColor: theme.TOMATO_COLOR,
+              backgroundColor: theme.GREEN_COLOR,
             },
           ]}
           onPress={() => sendCode()}>

@@ -75,7 +75,7 @@ const CommonView: FC<Props> = ({
           ]}>
           {label}{' '}
           {isRequired === true && (
-            <Text style={{color: theme.TOMATO_COLOR}}> *</Text>
+            <Text style={{color: theme.GREEN_COLOR}}> *</Text>
           )}
         </Text>
       </View>
@@ -472,7 +472,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
           style={[
             styles.editButton,
             {
-              backgroundColor: theme.TOMATO_COLOR,
+              backgroundColor: theme.GREEN_COLOR,
             },
           ]}
           activeOpacity={0.5}

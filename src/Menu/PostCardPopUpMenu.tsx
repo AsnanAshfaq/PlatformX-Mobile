@@ -27,7 +27,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <Ionicons
           name={'ellipsis-vertical'}
           size={ICON_SIZE * 0.8}
-          color={theme.TAB_BAR_ACTIVE_COLOR}
+          color={theme.TEXT_COLOR}
         />
       </MenuTrigger>
       {/* if the post is editable  */}

@@ -204,7 +204,7 @@ const NewPassword: FC<props> = ({navigation, route}) => {
           style={[
             styles.button,
             {
-              backgroundColor: theme.TOMATO_COLOR,
+              backgroundColor: theme.GREEN_COLOR,
             },
           ]}
           onPress={() => resetPasword()}>

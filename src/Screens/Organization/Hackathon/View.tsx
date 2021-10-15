@@ -116,7 +116,7 @@ const CommonView: FC<Props> = ({component, details}) => {
             style={[
               styles.sponsorURL,
               {
-                color: theme.TOMATO_COLOR,
+                color: theme.GREEN_COLOR,
               },
             ]}>
             {details.url}
@@ -340,7 +340,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
             style={[
               styles.joinNowButton,
               {
-                backgroundColor: theme.TOMATO_COLOR,
+                backgroundColor: theme.GREEN_COLOR,
               },
             ]}
             activeOpacity={0.5}

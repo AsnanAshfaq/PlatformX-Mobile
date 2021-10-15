@@ -60,14 +60,16 @@ const PostCardButtons: FC<Props> = ({
         ]}>
         <AntDesign
           name={`${isLiked === 'Liked' ? 'like1' : 'like2'}`}
-          color={theme.TAB_BAR_ACTIVE_COLOR}
+          color={`${
+            isLiked === 'Liked' ? theme.GREEN_COLOR : theme.TEXT_COLOR
+          }`}
           size={ICON_SIZE * 0.8}
         />
         <Text
           style={[
             styles.PostButtonText,
             {
-              color: state.theme.TEXT_COLOR,
+              color: isLiked === 'Liked' ? theme.GREEN_COLOR : theme.TEXT_COLOR,
             },
           ]}>
           {'  '}
@@ -84,7 +86,7 @@ const PostCardButtons: FC<Props> = ({
         style={[styles.PostButton, {flexDirection: 'row'}]}>
         <Octicons
           name={'comment-discussion'}
-          color={theme.TAB_BAR_ACTIVE_COLOR}
+          color={theme.TEXT_COLOR}
           size={ICON_SIZE * 0.8}
         />
         <Text
@@ -102,7 +104,7 @@ const PostCardButtons: FC<Props> = ({
         style={[styles.PostButton, {flexDirection: 'row'}]}>
         <MaterialCommunityIcons
           name={'share-outline'}
-          color={theme.TAB_BAR_ACTIVE_COLOR}
+          color={theme.TEXT_COLOR}
           size={ICON_SIZE * 0.9}
         />
         <Text
@@ -492,7 +494,7 @@ const styles = StyleSheet.create({
   },
   PostButton: {
     flex: 1,
-    padding: 9,
+    padding: 4,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: Width * 0.008,

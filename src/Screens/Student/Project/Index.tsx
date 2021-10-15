@@ -124,7 +124,7 @@ const Projects: FC<props> = ({navigation}) => {
             No more Projects
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
-            <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
+            <Text style={[styles.refreshText, {color: theme.GREEN_COLOR}]}>
               Refresh
             </Text>
           </TouchableOpacity>

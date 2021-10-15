@@ -128,7 +128,7 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
               style={[
                 styles.cell,
                 isFocused && {
-                  borderColor: theme.TOMATO_COLOR,
+                  borderColor: theme.GREEN_COLOR,
                 },
                 {
                   borderColor: theme.SHADOW_COLOR,
@@ -148,7 +148,7 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
               marginTop: 10,
             }}>
             <Text
-              style={{color: theme.TOMATO_COLOR, fontSize: Sizes.normal * 0.8}}>
+              style={{color: theme.GREEN_COLOR, fontSize: Sizes.normal * 0.8}}>
               {Error}
             </Text>
           </View>
@@ -184,12 +184,12 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
               },
             ]}>
             Time left{' '}
-            <Text style={{color: theme.TOMATO_COLOR}}> {countDown}</Text>
+            <Text style={{color: theme.GREEN_COLOR}}> {countDown}</Text>
           </Text>
         </View>
       ) : (
         <View style={styles.countDownContainer}>
-          <Text style={{color: theme.TOMATO_COLOR}}>Code has been expired</Text>
+          <Text style={{color: theme.GREEN_COLOR}}>Code has been expired</Text>
         </View>
       )}
 
@@ -198,7 +198,7 @@ const CodeConfirmation: FC<props> = ({navigation, route}) => {
           style={[
             styles.button,
             {
-              backgroundColor: theme.TOMATO_COLOR,
+              backgroundColor: theme.GREEN_COLOR,
             },
           ]}
           onPress={() => verifyCode()}

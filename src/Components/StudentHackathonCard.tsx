@@ -254,7 +254,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
               ID: hackathonDetail.id,
             })
           }
-          style={[styles.applyButton, {backgroundColor: theme.SHADOW_COLOR}]}>
+          style={[styles.applyButton, {backgroundColor: theme.GREEN_COLOR}]}>
           <Text
             style={[
               styles.applyButtonText,

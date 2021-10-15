@@ -168,7 +168,7 @@ const Posts: FC<props> = ({navigation}) => {
           }
           style={[
             styles.plusTextContainer,
-            {backgroundColor: theme.TOMATO_COLOR},
+            {backgroundColor: theme.GREEN_COLOR},
           ]}>
           <Text style={[styles.plusText, {color: theme.TEXT_COLOR}]}>+</Text>
         </TouchableOpacity>
@@ -239,7 +239,7 @@ const Posts: FC<props> = ({navigation}) => {
                 : 'No posts yet'}
             </Text>
             <TouchableOpacity onPress={() => setIsLoading(true)}>
-              <Text style={[styles.refreshText, {color: theme.TOMATO_COLOR}]}>
+              <Text style={[styles.refreshText, {color: theme.GREEN_COLOR}]}>
                 Refresh
               </Text>
             </TouchableOpacity>

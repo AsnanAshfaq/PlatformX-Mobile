@@ -440,7 +440,7 @@ const SignUp: FC<props> = ({navigation}) => {
                 style={[styles.signInText, {color: state.theme.TEXT_COLOR}]}>
                 Don't have an account?
                 <Text
-                  style={[styles.signIn, {color: state.theme.TOMATO_COLOR}]}
+                  style={[styles.signIn, {color: state.theme.GREEN_COLOR}]}
                   onPress={() => navigation.navigate('SignIn')}>
                   {' '}
                   Sign In

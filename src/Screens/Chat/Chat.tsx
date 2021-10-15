@@ -191,7 +191,7 @@ const Chat: FC<props> = ({navigation, route}) => {
                   onPress={e => onSend(Input.trim())}>
                   <Text
                     style={{
-                      color: state.theme.TOMATO_COLOR,
+                      color: state.theme.GREEN_COLOR,
                       fontSize: Sizes.large * 2,
                     }}>
                     {'>'}
@@ -204,7 +204,7 @@ const Chat: FC<props> = ({navigation, route}) => {
             <InputToolbar
               {...props}
               containerStyle={{
-                borderTopColor: state.theme.TOMATO_COLOR,
+                borderTopColor: state.theme.GREEN_COLOR,
                 backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR,
               }}
             />
@@ -223,7 +223,7 @@ const Chat: FC<props> = ({navigation, route}) => {
                   style={[
                     styles.messageInputField,
                     {
-                      borderColor: state.theme.TOMATO_COLOR,
+                      borderColor: state.theme.GREEN_COLOR,
                       color: state.theme.TEXT_COLOR,
                     },
                   ]}

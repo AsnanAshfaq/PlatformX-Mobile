@@ -273,7 +273,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
             style={[
               styles.postButton,
               {
-                backgroundColor: theme.SHADOW_COLOR,
+                backgroundColor: theme.GREEN_COLOR,
               },
             ]}
             onPress={() => handlePost(screen)}>

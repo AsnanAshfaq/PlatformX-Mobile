@@ -4,6 +4,7 @@ import React, {FC, useState, useEffect, useRef} from 'react';
 import {StyleSheet, Text, View, FlatList, Image} from 'react-native';
 import {Width} from '../Constants/Size';
 import {POST_IMAGE} from '../Constants/sample';
+import {useStateValue} from '../Store/StateProvider';
 
 type imageProps = {
   image: any;
@@ -21,8 +22,10 @@ const ImageView: FC<imageProps> = ({image}) => {
         }}
         style={[
           {
-            width: Width * 0.93,
+            width: Width * 0.912,
             height: Width * ImageAspectRatio * 0.9,
+            justifyContent: 'center',
+            alignItems: 'center',
           },
         ]}
         resizeMode={'contain'}
@@ -45,7 +48,7 @@ type props = {
 
 const PostCarImageSlider: FC<props> = ({postImages}) => {
   const ref = useRef(null);
-
+  const [{theme}, dispathc] = useStateValue();
   return (
     <FlatList
       data={postImages}
@@ -53,8 +56,11 @@ const PostCarImageSlider: FC<props> = ({postImages}) => {
       // style={{flexGrow: 1}}
       contentContainerStyle={{
         height: 300,
+        justifyContent: 'center',
+        alignItems: 'center',
         flexGrow: 1,
         marginVertical: 13,
+        // backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
       }}
       // onContentSizeChange={(w, h) => console.log('Width and height ', w, hinde)}
       pagingEnabled

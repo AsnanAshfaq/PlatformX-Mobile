@@ -529,7 +529,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
             style={[
               styles.joinNowButton,
               {
-                backgroundColor: theme.TOMATO_COLOR,
+                backgroundColor: theme.GREEN_COLOR,
               },
             ]}
             activeOpacity={0.5}
@@ -654,7 +654,7 @@ const styles = StyleSheet.create({
   },
   judgingCriteriaDescText: {
     lineHeight: 22,
-    fontSize: Sizes.normal * 0.8,
+    fontSize: Sizes.normal * 0.85,
   },
 
   themeTagTextContainer: {

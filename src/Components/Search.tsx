@@ -99,7 +99,7 @@ const Search: FC<props> = ({
               !isShownInHeader && !showFilterIcon
                 ? Width * 0.05
                 : Width * 0.045,
-            backgroundColor: theme.SHADOW_COLOR,
+            backgroundColor: theme.LIGHT_BACKGROUND,
           },
         ]}>
         <View style={styles.textInputContainer}>
@@ -125,7 +125,7 @@ const Search: FC<props> = ({
               name={'search'}
               size={Width * 0.06}
               style={{
-                color: theme.TAB_BAR_ACTIVE_COLOR,
+                color: theme.TEXT_COLOR,
               }}
             />
           </TouchableOpacity>

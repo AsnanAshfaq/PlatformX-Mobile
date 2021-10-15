@@ -260,24 +260,18 @@ const CommentModal: FC<props> = ({
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           // enabled
           style={styles.keyboardAvoidingView}>
-          <View
-            style={[
-              styles.commentInputContainer,
-              {
-                backgroundColor: theme.SHADOW_COLOR,
-              },
-            ]}>
+          <View style={[styles.commentInputContainer]}>
             <TextInput
               placeholder={'Write your comment here'}
               style={[
                 styles.commentInputField,
                 {
-                  borderColor: theme.TOMATO_COLOR,
+                  borderColor: theme.GREEN_COLOR,
                   color: theme.TEXT_COLOR,
                 },
               ]}
               ref={textInput}
-              placeholderTextColor={theme.TEXT_COLOR}
+              placeholderTextColor={theme.SHADOW_COLOR}
               value={Input.trim() === '' ? '' : Input}
               onChangeText={setInput}
               // onFocus={e => {
@@ -297,7 +291,7 @@ const CommentModal: FC<props> = ({
                 <Ionicons
                   name={'send-outline'}
                   size={ICON_SIZE}
-                  color={theme.TOMATO_COLOR}
+                  color={theme.GREEN_COLOR}
                 />
               </TouchableOpacity>
             </View>
