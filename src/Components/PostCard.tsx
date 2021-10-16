@@ -24,7 +24,7 @@ import PostCarImageSlider from './PostCardImageSlider';
 import {BASE_ADDRESS} from 'react-native-dotenv';
 import {useStateValue} from '../Store/StateProvider';
 import ShareModal from '../Modals/ShareModal';
-
+import Divider from '../Components/Divider';
 const MAX_TEXT_LENGTH = 290;
 
 const ICON_SIZE = Width * 0.07;
@@ -227,7 +227,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
         styles.parent,
         {
           shadowColor: theme.SHADOW_COLOR,
-          backgroundColor: theme.LIGHT_BACKGROUND,
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
       {/* comment modal  */}
@@ -265,11 +265,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       />
 
       {/* header  */}
-      <View
-        style={[
-          styles.headerContainer,
-          {borderBottomColor: theme.SHADOW_COLOR},
-        ]}>
+      <View style={[styles.headerContainer]}>
         <View style={styles.headerImageContainer}>
           <Image
             source={{
@@ -303,6 +299,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
           />
         </View>
       </View>
+      <Divider width={Width * 0.92} />
 
       {/* content  */}
       <View style={styles.contentContainer}>
@@ -413,7 +410,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     minHeight: Height * 0.08,
     maxHeight: Height * 0.15,
-    borderBottomWidth: 2,
     flexDirection: 'row',
     paddingHorizontal: 7,
     paddingVertical: 10,

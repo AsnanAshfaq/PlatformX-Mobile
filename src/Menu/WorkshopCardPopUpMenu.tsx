@@ -34,7 +34,7 @@ const PopUpMenu: FC<prop> = ({
           <Ionicons
             name={'ellipsis-vertical'}
             size={ICON_SIZE}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
+            color={theme.ICON_COLOR}
           />
         </View>
       </MenuTrigger>

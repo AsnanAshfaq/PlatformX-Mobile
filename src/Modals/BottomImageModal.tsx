@@ -122,7 +122,7 @@ const BottomImageModal: FC<props> = ({
       style={[
         styles.Modalparent,
         {
-          backgroundColor: theme.BACKGROUND_COLOR,
+          backgroundColor: theme.MODAL_BACKGROUND_COLOR,
         },
       ]}
       animationIn={'slideInUp'}
@@ -154,7 +154,7 @@ const BottomImageModal: FC<props> = ({
               style={[
                 styles.iconContainer,
                 {
-                  borderColor: theme.TAB_BAR_ICON_COLOR,
+                  borderColor: theme.BORDER_COLOR,
                 },
               ]}>
               <TouchableWithoutFeedback onPress={() => handleOpenGallery()}>
@@ -182,7 +182,7 @@ const BottomImageModal: FC<props> = ({
                 style={[
                   styles.iconContainer,
                   {
-                    borderColor: theme.TAB_BAR_ICON_COLOR,
+                    borderColor: theme.BORDER_COLOR,
                   },
                 ]}>
                 <TouchableWithoutFeedback onPress={() => handleViewImage()}>
@@ -211,7 +211,7 @@ const BottomImageModal: FC<props> = ({
                 style={[
                   styles.iconContainer,
                   {
-                    borderColor: theme.TAB_BAR_ICON_COLOR,
+                    borderColor: theme.BORDER_COLOR,
                   },
                 ]}>
                 <TouchableWithoutFeedback onPress={() => handleRemoveImage()}>

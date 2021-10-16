@@ -1,5 +1,7 @@
 //TODO:
 // Fix this damn thing
+
+// on useEffect, get the dimensions of all the images in the post
 import React, {FC, useState, useEffect, useRef} from 'react';
 import {StyleSheet, Text, View, FlatList, Image} from 'react-native';
 import {Width} from '../Constants/Size';
@@ -26,9 +28,11 @@ const ImageView: FC<imageProps> = ({image}) => {
             height: Width * ImageAspectRatio * 0.9,
             justifyContent: 'center',
             alignItems: 'center',
+            // flex: 1,
           },
         ]}
         resizeMode={'contain'}
+        resizeMethod={'scale'}
         onLoadEnd={() => {
           // get image width and height
           Image.getSize(image.path, (width, height) => {
@@ -48,17 +52,19 @@ type props = {
 
 const PostCarImageSlider: FC<props> = ({postImages}) => {
   const ref = useRef(null);
-  const [{theme}, dispathc] = useStateValue();
+  const [{theme}, dispatch] = useStateValue();
+
   return (
     <FlatList
       data={postImages}
+      showsHorizontalScrollIndicator={false}
       ref={ref}
       // style={{flexGrow: 1}}
       contentContainerStyle={{
         height: 300,
         justifyContent: 'center',
         alignItems: 'center',
-        flexGrow: 1,
+        // flex: 1,
         marginVertical: 13,
         // backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
       }}

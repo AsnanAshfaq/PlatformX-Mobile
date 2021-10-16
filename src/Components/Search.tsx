@@ -109,7 +109,7 @@ const Search: FC<props> = ({
             onChangeText={text => setinput(text)}
             placeholder={placeholder}
             style={[styles.textInput, {color: theme.TEXT_COLOR}]}
-            placeholderTextColor={theme.TEXT_COLOR}
+            placeholderTextColor={theme.PLACE_HOLDER_TEXT_COLOR}
             maxLength={30}
           />
         </View>
@@ -139,7 +139,7 @@ const Search: FC<props> = ({
                 name={'cross'}
                 size={Width * 0.06}
                 style={{
-                  color: theme.TAB_BAR_ACTIVE_COLOR,
+                  color: theme.ICON_COLOR,
                 }}
               />
             </TouchableOpacity>
@@ -153,7 +153,7 @@ const Search: FC<props> = ({
             <Ionicons
               name={'ios-options-outline'}
               size={Width * 0.07}
-              style={{color: theme.TAB_BAR_ACTIVE_COLOR}}
+              style={{color: theme.ICON_COLOR}}
             />
           </TouchableWithoutFeedback>
         </View>

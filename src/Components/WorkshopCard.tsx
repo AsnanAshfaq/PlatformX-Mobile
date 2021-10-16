@@ -15,7 +15,7 @@ import PopUpMenu from '../Menu/WorkshopCardPopUpMenu';
 import {BASE_URL} from 'react-native-dotenv';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
-
+import Divider from '../Components/Divider';
 type props = {
   navigation: any;
   workshopDetail: any;
@@ -69,15 +69,11 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
         styles.parent,
         {
           shadowColor: theme.SHADOW_COLOR,
-          backgroundColor: theme.LIGHT_BACKGROUND,
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
       {/* header  */}
-      <View
-        style={[
-          styles.headerContainer,
-          {borderBottomColor: theme.SHADOW_COLOR},
-        ]}>
+      <View style={[styles.headerContainer]}>
         {/* user image  */}
         <View style={styles.headerImageContainer}>
           <Image
@@ -109,6 +105,8 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           />
         </View>
       </View>
+      <Divider width={Width * 0.92} />
+
       {/* content  */}
       <View style={styles.contentContainer}>
         {/* title  */}
@@ -154,7 +152,7 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
             });
           }}
           style={{
-            width: Width * 0.87,
+            width: Width * 0.92,
             height: Width * ImageAspectRatio * 0.9,
           }}
           resizeMode={'contain'}
@@ -164,7 +162,10 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
       <View style={styles.applyButtonContainer}>
         <TouchableOpacity
           onPress={() => console.log('Trying to apply in workshop')}
-          style={[styles.applyButton, {backgroundColor: theme.SHADOW_COLOR}]}>
+          style={[
+            styles.applyButton,
+            {backgroundColor: theme.BUTTON_BACKGROUND_COLOR},
+          ]}>
           <Text style={[styles.applyButtonText, {color: theme.TEXT_COLOR}]}>
             View Details{' '}
           </Text>
@@ -183,8 +184,7 @@ const styles = StyleSheet.create({
     // marginVertical: Width * 0.01,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.8,
-    borderRadius: 20,
-    padding: 10,
+    borderRadius: 10,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
@@ -193,8 +193,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     minHeight: Height * 0.08,
     maxHeight: Height * 0.15,
-    borderBottomWidth: 2,
     flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 7,
   },
   headerImageContainer: {
     // width: Width * 0.3,
@@ -222,10 +223,8 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 0.75,
   },
   contentContainer: {
-    // minHeight: Height * 0.15,
-    // maxHeight: Height * 0.2,
-    paddingHorizontal: 5,
-    marginVertical: 7,
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   titleText: {
     fontSize: Sizes.normal * 1.5,
@@ -247,8 +246,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
   },
   applyButtonContainer: {
-    // minHeight: Height * 0.05,
-    // maxHeight: Height * 0.07,
+    padding: 10,
     flexDirection: 'row',
     marginTop: Height * 0.02,
     justifyContent: 'flex-end',

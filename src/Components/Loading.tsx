@@ -15,7 +15,7 @@ const Loading: FC<props> = ({size, color}) => {
     <View style={styles.parent}>
       <ActivityIndicator
         size={size}
-        color={color ? color : theme.SHADOW_COLOR}
+        color={color ? color : theme.LOADER_COLOR}
       />
     </View>
   );

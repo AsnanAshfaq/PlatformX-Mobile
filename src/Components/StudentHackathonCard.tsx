@@ -18,7 +18,7 @@ import {BASE_URL} from 'react-native-dotenv';
 import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
-
+import Divider from '../Components/Divider';
 const ICON_SIZE = Width * 0.07;
 
 type Props = {
@@ -35,14 +35,10 @@ const HackathonCardIcons: FC<Props> = ({name, label, cash}) => {
         <FontAwesome
           name={'money'}
           size={ICON_SIZE}
-          color={theme.TAB_BAR_ACTIVE_COLOR}
+          color={theme.GREEN_COLOR}
         />
       ) : (
-        <Ionicons
-          name={name}
-          size={ICON_SIZE}
-          color={theme.TAB_BAR_ACTIVE_COLOR}
-        />
+        <Ionicons name={name} size={ICON_SIZE} color={theme.GREEN_COLOR} />
       )}
       <View style={styles.iconTextContainer}>
         <Text
@@ -108,15 +104,11 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         styles.parent,
         {
           shadowColor: theme.SHADOW_COLOR,
-          backgroundColor: theme.LIGHT_BACKGROUND,
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
       {/* header  */}
-      <View
-        style={[
-          styles.headerContainer,
-          {borderBottomColor: theme.SHADOW_COLOR},
-        ]}>
+      <View style={[styles.headerContainer]}>
         {/* user image  */}
         <View style={styles.headerImageContainer}>
           <Image
@@ -158,6 +150,8 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           />
         </View>
       </View>
+      <Divider width={Width * 0.92} />
+
       {/* content  */}
       <View style={styles.contentContainer}>
         {/* title  */}
@@ -254,7 +248,10 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
               ID: hackathonDetail.id,
             })
           }
-          style={[styles.applyButton, {backgroundColor: theme.GREEN_COLOR}]}>
+          style={[
+            styles.applyButton,
+            {backgroundColor: theme.BUTTON_BACKGROUND_COLOR},
+          ]}>
           <Text
             style={[
               styles.applyButtonText,
@@ -279,18 +276,19 @@ const styles = StyleSheet.create({
     marginVertical: Width * 0.03,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.8,
-    borderRadius: 20,
-    padding: 10,
+    borderRadius: 10,
+    // padding: 10,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
-    elevation: 30,
+    elevation: 5,
   },
   headerContainer: {
     minHeight: Height * 0.08,
     maxHeight: Height * 0.15,
-    borderBottomWidth: 2,
     flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 7,
   },
   headerImageContainer: {
     // width: Width * 0.3,
@@ -318,8 +316,8 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 0.75,
   },
   contentContainer: {
-    paddingHorizontal: 5,
-    marginVertical: 7,
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   titleText: {
     fontSize: Sizes.normal * 1.2,
@@ -347,7 +345,7 @@ const styles = StyleSheet.create({
   },
   iconsRowConatiner: {
     // height: Height * 0.09,
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
     marginTop: Height * 0.02,
   },
   iconsRow: {
@@ -367,6 +365,7 @@ const styles = StyleSheet.create({
     // minHeight: Height * 0.05,
     // maxHeight: Height * 0.07,
     flexDirection: 'row',
+    padding: 10,
     marginTop: Height * 0.015,
     justifyContent: 'flex-end',
   },

@@ -8,13 +8,6 @@ import DrawerScreens from './Drawer';
 // other imports
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 import {useStateValue} from '../Store/StateProvider';
-import Create_EditPost from '../Screens/Student/Post/CreateEdit';
-import Chat from './Student/Chat';
-import Notification from './Student/Notification';
-import Settings from './Student/Settings';
-import ViewHackathon from '../Screens/Student/Hackathon/View';
-import RegisterHackathon from '../Screens/Student/Hackathon/Register';
-import CreateEditHackathon from '../Screens/Organization/Hackathon/CreateEdit';
 import StudentScreens from './Student/Index';
 import OrganizationScreens from './Organization/Index';
 // declaring navigators

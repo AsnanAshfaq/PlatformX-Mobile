@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {useStateValue} from '../Store/StateProvider';
+import Divider from '../Components/Divider';
 
 type props = {
   isShow: boolean;
@@ -26,7 +27,7 @@ const FilterModal: FC<props> = ({
       style={[
         styles.Modalparent,
         {
-          backgroundColor: theme.BACKGROUND_COLOR,
+          backgroundColor: theme.MODAL_BACKGROUND_COLOR,
         },
       ]}
       animationIn={'slideInUp'}
@@ -46,6 +47,8 @@ const FilterModal: FC<props> = ({
             {heading}{' '}
           </Text>
         </View>
+        <Divider size={'large'} />
+
         {/* description container  */}
         <View style={styles.descriptionContainer}>
           <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
@@ -56,15 +59,25 @@ const FilterModal: FC<props> = ({
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             onPress={toggleModal}
-            style={[styles.Button, {backgroundColor: theme.BADGE_COLOR}]}>
-            <Text style={[styles.buttonText, {color: theme.BACKGROUND_COLOR}]}>
+            style={[
+              styles.Button,
+              {
+                backgroundColor: theme.BUTTON_BACKGROUND_COLOR,
+              },
+            ]}>
+            <Text style={[styles.buttonText, {color: theme.TEXT_COLOR}]}>
               Cancel
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => onDelete()}
-            style={[styles.Button, {backgroundColor: theme.BADGE_COLOR}]}>
-            <Text style={[styles.buttonText, {color: theme.BACKGROUND_COLOR}]}>
+            style={[
+              styles.Button,
+              {
+                backgroundColor: theme.BUTTON_BACKGROUND_COLOR,
+              },
+            ]}>
+            <Text style={[styles.buttonText, {color: theme.TEXT_COLOR}]}>
               Delete
             </Text>
           </TouchableOpacity>

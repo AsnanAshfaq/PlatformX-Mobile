@@ -195,7 +195,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
             value={Post.text}
             multiline
             placeholder={Post.textPlacholder}
-            placeholderTextColor={theme.TEXT_COLOR}
+            placeholderTextColor={theme.PLACE_HOLDER_TEXT_COLOR}
             // onFocus={() => {
             //   if (textInputRef && textInputRef.current) {
             //     setPost(prev => {

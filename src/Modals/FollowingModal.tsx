@@ -58,7 +58,7 @@ const FilterModal: FC<props> = ({toggleModal, unFollow, heading}) => {
       style={[
         styles.Modalparent,
         {
-          backgroundColor: theme.BACKGROUND_COLOR,
+          backgroundColor: theme.MODAL_BACKGROUND_COLOR,
         },
       ]}
       animationIn={'slideInUp'}

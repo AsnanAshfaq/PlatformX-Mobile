@@ -26,38 +26,8 @@ import HackathonCardSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {commaSeperator} from '../../../Utils/Numbers';
 import {useStateValue} from '../../../Store/StateProvider';
-
+import Divider from '../../../Components/Divider';
 const ICON_SIZE = Width * 0.07;
-
-const Divider: FC<{size: 'large' | 'medium' | 'small'}> = ({size}) => {
-  const [{theme}, dispatch] = useStateValue();
-
-  return (
-    <View
-      style={{
-        width:
-          size === 'large'
-            ? Width * 0.8
-            : size === 'medium'
-            ? Width * 0.6
-            : size === 'small'
-            ? Width * 0.45
-            : 0,
-        height: 1.5,
-        marginHorizontal:
-          size === 'large'
-            ? Width * 0.04
-            : size === 'medium'
-            ? Width * 0.14
-            : size === 'small'
-            ? Width * 0.22
-            : 0,
-        marginVertical: 10,
-        backgroundColor: theme.TEXT_COLOR,
-      }}
-    />
-  );
-};
 
 const Bullet: FC = () => {
   const [{theme}, dispatch] = useStateValue();
@@ -334,7 +304,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
               <View style={styles.iconTextContainer}>
                 <MaterialCommunityIcons
                   name={'email'}
-                  color={theme.TAB_BAR_ACTIVE_COLOR}
+                  color={theme.GREEN_COLOR}
                   size={ICON_SIZE * 1.1}
                 />
                 <Text
@@ -363,7 +333,7 @@ const ViewHackathon: FC<props> = ({navigation, route}) => {
               <View style={styles.iconTextContainer}>
                 <Foundation
                   name={'calendar'}
-                  color={theme.TAB_BAR_ACTIVE_COLOR}
+                  color={theme.GREEN_COLOR}
                   size={ICON_SIZE * 1.3}
                 />
                 <Text

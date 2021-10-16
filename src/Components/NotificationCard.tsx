@@ -30,7 +30,7 @@ const NotificationCard: FC<props> = ({navigation, notification}) => {
           styles.parent,
           {
             shadowColor: theme.SHADOW_COLOR,
-            backgroundColor: theme.LIGHT_BACKGROUND,
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         {/* image container */}
@@ -63,7 +63,7 @@ const NotificationCard: FC<props> = ({navigation, notification}) => {
             <Ionicons
               name={'ellipsis-vertical'}
               size={ICON_SIZE}
-              color={theme.TAB_BAR_ACTIVE_COLOR}
+              color={theme.ICON_COLOR}
             />
           </TouchableOpacity>
         </View>

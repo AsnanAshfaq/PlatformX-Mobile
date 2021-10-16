@@ -16,7 +16,7 @@ const Splash = () => {
       </View>
       {/* loading view  */}
       <View style={styles.loadingContainer}>
-        <Loading size={Width * 0.15} color={theme.TEXT_COLOR} />
+        <Loading size={Width * 0.15} />
       </View>
     </View>
   );

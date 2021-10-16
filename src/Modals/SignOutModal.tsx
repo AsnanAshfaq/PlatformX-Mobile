@@ -46,7 +46,12 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
     //   }}>
     <Modal
       isVisible={isShow}
-      style={[styles.Modalparent, {backgroundColor: theme.BACKGROUND_COLOR}]}
+      style={[
+        styles.Modalparent,
+        {
+          backgroundColor: theme.MODAL_BACKGROUND_COLOR,
+        },
+      ]}
       animationIn={'slideInUp'}
       animationInTiming={300}
       animationOut={'slideOutDown'}

@@ -124,7 +124,7 @@ const Posts: FC<props> = ({navigation}) => {
           styles.listHeaderContainer,
           {
             shadowColor: theme.SHADOW_COLOR,
-            backgroundColor: theme.LIGHT_BACKGROUND,
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         <View style={styles.listHeaderImageContainer}>
@@ -148,14 +148,22 @@ const Posts: FC<props> = ({navigation}) => {
         <View
           style={[
             styles.listHeaderTextContainer,
-            {borderColor: theme.SHADOW_COLOR},
+            {
+              borderColor: theme.BORDER_COLOR,
+            },
           ]}>
           <TouchableOpacity
             onPress={() =>
               // opacity.value = Math.random();
               navigation.navigate('Create_Edit_Post', {screen: 'Create'})
             }>
-            <Text style={[styles.listHeaderText, {color: theme.TEXT_COLOR}]}>
+            <Text
+              style={[
+                styles.listHeaderText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
               Share something with us ...
             </Text>
           </TouchableOpacity>

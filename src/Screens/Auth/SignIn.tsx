@@ -252,7 +252,7 @@ const SignIn: FC<props> = ({navigation}) => {
       {/* submit button container  */}
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity
-          style={[styles.submitButton, {backgroundColor: theme.SHADOW_COLOR}]}
+          style={[styles.submitButton, {backgroundColor: theme.GREEN_COLOR}]}
           onPress={handleSignIn}>
           {isLoading ? (
             <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />

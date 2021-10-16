@@ -49,17 +49,17 @@ const TabScreens = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: state.theme.TAB_BAR_ACTIVE_COLOR,
-        inactiveTintColor: state.theme.TAB_BAR_INACTIVE_COLOR,
+        activeTintColor: state.theme.NAV_BAR_ACTIVE_ICON_COLOR,
+        inactiveTintColor: state.theme.NAV_BAR_INACTIVE_ICON_COLOR,
         iconStyle: {
-          color: state.theme.TAB_BAR_ICON_COLOR,
+          // color: state.theme.TAB_BAR_ICON_COLOR,
           // fontSize: Sizes.normal * 10,
         },
         allowFontScaling: true,
         keyboardHidesTabBar: true,
         // activeBackgroundColor: darkColors.LIGHT_BACKGROUND,
         style: {
-          backgroundColor: state.theme.BACKGROUND_COLOR,
+          backgroundColor: state.theme.HEADER_NAV_BAR_BACKGROUND_COLOR,
           borderTopColor: 'transparent',
           // position: 'absolute',
         },

@@ -60,7 +60,13 @@ const CustomHeader: FunctionComponent<props> = ({
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
   const {theme} = state;
   return (
-    <View style={[styles.parent, {backgroundColor: theme.BACKGROUND_COLOR}]}>
+    <View
+      style={[
+        styles.parent,
+        {
+          backgroundColor: theme.HEADER_NAV_BAR_BACKGROUND_COLOR,
+        },
+      ]}>
       {/* drawer navigation  or back button*/}
       {drawer && (
         <View style={styles.leftIconContainer}>
@@ -133,7 +139,7 @@ const CustomHeader: FunctionComponent<props> = ({
           <TouchableWithoutFeedback onPress={onBackPress}>
             <Ionicons
               name={'chevron-back'}
-              color={theme.TAB_BAR_ACTIVE_COLOR}
+              color={theme.ICON_COLOR}
               size={ICON_SIZE}
               style={styles.iconPadding}
             />
@@ -165,7 +171,7 @@ const CustomHeader: FunctionComponent<props> = ({
               <AntDesign
                 name={'message1'}
                 size={ICON_SIZE * 0.9}
-                color={theme.TEXT_COLOR}
+                color={theme.ICON_COLOR}
                 style={styles.iconPadding}
               />
               {/* badge  */}
@@ -180,7 +186,7 @@ const CustomHeader: FunctionComponent<props> = ({
               <Ionicons
                 name={'notifications-outline'}
                 size={ICON_SIZE}
-                color={theme.TEXT_COLOR}
+                color={theme.ICON_COLOR}
                 style={[styles.iconPadding, {transform: [{rotateZ: '-15deg'}]}]}
               />
               {/* badge  */}

@@ -39,7 +39,7 @@ const CustomDropDown: FC<props> = ({
           <Ionicons
             name={isShow === false ? 'caret-down-outline' : 'caret-up-outline'}
             size={ICON_SIZE}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
+            color={theme.ICON_COLOR}
             style={styles.dropDownIcon}
           />
         </View>
@@ -50,7 +50,6 @@ const CustomDropDown: FC<props> = ({
         style={[
           styles.droppedViewContainer,
           {
-            borderColor: theme.LIGHT_BACKGROUND,
             backgroundColor: theme.LIGHT_BACKGROUND,
           },
         ]}>
