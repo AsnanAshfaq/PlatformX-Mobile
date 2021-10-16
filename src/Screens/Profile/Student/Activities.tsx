@@ -1,49 +1,65 @@
 import React, {FC, useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {TabView, TabBar} from 'react-native-tab-view';
 import CustomHeader from '../../../Components/CustomHeader';
-import {Width} from '../../../Constants/Size';
+import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 
+type cardProps = {
+  title: string;
+  onPress: () => void;
+};
+const Card: FC<cardProps> = ({title, onPress}) => {
+  const [{theme}, dispatch] = useStateValue();
+
+  return (
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
+        },
+      ]}>
+      <Text
+        style={[
+          styles.cardTitle,
+          {
+            color: theme.TEXT_COLOR,
+          },
+        ]}>
+        {title}
+      </Text>
+    </View>
+  );
+};
 type props = {
   navigation: any;
 };
 
-const Hackathon: FC = () => {
-  return (
-    <View>
-      <Text>This is the hackathon tab</Text>
-    </View>
-  );
-};
-
-const Workshop: FC = () => {
-  return (
-    <View>
-      <Text>This is the workshop tab</Text>
-    </View>
-  );
-};
 const Activities: FC<props> = ({navigation}) => {
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    {key: 'hackathon', title: 'Hackathon'},
-    {key: 'workshop', title: 'Workshop'},
-    {key: 'internship', title: 'Internship'},
-    {key: 'project', title: 'Project'},
-  ]);
   const [state, dispatch] = useStateValue();
 
-  const renderScene = ({route}) => {
-    switch (route.key) {
-      case 'hackathon':
-        return <Hackathon />;
-      case 'workshop':
-        return <Workshop />;
-      default:
-        return null;
-    }
-  };
+  const activities = [
+    {
+      id: 1,
+      title: 'Hackahtons',
+      onPress: () => console.log('Pressed on hackathon '),
+    },
+    {
+      id: 2,
+      title: 'Workshops',
+      onPress: () => console.log('Pressed on workshops '),
+    },
+    {
+      id: 1,
+      title: 'Inernships',
+      onPress: () => console.log('Pressed on internships '),
+    },
+    {
+      id: 1,
+      title: 'Projects',
+      onPress: () => console.log('Pressed on projects '),
+    },
+  ];
   return (
     <View
       style={[
@@ -60,22 +76,11 @@ const Activities: FC<props> = ({navigation}) => {
 
       {/* list of hackathons, workshops, internship, projects which user has applied to */}
 
-      <TabView
-        navigationState={{index, routes}}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-        renderTabBar={props => (
-          <TabBar
-            {...props}
-            tabStyle={{width: 'auto'}}
-            indicatorStyle={{backgroundColor: state.theme.LIGHT_BACKGROUND}}
-            style={{backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR}}
-            activeColor={state.theme.TEXT_COLOR}
-            inactiveColor={state.theme.SHADOW_COLOR}
-          />
-        )}
-        keyboardDismissMode={'auto'}
-      />
+      {/* card  */}
+
+      {activities.map(item => {
+        return <Card title={item.title} key={item.id} onPress={item.onPress} />;
+      })}
     </View>
   );
 };
@@ -85,5 +90,21 @@ export default Activities;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
+  },
+  card: {
+    marginHorizontal: Width * 0.04,
+    marginVertical: Width * 0.03,
+    // minHeight: Height * 0.35,
+    // maxHeight: Height * 0.4,
+    borderRadius: 10,
+    // padding: 5,
+    shadowOpacity: 1,
+    padding: 10,
+    shadowRadius: 25,
+    shadowOffset: {width: 10, height: 12},
+    elevation: 5,
+  },
+  cardTitle: {
+    fontSize: Sizes.normal,
   },
 });
