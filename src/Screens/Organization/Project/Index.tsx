@@ -15,7 +15,6 @@ import {Sizes} from '../../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
-import FloatingActionButton from '../../../Components/FloatingActionButton';
 
 type props = {
   navigation: any;
@@ -106,14 +105,6 @@ const Projects: FC<props> = ({navigation}) => {
             // inverted
             contentOffset={{y: -300, x: 0}}
           />
-          {/* floating action button  */}
-          <FloatingActionButton
-            onPress={() =>
-              navigation.navigate('Create_Edit_Post', {
-                screen: 'Create',
-              })
-            }
-          />
         </>
       ) : !IsLoading ? (
         <View style={styles.center}>
@@ -143,21 +134,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  floatingButtonContainer: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderWidth: 2,
-    borderRadius: 30,
-    bottom: 20,
-    right: 12,
-    borderColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  plusText: {
-    fontSize: Sizes.large * 1.4,
   },
   noMoreText: {
     fontSize: Sizes.normal,

@@ -151,6 +151,7 @@ const Workshop: FC<props> = ({navigation}) => {
         <CustomSearch
           placeholder={'Search workshops'}
           showFilterIcon={false}
+          isShownInHeader={false}
           handleSearch={handleSearch}
         />
       )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import MyProfile from '../../Screens/Profile/Index';
+import MyProfile from '../../Screens/Profile';
 import {createStackNavigator} from '@react-navigation/stack';
 import Tab from '../../Screens/Profile/Student/Tab';
 import {config} from '../index';

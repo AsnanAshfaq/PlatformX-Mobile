@@ -11,6 +11,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useStateValue} from '../Store/StateProvider';
+import {Delete, Pencil, ThreeDots} from '../Components/Icons';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -25,11 +26,7 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
     <Menu>
       <MenuTrigger>
         <View>
-          <Ionicons
-            name={'ellipsis-vertical'}
-            size={ICON_SIZE * 0.8}
-            color={theme.ICON_COLOR}
-          />
+          <ThreeDots size={0.8} color={theme.ICON_COLOR} />
         </View>
       </MenuTrigger>
 
@@ -41,14 +38,8 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
             borderRadius: 20,
             width: 150,
             borderColor: 'transparent',
-            marginTop: 15,
-            marginLeft: -14,
-            // marginRight: 1,
-            shadowColor: theme.SHADOW_COLOR,
-            // shadowOpacity: 1,
-            // shadowRadius: 20,
-            elevation: 4.5,
-            // marginRight: 30,
+            marginTop: 14,
+            marginLeft: -4,
           },
           optionWrapper: {
             height: 35,
@@ -56,11 +47,8 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
         }}>
         <MenuOption onSelect={() => handleEdit()}>
           <View style={styles.menuOptionContainer}>
-            <Ionicons
-              name={'pencil'}
-              color={theme.ICON_COLOR}
-              size={ICON_SIZE * 0.8}
-            />
+            {/* icon  */}
+            <Pencil size={0.8} />
             <View style={styles.textContainer}>
               <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
                 Edit
@@ -70,11 +58,8 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
         </MenuOption>
         <MenuOption onSelect={() => handleDelete()}>
           <View style={styles.menuOptionContainer}>
-            <MaterialIcons
-              name={'delete'}
-              color={theme.ICON_COLOR}
-              size={ICON_SIZE * 0.8}
-            />
+            {/* icon  */}
+            <Delete size={0.8} />
             <View style={styles.textContainer}>
               <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
                 Delete

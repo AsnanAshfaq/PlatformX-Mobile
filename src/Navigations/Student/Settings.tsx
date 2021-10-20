@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Index from '../../Screens/Student/Settings/Index';
+import Index from '../../Screens/Student/Settings';
 const Stack = createStackNavigator();
 
 const SettingScreens = () => {

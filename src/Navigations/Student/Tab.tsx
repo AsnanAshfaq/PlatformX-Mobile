@@ -1,14 +1,14 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Hackathon from '../../Screens/Student/Hackathon/Index';
-import Workshop from '../../Screens/Student/Workshop/Index';
-import Projects from '../../Screens/Student/Project/Index';
+import Hackathon from '../../Screens/Student/Hackathon';
+import Workshop from '../../Screens/Student/Workshop';
+import Projects from '../../Screens/Student/Project';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Width} from '../../Constants/Size';
-import Post from '../../Screens/Student/Post/Index';
+import Post from '../../Screens/Student/Post';
 import {useStateValue} from '../../Store/StateProvider';
-import Internship from '../../Screens/Student/Internship/Index';
+import Internship from '../../Screens/Student/Internship';
 
 const Tab = createBottomTabNavigator();
 

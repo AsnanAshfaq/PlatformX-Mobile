@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import OrganizationDrawerScreens from './Drawer';
-import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit';
+import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit/index';
 
 const Stack = createStackNavigator();
 

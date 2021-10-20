@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   headerTitle: {
-    fontSize: Sizes.large * 1.1,
+    fontSize: Sizes.large,
   },
   profileImage: {
     height: Width * 0.09,

@@ -8,8 +8,8 @@ import DrawerScreens from './Drawer';
 // other imports
 import {TransitionSpec} from '@react-navigation/stack/lib/typescript/src/types';
 import {useStateValue} from '../Store/StateProvider';
-import StudentScreens from './Student/Index';
-import OrganizationScreens from './Organization/Index';
+import StudentScreens from './Student';
+import OrganizationScreens from './Organization';
 // declaring navigators
 const Stack = createStackNavigator();
 

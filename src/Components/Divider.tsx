@@ -8,8 +8,14 @@ type props = {
   size?: 'large' | 'medium' | 'small';
   width?: number;
   marginHorizontal?: number;
+  marginVertical?: number;
 };
-const Divider: FC<props> = ({size, width, marginHorizontal}) => {
+const Divider: FC<props> = ({
+  size,
+  width,
+  marginHorizontal,
+  marginVertical,
+}) => {
   const [{theme}, dispatch] = useStateValue();
 
   return (
@@ -36,7 +42,7 @@ const Divider: FC<props> = ({size, width, marginHorizontal}) => {
             : size === 'small'
             ? Width * 0.22
             : 0,
-        marginVertical: 10,
+        marginVertical: marginVertical ? marginVertical : 10,
         backgroundColor: theme.DIVIDER_COLOR,
       }}
     />

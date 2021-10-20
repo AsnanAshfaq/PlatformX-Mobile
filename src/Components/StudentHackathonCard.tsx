@@ -19,6 +19,7 @@ import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
 import Divider from '../Components/Divider';
+import {Cash} from './Icons';
 const ICON_SIZE = Width * 0.07;
 
 type Props = {
@@ -32,11 +33,7 @@ const HackathonCardIcons: FC<Props> = ({name, label, cash}) => {
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
       {cash ? (
-        <FontAwesome
-          name={'money'}
-          size={ICON_SIZE}
-          color={theme.GREEN_COLOR}
-        />
+        <Cash size={ICON_SIZE} color={theme.GREEN_COLOR} />
       ) : (
         <Ionicons name={name} size={ICON_SIZE} color={theme.GREEN_COLOR} />
       )}

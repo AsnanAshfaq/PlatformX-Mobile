@@ -25,7 +25,7 @@ type props = {
   hackathonDetail: any;
 };
 
-const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
+const OrganizationWorkshopCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [LogoImageLoading, setLogoImageLoading] = useState(true); // logo image
   const [{theme}, dispatch] = useStateValue();
 
@@ -105,7 +105,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       {/* icons container  */}
       <View style={styles.iconsContainer}>
         <View style={styles.iconsRow}>
-          <Tag size={1} color={theme.GREEN_COLOR} />
+          <Tag size={0.9} />
           {hackathonDetail.theme_tags.map((tag, index) => {
             if (index < 2) {
               return (
@@ -119,19 +119,19 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           })}
         </View>
         <View style={styles.iconsRow}>
-          <Clock size={1.1} color={theme.GREEN_COLOR} />
+          <Clock size={1} />
           <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
             {hackathonDetail.days_left} days left
           </Text>
         </View>
         <View style={styles.iconsRow}>
-          <People size={1} color={theme.GREEN_COLOR} />
+          <People size={0.9} />
           <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
             {hackathonDetail.participants} Participants
           </Text>
         </View>
         <View style={styles.iconsRow}>
-          <Cash size={1} color={theme.GREEN_COLOR} />
+          <Cash size={0.9} />
           <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
             {hackathonDetail.total_prize}
           </Text>
@@ -147,7 +147,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
             uploaded at {new Date(hackathonDetail.created_at).toDateString()}
           </Text>
         </View>
-        <View style={styles.ButtonContainer}>
+        <View style={styles.viewButtonContainer}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('View_Hackathon', {
@@ -155,25 +155,21 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
               })
             }
             style={[
-              styles.viewButtonContainer,
+              styles.viewButton,
               {
                 backgroundColor: theme.BUTTON_BACKGROUND_COLOR,
               },
             ]}>
-            <View style={styles.viewButtonTextContainer}>
-              <Text
-                style={[
-                  styles.viewButtonText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                View Details
-              </Text>
-            </View>
-            <View style={styles.viewButtonIconContainer}>
-              <ForwardArrow size={0.96} />
-            </View>
+            <Text
+              style={[
+                styles.viewButtonText,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              View Details{' '}
+            </Text>
+            <ForwardArrow size={0.6} />
           </TouchableOpacity>
         </View>
       </View>
@@ -181,12 +177,14 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   );
 };
 
-export default HackathonCard;
+export default OrganizationWorkshopCard;
 
 const styles = StyleSheet.create({
   parent: {
     marginHorizontal: Width * 0.04,
     marginVertical: Width * 0.03,
+    // minHeight: Height * 0.35,
+    // maxHeight: Height * 0.8,
     borderRadius: 10,
     shadowOpacity: 1,
     shadowRadius: 25,
@@ -222,6 +220,8 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   contentContainer: {
+    // minHeight: Height * 0.15,
+    // maxHeight: Height * 0.2,
     marginVertical: 10,
     paddingHorizontal: 10,
   },
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Raleway-Light',
   },
   tagLineText: {
-    fontSize: Sizes.normal * 0.9,
+    fontSize: Sizes.normal,
     fontStyle: 'italic',
     lineHeight: 24,
   },
@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   iconText: {
-    fontSize: Sizes.normal * 1.06,
-    marginHorizontal: 11,
+    fontSize: Sizes.normal,
+    marginHorizontal: 10,
   },
   bottomContainer: {
     flexDirection: 'row',
@@ -256,30 +256,22 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
   },
-  ButtonContainer: {
+
+  viewButtonContainer: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
-  viewButtonContainer: {
+  viewButton: {
+    // flex: 1,
     padding: 9,
-    flex: 1,
     width: Width * 0.35,
-    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginHorizontal: Width * 0.008,
     borderRadius: 10,
   },
   viewButtonText: {
     fontSize: Sizes.small,
-  },
-  viewButtonTextContainer: {
-    flex: 0.8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  viewButtonIconContainer: {
-    flex: 0.2,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
   },
 });

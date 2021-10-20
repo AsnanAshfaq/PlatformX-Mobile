@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Project from '../../Screens/Organization/Project/Index';
+import Project from '../../Screens/Organization/Project';
 const HackathonScreens = () => {
   const Stack = createStackNavigator();
 

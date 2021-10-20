@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import Hackathon from '../../Screens/Organization/Hackathon/Index';
+import Hackathon from '../../Screens/Organization/Hackathon';
 import ViewHackathon from '../../Screens/Organization/Hackathon/View';
 import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit';
 const HackathonScreens = () => {

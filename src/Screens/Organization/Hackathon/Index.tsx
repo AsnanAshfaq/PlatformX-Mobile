@@ -15,7 +15,6 @@ import axios from '../../../Utils/Axios';
 import {Sizes} from '../../../Constants/Size';
 import HackathonSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
-import FloatingActionButton from '../../../Components/FloatingActionButton';
 
 type props = {
   navigation: any;
@@ -108,6 +107,7 @@ const Hackathons: FC<props> = ({navigation}) => {
           placeholder={'Search hackathons'}
           handleSearch={handleSearch}
           showFilterIcon={false}
+          isShownInHeader={false}
         />
       )}
 
@@ -142,14 +142,6 @@ const Hackathons: FC<props> = ({navigation}) => {
               />
             }
             // contentOffset={{y: -300, x: 0}}
-          />
-          {/* floating action button  */}
-          <FloatingActionButton
-            onPress={() => {
-              navigation.navigate('Create_Edit_Hackathon', {
-                screen: 'Create',
-              });
-            }}
           />
         </>
       ) : !IsLoading && Hackathon.length === 0 ? (
@@ -186,21 +178,6 @@ const styles = StyleSheet.create({
   },
   refreshText: {
     fontSize: Sizes.normal,
-  },
-  floatingButtonContainer: {
-    position: 'absolute',
-    width: 60,
-    height: 60,
-    borderWidth: 2,
-    borderRadius: 30,
-    bottom: 20,
-    right: 12,
-    borderColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  plusText: {
-    fontSize: Sizes.large * 1.4,
   },
 });
 
