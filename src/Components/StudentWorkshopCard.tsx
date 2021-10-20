@@ -15,7 +15,7 @@ import PopUpMenu from '../Menu/WorkshopCardPopUpMenu';
 import {BASE_URL} from 'react-native-dotenv';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
-import Divider from '../Components/Divider';
+import Divider from './Divider';
 type props = {
   navigation: any;
   workshopDetail: any;

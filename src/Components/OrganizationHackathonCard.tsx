@@ -18,8 +18,6 @@ import Axios from '../Utils/Axios';
 import Divider from '../Components/Divider';
 import {Cash, Clock, ForwardArrow, People, Tag} from './Icons';
 
-const ICON_SIZE = Width * 0.07;
-
 type props = {
   navigation: any;
   hackathonDetail: any;
@@ -112,6 +110,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
                 <Text
                   key={index}
                   style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
+                  {'  '}
                   {tag}
                 </Text>
               );
@@ -121,19 +120,22 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         <View style={styles.iconsRow}>
           <Clock size={1.1} color={theme.GREEN_COLOR} />
           <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
+            {' '}
             {hackathonDetail.days_left} days left
           </Text>
         </View>
         <View style={styles.iconsRow}>
           <People size={1} color={theme.GREEN_COLOR} />
           <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
+            {'  '}
             {hackathonDetail.participants} Participants
           </Text>
         </View>
         <View style={styles.iconsRow}>
           <Cash size={1} color={theme.GREEN_COLOR} />
           <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-            {hackathonDetail.total_prize}
+            {'  '}
+            {commaSeperator(hackathonDetail.total_prize)}
           </Text>
         </View>
       </View>
@@ -144,7 +146,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       <View style={styles.bottomContainer}>
         <View style={styles.uploadDateContainer}>
           <Text style={[styles.date, {color: theme.DIM_TEXT_COLOR}]}>
-            uploaded at {new Date(hackathonDetail.created_at).toDateString()}
+            Uploaded at {new Date(hackathonDetail.created_at).toDateString()}
           </Text>
         </View>
         <View style={styles.ButtonContainer}>

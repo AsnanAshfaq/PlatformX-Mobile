@@ -13,7 +13,7 @@ import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
 import {Sizes} from '../../../Constants/Size';
 import {ToastAndroid} from 'react-native';
-import WorkshopCard from '../../../Components/WorkshopCard';
+import WorkshopCard from '../../../Components/StudentWorkshopCard';
 import WorkshopSkeleton from '../../../Skeleton/WorkshopCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 import FloatingActionButton from '../../../Components/FloatingActionButton';

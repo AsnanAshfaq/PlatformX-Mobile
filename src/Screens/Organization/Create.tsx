@@ -9,7 +9,6 @@ import {
 import CustomHeader from '../../Components/CustomHeader';
 import {Height, Sizes, Width} from '../../Constants/Size';
 import {useStateValue} from '../../Store/StateProvider';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ForwardArrow} from '../../Components/Icons';
 
 type props = {
@@ -61,7 +60,7 @@ const Create: FC<props> = ({navigation}) => {
     <View
       style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
       <CustomHeader title={'Create'} navigation={navigation} drawer bell />
-      <ScrollView>
+      <ScrollView style={styles.scroll}>
         <Card
           title={'Hackathon'}
           description={`Hackathons are taking over the world! Make yours run better and show the world what gets made at your event.${'\n'}START HOSTING YOUR HACKATHON NOW.`}
@@ -93,9 +92,12 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
   },
+  scroll: {
+    marginTop: Height * 0.02,
+  },
   cardContainer: {
     marginHorizontal: Width * 0.06,
-    marginVertical: Height * 0.02315,
+    marginVertical: Height * 0.02515,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: 'transparent',
