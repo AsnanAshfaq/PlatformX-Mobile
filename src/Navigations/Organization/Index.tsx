@@ -19,6 +19,7 @@ const OrganizationScreens = () => {
         };
       }}>
       <Stack.Screen name="Main" component={OrganizationDrawerScreens} />
+
       <Stack.Screen
         name="Create_Edit_Hackathon"
         component={CreateEditHackathon}

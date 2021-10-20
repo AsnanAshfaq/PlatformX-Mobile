@@ -15,7 +15,7 @@ import {PROFILE_IMAGE} from '../Constants/sample';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import SignOutModal from '../Modals/SignOutModal';
-
+import Divider from '../Components/Divider';
 type Props = {
   label: string;
   icon_name: string;
@@ -216,7 +216,7 @@ const OrganizationDrawer: FC<props> = ({navigation}) => {
           }}
           style={[
             styles.profileButtonContainer,
-            {backgroundColor: state.theme.SHADOW_COLOR},
+            {backgroundColor: state.theme.GREEN_COLOR},
           ]}>
           <Text
             style={[styles.profileButtonText, {color: state.theme.TEXT_COLOR}]}>
@@ -255,16 +255,11 @@ const CustomDrawer: FC<props> = (props: any) => {
       ]}>
       {/* <DrawerItemList {...props} /> */}
       {/* header  */}
-      <View
-        style={[
-          styles.headerContainer,
-          {
-            borderBottomColor: state.theme.SHADOW_COLOR,
-          },
-        ]}>
+      <View style={styles.headerContainer}>
         <Text style={[styles.headerTitle, {color: state.theme.TEXT_COLOR}]}>
           PlatformX
         </Text>
+        <Divider width={Width * 0.52} marginHorizontal={0} />
       </View>
 
       {/* if student is signed in  */}

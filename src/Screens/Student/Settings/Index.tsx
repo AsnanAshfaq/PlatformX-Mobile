@@ -25,7 +25,7 @@ const Card: FC<cardProps> = ({IconComponent, title, description, onPress}) => {
         styles.cardParent,
         {
           shadowColor: theme.SHADOW_COLOR,
-          backgroundColor: theme.LIGHT_BACKGROUND,
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
       <View style={{flex: 0.2, alignItems: 'center'}}>

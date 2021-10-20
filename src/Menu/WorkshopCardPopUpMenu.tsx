@@ -33,7 +33,7 @@ const PopUpMenu: FC<prop> = ({
         <View>
           <Ionicons
             name={'ellipsis-vertical'}
-            size={ICON_SIZE}
+            size={ICON_SIZE * 0.8}
             color={theme.ICON_COLOR}
           />
         </View>

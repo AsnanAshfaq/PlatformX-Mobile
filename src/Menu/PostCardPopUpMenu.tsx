@@ -11,37 +11,9 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useStateValue} from '../Store/StateProvider';
+
 const ICON_SIZE = Width * 0.07;
 
-const Divider: FC<{size: 'large' | 'medium' | 'small'}> = ({size}) => {
-  const [{theme}, dispatch] = useStateValue();
-
-  return (
-    <View
-      style={{
-        width:
-          size === 'large'
-            ? Width * 0.8
-            : size === 'medium'
-            ? Width * 0.6
-            : size === 'small'
-            ? Width * 0.45
-            : 0,
-        height: 1.5,
-        marginHorizontal:
-          size === 'large'
-            ? Width * 0.04
-            : size === 'medium'
-            ? Width * 0.14
-            : size === 'small'
-            ? Width * 0.22
-            : 0,
-        marginVertical: 10,
-        backgroundColor: theme.TEXT_COLOR,
-      }}
-    />
-  );
-};
 type prop = {
   navigation: any;
   isEditable: boolean;

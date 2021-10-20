@@ -17,6 +17,7 @@ import {BASE_URL} from 'react-native-dotenv';
 import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
+import Divider from '../Components/Divider';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -25,7 +26,7 @@ type props = {
   hackathonDetail: any;
 };
 
-const MAX_TEXT_LENGTH = 250;
+const MAX_TEXT_LENGTH = 140;
 
 const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
@@ -69,15 +70,11 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         styles.parent,
         {
           shadowColor: theme.SHADOW_COLOR,
-          backgroundColor: theme.LIGHT_BACKGROUND,
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
       {/* header  */}
-      <View
-        style={[
-          styles.headerContainer,
-          {borderBottomColor: theme.SHADOW_COLOR},
-        ]}>
+      <View style={styles.headerContainer}>
         {/* user image  */}
         <View style={styles.headerImageContainer}>
           <Image
@@ -119,6 +116,8 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           />
         </View>
       </View>
+      <Divider width={Width * 0.84} marginHorizontal={14} />
+
       {/* content  */}
       <View style={styles.contentContainer}>
         {/* title  */}
@@ -167,24 +166,29 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
             );
           }}
           style={{
-            width: Width * 0.87,
+            width: Width * 0.92,
             height: Width * ImageAspectRatio * 0.9,
           }}
           resizeMode={'contain'}
         />
       </View>
       {/* apply now button  */}
-      <View style={styles.applyButtonContainer}>
+      <View style={styles.viewButtonContainer}>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('View_Hackathon', {
               ID: hackathonDetail.id,
             })
           }
-          style={[styles.applyButton, {backgroundColor: theme.SHADOW_COLOR}]}>
+          style={[
+            styles.viewButton,
+            {
+              backgroundColor: theme.BUTTON_BACKGROUND_COLOR,
+            },
+          ]}>
           <Text
             style={[
-              styles.applyButtonText,
+              styles.viewButtonText,
               {
                 color: theme.TEXT_COLOR,
               },
@@ -202,21 +206,21 @@ export default HackathonCard;
 const styles = StyleSheet.create({
   parent: {
     marginHorizontal: Width * 0.04,
-    marginVertical: Width * 0.01,
+    marginVertical: Width * 0.03,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.8,
-    borderRadius: 20,
-    padding: 10,
+    borderRadius: 10,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
-    elevation: 30,
+    elevation: 5,
   },
   headerContainer: {
     minHeight: Height * 0.08,
     maxHeight: Height * 0.15,
-    borderBottomWidth: 2,
     flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 7,
   },
   headerImageContainer: {
     // width: Width * 0.3,
@@ -246,8 +250,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     // minHeight: Height * 0.15,
     // maxHeight: Height * 0.2,
-    paddingHorizontal: 5,
-    marginVertical: 7,
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   titleText: {
     fontSize: Sizes.normal * 1.7,
@@ -255,22 +259,10 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: Sizes.normal,
+    lineHeight: 24,
   },
   thumbnailContainer: {
-    // width: Width * 0.9,
-    // minHeight: Height * 0.25,
-    // maxHeight: Height * 0.3,
-    // // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'flex-start',
-    // backgroundColor: 'red',
-    // marginRight: 20,
-    // marginRight: 20,
     marginHorizontal: 0,
-  },
-  thumbnail: {
-    // width: Width * 0.865,
-    // height: Height * 0.25,
   },
   iconsRowConatiner: {
     // height: Height * 0.09,
@@ -285,14 +277,15 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal,
     paddingHorizontal: 5,
   },
-  applyButtonContainer: {
+  viewButtonContainer: {
     // minHeight: Height * 0.05,
     // maxHeight: Height * 0.07,
     flexDirection: 'row',
     marginTop: Height * 0.02,
     justifyContent: 'flex-end',
+    padding: 10,
   },
-  applyButton: {
+  viewButton: {
     // flex: 1,
     padding: 9,
     width: Width * 0.35,
@@ -301,7 +294,7 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.008,
     borderRadius: 10,
   },
-  applyButtonText: {
+  viewButtonText: {
     fontSize: Sizes.small,
   },
 });

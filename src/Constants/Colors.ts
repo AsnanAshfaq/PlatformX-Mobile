@@ -1,7 +1,6 @@
 export const lightColors = {
   BACKGROUND_COLOR: '#cdcfd1', //15181c
   SCREEN_BACKGROUND_COLOR: '#c0c2c4',
-  LIGHT_BACKGROUND: '#c1c7d4',
   TEXT_COLOR: '#1d1d1f',
   SHADOW_COLOR: '#a6aaba',
   BUTTON: 'black',
@@ -19,7 +18,6 @@ export const lightColors = {
 export const darkColors = {
   BACKGROUND_COLOR: '#0c0e11', //15181c //
   SCREEN_BACKGROUND_COLOR: '#030304', // 0f141f
-  LIGHT_BACKGROUND: '#1d222b', //222732
   TAB_BAR_ICON_COLOR: '#99afd1',
   DRAWER_BACKGROUND_COLOR: '#111721',
   BADGE_COLOR: '#058a6a',

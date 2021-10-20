@@ -323,7 +323,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
       )}
       {/* like comment share details */}
       <TouchableOpacity
-        style={[styles.numberContainer, {borderColor: theme.SHADOW_COLOR}]}
+        style={[styles.numberContainer]}
         onPress={() =>
           setCommentmodal({
             focusTextInput: false,
@@ -383,6 +383,7 @@ const PostCard: FC<props> = ({navigation, postDetail}) => {
           />
         </View> */}
       </TouchableOpacity>
+      <Divider width={Width * 0.92} />
       {/* post buttons   */}
       <PostCardButtons
         setCommentModal={setCommentmodal}
@@ -461,7 +462,6 @@ const styles = StyleSheet.create({
   },
   numberContainer: {
     flexDirection: 'row',
-    borderBottomWidth: 2,
     // alignItems: 'stretch',
     justifyContent: 'flex-end',
     // borderTopWidth: 2,

@@ -31,7 +31,10 @@ const CustomDropDown: FC<props> = ({
     <View style={styles.parent}>
       <TouchableOpacity
         onPress={() => toggleDropDown()}
-        style={[styles.dropDownBar, {backgroundColor: theme.LIGHT_BACKGROUND}]}>
+        style={[
+          styles.dropDownBar,
+          {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+        ]}>
         <View style={{flexDirection: 'row'}}>
           <Text style={[styles.selectedText, {color: theme.TEXT_COLOR}]}>
             {Selected}
@@ -50,7 +53,7 @@ const CustomDropDown: FC<props> = ({
         style={[
           styles.droppedViewContainer,
           {
-            backgroundColor: theme.LIGHT_BACKGROUND,
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         {isShow &&

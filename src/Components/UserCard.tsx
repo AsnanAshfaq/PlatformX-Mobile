@@ -28,7 +28,7 @@ const UserCard: FC<props> = ({navigations, user}) => {
           styles.parent,
           {
             shadowColor: theme.SHADOW_COLOR,
-            backgroundColor: theme.LIGHT_BACKGROUND,
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         {/* image container */}

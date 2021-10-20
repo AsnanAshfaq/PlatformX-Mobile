@@ -31,7 +31,7 @@ const ChatCard: FC<props> = ({navigation, chat}) => {
           styles.parent,
           {
             shadowColor: state.theme.SHADOW_COLOR,
-            backgroundColor: state.theme.LIGHT_BACKGROUND,
+            backgroundColor: state.theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         {/* image container */}

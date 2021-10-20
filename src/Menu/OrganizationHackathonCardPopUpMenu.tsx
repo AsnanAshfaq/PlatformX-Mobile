@@ -9,6 +9,7 @@ import {
   renderers,
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useStateValue} from '../Store/StateProvider';
 
 const ICON_SIZE = Width * 0.07;
@@ -26,8 +27,8 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
         <View>
           <Ionicons
             name={'ellipsis-vertical'}
-            size={ICON_SIZE}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
+            size={ICON_SIZE * 0.8}
+            color={theme.ICON_COLOR}
           />
         </View>
       </MenuTrigger>
@@ -35,13 +36,18 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
       <MenuOptions
         customStyles={{
           optionsContainer: {
-            backgroundColor: theme.SHADOW_COLOR,
+            backgroundColor: theme.POP_UP_MENU_BACKGROUND_COLOR,
             borderWidth: 5,
             borderRadius: 20,
             width: 150,
             borderColor: 'transparent',
-            marginTop: 20,
-            marginLeft: -10,
+            marginTop: 15,
+            marginLeft: -14,
+            // marginRight: 1,
+            shadowColor: theme.SHADOW_COLOR,
+            // shadowOpacity: 1,
+            // shadowRadius: 20,
+            elevation: 4.5,
             // marginRight: 30,
           },
           optionWrapper: {
@@ -50,16 +56,30 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
         }}>
         <MenuOption onSelect={() => handleEdit()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
-              Edit
-            </Text>
+            <Ionicons
+              name={'pencil'}
+              color={theme.ICON_COLOR}
+              size={ICON_SIZE * 0.8}
+            />
+            <View style={styles.textContainer}>
+              <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+                Edit
+              </Text>
+            </View>
           </View>
         </MenuOption>
         <MenuOption onSelect={() => handleDelete()}>
           <View style={styles.menuOptionContainer}>
-            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
-              Delete
-            </Text>
+            <MaterialIcons
+              name={'delete'}
+              color={theme.ICON_COLOR}
+              size={ICON_SIZE * 0.8}
+            />
+            <View style={styles.textContainer}>
+              <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+                Delete
+              </Text>
+            </View>
           </View>
         </MenuOption>
       </MenuOptions>
@@ -72,9 +92,13 @@ export default PopUpMenu;
 const styles = StyleSheet.create({
   menuOptionContainer: {
     paddingHorizontal: 10,
+    flexDirection: 'row',
   },
   menuOptionText: {
     fontSize: Sizes.normal,
     // fontFamily: 'Raleway-Medium',
+  },
+  textContainer: {
+    marginLeft: 10,
   },
 });

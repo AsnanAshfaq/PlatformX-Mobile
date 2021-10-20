@@ -64,6 +64,7 @@ const App = () => {
           setLoading(false);
         } catch (error) {
           // set sign in state
+          console.log('Error is ', error);
           dispatch({type: 'SET_USER_TYPE', payload: null});
           dispatch({type: 'SET_SIGN_IN', payload: false});
           setLoading(false);

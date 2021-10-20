@@ -99,7 +99,7 @@ const Search: FC<props> = ({
               !isShownInHeader && !showFilterIcon
                 ? Width * 0.05
                 : Width * 0.045,
-            backgroundColor: theme.LIGHT_BACKGROUND,
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         <View style={styles.textInputContainer}>

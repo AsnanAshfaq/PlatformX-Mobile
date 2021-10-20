@@ -38,7 +38,7 @@ const Card: FC<cardProps> = ({data, screens, id, showModal}) => {
         styles.cardParent,
         {
           shadowColor: theme.SHADOW_COLOR,
-          backgroundColor: theme.LIGHT_BACKGROUND,
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
       {/* profile image container  */}
@@ -271,7 +271,9 @@ const Tab: FC<props> = ({navigation, route: Route}) => {
         renderTabBar={props => (
           <TabBar
             {...props}
-            indicatorStyle={{backgroundColor: state.theme.LIGHT_BACKGROUND}}
+            indicatorStyle={{
+              backgroundColor: state.theme.CARD_BACKGROUND_COLOR,
+            }}
             style={{backgroundColor: state.theme.SCREEN_BACKGROUND_COLOR}}
             activeColor={state.theme.TEXT_COLOR}
             inactiveColor={state.theme.SHADOW_COLOR}

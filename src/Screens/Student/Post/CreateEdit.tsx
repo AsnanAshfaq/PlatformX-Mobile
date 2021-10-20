@@ -179,8 +179,8 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
             style={[
               styles.text,
               {
-                backgroundColor: theme.LIGHT_BACKGROUND,
-                borderColor: theme.LIGHT_BACKGROUND,
+                backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                borderColor: theme.BORDER_COLOR,
                 color: theme.TEXT_COLOR,
               },
             ]}

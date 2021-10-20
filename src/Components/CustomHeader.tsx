@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   },
   leftIconContainer: {
     flex: 0.1,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   searchContainer: {
     flex: 0.6,
