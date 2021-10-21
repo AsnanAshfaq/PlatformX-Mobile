@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scroll: {
-    marginTop: Height * 0.02,
+    paddingTop: Height * 0.02515,
   },
   cardContainer: {
     marginHorizontal: Width * 0.06,

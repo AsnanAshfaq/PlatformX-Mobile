@@ -1,12 +1,20 @@
 import React, {FC, useState, useEffect} from 'react';
-import {StyleSheet, Text, View, ScrollView, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
 import {color} from 'react-native-reanimated';
 import CustomButton from '../../../../Components/CustomButton';
 import CustomTextField from '../../../../Components/CustomTextField2';
 import {Height, Sizes, Width} from '../../../../Constants/Size';
 import {useStateValue} from '../../../../Store/StateProvider';
 import CheckBox from '../../../../Components/CheckBox';
-type props = {};
+import {hackathonThemeTags} from '../../../../Constants/sample';
 
 const HelpText: FC<{text: string}> = ({text}) => {
   const {theme} = useStateValue()[0];
@@ -19,6 +27,8 @@ const HelpText: FC<{text: string}> = ({text}) => {
     </View>
   );
 };
+
+type props = {};
 const General: FC<props> = () => {
   const {theme} = useStateValue()[0];
 
@@ -29,7 +39,7 @@ const General: FC<props> = () => {
     contact: {value: '', error: ''},
     teams: {
       isTrue: false,
-      min: '2',
+      min: '',
       max: '',
     },
     resources: {value: '', error: ''},
@@ -49,7 +59,10 @@ const General: FC<props> = () => {
       <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>
         General Info
       </Text>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        horizontal={false}>
         {/* title  */}
         <View style={styles.container}>
           <View style={styles.headingContainer}>
@@ -153,6 +166,32 @@ const General: FC<props> = () => {
             </Text>
           </View>
           <HelpText text={'Choose theme for your hackathon.'} />
+          <FlatList
+            data={hackathonThemeTags}
+            numColumns={3}
+            keyExtractor={(item, index) => `${item}-${index}`}
+            renderItem={({item}) => {
+              return (
+                <View
+                  style={[
+                    styles.checkBoxContainer,
+                    {
+                      marginVertical: 5,
+                      marginLeft: 15,
+                    },
+                  ]}>
+                  <CheckBox
+                    size={20}
+                    onPress={isCheck => console.log('Checked on', item)}
+                  />
+                  <Text
+                    style={[styles.checkBoxText, {color: theme.TEXT_COLOR}]}>
+                    {item}
+                  </Text>
+                </View>
+              );
+            }}
+          />
         </View>
 
         {/* contact email  */}
@@ -213,68 +252,76 @@ const General: FC<props> = () => {
               Yes
             </Text>
           </View>
-          <View style={styles.teamInputContainer}>
-            <CustomTextField
-              defaultValue={Input.teams.min}
-              onChangeText={text =>
-                setInput(props => {
-                  return {
-                    ...props,
-                    teams: {
-                      isTrue: props.teams.isTrue,
-                      min: text,
-                      max: props.teams.max,
-                    },
-                  };
-                })
-              }
-              keyboardType={'numeric'}
-              placeholder={'Min'}
-              placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-              textContentType={'telephoneNumber'}
-              width={Width * 0.13}
-              maxLength={1}
-            />
-            <View style={styles.teamTextContainer}>
-              <Text
-                style={{
-                  color: theme.DIM_TEXT_COLOR,
-                  fontSize: Sizes.normal * 0.9,
-                }}>
-                to
-              </Text>
-            </View>
-            <CustomTextField
-              defaultValue={Input.teams.max}
-              onChangeText={text =>
-                setInput(props => {
-                  return {
-                    ...props,
-                    teams: {
-                      isTrue: props.teams.isTrue,
-                      max: text,
-                      min: props.teams.min,
-                    },
-                  };
-                })
-              }
-              keyboardType={'numeric'}
-              placeholder={'Max'}
-              placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-              textContentType={'telephoneNumber'}
-              width={Width * 0.13}
-              maxLength={1}
-            />
-            <View style={styles.teamTextContainer}>
-              <Text
-                style={{
-                  color: theme.DIM_TEXT_COLOR,
-                  fontSize: Sizes.normal * 0.9,
-                }}>
-                team members
-              </Text>
-            </View>
-          </View>
+
+          {/* only disable team input container if required  */}
+          {Input.teams.isTrue && (
+            <>
+              <View style={styles.teamInputContainer}>
+                <CustomTextField
+                  defaultValue={Input.teams.min}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        teams: {
+                          isTrue: props.teams.isTrue,
+                          min: text,
+                          max: props.teams.max,
+                        },
+                      };
+                    })
+                  }
+                  keyboardType={'numeric'}
+                  placeholder={'Min'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'telephoneNumber'}
+                  width={Width * 0.138}
+                  height={Width * 0.13}
+                  maxLength={1}
+                />
+                <View style={styles.teamTextContainer}>
+                  <Text
+                    style={{
+                      color: theme.DIM_TEXT_COLOR,
+                      fontSize: Sizes.normal * 0.9,
+                    }}>
+                    to
+                  </Text>
+                </View>
+                <CustomTextField
+                  defaultValue={Input.teams.max}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        teams: {
+                          isTrue: props.teams.isTrue,
+                          max: text,
+                          min: props.teams.min,
+                        },
+                      };
+                    })
+                  }
+                  keyboardType={'numeric'}
+                  placeholder={'Max'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'telephoneNumber'}
+                  width={Width * 0.138}
+                  height={Width * 0.13}
+                  maxLength={1}
+                />
+                <View style={styles.teamTextContainer}>
+                  <Text
+                    style={{
+                      color: theme.DIM_TEXT_COLOR,
+                      fontSize: Sizes.normal * 0.9,
+                    }}>
+                    team members
+                  </Text>
+                </View>
+              </View>
+            </>
+          )}
         </View>
 
         {/* resources  */}
@@ -385,6 +432,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   helpTextContainer: {
+    marginTop: 4,
     marginLeft: 4,
   },
   helpText: {
@@ -392,7 +440,8 @@ const styles = StyleSheet.create({
     lineHeight: 14,
   },
   checkBoxContainer: {
-    marginTop: 6,
+    marginTop: 10,
+    marginLeft: 5,
     flexDirection: 'row',
   },
   checkBoxText: {

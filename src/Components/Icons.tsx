@@ -4,6 +4,7 @@ import {Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import {useStateValue} from '../Store/StateProvider';
 
 const ICON_SIZE = Width * 0.07;
@@ -101,6 +102,30 @@ export const Pencil: FC<props> = ({size, color}) => {
   return (
     <Ionicons
       name={'pencil'}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+      color={color ? color : theme.ICON_COLOR}
+    />
+  );
+};
+
+export const Camera: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+
+  return (
+    <Feather
+      name={'camera'}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+      color={color ? color : theme.ICON_COLOR}
+    />
+  );
+};
+
+export const Cross: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+
+  return (
+    <Ionicons
+      name={'close-circle-sharp'}
       size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
       color={color ? color : theme.ICON_COLOR}
     />

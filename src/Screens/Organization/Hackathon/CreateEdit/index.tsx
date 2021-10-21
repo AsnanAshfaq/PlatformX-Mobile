@@ -3,6 +3,9 @@ import {StyleSheet, Text, View} from 'react-native';
 import CustomHeader from '../../../../Components/CustomHeader';
 import {useStateValue} from '../../../../Store/StateProvider';
 import General from './General';
+import Media from './Media';
+import Prize from './Prize';
+import Schedule from './Schedule';
 
 type props = {
   navigation: any;
@@ -28,7 +31,8 @@ const Index: FC<props> = ({navigation, route}) => {
       />
 
       {/* general category  */}
-      <General />
+      {/* <General /> */}
+      <Media />
     </View>
   );
 };

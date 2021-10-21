@@ -8,8 +8,6 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useStateValue} from '../Store/StateProvider';
 import {Delete, Pencil, ThreeDots} from '../Components/Icons';
 

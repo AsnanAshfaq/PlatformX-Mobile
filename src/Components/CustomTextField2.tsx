@@ -56,6 +56,7 @@ type props = {
   autoFocus?: boolean;
   error?: string;
   width?: number;
+  height?: number;
 };
 
 const ICON_SIZE = Width * 0.07;
@@ -64,6 +65,7 @@ const CustomTextField2: FC<props> = ({
   placeholder,
   placeholderColor,
   width,
+  height,
   icon,
   multiLine,
   defaultValue,
@@ -91,8 +93,9 @@ const CustomTextField2: FC<props> = ({
         style={[
           styles.textFieldContainer,
           {
-            borderColor: error ? theme.GREEN_COLOR : theme.SHADOW_COLOR,
+            borderColor: error ? theme.ERROR_TEXT_COLOR : theme.SHADOW_COLOR,
             width: width ? width : Width * 0.8,
+            height: height && height,
           },
         ]}>
         <TextInput
@@ -122,7 +125,7 @@ const CustomTextField2: FC<props> = ({
           </TouchableWithoutFeedback>
         )}
       </View>
-      <Text style={[styles.errorText, {color: theme.GREEN_COLOR}]}>
+      <Text style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
         {error}
       </Text>
     </>
@@ -139,6 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     // paddingVertical: 5,
     paddingHorizontal: 10,
+    alignItems: 'center',
   },
   textField: {
     width: Width * 0.68,

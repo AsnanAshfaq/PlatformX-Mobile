@@ -22,42 +22,22 @@ const ICON_SIZE = Width * 0.07;
 
 type props = {
   navigation: any;
-  hackathonDetail: any;
+  workshopDetail: any;
 };
 
-const OrganizationWorkshopCard: FC<props> = ({navigation, hackathonDetail}) => {
+const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   const [LogoImageLoading, setLogoImageLoading] = useState(true); // logo image
   const [{theme}, dispatch] = useStateValue();
 
   const handleDelete = () => {
-    Axios({
-      method: 'post',
-      url: `${BASE_URL}/api/hackathon/share/create/`,
-      data: {
-        hackathon: hackathonDetail.id,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(result => {
-        if (result.status === 201) {
-          ToastAndroid.show(result.data.success, 1500);
-        } else {
-          ToastAndroid.show(result.data.error, 1500);
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          ToastAndroid.show(error.response.data.error, 1500);
-        }
-        return Promise.reject();
-      });
+    console.log('Handling workshop delete');
   };
 
   const handleEdit = () => {
     console.log('Handling hackathon edit option');
   };
+
+  console.log('Workshop details are');
 
   return (
     <View
@@ -72,7 +52,7 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, hackathonDetail}) => {
       <View style={styles.headerContainer}>
         {/* logo image  */}
         <View style={styles.headerImageContainer}>
-          <Image
+          {/* <Image
             source={{
               uri: LogoImageLoading
                 ? GREY_IMAGE
@@ -80,15 +60,15 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, hackathonDetail}) => {
             }}
             onLoadEnd={() => setLogoImageLoading(false)}
             style={styles.logoImage}
-          />
+          /> */}
         </View>
         <View style={styles.headerTextContainer}>
           {/* title  */}
           <Text style={[styles.titleText, {color: theme.TEXT_COLOR}]}>
-            {hackathonDetail.title}
+            {/* {hackathonDetail.title} */}
           </Text>
           <Text style={[styles.tagLineText, {color: theme.DIM_TEXT_COLOR}]}>
-            {hackathonDetail.tag_line}
+            {/* {hackathonDetail.tag_line} */}
           </Text>
         </View>
         {/* right icon  */}
@@ -102,74 +82,42 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, hackathonDetail}) => {
       </View>
       <Divider width={Width * 0.84} marginHorizontal={13} marginVertical={1} />
 
-      {/* icons container  */}
-      <View style={styles.iconsContainer}>
-        <View style={styles.iconsRow}>
-          <Tag size={0.9} />
-          {hackathonDetail.theme_tags.map((tag, index) => {
-            if (index < 2) {
-              return (
-                <Text
-                  key={index}
-                  style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-                  {tag}
-                </Text>
-              );
-            }
-          })}
-        </View>
-        <View style={styles.iconsRow}>
-          <Clock size={1} />
-          <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-            {hackathonDetail.days_left} days left
-          </Text>
-        </View>
-        <View style={styles.iconsRow}>
-          <People size={0.9} />
-          <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-            {hackathonDetail.participants} Participants
-          </Text>
-        </View>
-        <View style={styles.iconsRow}>
-          <Cash size={0.9} />
-          <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-            {hackathonDetail.total_prize}
-          </Text>
-        </View>
-      </View>
-
       {/* uploaded at container  */}
 
       {/* apply now button  */}
       <View style={styles.bottomContainer}>
         <View style={styles.uploadDateContainer}>
           <Text style={[styles.date, {color: theme.DIM_TEXT_COLOR}]}>
-            uploaded at {new Date(hackathonDetail.created_at).toDateString()}
+            Uploaded at {new Date().toDateString()}
           </Text>
         </View>
-        <View style={styles.viewButtonContainer}>
+        <View style={styles.ButtonContainer}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('View_Hackathon', {
-                ID: hackathonDetail.id,
+                ID: workshopDetail.id,
               })
             }
             style={[
-              styles.viewButton,
+              styles.viewButtonContainer,
               {
                 backgroundColor: theme.BUTTON_BACKGROUND_COLOR,
               },
             ]}>
-            <Text
-              style={[
-                styles.viewButtonText,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              View Details{' '}
-            </Text>
-            <ForwardArrow size={0.6} />
+            <View style={styles.viewButtonTextContainer}>
+              <Text
+                style={[
+                  styles.viewButtonText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                View Details
+              </Text>
+            </View>
+            <View style={styles.viewButtonIconContainer}>
+              <ForwardArrow size={0.96} />
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -256,22 +204,30 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
   },
-
-  viewButtonContainer: {
+  ButtonContainer: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
-  viewButton: {
-    // flex: 1,
+  viewButtonContainer: {
     padding: 9,
+    flex: 1,
     width: Width * 0.35,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'row',
     marginHorizontal: Width * 0.008,
     borderRadius: 10,
   },
   viewButtonText: {
     fontSize: Sizes.small,
+  },
+  viewButtonTextContainer: {
+    flex: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  viewButtonIconContainer: {
+    flex: 0.2,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
 });

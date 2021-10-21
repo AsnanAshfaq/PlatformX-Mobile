@@ -10,6 +10,7 @@ import {
 } from 'react-native-popup-menu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useStateValue} from '../Store/StateProvider';
+import {ThreeDots} from '../Components/Icons';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -31,11 +32,7 @@ const PopUpMenu: FC<prop> = ({
     <Menu>
       <MenuTrigger>
         <View>
-          <Ionicons
-            name={'ellipsis-vertical'}
-            size={ICON_SIZE * 0.8}
-            color={theme.ICON_COLOR}
-          />
+          <ThreeDots size={0.8} color={theme.ICON_COLOR} />
         </View>
       </MenuTrigger>
 

@@ -5,27 +5,22 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useStateValue} from '../../src/Store/StateProvider';
+import Divider from './Divider';
 
 type props = {
   data: Array<string>;
-  isShow?: boolean;
-  toggleShow?: any;
-  Selected: string;
-  setSelected: (type: any) => void;
+  width?: number;
 };
 
-const ICON_SIZE = Width * 0.07;
+const ICON_SIZE = Width * 0.055;
 
-const CustomDropDown: FC<props> = ({
-  data,
-  isShow = false,
-  toggleShow,
-  Selected,
-  setSelected,
-}) => {
-  const toggleDropDown = () => toggleShow(!isShow);
-
+const CustomDropDown: FC<props> = ({data, width}) => {
   const [{theme}, dispatch] = useStateValue();
+
+  const [isShow, setisShow] = useState(false);
+  const [Selected, setSelected] = useState(data[0]);
+
+  const toggleDropDown = () => setisShow(!isShow);
 
   return (
     <View style={styles.parent}>
@@ -33,7 +28,10 @@ const CustomDropDown: FC<props> = ({
         onPress={() => toggleDropDown()}
         style={[
           styles.dropDownBar,
-          {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+          {
+            backgroundColor: theme.DROP_DOWN_BACKGROUND_COLOR,
+            width: width ? width : Width * 0.9,
+          },
         ]}>
         <View style={{flexDirection: 'row'}}>
           <Text style={[styles.selectedText, {color: theme.TEXT_COLOR}]}>
@@ -53,29 +51,32 @@ const CustomDropDown: FC<props> = ({
         style={[
           styles.droppedViewContainer,
           {
-            backgroundColor: theme.CARD_BACKGROUND_COLOR,
+            backgroundColor: theme.DROP_DOWN_BACKGROUND_COLOR,
           },
         ]}>
         {isShow &&
-          data.map(type => (
-            <TouchableOpacity
-              onPress={() => {
-                toggleDropDown();
-                setSelected(prev => {
-                  return {
-                    ...prev,
-                    category: type,
-                  };
-                });
-              }}
-              key={type}>
-              <View style={styles.droppedView}>
-                <Text style={[styles.droppedText, {color: theme.TEXT_COLOR}]}>
-                  {type}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+          data.map((type, index) => {
+            if (index !== 0)
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    toggleDropDown();
+                    setSelected(type);
+                  }}
+                  key={type}>
+                  <View
+                    style={[
+                      styles.droppedView,
+                      {width: width ? width : Width * 0.87},
+                    ]}>
+                    <Text
+                      style={[styles.droppedText, {color: theme.TEXT_COLOR}]}>
+                      {type}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+          })}
       </View>
     </View>
   );
@@ -89,10 +90,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dropDownBar: {
-    width: Width * 0.9,
     marginHorizontal: Width * 0.01,
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: 'transparent',
     // justifyContent: 'center',
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
   },
   selectedText: {
-    fontSize: Sizes.normal * 1.1,
+    fontSize: Sizes.normal,
     flex: 0.9,
   },
   droppedViewContainer: {
@@ -110,16 +110,14 @@ const styles = StyleSheet.create({
     // marginHorizontal: 10,
     marginVertical: 5,
     // paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
   },
   droppedView: {
-    width: Width * 0.87,
     paddingHorizontal: 8,
     paddingVertical: 5,
-    marginHorizontal: Width * 0.01,
   },
   droppedText: {
-    fontSize: Sizes.normal * 1.1,
+    fontSize: Sizes.normal,
   },
 });

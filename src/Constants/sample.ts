@@ -188,6 +188,15 @@ export const chatData = [
   },
 ];
 
+export const hackathonThemeTags = [
+  'AR/VR',
+  'Ecommerce',
+  'Game',
+  'Machine Learning/AI',
+  'Mobile',
+  'Web',
+];
+
 export const PROFILE_IMAGE =
   'https://conservation-innovations.org/wp-content/uploads/2019/09/Dummy-Person.png';
 

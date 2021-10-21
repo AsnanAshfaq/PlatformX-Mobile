@@ -211,13 +211,7 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
         </View>
         {/* custom drop down  */}
         <View style={{marginBottom: 20}}>
-          <CustomDropDown
-            data={POST_TYPE}
-            isShow={ToggleDropDown}
-            toggleShow={setToggleDropDown}
-            Selected={Post.category}
-            setSelected={setPost}
-          />
+          <CustomDropDown data={POST_TYPE} />
         </View>
 
         {/* show image view in a scrollview*/}
