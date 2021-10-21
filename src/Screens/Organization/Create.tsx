@@ -109,14 +109,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: 'transparent',
     position: 'absolute',
-    top: -(Height * 0.0193),
+    top: -(Height * 0.0253),
     alignItems: 'center',
-    left: 3,
+    // justifyContent:'center',
+    left: Width * 0.27, //3
     flex: 1,
     elevation: 14,
   },
   cardTitleText: {
-    fontSize: Sizes.normal * 1.2,
+    fontSize: Sizes.normal * 1.3,
     fontFamily: 'Poppins-Bold',
   },
   cardDescriptionContainer: {

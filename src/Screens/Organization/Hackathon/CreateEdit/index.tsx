@@ -2,13 +2,14 @@ import React, {FC} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import CustomHeader from '../../../../Components/CustomHeader';
 import {useStateValue} from '../../../../Store/StateProvider';
+import General from './General';
 
 type props = {
   navigation: any;
   route: any;
 };
 const Index: FC<props> = ({navigation, route}) => {
-  const [{theme}, dispatch] = useStateValue();
+  const {theme} = useStateValue()[0];
   const {screen} = route.params;
 
   return (
@@ -25,7 +26,9 @@ const Index: FC<props> = ({navigation, route}) => {
         back
         onBackPress={() => navigation.goBack()}
       />
-      <Text>THis is the edit hackathon screen</Text>
+
+      {/* general category  */}
+      <General />
     </View>
   );
 };
