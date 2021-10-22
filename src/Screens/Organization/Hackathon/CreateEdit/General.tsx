@@ -15,18 +15,7 @@ import {Height, Sizes, Width} from '../../../../Constants/Size';
 import {useStateValue} from '../../../../Store/StateProvider';
 import CheckBox from '../../../../Components/CheckBox';
 import {hackathonThemeTags} from '../../../../Constants/sample';
-
-const HelpText: FC<{text: string}> = ({text}) => {
-  const {theme} = useStateValue()[0];
-
-  return (
-    <View style={styles.helpTextContainer}>
-      <Text style={[styles.helpText, {color: theme.DIM_TEXT_COLOR}]}>
-        {text}
-      </Text>
-    </View>
-  );
-};
+import HelpText from '../../../../Components/HelpText';
 
 type props = {};
 const General: FC<props> = () => {
@@ -430,14 +419,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginTop: 4,
-  },
-  helpTextContainer: {
-    marginTop: 4,
-    marginLeft: 4,
-  },
-  helpText: {
-    fontSize: Sizes.normal * 0.62,
-    lineHeight: 14,
   },
   checkBoxContainer: {
     marginTop: 10,

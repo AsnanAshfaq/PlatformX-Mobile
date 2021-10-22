@@ -23,18 +23,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {Camera, Cross} from '../../../../Components/Icons';
 import CheckBox from '../../../../Components/CheckBox';
 import CustomTextField from '../../../../Components/CustomTextField2';
-
-const HelpText: FC<{text: string}> = ({text}) => {
-  const {theme} = useStateValue()[0];
-
-  return (
-    <View style={styles.helpTextContainer}>
-      <Text style={[styles.helpText, {color: theme.DIM_TEXT_COLOR}]}>
-        {text}
-      </Text>
-    </View>
-  );
-};
+import CustomButton from '../../../../Components/CustomButton';
+import HelpText from '../../../../Components/HelpText';
 
 type props = {};
 
@@ -45,6 +35,15 @@ const Media: FC<props> = () => {
     logo: '',
     background: '',
   });
+  const [loading, setLoading] = useState(false);
+
+  const handleSave = () => {
+    if (!loading) {
+      // setLoading(true);
+      // check field validations here
+      // make api call here
+    }
+  };
 
   const handleImagePicker = (key: string) => {
     ImagePicker.openPicker({
@@ -240,6 +239,11 @@ const Media: FC<props> = () => {
           </View>
         </View>
       </ScrollView>
+      <CustomButton
+        text={'Save and Continue'}
+        onPress={handleSave}
+        loading={loading}
+      />
     </View>
   );
 };

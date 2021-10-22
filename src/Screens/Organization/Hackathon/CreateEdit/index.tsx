@@ -30,9 +30,11 @@ const Index: FC<props> = ({navigation, route}) => {
         onBackPress={() => navigation.goBack()}
       />
 
-      {/* general category  */}
       {/* <General /> */}
-      <Media />
+      {/* <Media /> */}
+      {/* prize  */}
+      {/* <Prize /> */}
+      {/* <Schedule /> */}
     </View>
   );
 };
