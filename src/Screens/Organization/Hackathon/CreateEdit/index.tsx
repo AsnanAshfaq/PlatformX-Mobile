@@ -34,7 +34,7 @@ const Index: FC<props> = ({navigation, route}) => {
       {/* <Media /> */}
       {/* prize  */}
       {/* <Prize /> */}
-      {/* <Schedule /> */}
+      <Schedule />
     </View>
   );
 };

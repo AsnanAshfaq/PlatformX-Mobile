@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import {useStateValue} from '../Store/StateProvider';
@@ -126,6 +127,18 @@ export const Cross: FC<props> = ({size, color}) => {
   return (
     <Ionicons
       name={'close-circle-sharp'}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+      color={color ? color : theme.ICON_COLOR}
+    />
+  );
+};
+
+export const Calendar: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+
+  return (
+    <MaterialCommunityIcons
+      name={'calendar-month'}
       size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
       color={color ? color : theme.ICON_COLOR}
     />
