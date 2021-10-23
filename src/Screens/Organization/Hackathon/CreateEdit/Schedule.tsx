@@ -18,31 +18,28 @@ type props = {};
 const Schedule: FC<props> = () => {
   const {theme} = useStateValue()[0];
 
-  const [Input, setInput] = useState({text: '', error: ''});
+  const [Input, setInput] = useState({
+    value: '',
+    error: '',
+  });
+  const [date, setDate] = useState({
+    start: {value: new Date().toLocaleDateString(), error: ''},
+    end: {value: new Date().toLocaleDateString(), error: ''},
+  });
+  const [time, setTime] = useState({
+    start: {value: new Date().toLocaleTimeString(), error: ''},
+    end: {value: new Date().toLocaleTimeString(), error: ''},
+  });
   const [loading, setLoading] = useState(false);
 
   const [modal, setmodal] = useState<{
     isShown: boolean;
     mode: 'date' | 'time' | 'datetime';
-    start: {
-      date: any;
-      time: any;
-    };
-    end: {
-      date: any;
-      time: any;
-    };
+    type: 'start' | 'end';
   }>({
     isShown: false,
     mode: 'date',
-    start: {
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString().toString(),
-    },
-    end: {
-      date: new Date().toLocaleDateString(),
-      time: new Date().toLocaleTimeString().toString(),
-    },
+    type: 'start',
   });
   const handleSave = () => {
     if (!loading) {
@@ -58,8 +55,72 @@ const Schedule: FC<props> = () => {
         open={modal.isShown}
         date={new Date()}
         mode={modal.mode}
-        setDate={date => {
-          console.log('Selected date is', date);
+        setDate={response => {
+          // hide modal first
+          setmodal(props => {
+            return {
+              ...props,
+              isShown: false,
+            };
+          });
+          const getDate = new Date(response).toLocaleDateString();
+
+          const getTime = new Date(response).toLocaleTimeString();
+          // get mode and type
+          const {mode, type} = modal;
+          if (mode === 'date') {
+            if (type === 'start') {
+              setDate(props => {
+                return {
+                  ...props,
+                  start: {
+                    value: getDate,
+                    error: '',
+                  },
+                };
+              });
+            } else if (type === 'end') {
+              setDate(props => {
+                return {
+                  ...props,
+                  end: {
+                    value: getDate,
+                    error: '',
+                  },
+                };
+              });
+            }
+          } else if (mode === 'time') {
+            if (type === 'start') {
+              setTime(props => {
+                return {
+                  ...props,
+                  start: {
+                    value: getTime,
+                    error: '',
+                  },
+                };
+              });
+            } else if (type === 'end') {
+              setTime(props => {
+                return {
+                  ...props,
+                  end: {
+                    value: getTime,
+                    error: '',
+                  },
+                };
+              });
+            }
+          }
+        }}
+        cancel={() => {
+          setmodal(props => {
+            return {
+              ...props,
+              isShown: false,
+            };
+          });
         }}
       />
       <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>
@@ -88,6 +149,7 @@ const Schedule: FC<props> = () => {
                       ...props,
                       isShown: true,
                       mode: 'date',
+                      type: 'start',
                     };
                   })
                 }
@@ -96,7 +158,7 @@ const Schedule: FC<props> = () => {
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
                 ]}>
                 <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {new Date().toLocaleDateString()}
+                  {date.start.value}
                 </Text>
                 <View style={styles.iconContainer}>
                   <Calendar size={0.7} />
@@ -114,6 +176,7 @@ const Schedule: FC<props> = () => {
                       ...props,
                       isShown: true,
                       mode: 'time',
+                      type: 'start',
                     };
                   })
                 }
@@ -122,7 +185,7 @@ const Schedule: FC<props> = () => {
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
                 ]}>
                 <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {new Date().toLocaleTimeString()}
+                  {time.start.value}
                 </Text>
                 <View style={styles.iconContainer}>
                   <Clock size={0.75} />
@@ -150,6 +213,7 @@ const Schedule: FC<props> = () => {
                       ...props,
                       isShown: true,
                       mode: 'date',
+                      type: 'end',
                     };
                   })
                 }
@@ -158,7 +222,7 @@ const Schedule: FC<props> = () => {
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
                 ]}>
                 <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {new Date().toLocaleDateString()}
+                  {date.end.value}
                 </Text>
                 <View style={styles.iconContainer}>
                   <Calendar size={0.7} />
@@ -176,6 +240,7 @@ const Schedule: FC<props> = () => {
                       ...props,
                       isShown: true,
                       mode: 'time',
+                      type: 'end',
                     };
                   })
                 }
@@ -184,7 +249,7 @@ const Schedule: FC<props> = () => {
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
                 ]}>
                 <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {new Date().toLocaleTimeString()}
+                  {time.end.value}
                 </Text>
                 <View style={styles.iconContainer}>
                   <Clock size={0.75} />
@@ -203,16 +268,16 @@ const Schedule: FC<props> = () => {
           <View style={styles.inputContainer}>
             <HelpText
               text={
-                'Use this field to remind participants about any last minute work.'
+                'Use this field to remind participants about any last minute work. Note that an email of your final reminider notes will be sent to participants on the last day of hackathon.'
               }
             />
             <CustomTextField
-              defaultValue={Input.text}
+              defaultValue={Input.value}
               keyboardType={'email-address'}
               onChangeText={text =>
                 setInput(props => {
                   return {
-                    text: text,
+                    value: text,
                     error: '',
                   };
                 })

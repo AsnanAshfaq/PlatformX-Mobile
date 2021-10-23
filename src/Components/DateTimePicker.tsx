@@ -5,26 +5,33 @@ import DatePicker from 'react-native-date-picker';
 type props = {
   open: boolean;
   date: Date;
-  setDate: (date) => void;
   mode: 'date' | 'time' | 'datetime';
+  setDate: (date) => void;
+  cancel: () => void;
 };
-const DateTimePicker: FC<props> = ({open = false, date, setDate, mode}) => {
+const DateTimePicker: FC<props> = ({
+  open = false,
+  date,
+  mode,
+  setDate,
+  cancel,
+}) => {
+  console.log('Open value is', open);
   return (
-    <>
-      <DatePicker
-        modal
-        open={open}
-        date={date}
-        mode={mode}
-        onConfirm={date => {
-          setDate(date);
-        }}
-        onCancel={() => {
-          //   setOpen(false);
-          console.log('Cancelling modal');
-        }}
-      />
-    </>
+    <DatePicker
+      modal
+      open={open}
+      date={date}
+      mode={mode}
+      androidVariant={'iosClone'}
+      onConfirm={response => {
+        setDate(response);
+      }}
+      onCancel={() => {
+        //   setOpen(false);
+        cancel();
+      }}
+    />
   );
 };
 
