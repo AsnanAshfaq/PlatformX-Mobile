@@ -28,12 +28,31 @@ import HelpText from '../../../../Components/HelpText';
 
 type props = {};
 
+const ALLOWED_FILE_TYPE = [
+  'APK',
+  'BIN',
+  'CSV',
+  'DOC',
+  'EXE',
+  'GIF',
+  'JPEG',
+  'JPG',
+  'MP4',
+  'PDF',
+  'PNG',
+  'PPT',
+  'PPS',
+  'TIFF',
+  'XLS',
+  'ZIP',
+];
+
 const Media: FC<props> = () => {
   const {theme} = useStateValue()[0];
   const [Paths, setPaths] = useState({
-    thumbnail: '',
-    logo: '',
-    background: '',
+    thumbnail: {value: '', error: ''},
+    logo: {value: '', error: ''},
+    background: {value: '', error: ''},
   });
   const [loading, setLoading] = useState(false);
 
@@ -54,7 +73,7 @@ const Media: FC<props> = () => {
       freeStyleCropEnabled: true,
     }).then(image => {
       const x = Paths;
-      x[key] = image.path;
+      x[key]['value'] = image.path;
       setPaths(props => {
         return {...x};
       });
@@ -70,36 +89,49 @@ const Media: FC<props> = () => {
     });
   };
 
-  const ImageView: FC<{Key: string; value: string}> = ({Key, value}) => {
+  const ImageView: FC<{Key: string; value: string; error: string}> = ({
+    Key,
+    value,
+    error,
+  }) => {
     return (
-      <TouchableOpacity
-        style={[
-          styles.imageCardContainer,
-          {
-            backgroundColor: theme.CARD_BACKGROUND_COLOR,
-            height: value === '' ? Height * 0.15 : 'auto',
-            paddingTop: value ? 10 : 0,
-          },
-        ]}
-        activeOpacity={0.5}
-        onPress={() => handleImagePicker(Key)}>
-        <Camera color={theme.GREEN_COLOR} size={1} />
-        <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
-          Upload Image
-        </Text>
-        <View>
-          {value !== '' && (
-            <View style={styles.imageContainer}>
-              <TouchableOpacity
-                style={styles.crossContainer}
-                onPress={() => unSelectImage(Key)}>
-                <Cross color={theme.GREEN_COLOR} size={0.9} />
-              </TouchableOpacity>
-              <Image source={{uri: value}} style={styles.image} />
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity
+          style={[
+            styles.imageCardContainer,
+            {
+              backgroundColor: theme.CARD_BACKGROUND_COLOR,
+              height: value === '' ? Height * 0.15 : 'auto',
+              paddingTop: value ? 10 : 0,
+            },
+          ]}
+          activeOpacity={0.5}
+          onPress={() => handleImagePicker(Key)}>
+          <Camera color={theme.GREEN_COLOR} size={1} />
+          <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
+            Upload Image
+          </Text>
+          <View>
+            {value !== '' && (
+              <View style={styles.imageContainer}>
+                <TouchableOpacity
+                  style={styles.crossContainer}
+                  onPress={() => unSelectImage(Key)}>
+                  <Cross color={theme.GREEN_COLOR} size={0.9} />
+                </TouchableOpacity>
+                <Image source={{uri: value}} style={styles.image} />
+              </View>
+            )}
+          </View>
+        </TouchableOpacity>
+        {error !== '' && (
+          <View style={{alignItems: 'center'}}>
+            <Text style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
+              {error}
+            </Text>
+          </View>
+        )}
+      </>
     );
   };
 
@@ -117,7 +149,11 @@ const Media: FC<props> = () => {
               Thumbnail Image
             </Text>
           </View>
-          <ImageView Key={'thumbnail'} value={Paths.thumbnail} />
+          <ImageView
+            Key={'thumbnail'}
+            value={Paths.thumbnail.value}
+            error={Paths.thumbnail.error}
+          />
         </View>
         <View style={styles.container}>
           <View style={styles.headingContainer}>
@@ -125,7 +161,11 @@ const Media: FC<props> = () => {
               Logo Image
             </Text>
           </View>
-          <ImageView Key={'logo'} value={Paths.logo} />
+          <ImageView
+            Key={'logo'}
+            value={Paths.logo.value}
+            error={Paths.logo.error}
+          />
         </View>
         <View style={styles.container}>
           <View style={styles.headingContainer}>
@@ -133,7 +173,11 @@ const Media: FC<props> = () => {
               Background Image
             </Text>
           </View>
-          <ImageView Key={'background'} value={Paths.background} />
+          <ImageView
+            Key={'background'}
+            value={Paths.background.value}
+            error={Paths.background.error}
+          />
         </View>
 
         {/* file type  */}
@@ -149,24 +193,7 @@ const Media: FC<props> = () => {
             }
           />
           <FlatList
-            data={[
-              'APK',
-              'BIN',
-              'CSV',
-              'DOC',
-              'EXE',
-              'GIF',
-              'JPEG',
-              'JPG',
-              'MP4',
-              'PDF',
-              'PNG',
-              'PPT',
-              'PPS',
-              'TIFF',
-              'XLS',
-              'ZIP',
-            ]}
+            data={ALLOWED_FILE_TYPE}
             numColumns={4}
             keyExtractor={(item, index) => `${item}-${index}`}
             renderItem={({item}) => {
@@ -319,5 +346,8 @@ const styles = StyleSheet.create({
   },
   checkBoxText: {
     fontSize: Sizes.normal * 0.8,
+  },
+  errorText: {
+    fontSize: Sizes.small,
   },
 });

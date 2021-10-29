@@ -146,7 +146,7 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       <View style={styles.bottomContainer}>
         <View style={styles.uploadDateContainer}>
           <Text style={[styles.date, {color: theme.DIM_TEXT_COLOR}]}>
-            Uploaded at {new Date(hackathonDetail.created_at).toDateString()}
+            Uploaded on {new Date(hackathonDetail.created_at).toDateString()}
           </Text>
         </View>
         <View style={styles.ButtonContainer}>

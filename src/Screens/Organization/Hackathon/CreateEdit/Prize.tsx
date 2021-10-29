@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: 4,
     marginLeft: Width * 0.015,
+    flexDirection: 'column',
     // alignItems: 'center',
   },
 });

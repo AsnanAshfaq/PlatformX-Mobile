@@ -14,4 +14,3 @@ const GlobalState = () => (
   </StateProvider>
 );
 AppRegistry.registerComponent(appName, () => GlobalState);
-

@@ -16,7 +16,6 @@ const DateTimePicker: FC<props> = ({
   setDate,
   cancel,
 }) => {
-  console.log('Open value is', open);
   return (
     <DatePicker
       modal

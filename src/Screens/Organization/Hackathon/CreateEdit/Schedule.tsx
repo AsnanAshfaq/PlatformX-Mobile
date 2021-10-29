@@ -1,3 +1,10 @@
+//TODO:
+// check if start date is equal to or greater than todays date
+// check if time to start hackathon is after 1 hour of publishing hackahton
+// check if end date is tomorrow or greater than tomorrow
+// check if time to start hackathon is after 1 hour of publishing hackahton
+// final reminder should not be empty
+
 import React, {FC, useState} from 'react';
 import {
   StyleSheet,
@@ -13,12 +20,16 @@ import {Height, Sizes, Width} from '../../../../Constants/Size';
 import {useStateValue} from '../../../../Store/StateProvider';
 import DateTimePicker from '../../../../Components/DateTimePicker';
 import {Calendar, Clock} from '../../../../Components/Icons';
-
+import FormHandler from '../../../../Utils/FormHandler';
+import {
+  handeLocaleNotifications,
+  handleScheduleNotifications,
+} from '../../../../Utils/Notifications';
 type props = {};
 const Schedule: FC<props> = () => {
   const {theme} = useStateValue()[0];
 
-  const [Input, setInput] = useState({
+  const [finalReminder, setFinalReminder] = useState({
     value: '',
     error: '',
   });
@@ -41,12 +52,24 @@ const Schedule: FC<props> = () => {
     mode: 'date',
     type: 'start',
   });
+
+  const {isEmpty} = FormHandler();
+
   const handleSave = () => {
     if (!loading) {
       // setLoading(true);
       // check field validations here
       // make api call here
+      // if (isEmpty(finalReminder.value.trim())) {
+      //   setFinalReminder(props => {
+      //     return {
+      //       value: props.value,
+      //       error: 'This field is required.',
+      //     };
+      //   });
+      // }
     }
+    handeLocaleNotifications();
   };
   return (
     <View style={styles.parent}>
@@ -161,9 +184,17 @@ const Schedule: FC<props> = () => {
                   {date.start.value}
                 </Text>
                 <View style={styles.iconContainer}>
-                  <Calendar size={0.7} />
+                  <Calendar size={0.7} color={theme.GREEN_COLOR} />
                 </View>
               </TouchableOpacity>
+              {date.start.error !== '' && (
+                <View style={styles.errorContainer}>
+                  <Text
+                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
+                    {date.start.error}
+                  </Text>
+                </View>
+              )}
             </View>
             <View style={styles.rowContainer}>
               <Text style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
@@ -188,9 +219,17 @@ const Schedule: FC<props> = () => {
                   {time.start.value}
                 </Text>
                 <View style={styles.iconContainer}>
-                  <Clock size={0.75} />
+                  <Clock size={0.75} color={theme.GREEN_COLOR} />
                 </View>
               </TouchableOpacity>
+              {time.start.error !== '' && (
+                <View style={styles.errorContainer}>
+                  <Text
+                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
+                    {time.start.error}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -225,9 +264,17 @@ const Schedule: FC<props> = () => {
                   {date.end.value}
                 </Text>
                 <View style={styles.iconContainer}>
-                  <Calendar size={0.7} />
+                  <Calendar size={0.7} color={theme.GREEN_COLOR} />
                 </View>
               </TouchableOpacity>
+              {date.end.error !== '' && (
+                <View style={styles.errorContainer}>
+                  <Text
+                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
+                    {date.end.error}
+                  </Text>
+                </View>
+              )}
             </View>
             <View style={styles.rowContainer}>
               <Text style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
@@ -252,9 +299,17 @@ const Schedule: FC<props> = () => {
                   {time.end.value}
                 </Text>
                 <View style={styles.iconContainer}>
-                  <Clock size={0.75} />
+                  <Clock size={0.75} color={theme.GREEN_COLOR} />
                 </View>
               </TouchableOpacity>
+              {time.end.error !== '' && (
+                <View style={styles.errorContainer}>
+                  <Text
+                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
+                    {time.end.error}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -272,10 +327,10 @@ const Schedule: FC<props> = () => {
               }
             />
             <CustomTextField
-              defaultValue={Input.value}
+              defaultValue={finalReminder.value}
               keyboardType={'email-address'}
               onChangeText={text =>
-                setInput(props => {
+                setFinalReminder(props => {
                   return {
                     value: text,
                     error: '',
@@ -286,7 +341,7 @@ const Schedule: FC<props> = () => {
               placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
               textContentType={'name'}
               multiLine={true}
-              error={Input.error}
+              error={finalReminder.error}
             />
           </View>
         </View>
@@ -352,6 +407,13 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     marginLeft: 8,
+  },
+  errorContainer: {
+    paddingLeft: 4,
+    paddingTop: 8,
+  },
+  errorText: {
+    fontSize: Sizes.small,
   },
   inputContainer: {
     marginTop: 4,

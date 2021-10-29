@@ -111,17 +111,6 @@ const CommonView: FC<Props> = ({component, details}) => {
             {details.company}
           </Text>
         )}
-        {component === 'sponsors' && (
-          <Text
-            style={[
-              styles.sponsorURL,
-              {
-                color: theme.GREEN_COLOR,
-              },
-            ]}>
-            {details.url}
-          </Text>
-        )}
       </View>
     </View>
   );
