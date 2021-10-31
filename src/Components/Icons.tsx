@@ -146,4 +146,14 @@ export const Calendar: FC<props> = ({size, color}) => {
   );
 };
 
+export const PlusCircle: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+  return (
+    <AntDesign
+      name={'pluscircle'}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+      color={color ? color : theme.ICON_COLOR}
+    />
+  );
+};
 const styles = StyleSheet.create({});

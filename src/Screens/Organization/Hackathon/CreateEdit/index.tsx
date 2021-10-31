@@ -31,11 +31,15 @@ const Index: FC<props> = ({navigation, route}) => {
         onBackPress={() => navigation.goBack()}
       />
 
+      {/* <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>
+        General Info
+      </Text> */}
+
       {/* <General /> */}
-      <Media />
+      {/* <Media /> */}
       {/* <Prize /> */}
       {/* <Schedule /> */}
-      {/* <Judges /> */}
+      <Judges />
     </View>
   );
 };

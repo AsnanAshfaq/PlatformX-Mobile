@@ -45,9 +45,6 @@ const General: FC<props> = () => {
   };
   return (
     <View style={styles.parent}>
-      <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>
-        General Info
-      </Text>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}

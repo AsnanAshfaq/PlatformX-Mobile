@@ -28,29 +28,30 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
   const [{theme}, dispatch] = useStateValue();
 
   const handleDelete = () => {
-    Axios({
-      method: 'post',
-      url: `${BASE_URL}/api/hackathon/share/create/`,
-      data: {
-        hackathon: hackathonDetail.id,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(result => {
-        if (result.status === 201) {
-          ToastAndroid.show(result.data.success, 1500);
-        } else {
-          ToastAndroid.show(result.data.error, 1500);
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          ToastAndroid.show(error.response.data.error, 1500);
-        }
-        return Promise.reject();
-      });
+    console.log('Handling delete');
+    // Axios({
+    //   method: 'post',
+    //   url: `${BASE_URL}/api/hackathon/share/create/`,
+    //   data: {
+    //     hackathon: hackathonDetail.id,
+    //   },
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then(result => {
+    //     if (result.status === 201) {
+    //       ToastAndroid.show(result.data.success, 1500);
+    //     } else {
+    //       ToastAndroid.show(result.data.error, 1500);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     if (error.response) {
+    //       ToastAndroid.show(error.response.data.error, 1500);
+    //     }
+    //     return Promise.reject();
+    //   });
   };
 
   const handleEdit = () => {

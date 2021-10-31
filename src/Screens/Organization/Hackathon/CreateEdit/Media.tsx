@@ -50,7 +50,6 @@ const ALLOWED_FILE_TYPE = [
 const Media: FC<props> = () => {
   const {theme} = useStateValue()[0];
   const [Paths, setPaths] = useState({
-    thumbnail: {value: '', error: ''},
     logo: {value: '', error: ''},
     background: {value: '', error: ''},
   });
@@ -83,7 +82,7 @@ const Media: FC<props> = () => {
   const unSelectImage = (key: string) => {
     const x = Paths;
 
-    x[key] = '';
+    x[key]['value'] = '';
     setPaths(props => {
       return {...x};
     });
@@ -137,24 +136,10 @@ const Media: FC<props> = () => {
 
   return (
     <View style={styles.parent}>
-      <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>Media</Text>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
         horizontal={false}>
-        {/* image containers  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Thumbnail Image
-            </Text>
-          </View>
-          <ImageView
-            Key={'thumbnail'}
-            value={Paths.thumbnail.value}
-            error={Paths.thumbnail.error}
-          />
-        </View>
         <View style={styles.container}>
           <View style={styles.headingContainer}>
             <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>

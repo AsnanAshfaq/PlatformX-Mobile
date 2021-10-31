@@ -28,8 +28,10 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
     // set the loading to true
     setLoading(true);
     // clear local storage tokens
+
     await AsyncStorage.setItem('access', '');
     await AsyncStorage.setItem('refresh', '');
+    // make api call to sign out
     // close the modal
     toggleModal();
     //   set loading to false

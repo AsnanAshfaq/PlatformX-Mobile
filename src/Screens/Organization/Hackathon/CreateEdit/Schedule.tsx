@@ -146,9 +146,6 @@ const Schedule: FC<props> = () => {
           });
         }}
       />
-      <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>
-        Schedule
-      </Text>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}

@@ -26,7 +26,6 @@ const Prize: FC<props> = () => {
 
   return (
     <View style={styles.parent}>
-      <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>Prize</Text>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
