@@ -43,6 +43,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                       ? theme.TEXT_COLOR
                       : theme.DIM_TEXT_COLOR,
                   marginRight: 15,
+                  fontSize: Sizes.normal * 0.9,
                 },
               ]}>
               Basic
@@ -69,6 +70,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                       ? theme.TEXT_COLOR
                       : theme.DIM_TEXT_COLOR,
                   marginRight: 15,
+                  fontSize: Sizes.normal * 0.9,
                 },
               ]}>
               Standard
@@ -92,6 +94,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                   selectedPlan === 'premium'
                     ? theme.TEXT_COLOR
                     : theme.DIM_TEXT_COLOR,
+                fontSize: Sizes.normal * 0.9,
               },
             ]}>
             Premium
@@ -100,10 +103,14 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
       </View>
 
       {/* charges container  */}
-      <View style={styles.detailsContainer}>
+      <View style={[styles.detailsContainer, {marginTop: 20}]}>
         <View style={styles.detailsViewContainer}>
           <View style={styles.detailsHeadingContainer}>
-            <Text style={[styles.detailHeadingText, {color: theme.TEXT_COLOR}]}>
+            <Text
+              style={[
+                styles.detailHeadingText,
+                {color: theme.TEXT_COLOR, fontSize: Sizes.normal * 0.9},
+              ]}>
               Charges
             </Text>
           </View>
@@ -116,7 +123,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'basic'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               Rs {commaSeperator(HACKATHON_SUSCRIPTIONS.basic.charges)}
@@ -131,7 +138,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'standard'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               Rs {commaSeperator(HACKATHON_SUSCRIPTIONS.standard.charges)}
@@ -146,7 +153,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'premium'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               Rs {commaSeperator(HACKATHON_SUSCRIPTIONS.premium.charges)}
@@ -160,7 +167,11 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
       <View style={styles.detailsContainer}>
         <View style={styles.detailsViewContainer}>
           <View style={styles.detailsHeadingContainer}>
-            <Text style={[styles.detailHeadingText, {color: theme.TEXT_COLOR}]}>
+            <Text
+              style={[
+                styles.detailHeadingText,
+                {color: theme.TEXT_COLOR, fontSize: Sizes.normal * 0.9},
+              ]}>
               Duration
             </Text>
           </View>
@@ -173,7 +184,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'basic'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.basic.duration}
@@ -188,7 +199,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'standard'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.standard.duration}
@@ -203,7 +214,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'premium'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.premium.duration}
@@ -217,7 +228,11 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
       <View style={styles.detailsContainer}>
         <View style={styles.detailsViewContainer}>
           <View style={styles.detailsHeadingContainer}>
-            <Text style={[styles.detailHeadingText, {color: theme.TEXT_COLOR}]}>
+            <Text
+              style={[
+                styles.detailHeadingText,
+                {color: theme.TEXT_COLOR, fontSize: Sizes.normal * 0.9},
+              ]}>
               Number of hackathons
             </Text>
           </View>
@@ -230,7 +245,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'basic'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.basic.hackathons}
@@ -245,7 +260,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'standard'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.standard.hackathons}
@@ -260,7 +275,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'premium'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.premium.hackathons}
@@ -275,7 +290,11 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
       <View style={styles.detailsContainer}>
         <View style={styles.detailsViewContainer}>
           <View style={styles.detailsHeadingContainer}>
-            <Text style={[styles.detailHeadingText, {color: theme.TEXT_COLOR}]}>
+            <Text
+              style={[
+                styles.detailHeadingText,
+                {color: theme.TEXT_COLOR, fontSize: Sizes.normal * 0.9},
+              ]}>
               Max prize money
             </Text>
           </View>
@@ -288,7 +307,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'basic'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.basic.max_prize_money}
@@ -303,7 +322,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'standard'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.standard.max_prize_money}
@@ -318,7 +337,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'premium'
-                    ? Sizes.normal * 0.85
+                    ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
               {HACKATHON_SUSCRIPTIONS.premium.max_prize_money}
@@ -368,73 +387,105 @@ const Plan: FC<props> = ({navigation}) => {
             styles.container,
             {flexDirection: 'row', justifyContent: 'space-between'},
           ]}>
-          <View
-            style={[
-              styles.pointedViewContainer,
-              {
-                backgroundColor:
-                  plan === 'basic'
-                    ? theme.GREEN_COLOR
-                    : theme.CARD_BACKGROUND_COLOR,
-              },
-            ]}>
-            <Text
+          <TouchableOpacity
+            onPress={() => setplan('basic')}
+            activeOpacity={0.5}
+            style={{alignItems: 'center'}}>
+            <View
               style={[
-                styles.pointedViewLabel,
+                styles.pointedViewContainer,
                 {
-                  color:
-                    plan === 'basic' ? theme.TEXT_COLOR : theme.DIM_TEXT_COLOR,
+                  backgroundColor:
+                    plan === 'basic'
+                      ? theme.GREEN_COLOR
+                      : theme.CARD_BACKGROUND_COLOR,
                 },
               ]}>
-              Basic
-            </Text>
-          </View>
-          <View
-            style={[
-              styles.pointedViewContainer,
-              {
-                backgroundColor:
-                  plan === 'standard'
-                    ? theme.GREEN_COLOR
-                    : theme.CARD_BACKGROUND_COLOR,
-              },
-            ]}>
-            <Text
+              <Text
+                style={[
+                  styles.pointedViewLabel,
+                  {
+                    color:
+                      plan === 'basic'
+                        ? theme.TEXT_COLOR
+                        : theme.DIM_TEXT_COLOR,
+                  },
+                ]}>
+                Basic
+              </Text>
+            </View>
+            {plan === 'basic' && (
+              <View
+                style={[styles.pointer, {borderBottomColor: theme.GREEN_COLOR}]}
+              />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setplan('standard')}
+            activeOpacity={0.5}
+            style={{alignItems: 'center'}}>
+            <View
               style={[
-                styles.pointedViewLabel,
+                styles.pointedViewContainer,
                 {
-                  color:
+                  backgroundColor:
                     plan === 'standard'
-                      ? theme.TEXT_COLOR
-                      : theme.DIM_TEXT_COLOR,
+                      ? theme.GREEN_COLOR
+                      : theme.CARD_BACKGROUND_COLOR,
                 },
               ]}>
-              Standard
-            </Text>
-          </View>
-          <View
-            style={[
-              styles.pointedViewContainer,
-              {
-                backgroundColor:
-                  plan === 'premium'
-                    ? theme.GREEN_COLOR
-                    : theme.CARD_BACKGROUND_COLOR,
-              },
-            ]}>
-            <Text
+              <Text
+                style={[
+                  styles.pointedViewLabel,
+                  {
+                    color:
+                      plan === 'standard'
+                        ? theme.TEXT_COLOR
+                        : theme.DIM_TEXT_COLOR,
+                  },
+                ]}>
+                Standard
+              </Text>
+            </View>
+            {plan === 'standard' && (
+              <View
+                style={[styles.pointer, {borderBottomColor: theme.GREEN_COLOR}]}
+              />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setplan('premium')}
+            activeOpacity={0.5}
+            style={{alignItems: 'center'}}>
+            <View
               style={[
-                styles.pointedViewLabel,
+                styles.pointedViewContainer,
                 {
-                  color:
+                  backgroundColor:
                     plan === 'premium'
-                      ? theme.TEXT_COLOR
-                      : theme.DIM_TEXT_COLOR,
+                      ? theme.GREEN_COLOR
+                      : theme.CARD_BACKGROUND_COLOR,
                 },
               ]}>
-              Premium
-            </Text>
-          </View>
+              <Text
+                style={[
+                  styles.pointedViewLabel,
+                  {
+                    color:
+                      plan === 'premium'
+                        ? theme.TEXT_COLOR
+                        : theme.DIM_TEXT_COLOR,
+                  },
+                ]}>
+                Premium
+              </Text>
+            </View>
+            {plan === 'premium' && (
+              <View
+                style={[styles.pointer, {borderBottomColor: theme.GREEN_COLOR}]}
+              />
+            )}
+          </TouchableOpacity>
         </View>
         {/* details card */}
 
@@ -486,9 +537,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  pointedView: {
-    transform: [{rotate: '180deg'}],
-  },
   pointedViewLabel: {
     fontSize: Sizes.normal * 0.9,
     fontWeight: 'bold',
@@ -498,6 +546,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'transparent',
     paddingBottom: 20,
+  },
+  pointer: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 10,
+    borderRightWidth: 10,
+    borderBottomWidth: 15,
+    marginTop: -2,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    transform: [{rotate: '180deg'}],
   },
   cardTopContainer: {
     justifyContent: 'space-evenly',
@@ -513,7 +574,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   detailsContainer: {
-    marginTop: 15,
+    marginTop: 6,
+    marginBottom: 6,
     marginHorizontal: Width * 0.01,
   },
   detailsViewContainer: {
@@ -527,6 +589,7 @@ const styles = StyleSheet.create({
     flex: 0.25,
     marginHorizontal: Width * 0.01,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   detailHeadingText: {
     fontSize: Sizes.normal * 0.9,
