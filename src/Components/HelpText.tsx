@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   helpText: {
-    fontSize: Sizes.normal * 0.62,
+    fontSize: Sizes.normal * 0.72,
     lineHeight: 14,
   },
 });

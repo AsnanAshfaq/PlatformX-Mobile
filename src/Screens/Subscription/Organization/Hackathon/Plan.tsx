@@ -354,6 +354,14 @@ type props = {
 const Plan: FC<props> = ({navigation}) => {
   const {theme} = useStateValue()[0];
   const [plan, setplan] = useState<'basic' | 'standard' | 'premium'>('basic');
+
+  const getCharges = () => {
+    return plan === 'basic'
+      ? HACKATHON_SUSCRIPTIONS.basic.charges
+      : plan === 'standard'
+      ? HACKATHON_SUSCRIPTIONS.standard.charges
+      : HACKATHON_SUSCRIPTIONS.premium.charges;
+  };
   return (
     <View
       style={[
@@ -389,7 +397,7 @@ const Plan: FC<props> = ({navigation}) => {
           ]}>
           <TouchableOpacity
             onPress={() => setplan('basic')}
-            activeOpacity={0.5}
+            activeOpacity={1}
             style={{alignItems: 'center'}}>
             <View
               style={[
@@ -422,7 +430,7 @@ const Plan: FC<props> = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setplan('standard')}
-            activeOpacity={0.5}
+            activeOpacity={1}
             style={{alignItems: 'center'}}>
             <View
               style={[
@@ -455,7 +463,7 @@ const Plan: FC<props> = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setplan('premium')}
-            activeOpacity={0.5}
+            activeOpacity={1}
             style={{alignItems: 'center'}}>
             <View
               style={[
@@ -500,7 +508,14 @@ const Plan: FC<props> = ({navigation}) => {
 
       <View style={{flex: 0.1}}>
         <CustomButton
-          onPress={() => console.log('Choosing a plan')}
+          onPress={() => {
+            navigation.navigate('Payment', {
+              plan: {
+                type: plan,
+                charges: getCharges(),
+              },
+            });
+          }}
           text={'Choose Plan'}
         />
       </View>
