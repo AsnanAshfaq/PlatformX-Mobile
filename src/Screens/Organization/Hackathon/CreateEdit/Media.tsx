@@ -25,27 +25,8 @@ import CheckBox from '../../../../Components/CheckBox';
 import CustomTextField from '../../../../Components/CustomTextField2';
 import CustomButton from '../../../../Components/CustomButton';
 import HelpText from '../../../../Components/HelpText';
-
+import FileTypeModal from '../../../../Modals/FileTypeModal';
 type props = {};
-
-const ALLOWED_FILE_TYPE = [
-  'APK',
-  'BIN',
-  'CSV',
-  'DOC',
-  'EXE',
-  'GIF',
-  'JPEG',
-  'JPG',
-  'MP4',
-  'PDF',
-  'PNG',
-  'PPT',
-  'PPS',
-  'TIFF',
-  'XLS',
-  'ZIP',
-];
 
 const Media: FC<props> = () => {
   const {theme} = useStateValue()[0];
@@ -53,6 +34,7 @@ const Media: FC<props> = () => {
     logo: {value: '', error: ''},
     background: {value: '', error: ''},
   });
+  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSave = () => {
@@ -136,6 +118,11 @@ const Media: FC<props> = () => {
 
   return (
     <View style={styles.parent}>
+      <FileTypeModal
+        isShow={show}
+        toggleModal={() => setShow(false)}
+        onSelect={values => console.log('Values are', values)}
+      />
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
@@ -177,32 +164,17 @@ const Media: FC<props> = () => {
               'Specify which type of files can only be uploaded by participants.'
             }
           />
-          <FlatList
-            data={ALLOWED_FILE_TYPE}
-            numColumns={4}
-            keyExtractor={(item, index) => `${item}-${index}`}
-            renderItem={({item}) => {
-              return (
-                <View
-                  style={[
-                    styles.checkBoxContainer,
-                    {
-                      marginVertical: 5,
-                      marginLeft: Width * 0.035,
-                    },
-                  ]}>
-                  <CheckBox
-                    size={20}
-                    onPress={isCheck => console.log('Checked on', item)}
-                  />
-                  <Text
-                    style={[styles.checkBoxText, {color: theme.TEXT_COLOR}]}>
-                    {item}
-                  </Text>
-                </View>
-              );
-            }}
-          />
+          <TouchableOpacity onPress={() => setShow(true)}>
+            <View
+              style={[
+                styles.imageCardContainer,
+                {backgroundColor: theme.CARD_BACKGROUND_COLOR, padding: 6},
+              ]}>
+              <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
+                Choose File type{' '}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         {/* required video container  */}
         <View style={styles.container}>

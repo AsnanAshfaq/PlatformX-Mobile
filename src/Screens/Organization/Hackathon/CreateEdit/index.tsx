@@ -42,6 +42,7 @@ const Index: FC<props> = ({navigation, route}) => {
         onBackPress={() => navigation.goBack()}
       />
 
+      {/* custom slider  */}
       <View
         style={[
           styles.scroll,
@@ -56,10 +57,9 @@ const Index: FC<props> = ({navigation, route}) => {
           horizontal
           contentContainerStyle={{
             // marginHorizontal: 4,
-            // backgroundColor: 'red',
-            height: Height * 0.05,
+            height: Height * 0.04,
             borderRadius: 10,
-            marginVertical: 2.5,
+            marginTop: 7,
           }}
           renderItem={({item, index}) => (
             <>
@@ -72,11 +72,7 @@ const Index: FC<props> = ({navigation, route}) => {
                         ? theme.SCREEN_BACKGROUND_COLOR
                         : theme.SLIDER_BACKGROUND_COLOR,
                     borderRadius: 10,
-                    // paddingVertical: 1,
                     marginHorizontal: 10,
-                    // marginVertical: ,
-                    marginTop: index === active ? 2.5 : 0,
-                    paddingBottom: index === active ? 2 : 0,
                   },
                 ]}>
                 <TouchableOpacity onPress={() => setactive(index)}>
@@ -109,11 +105,12 @@ const Index: FC<props> = ({navigation, route}) => {
           )}
         />
       </View>
-      {/* <General /> */}
-      {/* <Media /> */}
-      {/* <Prize /> */}
-      {/* <Schedule /> */}
-      <Judges />
+
+      {active === 0 && <General />}
+      {active === 1 && <Media />}
+      {active === 2 && <Prize />}
+      {active === 3 && <Judges />}
+      {active === 4 && <Schedule />}
     </View>
   );
 };
