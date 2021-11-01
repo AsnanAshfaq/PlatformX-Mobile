@@ -1,5 +1,12 @@
 import React, {FC, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import HelpText from '../../../../Components/HelpText';
 import {Height, Sizes, Width} from '../../../../Constants/Size';
 import {useStateValue} from '../../../../Store/StateProvider';
@@ -26,107 +33,111 @@ const Prize: FC<props> = () => {
 
   return (
     <View style={styles.parent}>
-      <ScrollView
-        style={styles.scroll}
-        showsVerticalScrollIndicator={false}
-        horizontal={false}>
-        {/* first position  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Position
-            </Text>
-          </View>
-          <HelpText
-            text={'Enter prize money for the winners of the hackahton.'}
-          />
-          {/* first  prize  */}
-          <View style={styles.subHeadingContainer}>
-            <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
-              First Position
-            </Text>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={prizes.first.value}
-                keyboardType={'numeric'}
-                onChangeText={text =>
-                  setprizes(props => {
-                    return {
-                      ...props,
-                      first: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter cash value'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'telephoneNumber'}
-                width={Width * 0.6}
-                error={prizes.first.error}
-              />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <ScrollView
+          style={styles.scroll}
+          showsVerticalScrollIndicator={false}
+          horizontal={false}>
+          {/* first position  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Position
+              </Text>
             </View>
-          </View>
+            <HelpText
+              text={'Enter prize money for the winners of the hackahton.'}
+            />
+            {/* first  prize  */}
+            <View style={styles.subHeadingContainer}>
+              <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                First Position
+              </Text>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={prizes.first.value}
+                  keyboardType={'numeric'}
+                  onChangeText={text =>
+                    setprizes(props => {
+                      return {
+                        ...props,
+                        first: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter cash value'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'telephoneNumber'}
+                  width={Width * 0.6}
+                  error={prizes.first.error}
+                />
+              </View>
+            </View>
 
-          {/* second prize  */}
-          <View style={styles.subHeadingContainer}>
-            <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
-              2nd Position
-            </Text>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={prizes.second.value}
-                keyboardType={'numeric'}
-                onChangeText={text =>
-                  setprizes(props => {
-                    return {
-                      ...props,
-                      second: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter cash value'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'telephoneNumber'}
-                width={Width * 0.6}
-                error={prizes.second.error}
-              />
+            {/* second prize  */}
+            <View style={styles.subHeadingContainer}>
+              <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                2nd Position
+              </Text>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={prizes.second.value}
+                  keyboardType={'numeric'}
+                  onChangeText={text =>
+                    setprizes(props => {
+                      return {
+                        ...props,
+                        second: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter cash value'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'telephoneNumber'}
+                  width={Width * 0.6}
+                  error={prizes.second.error}
+                />
+              </View>
+            </View>
+            {/* third prize  */}
+            <View style={styles.subHeadingContainer}>
+              <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                3rd Position
+              </Text>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={prizes.third.value}
+                  keyboardType={'numeric'}
+                  onChangeText={text =>
+                    setprizes(props => {
+                      return {
+                        ...props,
+                        third: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter cash value'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'telephoneNumber'}
+                  width={Width * 0.6}
+                  error={prizes.third.error}
+                />
+              </View>
             </View>
           </View>
-          {/* third prize  */}
-          <View style={styles.subHeadingContainer}>
-            <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
-              3rd Position
-            </Text>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={prizes.third.value}
-                keyboardType={'numeric'}
-                onChangeText={text =>
-                  setprizes(props => {
-                    return {
-                      ...props,
-                      third: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter cash value'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'telephoneNumber'}
-                width={Width * 0.6}
-                error={prizes.third.error}
-              />
-            </View>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <CustomButton
         text={'Save and Continue'}
         onPress={handleSave}

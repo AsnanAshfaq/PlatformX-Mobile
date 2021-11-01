@@ -132,7 +132,7 @@ const FilterModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
         <FlatList
           data={ALLOWED_FILE_TYPE}
           numColumns={2}
-          keyExtractor={item => `${item?.key}`}
+          keyExtractor={(item, index) => `${item?.key} -${index}`}
           contentContainerStyle={styles.scroll}
           renderItem={({item: filetype}) => (
             <View key={filetype?.key} style={[styles.container]}>

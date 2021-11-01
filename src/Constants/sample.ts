@@ -214,3 +214,24 @@ export const POST_TYPE = [
   'Seeking Help',
   'Collaborate with me',
 ];
+
+export const HACKATHON_SUSCRIPTIONS = {
+  basic: {
+    charges: '2000',
+    duration: '15 Days',
+    hackathons: 3,
+    max_prize_money: '20000',
+  },
+  standard: {
+    charges: '4500',
+    duration: '1 Month',
+    hackathons: 6,
+    max_prize_money: '60000',
+  },
+  premium: {
+    charges: '7000',
+    duration: '6 Months',
+    hackathons: 10,
+    max_prize_money: '1 lac plus',
+  },
+};

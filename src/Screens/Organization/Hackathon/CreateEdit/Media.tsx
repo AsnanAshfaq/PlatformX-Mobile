@@ -15,6 +15,8 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  KeyboardAvoidingView,
+  Platform,
   Image,
 } from 'react-native';
 import {Height, Sizes, Width} from '../../../../Constants/Size';
@@ -123,106 +125,112 @@ const Media: FC<props> = () => {
         toggleModal={() => setShow(false)}
         onSelect={values => console.log('Values are', values)}
       />
-      <ScrollView
-        style={styles.scroll}
-        showsVerticalScrollIndicator={false}
-        horizontal={false}>
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Logo Image
-            </Text>
-          </View>
-          <ImageView
-            Key={'logo'}
-            value={Paths.logo.value}
-            error={Paths.logo.error}
-          />
-        </View>
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Background Image
-            </Text>
-          </View>
-          <ImageView
-            Key={'background'}
-            value={Paths.background.value}
-            error={Paths.background.error}
-          />
-        </View>
-
-        {/* file type  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              File Type
-            </Text>
-          </View>
-          <HelpText
-            text={
-              'Specify which type of files can only be uploaded by participants.'
-            }
-          />
-          <TouchableOpacity onPress={() => setShow(true)}>
-            <View
-              style={[
-                styles.imageCardContainer,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR, padding: 6},
-              ]}>
-              <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
-                Choose File type{' '}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <ScrollView
+          style={styles.scroll}
+          showsVerticalScrollIndicator={false}
+          horizontal={false}>
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Logo Image
               </Text>
             </View>
-          </TouchableOpacity>
-        </View>
-        {/* required video container  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Videos Required
-            </Text>
-          </View>
-          <HelpText
-            text={
-              'Turning this on will require participants to add a video link to their submissions.'
-            }
-          />
-          <View style={styles.checkBoxContainer}>
-            <CheckBox
-              size={20}
-              onPress={isCheck => {
-                console.log(isCheck);
-              }}
+            <ImageView
+              Key={'logo'}
+              value={Paths.logo.value}
+              error={Paths.logo.error}
             />
-            <Text style={[styles.checkBoxText, {color: theme.TEXT_COLOR}]}>
-              Yes
-            </Text>
           </View>
-        </View>
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Background Image
+              </Text>
+            </View>
+            <ImageView
+              Key={'background'}
+              value={Paths.background.value}
+              error={Paths.background.error}
+            />
+          </View>
 
-        {/* promotional video  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Promotional Video
-            </Text>
-          </View>
-          <HelpText text={'Provide any promotional video for the hackathon.'} />
-          <View style={styles.inputContainer}>
-            <CustomTextField
-              defaultValue={''}
-              keyboardType={'email-address'}
-              onChangeText={text => console.log('Text is ', text)}
-              placeholder={'Enter promotional video URL'}
-              placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-              textContentType={'URL'}
-              multiLine={true}
-              error={''}
+          {/* file type  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                File Type
+              </Text>
+            </View>
+            <HelpText
+              text={
+                'Specify which type of files can only be uploaded by participants.'
+              }
             />
+            <TouchableOpacity onPress={() => setShow(true)}>
+              <View
+                style={[
+                  styles.imageCardContainer,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR, padding: 6},
+                ]}>
+                <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
+                  Choose File type{' '}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </View>
-      </ScrollView>
+          {/* required video container  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Videos Required
+              </Text>
+            </View>
+            <HelpText
+              text={
+                'Turning this on will require participants to add a video link to their submissions.'
+              }
+            />
+            <View style={styles.checkBoxContainer}>
+              <CheckBox
+                size={20}
+                onPress={isCheck => {
+                  console.log(isCheck);
+                }}
+              />
+              <Text style={[styles.checkBoxText, {color: theme.TEXT_COLOR}]}>
+                Yes
+              </Text>
+            </View>
+          </View>
+
+          {/* promotional video  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Promotional Video
+              </Text>
+            </View>
+            <HelpText
+              text={'Provide any promotional video for the hackathon.'}
+            />
+            <View style={styles.inputContainer}>
+              <CustomTextField
+                defaultValue={''}
+                keyboardType={'email-address'}
+                onChangeText={text => console.log('Text is ', text)}
+                placeholder={'Enter promotional video URL'}
+                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                textContentType={'URL'}
+                multiLine={true}
+                error={''}
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <CustomButton
         text={'Save and Continue'}
         onPress={handleSave}

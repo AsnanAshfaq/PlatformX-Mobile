@@ -82,9 +82,7 @@ const Index: FC<props> = ({navigation, route}) => {
                       {
                         color: theme.TEXT_COLOR,
                         fontSize:
-                          index === active
-                            ? Sizes.normal * 1.2
-                            : Sizes.normal * 1.1,
+                          index === active ? Sizes.normal * 1.1 : Sizes.normal,
                       },
                     ]}>
                     {item}
@@ -94,8 +92,8 @@ const Index: FC<props> = ({navigation, route}) => {
               {index < SCREENS.length - 1 && (
                 <View
                   style={{
-                    height: 30,
-                    marginVertical: 7,
+                    height: 40,
+                    // marginTop: 5,
                     width: 1,
                     backgroundColor: theme.DIVIDER_COLOR,
                   }}

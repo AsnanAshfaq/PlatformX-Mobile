@@ -12,6 +12,8 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import CustomButton from '../../../../Components/CustomButton';
 import CustomTextField from '../../../../Components/CustomTextField2';
@@ -146,203 +148,224 @@ const Schedule: FC<props> = () => {
           });
         }}
       />
-      <ScrollView
-        style={styles.scroll}
-        showsVerticalScrollIndicator={false}
-        horizontal={false}>
-        {/* start of hackathon  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Start of Hackathon
-            </Text>
-          </View>
-          <View style={styles.subHeadingContainer}>
-            <View style={styles.rowContainer}>
-              <Text style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
-                Date
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <ScrollView
+          style={styles.scroll}
+          showsVerticalScrollIndicator={false}
+          horizontal={false}>
+          {/* start of hackathon  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Start of Hackathon
               </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setmodal(props => {
+            </View>
+            <View style={styles.subHeadingContainer}>
+              <View style={styles.rowContainer}>
+                <Text
+                  style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
+                  Date
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    setmodal(props => {
+                      return {
+                        ...props,
+                        isShown: true,
+                        mode: 'date',
+                        type: 'start',
+                      };
+                    })
+                  }
+                  style={[
+                    styles.modalContainer,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                  ]}>
+                  <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
+                    {date.start.value}
+                  </Text>
+                  <View style={styles.iconContainer}>
+                    <Calendar size={0.7} color={theme.GREEN_COLOR} />
+                  </View>
+                </TouchableOpacity>
+                {date.start.error !== '' && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      style={[
+                        styles.errorText,
+                        {color: theme.ERROR_TEXT_COLOR},
+                      ]}>
+                      {date.start.error}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              <View style={styles.rowContainer}>
+                <Text
+                  style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
+                  Time
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    setmodal(props => {
+                      return {
+                        ...props,
+                        isShown: true,
+                        mode: 'time',
+                        type: 'start',
+                      };
+                    })
+                  }
+                  style={[
+                    styles.modalContainer,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                  ]}>
+                  <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
+                    {time.start.value}
+                  </Text>
+                  <View style={styles.iconContainer}>
+                    <Clock size={0.75} color={theme.GREEN_COLOR} />
+                  </View>
+                </TouchableOpacity>
+                {time.start.error !== '' && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      style={[
+                        styles.errorText,
+                        {color: theme.ERROR_TEXT_COLOR},
+                      ]}>
+                      {time.start.error}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </View>
+          {/* end of hackathon  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                End of Hackathon
+              </Text>
+            </View>
+            <View style={styles.subHeadingContainer}>
+              <View style={styles.rowContainer}>
+                <Text
+                  style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
+                  Date
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    setmodal(props => {
+                      return {
+                        ...props,
+                        isShown: true,
+                        mode: 'date',
+                        type: 'end',
+                      };
+                    })
+                  }
+                  style={[
+                    styles.modalContainer,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                  ]}>
+                  <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
+                    {date.end.value}
+                  </Text>
+                  <View style={styles.iconContainer}>
+                    <Calendar size={0.7} color={theme.GREEN_COLOR} />
+                  </View>
+                </TouchableOpacity>
+                {date.end.error !== '' && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      style={[
+                        styles.errorText,
+                        {color: theme.ERROR_TEXT_COLOR},
+                      ]}>
+                      {date.end.error}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              <View style={styles.rowContainer}>
+                <Text
+                  style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
+                  Time
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    setmodal(props => {
+                      return {
+                        ...props,
+                        isShown: true,
+                        mode: 'time',
+                        type: 'end',
+                      };
+                    })
+                  }
+                  style={[
+                    styles.modalContainer,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                  ]}>
+                  <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
+                    {time.end.value}
+                  </Text>
+                  <View style={styles.iconContainer}>
+                    <Clock size={0.75} color={theme.GREEN_COLOR} />
+                  </View>
+                </TouchableOpacity>
+                {time.end.error !== '' && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      style={[
+                        styles.errorText,
+                        {color: theme.ERROR_TEXT_COLOR},
+                      ]}>
+                      {time.end.error}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </View>
+          {/* final reminder  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Final Reminder
+              </Text>
+            </View>
+            <View style={styles.inputContainer}>
+              <HelpText
+                text={
+                  'Use this field to remind participants about any last minute work. Note that an email of your final reminider notes will be sent to participants on the last day of hackathon.'
+                }
+              />
+              <CustomTextField
+                defaultValue={finalReminder.value}
+                keyboardType={'email-address'}
+                onChangeText={text =>
+                  setFinalReminder(props => {
                     return {
-                      ...props,
-                      isShown: true,
-                      mode: 'date',
-                      type: 'start',
+                      value: text,
+                      error: '',
                     };
                   })
                 }
-                style={[
-                  styles.modalContainer,
-                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
-                <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {date.start.value}
-                </Text>
-                <View style={styles.iconContainer}>
-                  <Calendar size={0.7} color={theme.GREEN_COLOR} />
-                </View>
-              </TouchableOpacity>
-              {date.start.error !== '' && (
-                <View style={styles.errorContainer}>
-                  <Text
-                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
-                    {date.start.error}
-                  </Text>
-                </View>
-              )}
-            </View>
-            <View style={styles.rowContainer}>
-              <Text style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
-                Time
-              </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setmodal(props => {
-                    return {
-                      ...props,
-                      isShown: true,
-                      mode: 'time',
-                      type: 'start',
-                    };
-                  })
-                }
-                style={[
-                  styles.modalContainer,
-                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
-                <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {time.start.value}
-                </Text>
-                <View style={styles.iconContainer}>
-                  <Clock size={0.75} color={theme.GREEN_COLOR} />
-                </View>
-              </TouchableOpacity>
-              {time.start.error !== '' && (
-                <View style={styles.errorContainer}>
-                  <Text
-                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
-                    {time.start.error}
-                  </Text>
-                </View>
-              )}
+                placeholder={'Enter final reminders here'}
+                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                textContentType={'name'}
+                multiLine={true}
+                error={finalReminder.error}
+              />
             </View>
           </View>
-        </View>
-        {/* end of hackathon  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              End of Hackathon
-            </Text>
-          </View>
-          <View style={styles.subHeadingContainer}>
-            <View style={styles.rowContainer}>
-              <Text style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
-                Date
-              </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setmodal(props => {
-                    return {
-                      ...props,
-                      isShown: true,
-                      mode: 'date',
-                      type: 'end',
-                    };
-                  })
-                }
-                style={[
-                  styles.modalContainer,
-                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
-                <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {date.end.value}
-                </Text>
-                <View style={styles.iconContainer}>
-                  <Calendar size={0.7} color={theme.GREEN_COLOR} />
-                </View>
-              </TouchableOpacity>
-              {date.end.error !== '' && (
-                <View style={styles.errorContainer}>
-                  <Text
-                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
-                    {date.end.error}
-                  </Text>
-                </View>
-              )}
-            </View>
-            <View style={styles.rowContainer}>
-              <Text style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
-                Time
-              </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setmodal(props => {
-                    return {
-                      ...props,
-                      isShown: true,
-                      mode: 'time',
-                      type: 'end',
-                    };
-                  })
-                }
-                style={[
-                  styles.modalContainer,
-                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
-                <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
-                  {time.end.value}
-                </Text>
-                <View style={styles.iconContainer}>
-                  <Clock size={0.75} color={theme.GREEN_COLOR} />
-                </View>
-              </TouchableOpacity>
-              {time.end.error !== '' && (
-                <View style={styles.errorContainer}>
-                  <Text
-                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
-                    {time.end.error}
-                  </Text>
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
-        {/* final reminder  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Final Reminder
-            </Text>
-          </View>
-          <View style={styles.inputContainer}>
-            <HelpText
-              text={
-                'Use this field to remind participants about any last minute work. Note that an email of your final reminider notes will be sent to participants on the last day of hackathon.'
-              }
-            />
-            <CustomTextField
-              defaultValue={finalReminder.value}
-              keyboardType={'email-address'}
-              onChangeText={text =>
-                setFinalReminder(props => {
-                  return {
-                    value: text,
-                    error: '',
-                  };
-                })
-              }
-              placeholder={'Enter final reminders here'}
-              placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-              textContentType={'name'}
-              multiLine={true}
-              error={finalReminder.error}
-            />
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <CustomButton
         text={'Save and Continue'}
         onPress={handleSave}

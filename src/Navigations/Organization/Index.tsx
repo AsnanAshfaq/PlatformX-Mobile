@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import OrganizationDrawerScreens from './Drawer';
 import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit/index';
-
+import HackathonSubscription from './Subscription';
 const Stack = createStackNavigator();
 
 const OrganizationScreens = () => {
@@ -18,11 +18,15 @@ const OrganizationScreens = () => {
           // animationTypeForReplace: 'push',
         };
       }}>
-      <Stack.Screen name="Main" component={OrganizationDrawerScreens} />
+      {/* <Stack.Screen name="Main" component={OrganizationDrawerScreens} />
 
       <Stack.Screen
         name="Create_Edit_Hackathon"
         component={CreateEditHackathon}
+      /> */}
+      <Stack.Screen
+        name={'HackathonSubscription'}
+        component={HackathonSubscription}
       />
     </Stack.Navigator>
   );
