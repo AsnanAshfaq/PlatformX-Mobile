@@ -1,9 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState, useEffect, useRef} from 'react';
 import {StyleSheet, Text, View, TextInput, Keyboard} from 'react-native';
 import {Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {useStateValue} from '../Store/StateProvider';
+import Divider from './Divider';
 
 type textContentType =
   | 'none' //disable autofill
@@ -57,6 +59,7 @@ type props = {
   error?: string;
   width?: number;
   height?: number;
+  code?: boolean;
 };
 
 const ICON_SIZE = Width * 0.07;
@@ -77,6 +80,7 @@ const CustomTextField2: FC<props> = ({
   maxLength,
   autoFocus,
   error,
+  code,
 }) => {
   const [Security, setSecurity] = useState(secureTextEntry);
   const ref = useRef<any>(null);
@@ -98,6 +102,24 @@ const CustomTextField2: FC<props> = ({
             height: height && height,
           },
         ]}>
+        {code && (
+          <View style={styles.codeContainer}>
+            <View style={[styles.codeTextContainer]}>
+              <Text style={[styles.codeText, {color: theme.TEXT_COLOR}]}>
+                +92
+              </Text>
+            </View>
+            <View
+              style={{
+                height: 48,
+                // marginTop: 5,
+                marginHorizontal: 6,
+                width: 1,
+                backgroundColor: theme.DIVIDER_COLOR,
+              }}
+            />
+          </View>
+        )}
         <TextInput
           placeholder={placeholder}
           ref={ref}
@@ -157,5 +179,18 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: Sizes.small,
+  },
+  codeContainer: {
+    flexDirection: 'row',
+  },
+  codeTextContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    marginHorizontal: 4,
+    borderWidth: 1,
+  },
+  codeText: {
+    fontSize: Sizes.normal * 0.8,
   },
 });

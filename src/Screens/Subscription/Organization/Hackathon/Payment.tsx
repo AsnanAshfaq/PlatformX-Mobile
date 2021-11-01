@@ -87,6 +87,7 @@ const Payment: FC<props> = ({navigation, route}) => {
                 placeholder={'Enter phone Number'}
                 placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
                 textContentType={'telephoneNumber'}
+                code
                 error={input.error}
               />
             </View>
