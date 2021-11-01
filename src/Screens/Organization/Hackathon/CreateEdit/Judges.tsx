@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     marginTop: Height * 0.025,
   },
   screenName: {
-    fontSize: Sizes.large * 1.1,
+    fontSize: Sizes.normal * 1.1,
   },
   scroll: {
     marginTop: Height * 0.003,
