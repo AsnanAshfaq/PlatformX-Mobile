@@ -167,7 +167,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
   const [HackathonData, setHackathonData] = useState<any>({});
   const [BackgroundImageLoading, setBackgroundImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
-  const [Loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [{theme}, dispatch] = useStateValue();
 
   useEffect(() => {
@@ -181,317 +181,6 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
       .catch(error => console.log(error));
   }, [ID]);
 
-  if (!Loading) {
-    return (
-      <View
-        style={[
-          styles.parent,
-          {
-            backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-          },
-        ]}>
-        <CustomHeader
-          title={'Overview'}
-          navigation={navigation}
-          back
-          onBackPress={() => navigation.goBack()}
-        />
-        <ScrollView removeClippedSubviews>
-          {/* background image  */}
-          <View style={styles.backgroundImageContainer}>
-            <Image
-              style={{
-                width: Width,
-                height: Height * 0.3, //Width * ImageAspectRatio * 0.75,
-              }}
-              source={{
-                uri: BackgroundImageLoading
-                  ? BACKGROUND_IMAGE
-                  : HackathonData?.background_image
-                  ? BASE_URL + HackathonData?.background_image
-                  : BACKGROUND_IMAGE,
-              }}
-              onLoadEnd={() => {
-                setBackgroundImageLoading(false);
-              }}
-              onError={() => {
-                setBackgroundImageLoading(false);
-                ToastAndroid.show("Couldn't load background image", 1500);
-              }}
-              resizeMode={'cover'}
-            />
-          </View>
-
-          {/* card  */}
-          <View
-            style={[
-              styles.card,
-              {
-                backgroundColor: theme.BACKGROUND_COLOR,
-                marginHorizontal: Width * 0.05,
-              },
-            ]}>
-            {/* title and tagline container  */}
-            <View style={[styles.titleContainer, styles.center]}>
-              <Text
-                style={[
-                  styles.titleText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                {HackathonData.title}
-              </Text>
-              <Text
-                style={[
-                  styles.tagLineText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                {HackathonData.tag_line}
-              </Text>
-            </View>
-            <Divider size={'large'} />
-
-            {/* description container  */}
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Description
-              </Text>
-              <View
-                style={{
-                  marginLeft: Width * 0.04,
-                  marginTop: 10,
-                }}>
-                <Text
-                  style={[
-                    styles.descriptionText,
-                    {
-                      color: theme.TEXT_COLOR,
-                    },
-                  ]}>
-                  {HackathonData.description}
-                </Text>
-              </View>
-            </View>
-            <Divider size={'small'} />
-            {/* contact email  */}
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Contact Email
-              </Text>
-              <View style={styles.iconTextContainer}>
-                <MaterialCommunityIcons
-                  name={'email'}
-                  color={theme.GREEN_COLOR}
-                  size={ICON_SIZE * 1.1}
-                />
-                <Text
-                  style={{
-                    color: theme.TEXT_COLOR,
-                    fontSize: Sizes.normal,
-                    marginHorizontal: Width * 0.02,
-                  }}>
-                  18asnan@gmail.com
-                </Text>
-              </View>
-            </View>
-            <Divider size={'small'} />
-
-            {/* starting from container  */}
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Starting from
-              </Text>
-              <View style={styles.iconTextContainer}>
-                <Foundation
-                  name={'calendar'}
-                  color={theme.GREEN_COLOR}
-                  size={ICON_SIZE * 1.3}
-                />
-                <Text
-                  style={{
-                    color: theme.TEXT_COLOR,
-                    fontSize: Sizes.normal,
-                    marginHorizontal: Width * 0.04,
-                    marginTop: 3,
-                  }}>
-                  Oct 11, 2021 @ 11:45 PM
-                </Text>
-              </View>
-            </View>
-            <Divider size={'small'} />
-
-            {/* Theme tags container  */}
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Theme Tags
-              </Text>
-              <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
-                <View style={styles.themeTagTextContainer}>
-                  <Bullet />
-                  <Text
-                    style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
-                    Online
-                  </Text>
-                </View>
-                <View style={styles.themeTagTextContainer}>
-                  <Bullet />
-                  <Text
-                    style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
-                    React Native Development
-                  </Text>
-                </View>
-                <View style={styles.themeTagTextContainer}>
-                  <Bullet />
-                  <Text
-                    style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
-                    Public
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <Divider size={'small'} />
-            {/* rules container  */}
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Rules
-              </Text>
-              <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
-                <View style={styles.ruleTextContainer}>
-                  <Bullet />
-                  <Text
-                    style={[
-                      styles.rulesText,
-                      {
-                        color: theme.TEXT_COLOR,
-                      },
-                    ]}>
-                    Create an app built on the Daml framework that strives to
-                    solve a simple problem in Finance, Insurance, Healthcare,
-                    Supply Chain, or a closely related space.
-                  </Text>
-                </View>
-                <View style={styles.ruleTextContainer}>
-                  <Bullet />
-                  <Text
-                    style={[
-                      styles.rulesText,
-                      {
-                        color: theme.TEXT_COLOR,
-                      },
-                    ]}>
-                    Create an app built on the Daml framework that strives to
-                    solve a simple problem in Finance, Insurance, Healthcare,
-                    Supply Chain, or a closely related space.
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <Divider size={'small'} />
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Prizes
-              </Text>
-              {/* flat list */}
-              <PrizeCard />
-            </View>
-            <Divider size={'small'} />
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Judges
-              </Text>
-              <JudgeCard />
-              <JudgeCard />
-            </View>
-            <Divider size={'small'} />
-            <View style={styles.container}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                Judging Criteria
-              </Text>
-              <JudgingCriteria
-                title={'Potential Impact'}
-                desc={
-                  'How will this project impact the growth of the Solana ecosystem?'
-                }
-              />
-              <JudgingCriteria
-                title={'Design'}
-                desc={
-                  'Is the user experience and design of the project well thought out?. will this project impact the growth of the Solana ecosystem?'
-                }
-              />
-            </View>
-          </View>
-        </ScrollView>
-
-        {/* show join now button only if screen is student  */}
-        {screen === 'student' && (
-          <CustomButton
-            text={'Join Now'}
-            onPress={() => {
-              navigation.navigate('Register_Hackathon', {
-                ID: ID, // pass the hackathon data,
-                backgroundImage: HackathonData?.background_image,
-                title: HackathonData.title,
-                tagline: HackathonData.tag_line,
-              });
-            }}
-          />
-        )}
-      </View>
-    );
-  }
-
   return (
     <View
       style={[
@@ -501,14 +190,308 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
         },
       ]}>
       <CustomHeader
-        title={'Detail'}
+        title={'Overview'}
         navigation={navigation}
         back
         onBackPress={() => navigation.goBack()}
-        chat
-        bell
       />
-      <HackathonCardSkeleton showSearchSkeleton={false} />
+
+      {!loading ? (
+        <>
+          <ScrollView removeClippedSubviews>
+            {/* background image  */}
+            <View style={styles.backgroundImageContainer}>
+              <Image
+                style={{
+                  width: Width,
+                  height: Height * 0.3, //Width * ImageAspectRatio * 0.75,
+                }}
+                source={{
+                  uri: BackgroundImageLoading
+                    ? BACKGROUND_IMAGE
+                    : HackathonData?.background_image
+                    ? BASE_URL + HackathonData?.background_image
+                    : BACKGROUND_IMAGE,
+                }}
+                onLoadEnd={() => {
+                  setBackgroundImageLoading(false);
+                }}
+                onError={() => {
+                  setBackgroundImageLoading(false);
+                  ToastAndroid.show("Couldn't load background image", 1500);
+                }}
+                resizeMode={'cover'}
+              />
+            </View>
+
+            {/* card  */}
+            <View
+              style={[
+                styles.card,
+                {
+                  backgroundColor: theme.BACKGROUND_COLOR,
+                  marginHorizontal: Width * 0.05,
+                },
+              ]}>
+              {/* title and tagline container  */}
+              <View style={[styles.titleContainer, styles.center]}>
+                <Text
+                  style={[
+                    styles.titleText,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  {HackathonData.title}
+                </Text>
+                <Text
+                  style={[
+                    styles.tagLineText,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  {HackathonData.tag_line}
+                </Text>
+              </View>
+              <Divider size={'large'} />
+
+              {/* description container  */}
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Description
+                </Text>
+                <View
+                  style={{
+                    marginLeft: Width * 0.04,
+                    marginTop: 10,
+                  }}>
+                  <Text
+                    style={[
+                      styles.descriptionText,
+                      {
+                        color: theme.TEXT_COLOR,
+                      },
+                    ]}>
+                    {HackathonData.description}
+                  </Text>
+                </View>
+              </View>
+              <Divider size={'small'} />
+              {/* contact email  */}
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Contact Email
+                </Text>
+                <View style={styles.iconTextContainer}>
+                  <MaterialCommunityIcons
+                    name={'email'}
+                    color={theme.GREEN_COLOR}
+                    size={ICON_SIZE * 1.1}
+                  />
+                  <Text
+                    style={{
+                      color: theme.TEXT_COLOR,
+                      fontSize: Sizes.normal,
+                      marginHorizontal: Width * 0.02,
+                    }}>
+                    18asnan@gmail.com
+                  </Text>
+                </View>
+              </View>
+              <Divider size={'small'} />
+
+              {/* starting from container  */}
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Starting from
+                </Text>
+                <View style={styles.iconTextContainer}>
+                  <Foundation
+                    name={'calendar'}
+                    color={theme.GREEN_COLOR}
+                    size={ICON_SIZE * 1.3}
+                  />
+                  <Text
+                    style={{
+                      color: theme.TEXT_COLOR,
+                      fontSize: Sizes.normal,
+                      marginHorizontal: Width * 0.04,
+                      marginTop: 3,
+                    }}>
+                    Oct 11, 2021 @ 11:45 PM
+                  </Text>
+                </View>
+              </View>
+              <Divider size={'small'} />
+
+              {/* Theme tags container  */}
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Theme Tags
+                </Text>
+                <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
+                  <View style={styles.themeTagTextContainer}>
+                    <Bullet />
+                    <Text
+                      style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
+                      Online
+                    </Text>
+                  </View>
+                  <View style={styles.themeTagTextContainer}>
+                    <Bullet />
+                    <Text
+                      style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
+                      React Native Development
+                    </Text>
+                  </View>
+                  <View style={styles.themeTagTextContainer}>
+                    <Bullet />
+                    <Text
+                      style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
+                      Public
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <Divider size={'small'} />
+              {/* rules container  */}
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Rules
+                </Text>
+                <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
+                  <View style={styles.ruleTextContainer}>
+                    <Bullet />
+                    <Text
+                      style={[
+                        styles.rulesText,
+                        {
+                          color: theme.TEXT_COLOR,
+                        },
+                      ]}>
+                      Create an app built on the Daml framework that strives to
+                      solve a simple problem in Finance, Insurance, Healthcare,
+                      Supply Chain, or a closely related space.
+                    </Text>
+                  </View>
+                  <View style={styles.ruleTextContainer}>
+                    <Bullet />
+                    <Text
+                      style={[
+                        styles.rulesText,
+                        {
+                          color: theme.TEXT_COLOR,
+                        },
+                      ]}>
+                      Create an app built on the Daml framework that strives to
+                      solve a simple problem in Finance, Insurance, Healthcare,
+                      Supply Chain, or a closely related space.
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <Divider size={'small'} />
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Prizes
+                </Text>
+                {/* flat list */}
+                <PrizeCard />
+              </View>
+              <Divider size={'small'} />
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Judges
+                </Text>
+                <JudgeCard />
+                <JudgeCard />
+              </View>
+              <Divider size={'small'} />
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color: theme.TEXT_COLOR,
+                    },
+                  ]}>
+                  Judging Criteria
+                </Text>
+                <JudgingCriteria
+                  title={'Potential Impact'}
+                  desc={
+                    'How will this project impact the growth of the Solana ecosystem?'
+                  }
+                />
+                <JudgingCriteria
+                  title={'Design'}
+                  desc={
+                    'Is the user experience and design of the project well thought out?. will this project impact the growth of the Solana ecosystem?'
+                  }
+                />
+              </View>
+            </View>
+          </ScrollView>
+          {screen === 'student' && (
+            <CustomButton
+              text={'Join Now'}
+              onPress={() => {
+                navigation.navigate('Register_Hackathon', {
+                  ID: ID, // pass the hackathon data,
+                  backgroundImage: HackathonData?.background_image,
+                  title: HackathonData.title,
+                  tagline: HackathonData.tag_line,
+                });
+              }}
+            />
+          )}
+        </>
+      ) : (
+        <HackathonCardSkeleton showSearchSkeleton={false} />
+      )}
     </View>
   );
 };
