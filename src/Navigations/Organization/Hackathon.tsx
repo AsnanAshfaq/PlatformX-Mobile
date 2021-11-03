@@ -8,7 +8,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Hackathon from '../../Screens/Organization/Hackathon';
 import HackathonTabs from './Tabs/HackathonTab';
-import ViewHackathon from '../../Screens/Organization/Hackathon/View';
+import ViewProject from '../../Screens/Organization/Hackathon/ViewProject';
 import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit';
 const HackathonScreens = () => {
   const Stack = createStackNavigator();
@@ -18,6 +18,7 @@ const HackathonScreens = () => {
       screenOptions={{header: () => null}}
       initialRouteName={'HackathonTab'}>
       <Stack.Screen name={'HackathonTab'} component={HackathonTabs} />
+      <Stack.Screen name={'Hackathon_Project'} component={ViewProject} />
       <Stack.Screen
         name={'Create_Edit_Hackathon'}
         component={CreateEditHackathon}

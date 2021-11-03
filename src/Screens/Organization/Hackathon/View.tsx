@@ -8,7 +8,7 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import ViewHackathonComponent from '../../../Components/ViewHackathons';
+import ViewHackathonComponent from '../../../Components/ViewHackathon';
 
 type props = {
   navigation: any;

@@ -8,26 +8,25 @@ import {
   ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
-import ViewHackathonComponent from '../../../Components/ViewHackathon';
-import HackathonCardSkeleton from '../../../Skeleton/HackathonCardSkeleton';
+import ViewHackathonProjectComponent from '../../../Components/ViewHackathonProject';
 
 type props = {
   navigation: any;
   route: any;
 };
 
-const View: FC<props> = ({navigation, route}) => {
+const ViewProject: FC<props> = ({navigation, route}) => {
   // get hackathon id from params
   const {ID} = route.params;
 
   return (
-    <ViewHackathonComponent
+    <ViewHackathonProjectComponent
       navigation={navigation}
-      ID={ID}
       route={route}
-      screen={'student'}
+      ID={ID}
+      screen={'organization'}
     />
   );
 };
 
-export default View;
+export default ViewProject;

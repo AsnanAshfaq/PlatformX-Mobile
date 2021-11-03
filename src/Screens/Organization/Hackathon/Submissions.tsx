@@ -205,7 +205,7 @@ const ProjectCard: FC<cardProps> = ({
           <View style={styles.uploadDateTextContainer}>
             <Text
               style={[styles.uploadedDateText, {color: theme.DIM_TEXT_COLOR}]}>
-              Submitted at {new Date(uploadDate).toDateString()}
+              Submitted on {new Date(uploadDate).toDateString()}
             </Text>
           </View>
           <View style={styles.button}>
@@ -217,11 +217,9 @@ const ProjectCard: FC<cardProps> = ({
               }
               text={'Evalute'}
               textSize={Sizes.normal * 0.8}
-              onPress={() =>
-                console.log(
-                  'Navigate to evalution screen with params as project id',
-                )
-              }
+              onPress={() => {
+                handleCardPress();
+              }}
               width={Width * 0.25}
               height={Height * 0.05}
             />
@@ -242,7 +240,10 @@ const Submissions: FC<props> = ({navigation, route}) => {
   const [sorting, setsorting] = useState(false);
 
   const handleCardPress = () => {
-    //   navigate to project details screen
+    navigation.navigate('Hackathon_Project', {
+      ID: ID, // pass the hackathon project ID,
+      screen: 'organization',
+    });
   };
 
   return (

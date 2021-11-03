@@ -25,6 +25,7 @@ import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
 import CodeStyleSkeleton from '../Skeleton/CodeStyleSkeleton';
+import {Email} from './Icons';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -230,7 +231,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
               style={[
                 styles.card,
                 {
-                  backgroundColor: theme.BACKGROUND_COLOR,
+                  backgroundColor: theme.CARD_BACKGROUND_COLOR,
                   marginHorizontal: Width * 0.05,
                 },
               ]}>
@@ -297,11 +298,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
                   Contact Email
                 </Text>
                 <View style={styles.iconTextContainer}>
-                  <MaterialCommunityIcons
-                    name={'email'}
-                    color={theme.GREEN_COLOR}
-                    size={ICON_SIZE * 1.1}
-                  />
+                  <Email size={1.1} color={theme.GREEN_COLOR} />
                   <Text
                     style={{
                       color: theme.TEXT_COLOR,
@@ -508,8 +505,9 @@ const styles = StyleSheet.create({
   },
   card: {
     marginTop: -45,
+    marginBottom: 10,
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 10,
     borderColor: 'transparent',
   },
   center: {
