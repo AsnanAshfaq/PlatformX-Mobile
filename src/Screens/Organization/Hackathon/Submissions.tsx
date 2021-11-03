@@ -64,14 +64,16 @@ const HeaderComponent: FC<headerProps> = ({total, sort, onSortPress}) => {
         <View style={{flex: 0.9}}>
           <Text style={[{color: theme.TEXT_COLOR}]}>
             Total projects submitted:{' '}
-            <Text style={{fontWeight: 'bold'}}>{total}</Text>
+            <Text style={{fontWeight: 'bold', fontSize: Sizes.normal}}>
+              {total}
+            </Text>
           </Text>
         </View>
         <View
           style={{flex: 0.1, justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity onPress={() => onSortPress()}>
             <FontAwesome
-              name={`${sort ? 'sort-alpha-up' : 'sort-alpha-down'}`}
+              name={`${sort ? 'sort-alpha-down' : 'sort-alpha-up'}`}
               size={ICON_SIZE * 0.7}
               color={theme.ICON_COLOR}
             />
@@ -259,13 +261,12 @@ const Submissions: FC<props> = ({navigation, route}) => {
       />
 
       <View style={{marginHorizontal: Width * 0.04}}>
-        <View style={styles.headerContainer}>
-          <HeaderComponent
-            total={10}
-            sort={sorting}
-            onSortPress={() => setsorting(!sorting)}
-          />
-        </View>
+        <HeaderComponent
+          total={10}
+          sort={sorting}
+          onSortPress={() => setsorting(!sorting)}
+        />
+
         <FlatList
           contentContainerStyle={styles.scroll}
           keyExtractor={(item, index) => index.toString()}

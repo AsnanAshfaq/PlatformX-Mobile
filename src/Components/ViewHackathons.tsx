@@ -19,11 +19,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import HackathonCardSkeleton from '../Skeleton/HackathonCardSkeleton';
+import ListSkeleton from '../Skeleton/ListSkeleton';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
+import CodeStyleSkeleton from '../Skeleton/CodeStyleSkeleton';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -490,7 +491,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
           )}
         </>
       ) : (
-        <HackathonCardSkeleton showSearchSkeleton={false} />
+        <ListSkeleton repition={5} />
       )}
     </View>
   );
