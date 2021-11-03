@@ -15,6 +15,8 @@ import {useStateValue} from '../../../Store/StateProvider';
 import {BASE_URL} from 'react-native-dotenv';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {ForwardArrow, Tick} from '../../../Components/Icons';
+import CustomButton from '../../../Components/CustomButton';
+import CheckBox from '../../../Components/CheckBox';
 const SAMPLE_DATA = [
   {
     id: 1,
@@ -52,6 +54,9 @@ const ICON_SIZE = Width * 0.07;
 
 const HeaderComponent: FC<headerProps> = ({total, sort, onSortPress}) => {
   const [{theme}, dispatch] = useStateValue();
+  const [isChecked, setisChecked] = useState<
+    'all' | 'evaluated' | 'non-evaluated'
+  >('all');
 
   return (
     <>
@@ -71,6 +76,48 @@ const HeaderComponent: FC<headerProps> = ({total, sort, onSortPress}) => {
               color={theme.ICON_COLOR}
             />
           </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.checkBoxsContainer}>
+        <View style={styles.checkBoxContainer}>
+          <CheckBox
+            size={20}
+            onPress={isChecked => setisChecked('all')}
+            isChecked={isChecked === 'all'}
+            disableBuiltInState={true}
+          />
+          <View>
+            <Text style={[styles.checkBoxText, {color: theme.TEXT_COLOR}]}>
+              All
+            </Text>
+          </View>
+        </View>
+        <View style={styles.checkBoxContainer}>
+          <CheckBox
+            size={20}
+            onPress={isChecked => setisChecked('evaluated')}
+            isChecked={isChecked === 'evaluated'}
+            disableBuiltInState={true}
+          />
+          <View>
+            <Text style={[styles.checkBoxText, {color: theme.TEXT_COLOR}]}>
+              Evaluated
+            </Text>
+          </View>
+        </View>
+        <View style={styles.checkBoxContainer}>
+          <CheckBox
+            size={20}
+            onPress={isChecked => setisChecked('non-evaluated')}
+            isChecked={isChecked === 'non-evaluated'}
+            disableBuiltInState={true}
+          />
+          <View>
+            <Text style={[styles.checkBoxText, {color: theme.TEXT_COLOR}]}>
+              Non-Evaluated
+            </Text>
+          </View>
         </View>
       </View>
     </>
@@ -107,7 +154,7 @@ const ProjectCard: FC<cardProps> = ({
             flexDirection: 'column',
           },
         ]}>
-        <View style={{flexDirection: 'row', flex: 0.9}}>
+        <View style={{flexDirection: 'row'}}>
           <View style={styles.cardImageContainer}>
             <Image
               style={styles.cardImage}
@@ -151,15 +198,32 @@ const ProjectCard: FC<cardProps> = ({
           </View>
         </View>
 
-        <View style={[styles.uploadDateContainer]}>
-          <Text
-            style={[styles.uploadedDateText, {color: theme.DIM_TEXT_COLOR}]}>
-            Submitted at {new Date(uploadDate).toDateString()}
-          </Text>
-        </View>
-
-        <View style={[styles.arrorButtonContainer]}>
-          <ForwardArrow size={1.5} color={theme.GREEN_COLOR} />
+        {/* bottom container  */}
+        <View style={[styles.buttonContainer]}>
+          <View style={styles.uploadDateTextContainer}>
+            <Text
+              style={[styles.uploadedDateText, {color: theme.DIM_TEXT_COLOR}]}>
+              Submitted at {new Date(uploadDate).toDateString()}
+            </Text>
+          </View>
+          <View style={styles.button}>
+            <CustomButton
+              children={
+                <View style={styles.buttonIconContainer}>
+                  <ForwardArrow size={0.75} />
+                </View>
+              }
+              text={'Evalute'}
+              textSize={Sizes.normal * 0.8}
+              onPress={() =>
+                console.log(
+                  'Navigate to evalution screen with params as project id',
+                )
+              }
+              width={Width * 0.25}
+              height={Height * 0.05}
+            />
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -194,21 +258,23 @@ const Submissions: FC<props> = ({navigation, route}) => {
         onBackPress={() => navigation.goBack()}
       />
 
-      <View style={styles.headerContainer}>
-        <HeaderComponent
-          total={10}
-          sort={sorting}
-          onSortPress={() => setsorting(!sorting)}
+      <View style={{marginHorizontal: Width * 0.04}}>
+        <View style={styles.headerContainer}>
+          <HeaderComponent
+            total={10}
+            sort={sorting}
+            onSortPress={() => setsorting(!sorting)}
+          />
+        </View>
+        <FlatList
+          contentContainerStyle={styles.scroll}
+          keyExtractor={(item, index) => index.toString()}
+          data={SAMPLE_DATA}
+          renderItem={({item}) => {
+            return <ProjectCard {...item} handleCardPress={handleCardPress} />;
+          }}
         />
       </View>
-      <FlatList
-        contentContainerStyle={styles.scroll}
-        keyExtractor={(item, index) => index.toString()}
-        data={SAMPLE_DATA}
-        renderItem={({item}) => {
-          return <ProjectCard {...item} handleCardPress={handleCardPress} />;
-        }}
-      />
     </View>
   );
 };
@@ -225,8 +291,20 @@ const styles = StyleSheet.create({
   headerContainer: {
     marginHorizontal: Width * 0.04,
   },
+  checkBoxsContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  checkBoxContainer: {
+    flexDirection: 'row',
+  },
+  checkBoxText: {
+    fontSize: Sizes.normal * 0.8,
+  },
   scroll: {
-    marginHorizontal: Width * 0.04,
+    // marginHorizontal: Width * 0.04,
     marginTop: 10,
   },
   listHeaderTextContainer: {},
@@ -235,7 +313,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     borderColor: 'transparent',
-    paddingVertical: 6,
   },
   cardImageContainer: {
     flex: 0.25,
@@ -256,6 +333,7 @@ const styles = StyleSheet.create({
   },
   cardDetailTextContainer: {
     flex: 0.85,
+    justifyContent: 'center',
   },
   titleText: {
     fontSize: Sizes.normal * 1.1,
@@ -264,6 +342,7 @@ const styles = StyleSheet.create({
   marksContainer: {
     flex: 0.15,
     flexDirection: 'row',
+    marginTop: 5,
   },
   markIconContainer: {
     borderRadius: 2,
@@ -284,26 +363,29 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     lineHeight: 20,
   },
-  arrorButtonContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    // alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    right: -(Width * 0.0243),
-    top: Height * 0.035,
+  buttonContainer: {
+    flexDirection: 'row',
   },
-  uploadDateContainer: {
+  uploadDateTextContainer: {
+    flex: 0.5,
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    paddingHorizontal: 10,
-    flex: 0.1,
+    alignItems: 'flex-start',
+    marginHorizontal: 10,
+    paddingBottom: 10,
   },
   uploadedDateText: {
     fontSize: Sizes.normal * 0.62,
     fontStyle: 'italic',
+  },
+  button: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+  },
+  buttonIconContainer: {
+    justifyContent: 'center',
+    marginHorizontal: 4,
+    alignItems: 'center',
   },
 });

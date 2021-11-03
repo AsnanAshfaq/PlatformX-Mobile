@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {FC} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Sizes, Width} from '../Constants/Size';
@@ -10,13 +11,18 @@ type props = {
   loading?: boolean;
   color?: string;
   width?: number;
+  height?: number;
+  textSize?: number;
 };
 const CustomButton: FC<props> = ({
   text,
   onPress,
   loading = false,
   color,
-  width,
+  width = Width * 0.9,
+  height = Width * 0.12,
+  textSize = Sizes.normal,
+  children,
 }) => {
   const [{theme}, dispatch] = useStateValue();
   return (
@@ -26,6 +32,8 @@ const CustomButton: FC<props> = ({
           styles.joinNowButton,
           {
             backgroundColor: color ? color : theme.GREEN_COLOR,
+            width: width,
+            height: height,
           },
         ]}
         activeOpacity={0.5}
@@ -33,15 +41,26 @@ const CustomButton: FC<props> = ({
         {loading ? (
           <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
         ) : (
-          <Text
-            style={[
-              styles.text,
-              {
-                color: theme.TEXT_COLOR,
-              },
-            ]}>
-            {text}
-          </Text>
+          <>
+            <View
+              style={{
+                flex: typeof children !== undefined ? 0.7 : 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+              <Text
+                style={[
+                  {
+                    fontSize: textSize,
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                {text}
+              </Text>
+            </View>
+            {children}
+          </>
         )}
       </TouchableOpacity>
     </View>
@@ -60,14 +79,10 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   joinNowButton: {
-    width: Width * 0.9,
     // marginHorizontal: Width * 0.05,
-    height: Width * 0.12,
+    flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
     alignItems: 'center',
-  },
-  text: {
-    fontSize: Sizes.normal,
   },
 });

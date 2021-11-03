@@ -7,10 +7,19 @@ import {useStateValue} from '../Store/StateProvider';
 type props = {
   size: number;
   onPress: (isChecked: boolean | undefined) => void;
+  isChecked?: boolean;
+  disableBuiltInState?: boolean;
   star?: boolean;
   margin?: number;
 };
-const CheckBox: FC<props> = ({size, onPress, star, margin}) => {
+const CheckBox: FC<props> = ({
+  size,
+  onPress,
+  isChecked = false,
+  disableBuiltInState = false,
+  star,
+  margin,
+}) => {
   const [{theme}, dispatch] = useStateValue();
   return (
     <>
@@ -22,6 +31,8 @@ const CheckBox: FC<props> = ({size, onPress, star, margin}) => {
         iconStyle={{borderColor: theme.SHADOW_COLOR}}
         // textStyle={{fontFamily: 'JosefinSans-Regular'}}
         onPress={isChecked => onPress(isChecked)}
+        isChecked={isChecked ? isChecked : false}
+        disableBuiltInState={disableBuiltInState}
         style={{marginRight: margin ? margin : 10}}
       />
       {star && (
