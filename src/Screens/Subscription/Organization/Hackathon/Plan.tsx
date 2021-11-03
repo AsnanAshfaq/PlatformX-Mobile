@@ -310,7 +310,7 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
-              {HACKATHON_SUSCRIPTIONS.basic.max_prize_money}
+              Rs {commaSeperator(HACKATHON_SUSCRIPTIONS.basic.max_prize_money)}
             </Text>
           </View>
           <View style={styles.detailsTextContainer}>
@@ -325,7 +325,8 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     ? Sizes.normal * 0.9
                     : Sizes.normal * 0.75,
               }}>
-              {HACKATHON_SUSCRIPTIONS.standard.max_prize_money}
+              Rs{' '}
+              {commaSeperator(HACKATHON_SUSCRIPTIONS.standard.max_prize_money)}
             </Text>
           </View>
           <View style={styles.detailsTextContainer}>
@@ -337,10 +338,10 @@ const Card: FC<cardProps> = ({selectedPlan}) => {
                     : theme.DIM_TEXT_COLOR,
                 fontSize:
                   selectedPlan === 'premium'
-                    ? Sizes.normal * 0.9
+                    ? Sizes.normal * 0.82
                     : Sizes.normal * 0.75,
               }}>
-              {HACKATHON_SUSCRIPTIONS.premium.max_prize_money}
+              Rs {HACKATHON_SUSCRIPTIONS.premium.max_prize_money}
             </Text>
           </View>
         </View>

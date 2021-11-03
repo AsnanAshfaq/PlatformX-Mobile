@@ -1,7 +1,13 @@
+//Sreens
+// view
+// edit/ create
+// details screen (submissions screen and result screen)
+
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Hackathon from '../../Screens/Organization/Hackathon';
+import HackathonTabs from './Tabs/HackathonTab';
 import ViewHackathon from '../../Screens/Organization/Hackathon/View';
 import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit';
 const HackathonScreens = () => {
@@ -10,9 +16,8 @@ const HackathonScreens = () => {
   return (
     <Stack.Navigator
       screenOptions={{header: () => null}}
-      initialRouteName={'TabScreen'}>
-      <Stack.Screen name={'TabScreen'} component={Hackathon} />
-      <Stack.Screen name={'View_Hackathon'} component={ViewHackathon} />
+      initialRouteName={'HackathonTab'}>
+      <Stack.Screen name={'HackathonTab'} component={HackathonTabs} />
       <Stack.Screen
         name={'Create_Edit_Hackathon'}
         component={CreateEditHackathon}

@@ -153,8 +153,14 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         <View style={styles.ButtonContainer}>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('View_Hackathon', {
-                ID: hackathonDetail.id,
+              navigation.navigate('HackahtonScreens', {
+                screen: 'HackathonTab',
+                params: {
+                  screen: 'Overview',
+                  params: {
+                    ID: hackathonDetail.id,
+                  },
+                },
               })
             }
             style={[
