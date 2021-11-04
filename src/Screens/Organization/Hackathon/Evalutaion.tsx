@@ -21,6 +21,7 @@ import CheckBox from '../../../Components/CheckBox';
 import Bullet from '../../../Components/Bullet';
 import CustomTextField from '../../../Components/CustomTextField2';
 import HelpText from '../../../Components/HelpText';
+import {Slider} from 'react-native-elements';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -49,7 +50,7 @@ const Category: FC<categoryProps> = ({
             <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
               {heading}
             </Text>
-            <View style={{marginHorizontal: Width * 0.012}}>
+            <View>
               <HelpText text={helpText} />
             </View>
           </View>
@@ -206,6 +207,15 @@ const Evaluation: FC<props> = ({navigation, route}) => {
           />
         </View>
 
+        {/* over all status container  */}
+        <View style={styles.container}>
+          <View style={styles.headingContainer}>
+            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+              Overall Status
+            </Text>
+          </View>
+        </View>
+        {/* final remarks container  */}
         <View style={styles.container}>
           <View style={styles.headingContainer}>
             <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
@@ -215,7 +225,7 @@ const Evaluation: FC<props> = ({navigation, route}) => {
           <View style={{marginTop: 4}}>
             <HelpText
               text={
-                'Use this field to provide any final remarks for this project based on your likes and dislikes of the project.'
+                'Use this field to provide any final remarks based on your likes and dislikes of the project.'
               }
             />
             <CustomTextField

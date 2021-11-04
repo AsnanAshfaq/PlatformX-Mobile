@@ -1,3 +1,8 @@
+//TODO:
+// if the result is not announed yet
+// then show announcing result screen
+// else show the result viewing screen
+
 import React, {FC, useState, useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';

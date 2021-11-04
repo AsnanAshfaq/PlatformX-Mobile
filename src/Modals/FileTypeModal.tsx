@@ -14,6 +14,7 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import {hackathonFilterData} from '../Constants/sample';
 import CheckBox from '../Components/CheckBox';
 import {useStateValue} from '../Store/StateProvider';
+import Divider from '../Components/Divider';
 const ALLOWED_FILE_TYPE = [
   {
     key: 'APK',
@@ -129,6 +130,7 @@ const FilterModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
             File Type{' '}
           </Text>
         </View>
+        <Divider size={'medium'} />
         <FlatList
           data={ALLOWED_FILE_TYPE}
           numColumns={2}
@@ -199,7 +201,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // alignItems: 'center',
     borderColor: 'transparent',
-    marginVertical: Height * 0.28,
+    marginVertical: Height * 0.22,
   },
   headingContainer: {
     justifyContent: 'center',
@@ -237,7 +239,7 @@ const styles = StyleSheet.create({
   },
   applyButtonContainer: {
     // minHeight: Height * 0.05,
-    // maxHeight: Height * 0.07,
+    // maxHeight: Height * 0.07
     flexDirection: 'row',
     marginVertical: 10,
     justifyContent: 'center',

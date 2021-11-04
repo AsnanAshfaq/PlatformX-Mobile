@@ -65,7 +65,12 @@ const Create: FC<props> = ({navigation}) => {
           title={'Hackathon'}
           description={`Hackathons are taking over the world! Make yours run better and show the world what gets made at your event.${'\n'}START HOSTING YOUR HACKATHON NOW.`}
           onPress={() =>
-            navigation.navigate('Create_Edit_Hackathon', {screen: 'create'})
+            navigation.navigate('HackahtonScreens', {
+              screen: 'Create_Edit_Hackathon',
+              params: {
+                screen: 'General',
+              },
+            })
           }
         />
         <Card
