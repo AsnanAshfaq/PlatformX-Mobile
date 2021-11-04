@@ -152,8 +152,7 @@ const ProjectCard: FC<cardProps> = ({
         style={[
           styles.cardContainer,
           {
-            backgroundColor: theme.CARD_BACKGROUND_COLOR, // theme.CARD_BACKGROUND_COLOR,
-            flexDirection: 'column',
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         <View style={{flexDirection: 'row'}}>
@@ -312,7 +311,7 @@ const styles = StyleSheet.create({
   listHeaderTextContainer: {},
   cardContainer: {
     marginVertical: 10,
-    flexDirection: 'row',
+    flexDirection: 'column',
     borderRadius: 10,
     borderColor: 'transparent',
   },

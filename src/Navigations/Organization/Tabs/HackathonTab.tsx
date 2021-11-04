@@ -40,7 +40,13 @@ const TabScreens = ({route}) => {
             );
           }
           if (route.name === 'Result') {
-            return <AntDesign name={iconName} size={ICON_SIZE} color={color} />;
+            return (
+              <AntDesign
+                name={iconName}
+                size={focused ? ICON_SIZE * 0.9 : ICON_SIZE * 0.85}
+                color={color}
+              />
+            );
           }
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={ICON_SIZE} color={color} />;

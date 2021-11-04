@@ -9,6 +9,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Hackathon from '../../Screens/Organization/Hackathon';
 import HackathonTabs from './Tabs/HackathonTab';
 import ViewProject from '../../Screens/Organization/Hackathon/ViewProject';
+import Evalutaion from '../../Screens/Organization/Hackathon/Evalutaion';
 import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit';
 const HackathonScreens = () => {
   const Stack = createStackNavigator();
@@ -19,6 +20,7 @@ const HackathonScreens = () => {
       initialRouteName={'HackathonTab'}>
       <Stack.Screen name={'HackathonTab'} component={HackathonTabs} />
       <Stack.Screen name={'Hackathon_Project'} component={ViewProject} />
+      <Stack.Screen name={'Hackathon_Evaluate'} component={Evalutaion} />
       <Stack.Screen
         name={'Create_Edit_Hackathon'}
         component={CreateEditHackathon}

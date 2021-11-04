@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Linking,
   ToastAndroid,
 } from 'react-native';
 import axios from '../Utils/Axios';
@@ -54,6 +55,9 @@ const LinkText: FC<{link}> = ({link}) => {
   const [{theme}, dispatch] = useStateValue();
   return (
     <Text
+      onPress={() => {
+        Linking.openURL(link);
+      }}
       style={[
         styles.linkText,
         {
@@ -68,7 +72,7 @@ const LinkText: FC<{link}> = ({link}) => {
 const ViewHackathonProject: FC<props> = ({navigation, route, screen, ID}) => {
   // get hackathon project id from params
 
-  const [HackathonData, setHackathonData] = useState<any>({});
+  const [projectData, setProjectData] = useState<any>({});
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [LoadLogoImage, setLoadLogoImage] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -319,7 +323,7 @@ const ViewHackathonProject: FC<props> = ({navigation, route, screen, ID}) => {
                   Give it a go links
                 </Text>
                 <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
-                  <View style={styles.bulletTextContainer}>
+                  <View style={[styles.bulletTextContainer]}>
                     <Bullet />
                     <LinkText
                       link={
@@ -351,7 +355,6 @@ const ViewHackathonProject: FC<props> = ({navigation, route, screen, ID}) => {
                 <View style={{marginLeft: Width * 0.12, marginTop: 10}}>
                   <View style={styles.bulletTextContainer}>
                     <Bullet />
-
                     <LinkText
                       link={
                         'https://www.youtube.com/watch?v=pvUKlOqF8BM&ab_channel=HonestHourPodcast'
@@ -373,16 +376,19 @@ const ViewHackathonProject: FC<props> = ({navigation, route, screen, ID}) => {
                   ]}>
                   Project Media
                 </Text>
-                <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
+                <View
+                  style={{
+                    marginLeft: Width * 0.1,
+                    marginTop: 10,
+                  }}>
                   <View
                     style={[
                       styles.mediaContainer,
                       {
                         backgroundColor: theme.GREEN_COLOR,
-                        padding: 6,
                       },
                     ]}>
-                    <Text style={{color: theme.TEXT_COLOR}}>File</Text>
+                    <Text style={{color: theme.TEXT_COLOR}}>Files</Text>
                   </View>
                 </View>
               </View>
@@ -392,11 +398,8 @@ const ViewHackathonProject: FC<props> = ({navigation, route, screen, ID}) => {
             <CustomButton
               text={'Evaluate'}
               onPress={() => {
-                navigation.navigate('', {
+                navigation.navigate('Hackathon_Evaluate', {
                   ID: ID, // pass the hackathon data,
-                  backgroundImage: HackathonData?.background_image,
-                  title: HackathonData.title,
-                  tagline: HackathonData.tag_line,
                 });
               }}
             />
@@ -430,6 +433,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titleContainer: {
+    marginTop: 15,
+  },
+  titleText: {
+    fontSize: Sizes.normal * 1.3,
+    fontFamily: 'OpenSans-Bold',
+  },
+  tagLineText: {
+    fontSize: Sizes.normal * 0.9,
+    fontFamily: 'OpenSans-Light',
+    fontStyle: 'italic',
+  },
   image: {
     width: Width * 0.25,
     height: Width * 0.25,
@@ -456,18 +471,6 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 0.8,
     fontStyle: 'italic',
   },
-  titleContainer: {
-    marginTop: 15,
-  },
-  titleText: {
-    fontSize: Sizes.normal * 1.4,
-    fontFamily: 'OpenSans-Bold',
-  },
-  tagLineText: {
-    fontSize: Sizes.normal,
-    fontFamily: 'OpenSans-Light',
-    fontStyle: 'italic',
-  },
   container: {
     marginHorizontal: Width * 0.03,
     marginVertical: 10,
@@ -476,11 +479,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    // minHeight: Height * 0.14,
     marginTop: 10,
     marginHorizontal: Width * 0.15,
-    // width: Width * 0.2,
     borderRadius: 10,
+    padding: 6,
   },
   iconTextContainer: {
     flexDirection: 'row',
@@ -512,6 +514,8 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: Sizes.normal * 0.7,
+    flexShrink: 1,
+    lineHeight: 16,
   },
   joinNowButtonContainer: {
     height: Width * 0.14,
