@@ -43,6 +43,10 @@ const Schedule: FC<props> = () => {
     start: {value: new Date().toLocaleTimeString(), error: ''},
     end: {value: new Date().toLocaleTimeString(), error: ''},
   });
+  const [resultDate, setresultDate] = useState({
+    value: new Date().toLocaleDateString(),
+    error: '',
+  });
   const [loading, setLoading] = useState(false);
 
   const [modal, setmodal] = useState<{
@@ -326,6 +330,56 @@ const Schedule: FC<props> = () => {
                         {color: theme.ERROR_TEXT_COLOR},
                       ]}>
                       {time.end.error}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </View>
+
+          {/* result announcement  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Result Announcement
+              </Text>
+            </View>
+            <View style={styles.subHeadingContainer}>
+              <View style={styles.rowContainer}>
+                <Text
+                  style={[styles.subHeading, {color: theme.DIM_TEXT_COLOR}]}>
+                  Date
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    setmodal(props => {
+                      return {
+                        ...props,
+                        isShown: true,
+                        mode: 'date',
+                        type: 'end',
+                      };
+                    })
+                  }
+                  style={[
+                    styles.modalContainer,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                  ]}>
+                  <Text style={[styles.modalText, {color: theme.TEXT_COLOR}]}>
+                    {date.end.value}
+                  </Text>
+                  <View style={styles.iconContainer}>
+                    <Calendar size={0.7} color={theme.GREEN_COLOR} />
+                  </View>
+                </TouchableOpacity>
+                {date.end.error !== '' && (
+                  <View style={styles.errorContainer}>
+                    <Text
+                      style={[
+                        styles.errorText,
+                        {color: theme.ERROR_TEXT_COLOR},
+                      ]}>
+                      {date.end.error}
                     </Text>
                   </View>
                 )}

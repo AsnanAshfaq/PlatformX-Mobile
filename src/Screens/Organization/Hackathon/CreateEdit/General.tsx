@@ -34,6 +34,8 @@ const General: FC<props> = () => {
       max: '',
     },
     resources: {value: '', error: ''},
+    rules: {value: '', error: ''},
+    submission: {value: '', error: ''},
   });
 
   const [loading, setLoading] = useState(false);
@@ -192,6 +194,7 @@ const General: FC<props> = () => {
                 Contact Email
               </Text>
             </View>
+            <HelpText text={'Provide email of the hackathon manager'} />
             <View style={styles.inputContainer}>
               <CustomTextField
                 defaultValue={Input.contact.value}
@@ -326,6 +329,39 @@ const General: FC<props> = () => {
               text={
                 'List any resources that you want to provide to participants such as link to any tutorial, blog, resource tools, helping material or anything that might be useful for the participants'
               }
+            />
+            <View style={styles.inputContainer}>
+              <CustomTextField
+                defaultValue={Input.resources.value}
+                keyboardType={'email-address'}
+                onChangeText={text =>
+                  setInput(props => {
+                    return {
+                      ...props,
+                      resources: {
+                        value: text,
+                        error: '',
+                      },
+                    };
+                  })
+                }
+                placeholder={'Enter hackathon resources'}
+                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                textContentType={'name'}
+                multiLine={true}
+                error={Input.resources.error}
+              />
+            </View>
+          </View>
+          {/* rules  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Rules
+              </Text>
+            </View>
+            <HelpText
+              text={'Clearly mention all the rules for the hackathon'}
             />
             <View style={styles.inputContainer}>
               <CustomTextField

@@ -21,6 +21,11 @@ const Prize: FC<props> = () => {
     second: {value: '', error: ''},
     third: {value: '', error: ''},
   });
+  const [perks, setperks] = useState({
+    first: {value: '', error: ''},
+    second: {value: '', error: ''},
+    third: {value: '', error: ''},
+  });
   const [loading, setLoading] = useState(false);
 
   const handleSave = () => {
@@ -51,31 +56,63 @@ const Prize: FC<props> = () => {
               text={'Enter prize money for the winners of the hackahton.'}
             />
             {/* first  prize  */}
-            <View style={styles.subHeadingContainer}>
-              <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
-                First Position
-              </Text>
-              <View style={styles.inputContainer}>
-                <CustomTextField
-                  defaultValue={prizes.first.value}
-                  keyboardType={'numeric'}
-                  onChangeText={text =>
-                    setprizes(props => {
-                      return {
-                        ...props,
-                        first: {
-                          value: text,
-                          error: '',
-                        },
-                      };
-                    })
-                  }
-                  placeholder={'Enter cash value'}
-                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                  textContentType={'telephoneNumber'}
-                  width={Width * 0.6}
-                  error={prizes.first.error}
-                />
+            <View style={styles.container}>
+              <View style={styles.subHeadingContainer}>
+                <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                  First Position
+                </Text>
+                <View style={styles.inputContainer}>
+                  <CustomTextField
+                    defaultValue={prizes.first.value}
+                    keyboardType={'numeric'}
+                    onChangeText={text =>
+                      setprizes(props => {
+                        return {
+                          ...props,
+                          first: {
+                            value: text,
+                            error: '',
+                          },
+                        };
+                      })
+                    }
+                    placeholder={'Enter cash value'}
+                    placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                    textContentType={'telephoneNumber'}
+                    width={Width * 0.6}
+                    error={prizes.first.error}
+                  />
+                </View>
+                <View>
+                  <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                    Perks
+                  </Text>
+                  <HelpText
+                    text={'Specify any benefits that you want to provide '}
+                  />
+                  <View style={styles.inputContainer}>
+                    <CustomTextField
+                      defaultValue={prizes.first.value}
+                      keyboardType={'numeric'}
+                      onChangeText={text =>
+                        setprizes(props => {
+                          return {
+                            ...props,
+                            first: {
+                              value: text,
+                              error: '',
+                            },
+                          };
+                        })
+                      }
+                      placeholder={'Enter any perk'}
+                      placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                      textContentType={'telephoneNumber'}
+                      width={Width * 0.6}
+                      error={prizes.first.error}
+                    />
+                  </View>
+                </View>
               </View>
             </View>
 
@@ -106,6 +143,36 @@ const Prize: FC<props> = () => {
                   error={prizes.second.error}
                 />
               </View>
+              <View>
+                <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                  Perks
+                </Text>
+                <HelpText
+                  text={'Specify any benefits that you want to provide '}
+                />
+                <View style={styles.inputContainer}>
+                  <CustomTextField
+                    defaultValue={prizes.first.value}
+                    keyboardType={'numeric'}
+                    onChangeText={text =>
+                      setprizes(props => {
+                        return {
+                          ...props,
+                          first: {
+                            value: text,
+                            error: '',
+                          },
+                        };
+                      })
+                    }
+                    placeholder={'Enter any perk'}
+                    placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                    textContentType={'telephoneNumber'}
+                    width={Width * 0.6}
+                    error={prizes.first.error}
+                  />
+                </View>
+              </View>
             </View>
             {/* third prize  */}
             <View style={styles.subHeadingContainer}>
@@ -133,6 +200,36 @@ const Prize: FC<props> = () => {
                   width={Width * 0.6}
                   error={prizes.third.error}
                 />
+              </View>
+              <View>
+                <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                  Perks
+                </Text>
+                <HelpText
+                  text={'Specify any benefits that you want to provide '}
+                />
+                <View style={styles.inputContainer}>
+                  <CustomTextField
+                    defaultValue={prizes.first.value}
+                    keyboardType={'numeric'}
+                    onChangeText={text =>
+                      setprizes(props => {
+                        return {
+                          ...props,
+                          first: {
+                            value: text,
+                            error: '',
+                          },
+                        };
+                      })
+                    }
+                    placeholder={'Enter any perk'}
+                    placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                    textContentType={'telephoneNumber'}
+                    width={Width * 0.6}
+                    error={prizes.first.error}
+                  />
+                </View>
               </View>
             </View>
           </View>

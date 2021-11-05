@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomDropDown from '../../../Components/CustomDropDown';
+import CustomTextField from '../../../Components/CustomTextField2';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {POST_TYPE} from '../../../Constants/sample';
 import {Height, Sizes, Width} from '../../../Constants/Size';
@@ -27,6 +28,7 @@ import Axios from '../../../Utils/Axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {useStateValue} from '../../../Store/StateProvider';
+import CustomButton from '../../../Components/CustomButton';
 
 type base = {
   navigation: any;
@@ -173,17 +175,8 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
       />
       <ScrollView>
         {/* post text view  */}
-        <View style={styles.textInputContainer}>
-          <TextInput
-            ref={textInputRef}
-            style={[
-              styles.text,
-              {
-                backgroundColor: theme.CARD_BACKGROUND_COLOR,
-                borderColor: theme.BORDER_COLOR,
-                color: theme.TEXT_COLOR,
-              },
-            ]}
+        <View style={[styles.textInputContainer]}>
+          <CustomTextField
             onChangeText={text =>
               setPost(prev => {
                 return {
@@ -192,21 +185,13 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
                 };
               })
             }
-            value={Post.text}
-            multiline
+            defaultValue={Post.text}
             placeholder={Post.textPlacholder}
-            placeholderTextColor={theme.PLACE_HOLDER_TEXT_COLOR}
-            // onFocus={() => {
-            //   if (textInputRef && textInputRef.current) {
-            //     setPost(prev => {
-            //       return {
-            //         ...prev,
-            //         textPlacholder: '',
-            //       };
-            //     });
-            //   }
-            // }}
-            // onBlur={() => console.log('Text input is blured')}
+            placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+            keyboardType={'default'}
+            textContentType={'addressCityAndState'}
+            width={Width * 0.9}
+            multiLine={true}
           />
         </View>
         {/* custom drop down  */}
@@ -260,29 +245,13 @@ const Create_Edit: FC<base> = ({navigation, route}) => {
             Add Image
           </Text>
         </View>
-
-        {/* post button view  */}
-        <View style={styles.postButtonContainer}>
-          <TouchableOpacity
-            style={[
-              styles.postButton,
-              {
-                backgroundColor: theme.GREEN_COLOR,
-              },
-            ]}
-            onPress={() => handlePost(screen)}>
-            <Text
-              style={[
-                styles.postButtonText,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              Post
-            </Text>
-          </TouchableOpacity>
-        </View>
       </ScrollView>
+
+      {/* post button view  */}
+      <CustomButton
+        onPress={() => handlePost(screen)}
+        text={screen === 'Create' ? 'Post' : 'Edit Post'}
+      />
     </View>
   );
 };

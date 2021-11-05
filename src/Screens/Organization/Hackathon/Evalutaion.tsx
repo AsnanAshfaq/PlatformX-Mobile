@@ -9,19 +9,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
-import {PROFILE_IMAGE} from '../../../Constants/sample';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {ForwardArrow, Tick} from '../../../Components/Icons';
 import CustomButton from '../../../Components/CustomButton';
-import CheckBox from '../../../Components/CheckBox';
 import Bullet from '../../../Components/Bullet';
 import CustomTextField from '../../../Components/CustomTextField2';
 import HelpText from '../../../Components/HelpText';
-import {Slider} from 'react-native-elements';
 
 const ICON_SIZE = Width * 0.07;
 

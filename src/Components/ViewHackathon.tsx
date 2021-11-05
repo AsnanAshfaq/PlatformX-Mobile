@@ -26,23 +26,9 @@ import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
 import CodeStyleSkeleton from '../Skeleton/CodeStyleSkeleton';
 import {Email} from './Icons';
+import Bullet from './Bullet';
 
 const ICON_SIZE = Width * 0.07;
-
-const Bullet: FC = () => {
-  const [{theme}, dispatch] = useStateValue();
-
-  return (
-    <View
-      style={[
-        styles.bulletView,
-        {
-          backgroundColor: theme.TEXT_COLOR,
-        },
-      ]}
-    />
-  );
-};
 
 const PrizeCard: FC = () => {
   const [{theme}, dispatch] = useStateValue();
@@ -170,8 +156,9 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
   const [BackgroundImageLoading, setBackgroundImageLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [{theme}, dispatch] = useStateValue();
+  const [state, dispatch] = useStateValue();
 
+  const {theme} = state;
   useEffect(() => {
     // fetch hackathon data
     axios
@@ -180,7 +167,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
         setHackathonData(result.data);
         setLoading(false);
       })
-      .catch(error => console.log(error));
+      .catch(error => setLoading(false));
   }, [ID]);
 
   return (
@@ -198,7 +185,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
         onBackPress={() => navigation.goBack()}
       />
 
-      {!loading ? (
+      {!loading && HackathonData ? (
         <>
           <ScrollView removeClippedSubviews>
             {/* background image  */}
@@ -222,7 +209,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
                   setBackgroundImageLoading(false);
                   ToastAndroid.show("Couldn't load background image", 1500);
                 }}
-                resizeMode={'cover'}
+                resizeMode={'contain'}
               />
             </View>
 
@@ -250,7 +237,7 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
                   style={[
                     styles.tagLineText,
                     {
-                      color: theme.TEXT_COLOR,
+                      color: theme.DIM_TEXT_COLOR,
                     },
                   ]}>
                   {HackathonData.tag_line}
@@ -305,7 +292,9 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
                       fontSize: Sizes.normal,
                       marginHorizontal: Width * 0.02,
                     }}>
-                    18asnan@gmail.com
+                    {HackathonData.contact_email
+                      ? HackathonData.contact_email
+                      : state.email}
                   </Text>
                 </View>
               </View>
@@ -353,27 +342,19 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
                   Theme Tags
                 </Text>
                 <View style={{marginLeft: Width * 0.1, marginTop: 10}}>
-                  <View style={styles.themeTagTextContainer}>
-                    <Bullet />
-                    <Text
-                      style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
-                      Online
-                    </Text>
-                  </View>
-                  <View style={styles.themeTagTextContainer}>
-                    <Bullet />
-                    <Text
-                      style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
-                      React Native Development
-                    </Text>
-                  </View>
-                  <View style={styles.themeTagTextContainer}>
-                    <Bullet />
-                    <Text
-                      style={{color: theme.TEXT_COLOR, fontSize: Sizes.normal}}>
-                      Public
-                    </Text>
-                  </View>
+                  {HackathonData.theme_tags.map(tag => (
+                    <View style={styles.themeTagTextContainer}>
+                      <Bullet />
+                      <Text
+                        style={{
+                          color: theme.TEXT_COLOR,
+                          fontSize: Sizes.normal,
+                        }}>
+                        {tag.charAt(0).toUpperCase() +
+                          tag.slice(1, tag.length).toLowerCase()}
+                      </Text>
+                    </View>
+                  ))}
                 </View>
               </View>
               <Divider size={'small'} />
@@ -518,11 +499,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   titleText: {
-    fontSize: Sizes.normal * 1.4,
+    fontSize: Sizes.normal * 1.3,
     fontFamily: 'OpenSans-Bold',
   },
   tagLineText: {
-    fontSize: Sizes.normal * 1.15,
+    fontSize: Sizes.normal * 0.9,
     fontFamily: 'OpenSans-Light',
   },
   container: {
@@ -537,15 +518,6 @@ const styles = StyleSheet.create({
   descriptionText: {
     fontSize: Sizes.normal,
     lineHeight: 25,
-  },
-  bulletView: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    marginTop: 5,
-    marginRight: 10,
   },
   prizeCard: {
     borderWidth: 1,
@@ -603,14 +575,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   prizeTitleText: {
-    fontSize: Sizes.normal * 1.3,
+    fontSize: Sizes.normal * 1.2,
     fontWeight: 'bold',
   },
   prizeMoneyText: {
     fontSize: Sizes.normal,
   },
   label: {
-    fontSize: Sizes.large * 1.1,
+    fontSize: Sizes.normal * 1.2,
     // fontFamily: 'Cindyrella',
   },
   ruleTextContainer: {

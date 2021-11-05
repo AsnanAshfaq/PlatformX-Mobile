@@ -1,3 +1,13 @@
+//TODO:
+// logo image
+// title
+// tag_line
+// theme_tags
+// days_left
+// participants
+// total_prize
+// created_at
+
 import React, {FC, useState} from 'react';
 import {
   StyleSheet,
@@ -75,10 +85,13 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
             source={{
               uri: LogoImageLoading
                 ? GREY_IMAGE
-                : BASE_URL + hackathonDetail.logo_image,
+                : hackathonDetail.logo_image
+                ? BASE_URL + hackathonDetail.logo_image
+                : GREY_IMAGE,
             }}
             onLoadEnd={() => setLogoImageLoading(false)}
             style={styles.logoImage}
+            resizeMode={'contain'}
           />
         </View>
         <View style={styles.headerTextContainer}>
