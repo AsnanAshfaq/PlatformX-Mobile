@@ -18,6 +18,7 @@ import Loading from '../../../Components/Loading';
 import Divider from '../../../Components/Divider';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
+import CustomButton from '../../../Components/CustomButton';
 
 const RulesAndRegistration: FC = () => {
   const [{theme}, dispatch] = useStateValue();
@@ -95,42 +96,6 @@ const TeamMates: FC = () => {
   );
 };
 
-const KnowHows: FC<{title: string}> = ({title}) => {
-  const [{theme}, dispatch] = useStateValue();
-
-  return (
-    <View style={styles.container}>
-      <Text
-        style={[
-          styles.label,
-          {
-            color: theme.TEXT_COLOR,
-            lineHeight: 29,
-          },
-        ]}>
-        How did you know about {title}?
-      </Text>
-      <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('platformx selected')} size={20} />
-        <Text style={[styles.knowHowText, {color: theme.TEXT_COLOR}]}>
-          PlatformX
-        </Text>
-      </View>
-      <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('friend selected')} size={20} />
-        <Text style={[styles.knowHowText, {color: theme.TEXT_COLOR}]}>
-          A friend
-        </Text>
-      </View>
-      <View style={styles.checkBoxContainer}>
-        <CheckBox onPress={() => console.log('others selected')} size={20} />
-        <Text style={[styles.knowHowText, {color: theme.TEXT_COLOR}]}>
-          Others
-        </Text>
-      </View>
-    </View>
-  );
-};
 type props = {
   navigation: any;
   route: any;
@@ -240,7 +205,7 @@ const Register: FC<props> = ({navigation, route}) => {
               style={[
                 styles.tagLineText,
                 {
-                  color: theme.TEXT_COLOR,
+                  color: theme.DIM_TEXT_COLOR,
                 },
               ]}>
               {tagline}
@@ -248,30 +213,17 @@ const Register: FC<props> = ({navigation, route}) => {
           </View>
           <Divider size={'large'} />
           <TeamMates />
-          <KnowHows title={title} />
+          {/* <KnowHows title={title} /> */}
           <RulesAndRegistration />
         </View>
       </ScrollView>
       {/* Register now  section*/}
-      <View style={styles.registerButtonContainer}>
-        <TouchableOpacity
-          style={[
-            styles.registerButton,
-            {
-              backgroundColor: theme.GREEN_COLOR,
-            },
-          ]}
-          activeOpacity={0.5}
-          onPress={() => registerHackathon()}>
-          {loading ? (
-            <Loading size={'small'} color={theme.TEXT_COLOR} />
-          ) : (
-            <Text style={[styles.registerText, {color: theme.TEXT_COLOR}]}>
-              Register
-            </Text>
-          )}
-        </TouchableOpacity>
-      </View>
+
+      <CustomButton
+        text={'Register'}
+        onPress={registerHackathon}
+        loading={loading}
+      />
     </View>
   );
 };
@@ -297,11 +249,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   titleText: {
-    fontSize: Sizes.normal * 1.4,
+    fontSize: Sizes.normal * 1.3,
     fontFamily: 'OpenSans-Bold',
   },
   tagLineText: {
-    fontSize: Sizes.normal * 1.15,
+    fontSize: Sizes.normal * 0.9,
     fontFamily: 'OpenSans-Light',
   },
   labelContainer: {
@@ -312,7 +264,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   label: {
-    fontSize: Sizes.large,
+    fontSize: Sizes.normal,
     // fontFamily: 'Cindyrella',
   },
   container: {
@@ -325,7 +277,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   rulesText: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.9,
     lineHeight: 24,
   },
   rulesCheckBoxContainer: {
@@ -337,16 +289,13 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   teamText: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.9,
   },
   knowHowText: {
-    fontSize: Sizes.normal,
-  },
-  text: {
-    fontSize: Sizes.normal * 1.1,
+    fontSize: Sizes.normal * 0.9,
   },
   terms: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.9,
     textDecorationLine: 'underline',
   },
   registerButtonContainer: {

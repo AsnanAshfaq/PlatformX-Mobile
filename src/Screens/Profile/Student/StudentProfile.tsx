@@ -99,6 +99,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [Refresh, setRefresh] = useState(false);
   const [state, dispatch] = useStateValue();
+  const {theme} = state;
 
   const [LoadBackgroundImage, setLoadBackgroundImage] = useState(true);
   const [LoadProfileImage, setLoadProfileImage] = useState(true);
@@ -208,8 +209,8 @@ const StudentProfile: FC<props> = ({navigation}) => {
             <RefreshControl
               refreshing={Refresh}
               onRefresh={onRefresh}
-              colors={[state.theme.TEXT_COLOR]}
-              progressBackgroundColor={state.theme.SHADOW_COLOR}
+              colors={[theme.REFRESH_COLOR]}
+              progressBackgroundColor={theme.REFRESHING_BACKGROUND_COLOR}
               progressViewOffset={20}
               size={Sizes.large}
             />

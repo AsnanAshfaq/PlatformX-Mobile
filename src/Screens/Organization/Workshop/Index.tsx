@@ -178,8 +178,8 @@ const Workshop: FC<props> = ({navigation}) => {
               <RefreshControl
                 refreshing={Refreshing}
                 onRefresh={onRefresh}
-                colors={[theme.TEXT_COLOR]}
-                progressBackgroundColor={theme.SHADOW_COLOR}
+                colors={[theme.REFRESH_COLOR]}
+                progressBackgroundColor={theme.REFRESHING_BACKGROUND_COLOR}
                 progressViewOffset={20}
                 size={Sizes.large}
               />

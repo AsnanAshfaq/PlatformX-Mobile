@@ -249,8 +249,11 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
           text={'Details'}
           textSize={Sizes.normal * 0.9}
           onPress={() => {
-            navigation.navigate('View_Hackathon', {
-              ID: hackathonDetail.id,
+            navigation.navigate('HackahtonScreens', {
+              screen: 'View_Hackathon',
+              params: {
+                ID: hackathonDetail.id,
+              },
             });
           }}
           width={Width * 0.3}

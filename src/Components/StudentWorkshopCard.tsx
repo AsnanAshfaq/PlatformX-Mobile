@@ -219,7 +219,12 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           text={'Details'}
           textSize={Sizes.normal * 0.9}
           onPress={() => {
-            console.log('Viewing details');
+            navigation.navigate('WorkshopScreens', {
+              screen: 'View_Workshop',
+              params: {
+                ID: workshopDetail.id,
+              },
+            });
           }}
           width={Width * 0.3}
           height={Height * 0.055}
