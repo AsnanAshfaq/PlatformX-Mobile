@@ -16,8 +16,6 @@ import {ToastAndroid} from 'react-native';
 import WorkshopCard from '../../../Components/OrganizationWorkshopCard';
 import WorkshopSkeleton from '../../../Skeleton/WorkshopCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
-import FloatingActionButton from '../../../Components/FloatingActionButton';
-
 type props = {
   navigation: any;
 };
@@ -46,6 +44,7 @@ const Workshop: FC<props> = ({navigation}) => {
           isSearching: false,
           query: '',
         });
+        // console.log('Response is ', response.data);
       })
       .catch(error => {
         setIsLoading(false);

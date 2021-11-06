@@ -19,7 +19,8 @@ import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
 import Divider from '../Components/Divider';
-import {Cash} from './Icons';
+import {Cash, ForwardArrow} from './Icons';
+import CustomButton from './CustomButton';
 const ICON_SIZE = Width * 0.07;
 
 type Props = {
@@ -33,7 +34,7 @@ const HackathonCardIcons: FC<Props> = ({name, label, cash}) => {
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
       {cash ? (
-        <Cash size={ICON_SIZE} color={theme.GREEN_COLOR} />
+        <Cash size={1} color={theme.GREEN_COLOR} />
       ) : (
         <Ionicons name={name} size={ICON_SIZE} color={theme.GREEN_COLOR} />
       )}
@@ -238,27 +239,23 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         </View>
       </View>
       {/* apply now button  */}
-      <View style={styles.applyButtonContainer}>
-        <TouchableOpacity
-          onPress={() =>
+      <View style={styles.detailsButtonContainer}>
+        <CustomButton
+          children={
+            <View style={styles.buttonIconContainer}>
+              <ForwardArrow size={0.75} />
+            </View>
+          }
+          text={'Details'}
+          textSize={Sizes.normal * 0.9}
+          onPress={() => {
             navigation.navigate('View_Hackathon', {
               ID: hackathonDetail.id,
-            })
-          }
-          style={[
-            styles.applyButton,
-            {backgroundColor: theme.BUTTON_BACKGROUND_COLOR},
-          ]}>
-          <Text
-            style={[
-              styles.applyButtonText,
-              {
-                color: theme.TEXT_COLOR,
-              },
-            ]}>
-            View Details{' '}
-          </Text>
-        </TouchableOpacity>
+            });
+          }}
+          width={Width * 0.3}
+          height={Height * 0.055}
+        />
       </View>
     </View>
   );
@@ -326,7 +323,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   tagLineText: {
-    fontSize: Sizes.normal * 1.2,
+    fontSize: Sizes.normal,
     fontFamily: 'Segoe-UI-Italic',
   },
   descriptionText: {
@@ -358,24 +355,13 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal,
     paddingHorizontal: 5,
   },
-  applyButtonContainer: {
-    // minHeight: Height * 0.05,
-    // maxHeight: Height * 0.07,
+  detailsButtonContainer: {
     flexDirection: 'row',
-    padding: 10,
-    marginTop: Height * 0.015,
     justifyContent: 'flex-end',
   },
-  applyButton: {
-    // flex: 1,
-    padding: 9,
-    width: Width * 0.35,
+  buttonIconContainer: {
     justifyContent: 'center',
+    marginHorizontal: 2,
     alignItems: 'center',
-    marginHorizontal: Width * 0.008,
-    borderRadius: 10,
-  },
-  applyButtonText: {
-    fontSize: Sizes.small,
   },
 });

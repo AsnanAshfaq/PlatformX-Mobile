@@ -41,6 +41,7 @@ const Hackathons: FC<props> = ({navigation}) => {
       .then(response => {
         setHackathons(response.data);
         setIsLoading(false);
+        console.log('Hackathon data is', response.data);
       })
       .catch(error => {
         setIsLoading(false);
@@ -158,6 +159,16 @@ const Hackathons: FC<props> = ({navigation}) => {
         bell
       />
 
+      {!IsLoading && (
+        <CustomSearch
+          placeholder={'Search hackathons'}
+          handleSearch={handleSearch}
+          applyFilters={applyFilters}
+          isShownInHeader={false}
+          showFilterIcon={true}
+        />
+      )}
+
       {Searching.isSearching ? (
         <>
           <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
@@ -167,7 +178,7 @@ const Hackathons: FC<props> = ({navigation}) => {
           <FlatList
             data={Hackathon}
             // disableVirtualization
-            ListHeaderComponent={listHeaderComponent}
+            // ListHeaderComponent={listHeaderComponent}
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             ref={ref}
             renderItem={({item: hackathon, index}: any) => {

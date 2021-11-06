@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC, useState, useEffect, Children} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,17 +11,52 @@ import {
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 import {Height, Sizes, Width} from '../Constants/Size';
 import PopUpMenu from '../Menu/WorkshopCardPopUpMenu';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
 import Divider from './Divider';
+import {Cash, ForwardArrow} from './Icons';
+import {commaSeperator} from '../Utils/Numbers';
+import CustomButton from './CustomButton';
 type props = {
   navigation: any;
   workshopDetail: any;
 };
 
-const MAX_TEXT_LENGTH = 250;
+type cardProps = {
+  name: string;
+  label: string | number;
+  cash?: boolean;
+};
+const ICON_SIZE = Width * 0.07;
+
+const WorkshopCardIcons: FC<cardProps> = ({name, label, cash}) => {
+  const {theme} = useStateValue()[0];
+
+  return (
+    <View style={{flex: 1, flexDirection: 'row'}}>
+      {cash ? (
+        <Cash size={1} color={theme.GREEN_COLOR} />
+      ) : (
+        <Ionicons name={name} size={ICON_SIZE} color={theme.GREEN_COLOR} />
+      )}
+      <View style={styles.iconTextContainer}>
+        <Text
+          style={[
+            styles.iconText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {label}
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
@@ -80,64 +115,54 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
             source={{
               uri: ProfileImageLoading
                 ? PROFILE_IMAGE
-                : BASE_URL +
-                  workshopDetail.organization.user.profile_image.path,
+                : workshopDetail.organization.user.profile_image
+                ? BASE_URL + workshopDetail.organization.user.profile_image.path
+                : PROFILE_IMAGE,
             }}
             onLoadEnd={() => setProfileImageLoading(false)}
             style={styles.userImage}
           />
         </View>
         <View style={styles.headerTextContainer}>
-          <Text style={[styles.username, {color: theme.TEXT_COLOR}]}>
+          <Text
+            style={[
+              styles.username,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
             {workshopDetail.organization.name}
           </Text>
           <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
-            {new Date(workshopDetail.created_at).toDateString()}
+            {new Date(workshopDetail.created_at).toDateString() ===
+            new Date(workshopDetail.updated_at).toDateString()
+              ? `${new Date(workshopDetail.created_at).toDateString()}`
+              : `Updated at ${new Date(
+                  workshopDetail.updated_at,
+                ).toDateString()}`}
           </Text>
         </View>
         {/* right icon  */}
         <View style={styles.headerIconContainer}>
           <PopUpMenu
             navigation={navigation}
+            handleShare={handleShare}
             handleBookmark={handleBookmark}
             handleReport={handleReport}
-            handleShare={handleShare}
           />
         </View>
       </View>
       <Divider width={Width * 0.92} />
 
       {/* content  */}
-      <View style={styles.contentContainer}>
+      <View style={[styles.topicContainer, styles.center]}>
         {/* title  */}
-        <Text style={[styles.titleText, {color: theme.TEXT_COLOR}]}>
-          {workshopDetail.title}
+        <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
+          {workshopDetail.topic}
         </Text>
-        {/* description  */}
-        {workshopDetail.description.length > MAX_TEXT_LENGTH ? (
-          <Text>
-            <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
-              {workshopDetail.description.substring(0, MAX_TEXT_LENGTH - 4)}
-            </Text>
-            <TouchableWithoutFeedback
-              onPress={() =>
-                navigation.navigate('View_Hackathon', {
-                  ID: workshopDetail.id,
-                })
-              }>
-              <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
-                ... {'  '}read more
-              </Text>
-            </TouchableWithoutFeedback>
-          </Text>
-        ) : (
-          <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
-            {workshopDetail.description}
-          </Text>
-        )}
       </View>
       {/* workshop poster  */}
-      <View style={styles.thumbnailContainer}>
+      <View style={[styles.posterContainer, styles.center]}>
         <Image
           source={{
             uri: WokrshopPosterLoading
@@ -152,24 +177,53 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
             });
           }}
           style={{
-            width: Width * 0.92,
-            height: Width * ImageAspectRatio * 0.9,
+            width: Width * 0.78,
+            height: Width * ImageAspectRatio * 0.78,
+            borderRadius: 20,
           }}
-          resizeMode={'contain'}
+          resizeMode={'contain'} //contain
         />
       </View>
+      {/* if workshop is paid */}
+      <View style={{marginTop: 10}}>
+        {workshopDetail.is_paid && (
+          <View style={styles.iconContainer}>
+            <WorkshopCardIcons
+              cash
+              name={'cash-outline'}
+              label={`Rs ${commaSeperator(workshopDetail.charges)}`}
+            />
+          </View>
+        )}
+
+        <View style={styles.iconContainer}>
+          <WorkshopCardIcons
+            name={'time-outline'}
+            label={`${workshopDetail.days_left}${' '}${
+              workshopDetail.days_left !== 1 ? 'days' : 'day'
+            } left `}
+          />
+        </View>
+        <View style={{marginTop: 5, marginHorizontal: Width * 0.04}}>
+          <WorkshopCardIcons name={'people-sharp'} label={'0 Participants'} />
+        </View>
+      </View>
       {/* apply now button  */}
-      <View style={styles.applyButtonContainer}>
-        <TouchableOpacity
-          onPress={() => console.log('Trying to apply in workshop')}
-          style={[
-            styles.applyButton,
-            {backgroundColor: theme.BUTTON_BACKGROUND_COLOR},
-          ]}>
-          <Text style={[styles.applyButtonText, {color: theme.TEXT_COLOR}]}>
-            View Details{' '}
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.detailsButtonContainer}>
+        <CustomButton
+          children={
+            <View style={styles.buttonIconContainer}>
+              <ForwardArrow size={0.75} />
+            </View>
+          }
+          text={'Details'}
+          textSize={Sizes.normal * 0.9}
+          onPress={() => {
+            console.log('Viewing details');
+          }}
+          width={Width * 0.3}
+          height={Height * 0.055}
+        />
       </View>
     </View>
   );
@@ -189,6 +243,10 @@ const styles = StyleSheet.create({
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
     elevation: 5,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   headerContainer: {
     minHeight: Height * 0.08,
@@ -222,46 +280,40 @@ const styles = StyleSheet.create({
   date: {
     fontSize: Sizes.normal * 0.75,
   },
-  contentContainer: {
-    marginVertical: 10,
-    paddingHorizontal: 10,
+  topicContainer: {
+    marginBottom: 10,
   },
-  titleText: {
-    fontSize: Sizes.normal * 1.5,
-    fontFamily: 'Raleway-Light',
+  topicText: {
+    fontSize: Sizes.normal * 1.2,
+    fontFamily: 'OpenSans-Bold',
   },
   descriptionText: {
     fontSize: Sizes.normal,
     lineHeight: 24,
   },
-  thumbnailContainer: {
-    // width: Width * 0.9,
-    // minHeight: Height * 0.25,
-    // maxHeight: Height * 0.3,
-    // // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'flex-start',
-    // backgroundColor: 'red',
-    // marginRight: 20,
-    // marginRight: 20,
+  posterContainer: {
     marginHorizontal: 0,
   },
-  applyButtonContainer: {
-    padding: 10,
-    flexDirection: 'row',
-    marginTop: Height * 0.02,
-    justifyContent: 'flex-end',
+  iconContainer: {
+    marginVertical: 5,
+    marginHorizontal: Width * 0.04,
   },
-  applyButton: {
-    // flex: 1,
-    padding: 9,
-    width: Width * 0.35,
+  iconTextContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: Width * 0.008,
-    borderRadius: 10,
+    marginLeft: 5,
   },
-  applyButtonText: {
-    fontSize: Sizes.small,
+  iconText: {
+    fontSize: Sizes.normal,
+    paddingHorizontal: 5,
+  },
+  detailsButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  buttonIconContainer: {
+    justifyContent: 'center',
+    marginHorizontal: 2,
+    alignItems: 'center',
   },
 });
