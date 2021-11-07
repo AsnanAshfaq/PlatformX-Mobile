@@ -6,7 +6,7 @@ import Chat from './Chat';
 import Notification from './Notification';
 import Settings from './Settings';
 import HackahtonScreens from './Hackathon';
-import WorkshoScreens from './Workshop';
+import WorkshopScreens from './Workshop';
 const Stack = createStackNavigator();
 
 const StudentScreens = () => {
@@ -28,7 +28,7 @@ const StudentScreens = () => {
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="HackahtonScreens" component={HackahtonScreens} />
-      <Stack.Screen name="WorkshopScreens" component={WorkshoScreens} />
+      <Stack.Screen name="WorkshopScreens" component={WorkshopScreens} />
     </Stack.Navigator>
   );
 };

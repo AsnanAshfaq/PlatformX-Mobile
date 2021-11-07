@@ -15,6 +15,7 @@ const HackathonScreens = () => {
       screenOptions={{header: () => null}}
       initialRouteName={'View_Workshop'}>
       <Stack.Screen name="View_Workshop" component={ViewWorkshop} />
+      {/* <Stack.Screen name="Join_Workshop" component={JoinWorkshop} /> */}
     </Stack.Navigator>
   );
 };
