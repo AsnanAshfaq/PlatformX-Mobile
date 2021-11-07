@@ -179,4 +179,34 @@ export const Email: FC<props> = ({size, color}) => {
   );
 };
 
+export const Github: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+  return (
+    <Ionicons
+      name={'logo-github'}
+      color={color ? color : theme.ICON_COLOR}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+    />
+  );
+};
+export const LinkedIn: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+  return (
+    <Ionicons
+      name={'logo-linkedin'}
+      color={color ? color : theme.ICON_COLOR}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+    />
+  );
+};
+export const Twitter: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+  return (
+    <Ionicons
+      name={'logo-twitter'}
+      color={color ? color : theme.ICON_COLOR}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+    />
+  );
+};
 const styles = StyleSheet.create({});

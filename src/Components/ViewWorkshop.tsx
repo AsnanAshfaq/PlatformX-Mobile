@@ -6,11 +6,12 @@ import CustomButton from './CustomButton';
 import CustomHeader from './CustomHeader';
 import axios from '../Utils/Axios';
 import Foundation from 'react-native-vector-icons/Foundation';
+import IonIcons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ListSkeleton from '../Skeleton/ListSkeleton';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Bullet from './Bullet';
-import {Calendar} from './Icons';
+import {Calendar, Github, LinkedIn, Twitter} from './Icons';
 type props = {
   navigation: any;
   route: any;
@@ -38,6 +39,38 @@ const SCHEDULE = [
   {
     time: '12:00PM',
     label: 'Network requests and forms',
+  },
+];
+
+const TAKE_AWAYS = [
+  'Learn how Reat Native enables you to build two apps with one codebase',
+  'Use native components exposed by the platform',
+  'State management using React hooks',
+  'Display data dynamically from APIs',
+  'Persist data across app launches',
+  'Spice up your app with animations',
+];
+
+const SPEAKER = [
+  {
+    name: 'Muhammad Asnan Ashfaq',
+    image: 'https://avatars.githubusercontent.com/u/65377376?v=4',
+    about:
+      'Asnan is a Senior Software Engineer at Formidable Labs. Her career started off with Mathematics and Python, and has been gradually moving up the stack. She has now been building apps with React for the past four years, and with React Native for with the past two years. ',
+    social_links: [
+      {
+        tag: 'github',
+        link: 'https://github.com/AsnanAshfaq',
+      },
+      {
+        tag: 'linkedin',
+        link: 'https://www.linkedin.com/in/muhammad-asnan-b32243189/',
+      },
+      {
+        tag: 'twitter',
+        link: 'https://twitter.com/shanay_ash',
+      },
+    ],
   },
 ];
 const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
@@ -160,32 +193,37 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
                   By participating along with us in the workshop, you'll learn:
                 </Text>
               </View>
-              <View style={[styles.takeAwayPointsContainer]}>
+              {TAKE_AWAYS.map((take_away, index) => (
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                  }}>
+                  style={[
+                    styles.takeAwayRowContainer,
+                    {marginVertical: index === TAKE_AWAYS.length - 1 ? 15 : 0}, // adding margin vertical only to last item
+                  ]}>
                   <View
                     style={{
-                      paddingRight: 3,
-                      paddingTop: 3,
-                      flex: 0.1,
+                      flexDirection: 'row',
+                      flex: 1,
                     }}>
-                    <Bullet />
-                  </View>
-                  <View style={{flex: 0.9}}>
-                    <Text
-                      style={[
-                        styles.takeAwayPointsText,
-                        {color: theme.TEXT_COLOR},
-                      ]}>
-                      Learn how React Native enables you to build two apps with
-                      on codebase
-                    </Text>
+                    <View
+                      style={{
+                        paddingRight: 3,
+                        paddingTop: 3,
+                        flex: 0.1,
+                      }}>
+                      <Bullet />
+                    </View>
+                    <View style={{flex: 0.9}}>
+                      <Text
+                        style={[
+                          styles.takeAwayPointsText,
+                          {color: theme.TEXT_COLOR},
+                        ]}>
+                        {take_away}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
+              ))}
             </View>
 
             {/* schedule  */}
@@ -265,6 +303,96 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
                 </View>
               ))}
             </View>
+
+            {/* speaker  */}
+            <View
+              style={[
+                styles.center,
+                styles.card,
+                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+              ]}>
+              <View style={[styles.center, styles.cardIconContainer]}>
+                <IonIcons
+                  name={'mic'}
+                  size={ICON_SIZE * 1.5}
+                  color={theme.GREEN_COLOR}
+                />
+              </View>
+              <View style={[styles.center, styles.cardHeadingContainer]}>
+                <Text
+                  style={[
+                    styles.cardHeadingText,
+                    {color: theme.DIM_TEXT_COLOR},
+                  ]}>
+                  Speaker{SPEAKER.length > 1 && 's'}
+                </Text>
+              </View>
+              {SPEAKER.map((speaker, index) => (
+                <View style={[styles.speakerContainer]} key={index}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                    }}>
+                    <View style={[styles.speakerImageContainer]}>
+                      <Image
+                        source={{uri: speaker.image}}
+                        style={styles.speakerImage}
+                      />
+                    </View>
+                    <View style={[styles.speakerNameContainer]}>
+                      <Text
+                        style={[
+                          styles.speakerNameText,
+                          {color: theme.TEXT_COLOR},
+                        ]}>
+                        {speaker.name}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.speakerAboutContainer}>
+                    <Text
+                      style={[
+                        styles.speakerAboutText,
+                        {color: theme.TEXT_COLOR},
+                      ]}>
+                      {speaker.about}
+                    </Text>
+                  </View>
+                  <View
+                    style={[styles.speakerReachTextContainer, styles.center]}>
+                    <Text
+                      style={[
+                        styles.normalText,
+                        {color: theme.DIM_TEXT_COLOR},
+                      ]}>
+                      Reach me at
+                    </Text>
+                  </View>
+                  <View style={[styles.speakerReachIconContainer]}>
+                    {speaker.social_links.map((links, index) => (
+                      <>
+                        {links.tag === 'github' && (
+                          <View style={styles.iconMargin}>
+                            <Github size={1.3} />
+                          </View>
+                        )}
+                        {links.tag === 'linkedin' && (
+                          <View style={styles.iconMargin}>
+                            <LinkedIn size={1.3} />
+                          </View>
+                        )}
+                        {links.tag === 'twitter' && (
+                          <View style={styles.iconMargin}>
+                            <Twitter size={1.3} />
+                          </View>
+                        )}
+                      </>
+                    ))}
+                  </View>
+                </View>
+              ))}
+            </View>
           </ScrollView>
 
           {screen === 'student' && (
@@ -340,13 +468,14 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     textAlign: 'center',
   },
-  takeAwayPointsContainer: {
+  takeAwayRowContainer: {
     marginHorizontal: Width * 0.065,
-    marginVertical: 10,
+    marginTop: 10,
     flexDirection: 'row',
   },
   takeAwayPointsText: {
-    fontSize: Sizes.normal * 0.75,
+    fontSize: Sizes.normal * 0.8,
+    fontWeight: 'bold',
     lineHeight: 18,
     flexShrink: 1,
   },
@@ -373,5 +502,48 @@ const styles = StyleSheet.create({
   scheduleLabelContainer: {
     flex: 0.65,
     alignItems: 'flex-start',
+  },
+  speakerContainer: {
+    marginHorizontal: Width * 0.065,
+    marginTop: 10,
+    flex: 1,
+    flexDirection: 'column',
+  },
+  speakerImageContainer: {
+    flex: 0.25,
+  },
+  speakerNameContainer: {
+    flex: 0.75,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  speakerImage: {
+    width: Width * 0.15,
+    height: Width * 0.15,
+    borderRadius: 14,
+    borderColor: 'transparent',
+  },
+  speakerNameText: {
+    fontSize: Sizes.normal * 0.95,
+  },
+  speakerAboutContainer: {
+    marginVertical: 10,
+  },
+  speakerAboutText: {
+    fontSize: Sizes.normal * 0.8,
+    lineHeight: 22,
+    textAlign: 'left',
+  },
+  speakerReachTextContainer: {
+    marginVertical: 10,
+  },
+  speakerReachIconContainer: {
+    marginHorizontal: Width * 0.065,
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  iconMargin: {
+    marginHorizontal: Width * 0.04,
   },
 });
