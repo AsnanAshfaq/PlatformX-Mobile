@@ -1,6 +1,14 @@
 import React, {FC, useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableWithoutFeedback,
+  Linking,
+  ScrollView,
+} from 'react-native';
+
 import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
 import CustomHeader from './CustomHeader';
@@ -8,10 +16,12 @@ import axios from '../Utils/Axios';
 import Foundation from 'react-native-vector-icons/Foundation';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListSkeleton from '../Skeleton/ListSkeleton';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Bullet from './Bullet';
-import {Calendar, Github, LinkedIn, Twitter} from './Icons';
+import {Calendar, Cash, Github, LinkedIn, Twitter} from './Icons';
+import {commaSeperator} from '../Utils/Numbers';
 type props = {
   navigation: any;
   route: any;
@@ -73,6 +83,11 @@ const SPEAKER = [
     ],
   },
 ];
+
+const PREREQUISITES = [
+  'You will need  a Windows, Mac or Linux machine with Node.js installed, and a physical Android or IPhone device.',
+];
+
 const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
   const [loading, setLoading] = useState(true);
   const [WorkshopData, setWorkshopData] = useState({});
@@ -373,22 +388,119 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
                     {speaker.social_links.map((links, index) => (
                       <>
                         {links.tag === 'github' && (
-                          <View style={styles.iconMargin}>
-                            <Github size={1.3} />
-                          </View>
+                          <TouchableWithoutFeedback
+                            onPress={() => Linking.openURL(links.link)}>
+                            <View style={styles.iconMargin}>
+                              <Github size={1.3} />
+                            </View>
+                          </TouchableWithoutFeedback>
                         )}
                         {links.tag === 'linkedin' && (
-                          <View style={styles.iconMargin}>
-                            <LinkedIn size={1.3} />
-                          </View>
+                          <TouchableWithoutFeedback
+                            onPress={() => Linking.openURL(links.link)}>
+                            <View style={styles.iconMargin}>
+                              <LinkedIn size={1.3} />
+                            </View>
+                          </TouchableWithoutFeedback>
                         )}
                         {links.tag === 'twitter' && (
-                          <View style={styles.iconMargin}>
-                            <Twitter size={1.3} />
-                          </View>
+                          <TouchableWithoutFeedback
+                            onPress={() => Linking.openURL(links.link)}>
+                            <View style={styles.iconMargin}>
+                              <Twitter size={1.3} />
+                            </View>
+                          </TouchableWithoutFeedback>
                         )}
                       </>
                     ))}
+                  </View>
+                </View>
+              ))}
+            </View>
+
+            {/* charges  */}
+            <View
+              style={[
+                styles.center,
+                styles.card,
+                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+              ]}>
+              <View style={[styles.center, styles.cardIconContainer]}>
+                <Cash color={theme.GREEN_COLOR} size={1.5} />
+              </View>
+              <View style={[styles.center, styles.cardHeadingContainer]}>
+                <Text
+                  style={[
+                    styles.cardHeadingText,
+                    {color: theme.DIM_TEXT_COLOR},
+                  ]}>
+                  Charges{' '}
+                </Text>
+              </View>
+              <View
+                style={[styles.center, styles.container, {marginBottom: 10}]}>
+                <Text style={[styles.chargesText, {color: theme.TEXT_COLOR}]}>
+                  Rs {commaSeperator(2000)}
+                </Text>
+              </View>
+            </View>
+            {/* pre-requisites  */}
+
+            <View
+              style={[
+                styles.center,
+                styles.card,
+                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+              ]}>
+              <View style={[styles.center, styles.cardIconContainer]}>
+                <MaterialCommunityIcons
+                  name={'notebook'}
+                  size={ICON_SIZE * 1.5}
+                  color={theme.GREEN_COLOR}
+                />
+              </View>
+              <View style={[styles.center, styles.cardHeadingContainer]}>
+                <Text
+                  style={[
+                    styles.cardHeadingText,
+                    {color: theme.DIM_TEXT_COLOR},
+                  ]}>
+                  Prerequisites
+                </Text>
+              </View>
+              <View style={[styles.container]}>
+                <Text
+                  style={[
+                    {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
+                  ]}>
+                  Following are the prerequisites to attend this workshop{' '}
+                </Text>
+              </View>
+              {PREREQUISITES.map((pre, index) => (
+                <View
+                  style={[
+                    styles.takeAwayRowContainer,
+                    {marginVertical: index === TAKE_AWAYS.length - 1 ? 15 : 0}, // adding margin vertical only to last item
+                  ]}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                    }}>
+                    <View
+                      style={{
+                        paddingRight: 3,
+                        paddingTop: 3,
+                        flex: 0.1,
+                      }}>
+                      <Bullet />
+                    </View>
+                    <View style={{flex: 0.9}}>
+                      <Text
+                        style={[styles.preReqText, {color: theme.TEXT_COLOR}]}>
+                        {pre}
+                      </Text>
+                    </View>
                   </View>
                 </View>
               ))}
@@ -476,7 +588,7 @@ const styles = StyleSheet.create({
   takeAwayPointsText: {
     fontSize: Sizes.normal * 0.8,
     fontWeight: 'bold',
-    lineHeight: 18,
+    lineHeight: 20,
     flexShrink: 1,
   },
   scheduleRowContainer: {
@@ -545,5 +657,14 @@ const styles = StyleSheet.create({
   },
   iconMargin: {
     marginHorizontal: Width * 0.04,
+  },
+  chargesTextContainer: {},
+  chargesText: {
+    fontSize: Sizes.normal * 1.2,
+  },
+  preReqText: {
+    fontSize: Sizes.normal * 0.8,
+    lineHeight: 20,
+    flexShrink: 1,
   },
 });
