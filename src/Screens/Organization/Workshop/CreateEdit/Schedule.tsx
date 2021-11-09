@@ -21,7 +21,124 @@ import DateTimePicker from '../../../../Components/DateTimePicker';
 import {Calendar, Clock, PlusCircle} from '../../../../Components/Icons';
 import CustomTextField from '../../../../Components/CustomTextField2';
 
+type Props = {};
+const BreakDowns: FC<Props> = ({}) => {
+  const {theme} = useStateValue()[0];
+
+  const [breakDowns, setbreakDowns] = useState({
+    time: {value: new Date().toLocaleTimeString(), error: ''},
+    activity: {value: '', error: ''},
+  });
+
+  const [modal, setmodal] = useState(false);
+
+  const openModal = () => {
+    setmodal(true);
+  };
+  return (
+    <>
+      <DateTimePicker
+        open={modal}
+        date={new Date()}
+        mode={'time'}
+        setDate={response => {
+          // hide modal first
+          setmodal(false);
+          const getTime = new Date(response).toLocaleTimeString();
+          setbreakDowns(props => {
+            return {
+              ...props,
+              time: {
+                value: getTime,
+                error: '',
+              },
+            };
+          });
+        }}
+        cancel={() => setmodal(false)}
+      />
+      <View
+        style={{
+          // marginHorizontal: Width * 0.009,
+          flexDirection: 'row',
+          flex: 1,
+          justifyContent: 'center',
+        }}>
+        <View
+          style={[
+            styles.subHeadingContainer,
+            {flex: 0.5, justifyContent: 'center', alignItems: 'center'},
+          ]}>
+          <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
+            <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+              Time
+            </Text>
+          </View>
+          <View style={styles.breakDownListContainer}>
+            <TouchableOpacity
+              onPress={openModal}
+              style={[
+                styles.cardContainer,
+                {
+                  backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                  width: Width * 0.4,
+                },
+              ]}>
+              <View style={styles.cardTextContainer}>
+                <Text
+                  style={[styles.breakDownTimeText, {color: theme.TEXT_COLOR}]}>
+                  {breakDowns.time.value}
+                </Text>
+              </View>
+              <View style={styles.cardIconContainer}>
+                <Clock size={0.7} color={theme.GREEN_COLOR} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View
+          style={[
+            styles.subHeadingContainer,
+            {flex: 0.5, justifyContent: 'center', alignItems: 'center'},
+          ]}>
+          <View style={[styles.headingContainer]}>
+            <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+              Activity
+            </Text>
+          </View>
+          <View style={styles.breakDownListContainer}>
+            <View
+              style={[
+                {
+                  marginTop: 10,
+                  padding: 8,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: Width * 0.4,
+                },
+              ]}>
+              <CustomTextField
+                defaultValue={''}
+                keyboardType={'default'}
+                onChangeText={text => console.log('Activity text is', text)}
+                placeholder={'Enter an activity'}
+                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                textContentType={'streetAddressLine2'}
+                //   maxLength={3}
+                error={''}
+                width={Width * 0.4}
+                height={Width * 0.11}
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+    </>
+  );
+};
 type props = {};
+
 const General: FC<props> = () => {
   const {theme} = useStateValue()[0];
 
@@ -248,97 +365,7 @@ const General: FC<props> = () => {
               }
             />
             {/* time an activity container  */}
-            <View
-              style={{
-                // marginHorizontal: Width * 0.009,
-                flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'center',
-              }}>
-              <View
-                style={[
-                  styles.subHeadingContainer,
-                  {flex: 0.5, justifyContent: 'center', alignItems: 'center'},
-                ]}>
-                <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
-                  <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
-                    Time
-                  </Text>
-                </View>
-                <View style={styles.breakDownListContainer}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      setmodal(props => {
-                        return {
-                          ...props,
-                          isShown: true,
-                          mode: 'time',
-                          type: 'end',
-                        };
-                      })
-                    }
-                    style={[
-                      styles.cardContainer,
-                      {
-                        backgroundColor: theme.CARD_BACKGROUND_COLOR,
-                        width: Width * 0.4,
-                      },
-                    ]}>
-                    <View style={styles.cardTextContainer}>
-                      <Text
-                        style={[
-                          styles.breakDownTimeText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {Input.end_time.value}
-                      </Text>
-                    </View>
-                    <View style={styles.cardIconContainer}>
-                      <Clock size={0.7} color={theme.GREEN_COLOR} />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View
-                style={[
-                  styles.subHeadingContainer,
-                  {flex: 0.5, justifyContent: 'center', alignItems: 'center'},
-                ]}>
-                <View style={[styles.headingContainer]}>
-                  <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
-                    Activity
-                  </Text>
-                </View>
-                <View style={styles.breakDownListContainer}>
-                  <View
-                    style={[
-                      {
-                        marginTop: 10,
-                        padding: 8,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: Width * 0.4,
-                      },
-                    ]}>
-                    <CustomTextField
-                      defaultValue={''}
-                      keyboardType={'default'}
-                      onChangeText={text =>
-                        console.log('Activity text is', text)
-                      }
-                      placeholder={'Enter an activity'}
-                      placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                      textContentType={'streetAddressLine2'}
-                      //   maxLength={3}
-                      error={''}
-                      width={Width * 0.4}
-                      height={Width * 0.11}
-                    />
-                  </View>
-                </View>
-              </View>
-            </View>
+            <BreakDowns />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
