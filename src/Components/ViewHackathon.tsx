@@ -597,21 +597,4 @@ const styles = StyleSheet.create({
   sponsorURL: {
     fontSize: Sizes.normal,
   },
-  joinNowButtonContainer: {
-    height: Width * 0.14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  joinNowButton: {
-    width: Width * 0.9,
-    // marginHorizontal: Width * 0.05,
-    height: Width * 0.12,
-    justifyContent: 'center',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  joinNowText: {
-    fontSize: Sizes.large,
-  },
 });

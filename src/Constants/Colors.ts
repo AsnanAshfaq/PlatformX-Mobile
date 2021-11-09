@@ -49,7 +49,7 @@ export const darkColors = {
   MODAL_BACKGROUND_COLOR: '#030304',
   POP_UP_BACKGROUND_COLOR: '#181b21',
   SVG_IMAGE_COLOR: '#707070',
-  SLIDER_BACKGROUND_COLOR: '#1d222b', // used in host hackathon slider
+  SLIDER_BACKGROUND_COLOR: '#0c0e11', // used in host hackathon slider
   REFRESHING_BACKGROUND_COLOR: '#030304',
   REFRESH_COLOR: '#ededed',
 };

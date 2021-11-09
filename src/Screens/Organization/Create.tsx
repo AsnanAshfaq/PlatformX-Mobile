@@ -76,7 +76,14 @@ const Create: FC<props> = ({navigation}) => {
         <Card
           title={'Workshop'}
           description={`Structured, design-thinking workshops created in minutes: facilitate inclusive, productive, and engaging sessions with confidence.${'\n'}START SCHEDULING YOUR WORKSHOPS NOW.`}
-          onPress={() => console.log('Pressed on workshop')}
+          onPress={() =>
+            navigation.navigate('WorkshopScreens', {
+              screen: 'Create_Edit_Workshop',
+              params: {
+                screen: 'edit',
+              },
+            })
+          }
         />
         <Card
           title={`F.Y.P${"'"}s`}
@@ -133,8 +140,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cardDescText: {
-    fontSize: Sizes.normal * 0.83,
+    fontSize: Sizes.normal * 0.88,
     lineHeight: 20,
+    textAlign: 'center',
   },
   buttonContainer: {
     width: 40,

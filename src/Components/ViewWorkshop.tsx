@@ -444,13 +444,16 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
                 </Text>
               </View>
             </View>
-            {/* pre-requisites  */}
 
+            {/* pre-requisites  */}
             <View
               style={[
                 styles.center,
                 styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                {
+                  backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                  marginBottom: 10,
+                },
               ]}>
               <View style={[styles.center, styles.cardIconContainer]}>
                 <MaterialCommunityIcons
@@ -480,7 +483,10 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
                 <View
                   style={[
                     styles.takeAwayRowContainer,
-                    {marginVertical: index === TAKE_AWAYS.length - 1 ? 15 : 0}, // adding margin vertical only to last item
+                    {
+                      marginVertical:
+                        index === PREREQUISITES.length - 1 ? 10 : 0,
+                    }, // adding margin vertical only to last item
                   ]}>
                   <View
                     style={{
