@@ -139,7 +139,7 @@ const BreakDowns: FC<Props> = ({}) => {
 };
 type props = {};
 
-const General: FC<props> = () => {
+const Schedule: FC<props> = () => {
   const {theme} = useStateValue()[0];
 
   const [Input, setInput] = useState({
@@ -379,7 +379,7 @@ const General: FC<props> = () => {
   );
 };
 
-export default General;
+export default Schedule;
 
 const styles = StyleSheet.create({
   parent: {
