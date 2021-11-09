@@ -12,14 +12,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import CustomButton from '../../../../Components/CustomButton';
-import CustomTextField from '../../../../Components/CustomTextField2';
 import {Height, Sizes, Width} from '../../../../Constants/Size';
 import {useStateValue} from '../../../../Store/StateProvider';
 import CheckBox from '../../../../Components/CheckBox';
 import {hackathonThemeTags} from '../../../../Constants/sample';
 import HelpText from '../../../../Components/HelpText';
 import DateTimePicker from '../../../../Components/DateTimePicker';
-import {Calendar, Clock} from '../../../../Components/Icons';
+import {Calendar, Clock, PlusCircle} from '../../../../Components/Icons';
+import CustomTextField from '../../../../Components/CustomTextField2';
 
 type props = {};
 const General: FC<props> = () => {
@@ -230,6 +230,116 @@ const General: FC<props> = () => {
               </TouchableOpacity>
             </View>
           </View>
+          {/* breakdown container */}
+          <View style={styles.container}>
+            <View style={{flexDirection: 'row'}}>
+              <View style={[styles.headingContainer, {flex: 0.9}]}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  BreakDown{' '}
+                </Text>
+              </View>
+              <View style={{flex: 0.1}}>
+                <PlusCircle color={theme.GREEN_COLOR} />
+              </View>
+            </View>
+            <HelpText
+              text={
+                'List the timeline of your workshop with respect to workshop activities.'
+              }
+            />
+            {/* time an activity container  */}
+            <View
+              style={{
+                // marginHorizontal: Width * 0.009,
+                flexDirection: 'row',
+                flex: 1,
+                justifyContent: 'center',
+              }}>
+              <View
+                style={[
+                  styles.subHeadingContainer,
+                  {flex: 0.5, justifyContent: 'center', alignItems: 'center'},
+                ]}>
+                <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
+                  <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                    Time
+                  </Text>
+                </View>
+                <View style={styles.breakDownListContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      setmodal(props => {
+                        return {
+                          ...props,
+                          isShown: true,
+                          mode: 'time',
+                          type: 'end',
+                        };
+                      })
+                    }
+                    style={[
+                      styles.cardContainer,
+                      {
+                        backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                        width: Width * 0.4,
+                      },
+                    ]}>
+                    <View style={styles.cardTextContainer}>
+                      <Text
+                        style={[
+                          styles.breakDownTimeText,
+                          {color: theme.TEXT_COLOR},
+                        ]}>
+                        {Input.end_time.value}
+                      </Text>
+                    </View>
+                    <View style={styles.cardIconContainer}>
+                      <Clock size={0.7} color={theme.GREEN_COLOR} />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View
+                style={[
+                  styles.subHeadingContainer,
+                  {flex: 0.5, justifyContent: 'center', alignItems: 'center'},
+                ]}>
+                <View style={[styles.headingContainer]}>
+                  <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                    Activity
+                  </Text>
+                </View>
+                <View style={styles.breakDownListContainer}>
+                  <View
+                    style={[
+                      {
+                        marginTop: 10,
+                        padding: 8,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: Width * 0.4,
+                      },
+                    ]}>
+                    <CustomTextField
+                      defaultValue={''}
+                      keyboardType={'default'}
+                      onChangeText={text =>
+                        console.log('Activity text is', text)
+                      }
+                      placeholder={'Enter an activity'}
+                      placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                      textContentType={'streetAddressLine2'}
+                      //   maxLength={3}
+                      error={''}
+                      width={Width * 0.4}
+                      height={Width * 0.11}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
 
@@ -264,6 +374,13 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: Sizes.normal * 1.1,
+  },
+  subHeadingContainer: {
+    marginTop: 5,
+    marginLeft: 10,
+  },
+  subHeading: {
+    fontSize: Sizes.normal * 0.9,
   },
   inputContainer: {
     marginTop: 4,
@@ -300,5 +417,9 @@ const styles = StyleSheet.create({
   center: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  breakDownListContainer: {},
+  breakDownTimeText: {
+    fontSize: Sizes.normal * 0.85,
   },
 });
