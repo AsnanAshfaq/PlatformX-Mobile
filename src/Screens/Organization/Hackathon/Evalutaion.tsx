@@ -18,6 +18,7 @@ import CustomButton from '../../../Components/CustomButton';
 import Bullet from '../../../Components/Bullet';
 import CustomTextField from '../../../Components/CustomTextField2';
 import HelpText from '../../../Components/HelpText';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -94,6 +95,7 @@ const Evaluation: FC<props> = ({navigation, route}) => {
     design: {value: '', error: ''},
     problem: {value: '', error: ''},
     remarks: {value: '', error: ''},
+    rating: 1,
   });
 
   return (
@@ -210,6 +212,23 @@ const Evaluation: FC<props> = ({navigation, route}) => {
               Overall Status
             </Text>
           </View>
+          <AirbnbRating
+            defaultRating={1}
+            size={20}
+            count={5}
+            reviews={['Terrible', 'Bad', 'Fair', 'Good', 'Amazing']}
+            reviewSize={Sizes.normal * 1.2}
+            reviewColor={theme.TEXT_COLOR}
+            selectedColor={theme.GREEN_COLOR}
+            onFinishRating={rating =>
+              setInput(props => {
+                return {
+                  ...props,
+                  rating: rating,
+                };
+              })
+            }
+          />
         </View>
         {/* final remarks container  */}
         <View style={styles.container}>
