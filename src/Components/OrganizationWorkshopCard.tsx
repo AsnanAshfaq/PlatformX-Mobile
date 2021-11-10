@@ -8,16 +8,17 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
-import PopUpMenu from '../Menu/OrganizationHackathonCardPopUpMenu';
-import {GREY_IMAGE} from '../Constants/sample';
+import PopUpMenu from '../Menu/OrganizationWorkshopCardPopUpMenu';
+import {GREY_IMAGE, PROFILE_IMAGE} from '../Constants/sample';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
 import Divider from '../Components/Divider';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Cash, Clock, ForwardArrow, People, Tag} from './Icons';
-
+import CustomButton from './CustomButton';
 const ICON_SIZE = Width * 0.07;
 
 type props = {
@@ -25,8 +26,40 @@ type props = {
   workshopDetail: any;
 };
 
+type cardProps = {
+  name: string;
+  label: string | number;
+  cash?: boolean;
+};
+const WorkshopCardIcons: FC<cardProps> = ({name, label, cash}) => {
+  const {theme} = useStateValue()[0];
+
+  return (
+    <View style={{flex: 1, flexDirection: 'row'}}>
+      {cash ? (
+        <Cash size={1} color={theme.GREEN_COLOR} />
+      ) : (
+        <Ionicons name={name} size={ICON_SIZE} color={theme.GREEN_COLOR} />
+      )}
+      <View style={styles.iconTextContainer}>
+        <Text
+          style={[
+            styles.iconText,
+            {
+              color: theme.TEXT_COLOR,
+            },
+          ]}>
+          {label}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
 const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
-  const [LogoImageLoading, setLogoImageLoading] = useState(true); // logo image
+  const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
+  const [WokrshopPosterLoading, setWokrshopPosterLoading] = useState(true);
+  const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
 
   const handleDelete = () => {
@@ -36,8 +69,6 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   const handleEdit = () => {
     console.log('Handling hackathon edit option');
   };
-
-  console.log('Workshop details are');
 
   return (
     <View
@@ -49,77 +80,126 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
         },
       ]}>
       {/* header  */}
-      <View style={styles.headerContainer}>
-        {/* logo image  */}
+      <View style={[styles.headerContainer]}>
+        {/* user image  */}
         <View style={styles.headerImageContainer}>
-          {/* <Image
+          <Image
             source={{
-              uri: LogoImageLoading
-                ? GREY_IMAGE
-                : BASE_URL + hackathonDetail.logo_image,
+              uri: ProfileImageLoading
+                ? PROFILE_IMAGE
+                : workshopDetail.organization.user.profile_image
+                ? BASE_URL + workshopDetail.organization.user.profile_image.path
+                : PROFILE_IMAGE,
             }}
-            onLoadEnd={() => setLogoImageLoading(false)}
-            style={styles.logoImage}
-          /> */}
+            onLoadEnd={() => setProfileImageLoading(false)}
+            style={styles.userImage}
+          />
         </View>
         <View style={styles.headerTextContainer}>
-          {/* title  */}
-          <Text style={[styles.titleText, {color: theme.TEXT_COLOR}]}>
-            {/* {hackathonDetail.title} */}
+          <Text
+            style={[
+              styles.username,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {workshopDetail.organization.name}
           </Text>
-          <Text style={[styles.tagLineText, {color: theme.DIM_TEXT_COLOR}]}>
-            {/* {hackathonDetail.tag_line} */}
+          <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
+            {new Date(workshopDetail.created_at).toDateString() ===
+            new Date(workshopDetail.updated_at).toDateString()
+              ? `${new Date(workshopDetail.created_at).toDateString()}`
+              : `Updated at ${new Date(
+                  workshopDetail.updated_at,
+                ).toDateString()}`}
           </Text>
         </View>
         {/* right icon  */}
         <View style={styles.headerIconContainer}>
           <PopUpMenu
             navigation={navigation}
-            handleEdit={handleEdit}
             handleDelete={handleDelete}
+            handleEdit={handleEdit}
           />
         </View>
       </View>
-      <Divider width={Width * 0.84} marginHorizontal={13} marginVertical={1} />
+      <Divider width={Width * 0.92} />
 
-      {/* uploaded at container  */}
+      {/* content  */}
+      <View style={[styles.topicContainer, styles.center]}>
+        {/* title  */}
+        <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
+          {workshopDetail.topic}
+        </Text>
+      </View>
+      {/* workshop poster  */}
+      <View style={[styles.posterContainer, styles.center]}>
+        <Image
+          source={{
+            uri: WokrshopPosterLoading
+              ? GREY_IMAGE
+              : BASE_URL + workshopDetail.poster,
+          }}
+          onLoadEnd={() => {
+            Image.getSize(BASE_URL + workshopDetail.poster, (width, heigth) => {
+              // calculate aspect ratio of image
+              setImageAspectRatio(heigth / width);
+              setWokrshopPosterLoading(false);
+            });
+          }}
+          style={{
+            width: Width * 0.78,
+            height: Width * ImageAspectRatio * 0.78,
+            borderRadius: 20,
+          }}
+          resizeMode={'contain'} //contain
+        />
+      </View>
+      {/* if workshop is paid */}
+      <View style={{marginTop: 10}}>
+        {workshopDetail.is_paid && (
+          <View style={styles.iconContainer}>
+            <WorkshopCardIcons
+              cash
+              name={'cash-outline'}
+              label={`Rs ${commaSeperator(workshopDetail.charges)}`}
+            />
+          </View>
+        )}
 
+        <View style={styles.iconContainer}>
+          <WorkshopCardIcons
+            name={'time-outline'}
+            label={`${workshopDetail.days_left}${' '}${
+              workshopDetail.days_left !== 1 ? 'days' : 'day'
+            } left `}
+          />
+        </View>
+        <View style={{marginTop: 5, marginHorizontal: Width * 0.04}}>
+          <WorkshopCardIcons name={'people-sharp'} label={'0 Participants'} />
+        </View>
+      </View>
       {/* apply now button  */}
-      <View style={styles.bottomContainer}>
-        <View style={styles.uploadDateContainer}>
-          <Text style={[styles.date, {color: theme.DIM_TEXT_COLOR}]}>
-            Uploaded at {new Date().toDateString()}
-          </Text>
-        </View>
-        <View style={styles.ButtonContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('View_Hackathon', {
+      <View style={styles.detailsButtonContainer}>
+        <CustomButton
+          children={
+            <View style={styles.buttonIconContainer}>
+              <ForwardArrow size={0.75} />
+            </View>
+          }
+          text={'Details'}
+          textSize={Sizes.normal * 0.9}
+          onPress={() => {
+            navigation.navigate('WorkshopScreens', {
+              screen: 'WorkshopTab',
+              params: {
                 ID: workshopDetail.id,
-              })
-            }
-            style={[
-              styles.viewButtonContainer,
-              {
-                backgroundColor: theme.BUTTON_BACKGROUND_COLOR,
               },
-            ]}>
-            <View style={styles.viewButtonTextContainer}>
-              <Text
-                style={[
-                  styles.viewButtonText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                View Details
-              </Text>
-            </View>
-            <View style={styles.viewButtonIconContainer}>
-              <ForwardArrow size={0.96} />
-            </View>
-          </TouchableOpacity>
-        </View>
+            });
+          }}
+          width={Width * 0.3}
+          height={Height * 0.055}
+        />
       </View>
     </View>
   );
@@ -131,6 +211,7 @@ const styles = StyleSheet.create({
   parent: {
     marginHorizontal: Width * 0.04,
     marginVertical: Width * 0.03,
+    // marginVertical: Width * 0.01,
     // minHeight: Height * 0.35,
     // maxHeight: Height * 0.8,
     borderRadius: 10,
@@ -139,7 +220,13 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 10, height: 12},
     elevation: 5,
   },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerContainer: {
+    minHeight: Height * 0.08,
+    maxHeight: Height * 0.15,
     flexDirection: 'row',
     paddingVertical: 10,
     paddingHorizontal: 7,
@@ -148,86 +235,61 @@ const styles = StyleSheet.create({
     // width: Width * 0.3,
     flex: 0.2,
   },
-  logoImage: {
-    height: Height * 0.07,
-    width: Width * 0.14,
-    borderRadius: 40,
-  },
   headerTextContainer: {
+    // width: Width * 0.6,
     flex: 0.7,
     flexDirection: 'column',
   },
   headerIconContainer: {
     flex: 0.1,
-    paddingTop: 4,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  userImage: {
+    height: Height * 0.07,
+    width: Width * 0.14,
+    borderRadius: 40,
+  },
+  username: {
+    fontSize: Sizes.large * 0.9,
+    fontWeight: 'bold',
   },
   date: {
     fontSize: Sizes.normal * 0.75,
-    fontStyle: 'italic',
   },
-  contentContainer: {
-    // minHeight: Height * 0.15,
-    // maxHeight: Height * 0.2,
-    marginVertical: 10,
-    paddingHorizontal: 10,
+  topicContainer: {
+    marginBottom: 10,
   },
-  titleText: {
-    fontSize: Sizes.normal * 1.3,
-    fontFamily: 'Raleway-Light',
+  topicText: {
+    fontSize: Sizes.normal * 1.2,
+    fontFamily: 'OpenSans-Bold',
   },
-  tagLineText: {
+  descriptionText: {
     fontSize: Sizes.normal,
-    fontStyle: 'italic',
     lineHeight: 24,
   },
-  iconsContainer: {
-    paddingVertical: 10,
-    marginHorizontal: Width * 0.032,
+  posterContainer: {
+    marginHorizontal: 0,
   },
-  iconsRow: {
-    flexDirection: 'row',
+  iconContainer: {
     marginVertical: 5,
+    marginHorizontal: Width * 0.04,
+  },
+  iconTextContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 5,
   },
   iconText: {
     fontSize: Sizes.normal,
-    marginHorizontal: 10,
+    paddingHorizontal: 5,
   },
-  bottomContainer: {
+  detailsButtonContainer: {
     flexDirection: 'row',
-    paddingBottom: 10,
-    marginHorizontal: Width * 0.032,
-  },
-  uploadDateContainer: {
-    flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'flex-start',
   },
-  ButtonContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-  },
-  viewButtonContainer: {
-    padding: 9,
-    flex: 1,
-    width: Width * 0.35,
-    flexDirection: 'row',
-    marginHorizontal: Width * 0.008,
-    borderRadius: 10,
-  },
-  viewButtonText: {
-    fontSize: Sizes.small,
-  },
-  viewButtonTextContainer: {
-    flex: 0.8,
+  buttonIconContainer: {
     justifyContent: 'center',
+    marginHorizontal: 2,
     alignItems: 'center',
-  },
-  viewButtonIconContainer: {
-    flex: 0.2,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
   },
 });

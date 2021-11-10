@@ -122,13 +122,13 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
       {!loading && WorkshopData ? (
         <>
           <ScrollView style={styles.scroll}>
-            <View style={styles.container}>
-              <View style={[styles.container]}>
+            {screen === 'student' && (
+              <View style={styles.container}>
                 <Text style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
                   Join us for an awesome workshop on
                 </Text>
               </View>
-            </View>
+            )}
             {/* topic container  */}
             <View style={[styles.container, styles.center]}>
               <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>

@@ -3,6 +3,7 @@ import {View, Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import OverView from '../../../Screens/Organization/Workshop/View';
+import Participants from '../../../Screens/Organization/Workshop/Participants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Sizes, Width} from '../../../Constants/Size';
@@ -13,7 +14,7 @@ const Tab = createBottomTabNavigator();
 const TabScreens = ({route}) => {
   const [state, dispatch] = useStateValue();
 
-  const workshopID = route.params.params.ID;
+  const workshopID = route.params.ID;
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -22,30 +23,34 @@ const TabScreens = ({route}) => {
           const ICON_SIZE = focused ? Width * 0.063 : Width * 0.06;
           if (route.name === 'Overview') {
             iconName = focused ? 'book' : 'book-outline';
-          } else if (route.name === 'Submissions') {
-            iconName = focused ? 'file-account' : 'file-account-outline';
-          } else if (route.name === 'Result') {
-            iconName = focused ? 'checkcircle' : 'checkcircleo';
           }
+          if (route.name === 'Participants') {
+            iconName = focused ? 'people-sharp' : 'people-outline';
+          }
+          // } else if (route.name === 'Submissions') {
+          //   iconName = focused ? 'file-account' : 'file-account-outline';
+          // } else if (route.name === 'Result') {
+          //   iconName = focused ? 'checkcircle' : 'checkcircleo';
+          // }
 
-          if (route.name === 'Submissions') {
-            return (
-              <MaterialCommunityIcons
-                name={iconName}
-                size={ICON_SIZE}
-                color={color}
-              />
-            );
-          }
-          if (route.name === 'Result') {
-            return (
-              <AntDesign
-                name={iconName}
-                size={focused ? ICON_SIZE * 0.9 : ICON_SIZE * 0.85}
-                color={color}
-              />
-            );
-          }
+          // if (route.name === 'Submissions') {
+          //   return (
+          //     <MaterialCommunityIcons
+          //       name={iconName}
+          //       size={ICON_SIZE}
+          //       color={color}
+          //     />
+          //   );
+          // }
+          // if (route.name === 'Result') {
+          //   return (
+          //     <AntDesign
+          //       name={iconName}
+          //       size={focused ? ICON_SIZE * 0.9 : ICON_SIZE * 0.85}
+          //       color={color}
+          //     />
+          //   );
+          // }
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={ICON_SIZE} color={color} />;
         },
@@ -94,19 +99,16 @@ const TabScreens = ({route}) => {
         },
       }}
       backBehavior="none">
-      <Tab.Screen name="Overview" component={OverView} />
-      {/* <Tab.Screen
-        name="Submissions"
-        component={Submissions}
+      <Tab.Screen
+        name="Overview"
+        component={OverView}
         initialParams={{ID: workshopID}}
-        options={{unmountOnBlur: true}}
       />
       <Tab.Screen
-        name="Result"
-        component={Results}
+        name="Participants"
+        component={Participants}
         initialParams={{ID: workshopID}}
-        options={{unmountOnBlur: true}}
-      /> */}
+      />
     </Tab.Navigator>
   );
 };

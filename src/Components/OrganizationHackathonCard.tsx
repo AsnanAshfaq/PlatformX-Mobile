@@ -118,31 +118,18 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       <View style={styles.iconsContainer}>
         <View style={styles.iconsRow}>
           <Tag size={1} color={theme.GREEN_COLOR} />
-          <View style={[styles.iconTextContainer, {flexDirection: 'row'}]}>
-            {hackathonDetail.theme_tags.map((tag: string, index) => {
-              if (index < 2) {
-                return (
-                  <Text
-                    key={index}
-                    style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-                    {tag.charAt(0).toUpperCase() +
-                      tag.slice(1, tag.length).toLowerCase()}
-                    {/* add comma or not  */}
-                    {index === 0 &&
-                      hackathonDetail.theme_tags.length > 2 &&
-                      ' , '}
-                  </Text>
-                );
-              }
-            })}
-            {/* add dots at the end  */}
-            {hackathonDetail.theme_tags.length > 2 && (
-              <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-                {' '}
-                . . .
-              </Text>
-            )}
-          </View>
+          {hackathonDetail.theme_tags.map((tag, index) => {
+            if (index < 2) {
+              return (
+                <Text
+                  key={index}
+                  style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
+                  {'  '}
+                  {tag}
+                </Text>
+              );
+            }
+          })}
         </View>
         <View style={styles.iconsRow}>
           <Clock size={1.1} color={theme.GREEN_COLOR} />
@@ -277,11 +264,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 5,
   },
-  iconTextContainer: {
-    marginLeft: 10,
-  },
   iconText: {
     fontSize: Sizes.normal * 1.06,
+    marginHorizontal: 11,
   },
   bottomContainer: {
     flexDirection: 'row',

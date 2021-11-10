@@ -17,8 +17,9 @@ type props = {
 
 const View: FC<props> = ({navigation, route}) => {
   // get hackathon id from params
+  // const {ID} = 'adadsrr432';
+  console.log(route.params);
   const {ID} = route.params;
-
   return (
     <ViewWorkshopComponent
       navigation={navigation}

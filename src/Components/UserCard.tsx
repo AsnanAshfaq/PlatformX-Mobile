@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,45 +7,56 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from 'react-native';
-// import {darkColors} from '../Constants/Colors';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useStateValue} from '../Store/StateProvider';
+import {PROFILE_IMAGE} from '../Constants/sample';
 
 type props = {
-  navigations: any;
-  user: any;
+  navigation: any;
+  id: any;
+  image: '';
+  name: '';
+  username: '';
+  onPress: () => void;
 };
 
 const ICON_SIZE = Width * 0.07;
 
-const UserCard: FC<props> = ({navigations, user}) => {
+const UserCard: FC<props> = ({
+  navigation,
+  id,
+  image,
+  name,
+  username,
+  onPress,
+}) => {
   const [{theme}, dispatch] = useStateValue();
+  const [ImageLoading, setImageLoading] = useState(true);
+
+  const handlePress = () => {
+    console.log('Navigate to user profile screen having id', id);
+  };
   return (
-    <TouchableWithoutFeedback>
+    <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
       <View
         style={[
           styles.parent,
           {
-            shadowColor: theme.SHADOW_COLOR,
             backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
         {/* image container */}
         <View style={styles.imageContainer}>
-          <Image source={{uri: user.user_image}} style={styles.image} />
+          <Image
+            source={{uri: ImageLoading ? PROFILE_IMAGE : image}}
+            onLoadEnd={() => setImageLoading(false)}
+            onError={() => setImageLoading(false)}
+            style={styles.image}
+          />
         </View>
         {/* name and user name container  */}
         <View style={styles.nameContainer}>
-          <Text
-            style={[
-              styles.username,
-              {
-                color: theme.TEXT_COLOR,
-              },
-            ]}>
-            {user.user_name}
-          </Text>
           <Text
             style={[
               styles.fullname,
@@ -53,20 +64,20 @@ const UserCard: FC<props> = ({navigations, user}) => {
                 color: theme.TEXT_COLOR,
               },
             ]}>
-            {user.full_name}
+            {name}
+          </Text>
+          <Text
+            style={[
+              styles.username,
+              {
+                color: theme.DIM_TEXT_COLOR,
+              },
+            ]}>
+            {username}
           </Text>
         </View>
-        <View style={styles.optionContainer}>
-          <TouchableOpacity>
-            <Ionicons
-              name={'ellipsis-vertical'}
-              size={ICON_SIZE}
-              color={theme.TAB_BAR_ACTIVE_COLOR}
-            />
-          </TouchableOpacity>
-        </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 
@@ -77,9 +88,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: Width * 0.04,
     marginVertical: Width * 0.01,
-    // minHeight: Height * 0.35,
-    // maxHeight: Height * 0.4,
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     shadowOpacity: 1,
     shadowRadius: 25,
@@ -91,26 +100,24 @@ const styles = StyleSheet.create({
     flex: 0.2,
   },
   image: {
-    width: Width * 0.14,
-    height: Width * 0.14,
+    width: Width * 0.16,
+    height: Width * 0.16,
     borderWidth: 1,
     borderRadius: 40,
     borderColor: 'transparent',
   },
   nameContainer: {
     margin: 5,
-    flex: 0.4,
+    marginLeft: 10,
+    marginVertical: 10,
+    flex: 0.8,
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   username: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.75,
   },
   fullname: {
-    fontSize: Sizes.normal * 0.9,
-  },
-  optionContainer: {
-    flex: 0.4,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    fontSize: Sizes.normal,
   },
 });

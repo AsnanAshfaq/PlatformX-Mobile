@@ -275,14 +275,16 @@ const General: FC<props> = () => {
               <CheckBox
                 onPress={isChecked =>
                   setInput(props => {
+                    console.log('Is checked is', isChecked);
                     return {
                       ...props,
-                      isPaid:
-                        typeof isChecked === 'boolean' ? isChecked : false,
+                      isPaid: !props.isPaid,
                     };
                   })
                 }
                 size={18}
+                disableBuiltInState={true}
+                isChecked={Input.isPaid}
               />
               <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
                 Paid
