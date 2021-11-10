@@ -69,6 +69,9 @@ const Participants: FC<props> = ({navigation, route, screen, ID}) => {
   const onRefresh = () => {
     setRefreshing(true);
     // get data here
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 3000);
   };
   useEffect(() => {
     // fetch workshop participants

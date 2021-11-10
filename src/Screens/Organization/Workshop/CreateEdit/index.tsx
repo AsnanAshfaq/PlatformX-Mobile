@@ -19,7 +19,7 @@ type props = {
   route: any;
 };
 
-const SCREENS = ['General', 'Schedule', 'Speakers'];
+const SCREENS = ['General', 'Speakers', 'Schedule '];
 const Index: FC<props> = ({navigation, route}) => {
   const {theme} = useStateValue()[0];
   const {screen}: {screen: 'edit' | 'create'} = route.params;
@@ -102,8 +102,8 @@ const Index: FC<props> = ({navigation, route}) => {
       </View>
 
       {active === 0 && <General />}
-      {active === 1 && <Schedule />}
-      {active === 2 && <Speaker />}
+      {active === 1 && <Speaker />}
+      {active === 2 && <Schedule />}
     </View>
   );
 };
