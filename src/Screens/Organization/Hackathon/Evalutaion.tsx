@@ -243,25 +243,27 @@ const Evaluation: FC<props> = ({navigation, route}) => {
                 'Use this field to provide any final remarks based on your likes and dislikes of the project.'
               }
             />
-            <CustomTextField
-              defaultValue={Input.remarks.value}
-              keyboardType={'email-address'}
-              onChangeText={text =>
-                setInput(props => {
-                  return {
-                    ...props,
-                    remarks: {
-                      value: text,
-                      error: '',
-                    },
-                  };
-                })
-              }
-              placeholder={'Enter any remarks for this project'}
-              placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-              textContentType={'name'}
-              multiLine={true}
-            />
+            <View style={styles.container}>
+              <CustomTextField
+                defaultValue={Input.remarks.value}
+                keyboardType={'email-address'}
+                onChangeText={text =>
+                  setInput(props => {
+                    return {
+                      ...props,
+                      remarks: {
+                        value: text,
+                        error: '',
+                      },
+                    };
+                  })
+                }
+                placeholder={'Enter any remarks for this project'}
+                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                textContentType={'name'}
+                multiLine={true}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>

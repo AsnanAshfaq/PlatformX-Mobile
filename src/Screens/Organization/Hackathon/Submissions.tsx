@@ -17,6 +17,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {ForwardArrow, Tick} from '../../../Components/Icons';
 import CustomButton from '../../../Components/CustomButton';
 import CheckBox from '../../../Components/CheckBox';
+import {AirbnbRating} from 'react-native-ratings';
 const SAMPLE_DATA = [
   {
     id: 1,
@@ -25,6 +26,7 @@ const SAMPLE_DATA = [
     title: 'PlatformX',
     tagline: 'A platform for developers',
     uploadDate: '2020-06-01',
+    rating: 1,
   },
   {
     id: 2,
@@ -34,6 +36,7 @@ const SAMPLE_DATA = [
     tagline: 'A platform for developers',
     uploadDate: '2020-06-01',
     marks: 5,
+    rating: 4,
   },
   {
     id: 2,
@@ -43,6 +46,7 @@ const SAMPLE_DATA = [
     tagline: 'A platform for developers',
     uploadDate: '2020-06-01',
     marks: 5,
+    rating: 3,
   },
 ];
 type headerProps = {
@@ -133,6 +137,7 @@ type cardProps = {
   uploadDate: string;
   handleCardPress: () => void;
   marks?: number;
+  rating?: number;
 };
 
 const ProjectCard: FC<cardProps> = ({
@@ -140,6 +145,7 @@ const ProjectCard: FC<cardProps> = ({
   title,
   tagline,
   marks,
+  rating,
   uploadDate,
   handleCardPress,
 }) => {
@@ -178,24 +184,53 @@ const ProjectCard: FC<cardProps> = ({
                 {tagline}
               </Text>
             </View>
-            {marks && (
-              <View style={styles.marksContainer}>
-                <View
-                  style={[
-                    styles.markIconContainer,
-                    {
-                      backgroundColor: theme.GREEN_COLOR,
-                    },
-                  ]}>
-                  <Tick color={theme.ICON_COLOR} size={0.3} />
-                </View>
-                <View style={styles.marksTextContainer}>
-                  <Text style={[styles.marksText, {color: theme.TEXT_COLOR}]}>
-                    {marks}/25
-                  </Text>
-                </View>
-              </View>
-            )}
+            <View style={[styles.marksContainer]}>
+              {marks && (
+                <>
+                  <View style={styles.marksDetailsContainer}>
+                    <View
+                      style={[
+                        styles.markIconContainer,
+                        {
+                          backgroundColor: theme.GREEN_COLOR,
+                        },
+                      ]}>
+                      <Tick color={theme.ICON_COLOR} size={0.3} />
+                    </View>
+                    <View style={styles.marksTextContainer}>
+                      <Text
+                        style={[styles.marksText, {color: theme.TEXT_COLOR}]}>
+                        {marks}/25
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={[
+                      styles.starContainer,
+                      {justifyContent: marks ? 'flex-start' : 'center'},
+                    ]}>
+                    <AirbnbRating
+                      defaultRating={1}
+                      size={
+                        rating === 1
+                          ? 9
+                          : rating === 2
+                          ? 8
+                          : rating === 3
+                          ? 7
+                          : rating === 4
+                          ? 6
+                          : 5
+                      }
+                      count={rating}
+                      selectedColor={theme.GREEN_COLOR}
+                      isDisabled={false}
+                      showRating={false}
+                    />
+                  </View>
+                </>
+              )}
+            </View>
           </View>
         </View>
 
@@ -333,7 +368,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardDetailTextContainer: {
-    flex: 0.85,
+    flex: 0.75,
     justifyContent: 'center',
   },
   titleText: {
@@ -341,9 +376,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   marksContainer: {
-    flex: 0.15,
-    flexDirection: 'row',
+    flex: 0.25,
+    flexDirection: 'column',
     marginTop: 5,
+  },
+  marksDetailsContainer: {
+    flexDirection: 'row',
+    flex: 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   markIconContainer: {
     borderRadius: 2,
@@ -356,6 +397,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   marksTextContainer: {},
+  starContainer: {
+    flex: 0.4,
+    alignItems: 'center',
+  },
   marksText: {
     fontSize: Sizes.normal * 0.6,
   },
