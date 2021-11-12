@@ -112,157 +112,159 @@ const Evaluation: FC<props> = ({navigation, route}) => {
         back
         onBackPress={() => navigation.goBack()}
       />
-      <ScrollView style={styles.scroll}>
-        <View style={styles.container}>
-          <View style={[styles.headingContainer]}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Start Evaluating hackathon based on following criteria
-            </Text>
+      <ScrollView>
+        <View style={styles.scroll}>
+          <View style={styles.container}>
+            <View style={[styles.headingContainer]}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Start Evaluating hackathon based on following criteria
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.container}>
-          <Category
-            input={Input.idea.value}
-            onChangeText={text =>
-              setInput(props => {
-                return {
-                  ...props,
-                  idea: {
-                    value: text,
-                    error: '',
-                  },
-                };
-              })
-            }
-            heading={'Idea'}
-            helpText={'How impressing is the idea of My First Project was?'}
-          />
-          <Category
-            input={Input.originality.value}
-            onChangeText={text =>
-              setInput(props => {
-                return {
-                  ...props,
-                  originality: {
-                    value: text,
-                    error: '',
-                  },
-                };
-              })
-            }
-            heading={'Originality'}
-            helpText={`Originality refers to lending one${"'"}s personal uniqueness. So how original is My First Project?`}
-          />
-          <Category
-            input={Input.functionality.value}
-            onChangeText={text =>
-              setInput(props => {
-                return {
-                  ...props,
-                  functionality: {
-                    value: text,
-                    error: '',
-                  },
-                };
-              })
-            }
-            heading={'Functionality'}
-            helpText={
-              'How is My First Project performing the specified task. Does it have the functionality required?'
-            }
-          />
-          <Category
-            input={Input.design.value}
-            onChangeText={text =>
-              setInput(props => {
-                return {
-                  ...props,
-                  design: {
-                    value: text,
-                    error: '',
-                  },
-                };
-              })
-            }
-            heading={'Design'}
-            helpText={'How good is the actual design of My First Project?'}
-          />
-          <Category
-            input={Input.problem.value}
-            onChangeText={text =>
-              setInput(props => {
-                return {
-                  ...props,
-                  problem: {
-                    value: text,
-                    error: '',
-                  },
-                };
-              })
-            }
-            heading={'Problem Solving'}
-            helpText={'Is My First Project a problem solving project?'}
-          />
-        </View>
-
-        {/* over all status container  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Overall Status
-            </Text>
-          </View>
-          <AirbnbRating
-            defaultRating={1}
-            size={20}
-            count={5}
-            reviews={['Terrible', 'Bad', 'Fair', 'Good', 'Amazing']}
-            reviewSize={Sizes.normal * 1.2}
-            reviewColor={theme.TEXT_COLOR}
-            selectedColor={theme.GREEN_COLOR}
-            onFinishRating={rating =>
-              setInput(props => {
-                return {
-                  ...props,
-                  rating: rating,
-                };
-              })
-            }
-          />
-        </View>
-        {/* final remarks container  */}
-        <View style={styles.container}>
-          <View style={styles.headingContainer}>
-            <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-              Final Remarks
-            </Text>
-          </View>
-          <View style={{marginTop: 4}}>
-            <HelpText
-              text={
-                'Use this field to provide any final remarks based on your likes and dislikes of the project.'
+          <View style={styles.container}>
+            <Category
+              input={Input.idea.value}
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    idea: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+              heading={'Idea'}
+              helpText={'How impressing is the idea of My First Project was?'}
+            />
+            <Category
+              input={Input.originality.value}
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    originality: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+              heading={'Originality'}
+              helpText={`Originality refers to lending one${"'"}s personal uniqueness. So how original is My First Project?`}
+            />
+            <Category
+              input={Input.functionality.value}
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    functionality: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+              heading={'Functionality'}
+              helpText={
+                'How is My First Project performing the specified task. Does it have the functionality required?'
               }
             />
-            <View style={styles.container}>
-              <CustomTextField
-                defaultValue={Input.remarks.value}
-                keyboardType={'email-address'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      remarks: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
+            <Category
+              input={Input.design.value}
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    design: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+              heading={'Design'}
+              helpText={'How good is the actual design of My First Project?'}
+            />
+            <Category
+              input={Input.problem.value}
+              onChangeText={text =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    problem: {
+                      value: text,
+                      error: '',
+                    },
+                  };
+                })
+              }
+              heading={'Problem Solving'}
+              helpText={'Is My First Project a problem solving project?'}
+            />
+          </View>
+
+          {/* over all status container  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Overall Status
+              </Text>
+            </View>
+            <AirbnbRating
+              defaultRating={1}
+              size={20}
+              count={5}
+              reviews={['Terrible', 'Bad', 'Fair', 'Good', 'Amazing']}
+              reviewSize={Sizes.normal * 1.2}
+              reviewColor={theme.TEXT_COLOR}
+              selectedColor={theme.GREEN_COLOR}
+              onFinishRating={rating =>
+                setInput(props => {
+                  return {
+                    ...props,
+                    rating: rating,
+                  };
+                })
+              }
+            />
+          </View>
+          {/* final remarks container  */}
+          <View style={styles.container}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Final Remarks
+              </Text>
+            </View>
+            <View style={{marginTop: 4}}>
+              <HelpText
+                text={
+                  'Use this field to provide any final remarks based on your likes and dislikes of the project.'
                 }
-                placeholder={'Enter any remarks for this project'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                multiLine={true}
               />
+              <View style={styles.container}>
+                <CustomTextField
+                  defaultValue={Input.remarks.value}
+                  keyboardType={'email-address'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        remarks: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter any remarks for this project'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  multiLine={true}
+                />
+              </View>
             </View>
           </View>
         </View>

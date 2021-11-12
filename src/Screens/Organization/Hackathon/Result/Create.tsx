@@ -97,13 +97,23 @@ const Card: FC<cardProps> = ({
         ]}>
         <View style={{flexDirection: 'row'}}>
           <View style={[styles.selectionContainer, styles.center]}>
+            {/* <View
+              style={{
+                width: 18,
+                height: 18,
+                marginLeft: 10,
+                backgroundColor: theme.TEXT_COLOR,
+                borderRadius: 3,
+              }}
+            /> */}
+            <Text>1st</Text>
             {/* <CheckBox
               size={20}
               onPress={isChecked => onPress(id)}
               disableBuiltInState={true}
               isChecked={selectedProjectID === id ? true : false}
             /> */}
-            {selectedProjectID === id && <Text></Text>}
+            {/* {selectedProjectID === id && <Text></Text>} */}
           </View>
           <View style={styles.cardImageContainer}>
             <Image
@@ -151,6 +161,7 @@ const Create: FC<props> = ({ID}) => {
   const {theme} = useStateValue()[0];
   const [number, setnumber] = useState<1 | 2 | 3>(1);
   const [selectedProjectID, setselectedProjectID] = useState('');
+  const [selected, setselected] = useState('');
 
   const handleProjectSelection = id => {
     setselectedProjectID(id);
@@ -158,7 +169,7 @@ const Create: FC<props> = ({ID}) => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.container, styles.center]}>
+      <View style={[styles.container, styles.margin]}>
         <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
           PICK YOUR HACKATHON WINNERS
         </Text>
@@ -191,7 +202,7 @@ const Create: FC<props> = ({ID}) => {
                 {
                   color: number === 1 ? theme.TEXT_COLOR : theme.DIM_TEXT_COLOR,
                   fontSize:
-                    number === 1 ? Sizes.normal * 1.2 : Sizes.normal * 0.9,
+                    number === 1 ? Sizes.normal * 1.1 : Sizes.normal * 0.9,
                 },
               ]}>
               1st
@@ -217,7 +228,7 @@ const Create: FC<props> = ({ID}) => {
                 {
                   color: number === 2 ? theme.TEXT_COLOR : theme.DIM_TEXT_COLOR,
                   fontSize:
-                    number === 2 ? Sizes.normal * 1.2 : Sizes.normal * 0.9,
+                    number === 2 ? Sizes.normal * 1.1 : Sizes.normal * 0.9,
                 },
               ]}>
               2nd
@@ -243,7 +254,7 @@ const Create: FC<props> = ({ID}) => {
                 {
                   color: number === 3 ? theme.TEXT_COLOR : theme.DIM_TEXT_COLOR,
                   fontSize:
-                    number === 3 ? Sizes.normal * 1.2 : Sizes.normal * 0.9,
+                    number === 3 ? Sizes.normal * 1.1 : Sizes.normal * 0.9,
                 },
               ]}>
               3rd
@@ -280,15 +291,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   image: {
-    width: Width * 0.4,
-    height: Width * 0.4,
+    width: Width * 0.35,
+    height: Width * 0.35,
   },
   scroll: {
     marginTop: 10,
     marginHorizontal: Width * 0.04,
   },
   heading: {
-    fontSize: Sizes.normal * 1.2,
+    fontSize: Sizes.normal,
   },
   margin: {
     marginHorizontal: Width * 0.04,
@@ -305,7 +316,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 10,
-    padding: 10,
+    padding: 7,
     borderRadius: 10,
     borderColor: 'transparent',
   },
@@ -321,7 +332,6 @@ const styles = StyleSheet.create({
   },
   selectionContainer: {
     flex: 0.08,
-    paddingLeft: 10,
   },
   cardImageContainer: {
     flex: 0.22,

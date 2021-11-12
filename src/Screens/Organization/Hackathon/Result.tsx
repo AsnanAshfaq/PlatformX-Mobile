@@ -33,8 +33,8 @@ const Result: FC<props> = ({navigation, route}) => {
         onBackPress={() => navigation.goBack()}
       />
 
-      {/* <CreateResult ID={ID} /> */}
-      <ViewResult ID={ID} />
+      <CreateResult ID={ID} />
+      {/* <ViewResult ID={ID} /> */}
     </View>
   );
 };
