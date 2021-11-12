@@ -215,7 +215,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Width * 0.05,
     // marginVertical: 5,
   },
-
   tag: {
     fontSize: Sizes.normal * 0.8,
     marginRight: 30,

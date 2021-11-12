@@ -19,8 +19,8 @@ import {useStateValue} from '../../../Store/StateProvider';
 type props = {
   navigation: any;
 };
-const Projects: FC<props> = ({navigation}) => {
-  const [Project, setProject] = useState([]);
+const FYP: FC<props> = ({navigation}) => {
+  const [FYPS, setFYP] = useState([]);
   const isFocuses = useIsFocused();
   const [Refreshing, setRefreshing] = useState(false);
   const [{theme}, dispatch] = useStateValue();
@@ -68,7 +68,7 @@ const Projects: FC<props> = ({navigation}) => {
   return (
     <View
       style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
-      <CustomHeader title={'Projects'} navigation={navigation} drawer bell />
+      <CustomHeader title={"FYP's"} navigation={navigation} drawer bell />
       {!IsLoading && (
         <CustomSearch
           placeholder={'Search here'}
@@ -81,15 +81,15 @@ const Projects: FC<props> = ({navigation}) => {
         <>
           <PostSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
-      ) : Project.length > 0 ? (
+      ) : FYPS.length > 0 ? (
         <>
           <FlatList
-            data={Project}
+            data={FYPS}
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
-            renderItem={({item: Project, index}: any) => {
+            renderItem={({item: FYP, index}: any) => {
               return <Text>This is the project screen</Text>;
-              // return <PostCard key={Project?.id} postDetail={Project} />;
+              // return <PostCard key={FYP?.id} postDetail={FYP} />;
             }}
             // progressViewOffset={10}
             refreshControl={
@@ -109,9 +109,9 @@ const Projects: FC<props> = ({navigation}) => {
       ) : !IsLoading ? (
         <View style={styles.center}>
           <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
-            {Searching.query !== '' && Project.length === 0
+            {Searching.query !== '' && FYPS.length === 0
               ? `No result Found for ${Searching.query}`
-              : 'No projects yet'}
+              : "No FYP's yet"}
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
             <Text style={[styles.refreshText, {color: theme.GREEN_COLOR}]}>
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Projects;
+export default FYP;

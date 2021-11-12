@@ -18,6 +18,9 @@ import {ForwardArrow, Tick} from '../../../Components/Icons';
 import CustomButton from '../../../Components/CustomButton';
 import CheckBox from '../../../Components/CheckBox';
 import {AirbnbRating} from 'react-native-ratings';
+
+const ICON_SIZE = Width * 0.07;
+
 const SAMPLE_DATA = [
   {
     id: 1,
@@ -26,7 +29,6 @@ const SAMPLE_DATA = [
     title: 'PlatformX',
     tagline: 'A platform for developers',
     uploadDate: '2020-06-01',
-    rating: 1,
   },
   {
     id: 2,
@@ -49,12 +51,12 @@ const SAMPLE_DATA = [
     rating: 3,
   },
 ];
+
 type headerProps = {
   total: string | number;
   sort: boolean;
   onSortPress: () => void;
 };
-const ICON_SIZE = Width * 0.07;
 
 const HeaderComponent: FC<headerProps> = ({total, sort, onSortPress}) => {
   const [{theme}, dispatch] = useStateValue();
@@ -204,13 +206,8 @@ const ProjectCard: FC<cardProps> = ({
                       </Text>
                     </View>
                   </View>
-                  <View
-                    style={[
-                      styles.starContainer,
-                      {justifyContent: marks ? 'flex-start' : 'center'},
-                    ]}>
+                  <View style={[styles.starContainer]}>
                     <AirbnbRating
-                      defaultRating={1}
                       size={
                         rating === 1
                           ? 9
@@ -222,9 +219,10 @@ const ProjectCard: FC<cardProps> = ({
                           ? 6
                           : 5
                       }
+                      defaultRating={rating}
                       count={rating}
                       selectedColor={theme.GREEN_COLOR}
-                      isDisabled={false}
+                      isDisabled={true}
                       showRating={false}
                     />
                   </View>
@@ -400,6 +398,7 @@ const styles = StyleSheet.create({
   starContainer: {
     flex: 0.4,
     alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   marksText: {
     fontSize: Sizes.normal * 0.6,

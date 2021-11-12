@@ -5,8 +5,6 @@
 // make api call to validate token
 // if token is valid, go to main screen
 // else go to auth screens
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import PushNotification from 'react-native-push-notification';
 import Firebase from '@react-native-firebase/app';
 import React, {useEffect, useRef, useState} from 'react';
 import Navigation from './src/Navigations/index';
@@ -18,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Notifications from './src/Utils/Notifications';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-
+import DeviceInfo from 'react-native-device-info';
 const App = () => {
   const [Loading, setLoading] = useState(true);
   const [state, dispatch] = useStateValue();
@@ -81,6 +79,12 @@ const App = () => {
       }
     };
 
+    const getDeviceId = async () => {
+      const id = await DeviceInfo.getUniqueId();
+      console.log('Device id is ', id);
+    };
+
+    getDeviceId();
     getUserType();
   }, [dispatch]);
 

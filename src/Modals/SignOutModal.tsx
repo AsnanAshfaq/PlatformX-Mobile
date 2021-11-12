@@ -14,6 +14,7 @@ import Axios from '../Utils/Axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../src/Store/StateProvider';
 import Loading from '..//Components/Loading';
+import Divider from '../Components/Divider';
 
 type props = {
   isShow: boolean;
@@ -29,15 +30,19 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
     setLoading(true);
     // clear local storage tokens
 
-    await AsyncStorage.setItem('access', '');
-    await AsyncStorage.setItem('refresh', '');
+    // await AsyncStorage.setItem('access', '');
+    // await AsyncStorage.setItem('refresh', '');
     // make api call to sign out
     // close the modal
-    toggleModal();
+    // toggleModal();
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
     //   set loading to false
-    setLoading(false);
+
     // call the local state
-    dispatch({type: 'SET_SIGN_OUT'});
+    // dispatch({type: 'SET_SIGN_OUT'});
   };
   return (
     // <View
@@ -66,19 +71,17 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
       useNativeDriverForBackdrop={true}>
       <>
         {/* heading container  */}
-        <View
-          style={[
-            styles.headingContainer,
-            {borderBottomColor: theme.SHADOW_COLOR},
-          ]}>
+        <View style={[styles.headingContainer]}>
           <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-            Sign Out of PlatformX ?{' '}
+            Signing Out
           </Text>
         </View>
+        <Divider size={'large'} />
+
         {/* description container  */}
-        <View style={styles.descriptionContainer}>
+        <View style={[styles.descriptionContainer]}>
           <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
-            Are you sure that you want to sign out?{' '}
+            Are you sure that you want to sign out of PlatformX?
           </Text>
         </View>
 
@@ -87,23 +90,21 @@ const SignOutModal: FC<props> = ({isShow, toggleModal}) => {
             {/*  buttons  */}
             <TouchableOpacity
               onPress={toggleModal}
-              style={[styles.Button, {backgroundColor: theme.BADGE_COLOR}]}>
-              <Text
-                style={[styles.buttonText, {color: theme.BACKGROUND_COLOR}]}>
+              style={[styles.Button, {backgroundColor: theme.GREEN_COLOR}]}>
+              <Text style={[styles.buttonText, {color: theme.TEXT_COLOR}]}>
                 Cancel
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handleSignOut()}
-              style={[styles.Button, {backgroundColor: theme.BADGE_COLOR}]}>
-              <Text
-                style={[styles.buttonText, {color: theme.BACKGROUND_COLOR}]}>
+              style={[styles.Button, {backgroundColor: theme.GREEN_COLOR}]}>
+              <Text style={[styles.buttonText, {color: theme.TEXT_COLOR}]}>
                 Sign Out
               </Text>
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={styles.center}>
+          <View style={[styles.buttonsContainer, styles.center]}>
             <Loading size={'small'} />
           </View>
         )}
@@ -129,15 +130,13 @@ const styles = StyleSheet.create({
   },
   headingContainer: {
     flex: 0.25,
-    marginLeft: 10,
     marginTop: 10,
-    marginRight: 10,
-    borderBottomWidth: 2,
+    marginHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   heading: {
-    fontSize: Sizes.large * 1.3,
+    fontSize: Sizes.normal * 1.2,
   },
   descriptionContainer: {
     flex: 0.5,

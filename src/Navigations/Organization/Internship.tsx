@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Internship from '../../Screens/Organization/Internship';
-const HackathonScreens = () => {
+const InternshipScreens = () => {
   const Stack = createStackNavigator();
 
   return (
@@ -14,6 +14,6 @@ const HackathonScreens = () => {
   );
 };
 
-export default HackathonScreens;
+export default InternshipScreens;
 
 const styles = StyleSheet.create({});

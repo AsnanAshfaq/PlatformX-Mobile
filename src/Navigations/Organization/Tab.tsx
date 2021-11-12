@@ -6,7 +6,7 @@ import Create from '../../Screens/Organization/Create';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Hackathon from '../../Screens/Organization/Hackathon';
 import Workshop from '../../Screens/Organization/Workshop';
-import Project from '../../Screens/Organization/Project';
+import FYP from '../../Screens/Organization/FYP';
 import Internship from '../../Screens/Organization/Internship';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Sizes, Width} from '../../Constants/Size';
@@ -29,7 +29,7 @@ const TabScreens = () => {
             iconName = focused ? 'ios-build' : 'ios-build-outline';
           } else if (route.name === 'Create') {
             iconName = focused ? 'plussquare' : 'plussquareo';
-          } else if (route.name === 'Projects') {
+          } else if (route.name === "FYP's") {
             iconName = focused ? 'ios-bulb-sharp' : 'ios-bulb-outline';
           } else if (route.name === 'Internships') {
             iconName = focused
@@ -106,7 +106,7 @@ const TabScreens = () => {
       <Tab.Screen name="Hackathons" component={Hackathon} />
       <Tab.Screen name="Workshops" component={Workshop} />
       <Tab.Screen name="Create" component={Create} />
-      <Tab.Screen name="Projects" component={Project} />
+      <Tab.Screen name="FYP's" component={FYP} />
       <Tab.Screen name="Internships" component={Internship} />
     </Tab.Navigator>
   );

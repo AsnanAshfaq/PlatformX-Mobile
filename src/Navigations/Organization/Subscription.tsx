@@ -4,7 +4,7 @@ import Plan from '../../Screens/Subscription/Organization/Hackathon/Plan';
 import Payment from '../../Screens/Subscription/Organization/Hackathon/Payment';
 const Stack = createStackNavigator();
 
-const ChatScreens = () => {
+const SubscriptionScreens = () => {
   return (
     <Stack.Navigator
       screenOptions={{header: () => null}}
@@ -15,4 +15,4 @@ const ChatScreens = () => {
   );
 };
 
-export default ChatScreens;
+export default SubscriptionScreens;
