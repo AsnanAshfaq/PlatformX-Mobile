@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {AirbnbRating} from 'react-native-ratings';
-import {PROFILE_IMAGE} from '../../../Constants/sample';
-import {Sizes, Width} from '../../../Constants/Size';
-import {useStateValue} from '../../../Store/StateProvider';
-import CheckBox from '../../../Components/CheckBox';
+import {PROFILE_IMAGE} from '../../../../Constants/sample';
+import {Sizes, Width} from '../../../../Constants/Size';
+import {useStateValue} from '../../../../Store/StateProvider';
+import CheckBox from '../../../../Components/CheckBox';
+import CustomButton from '../../../../Components/CustomButton';
 const PROJECTS = [
   {
     id: '1',
@@ -146,7 +147,7 @@ const Card: FC<cardProps> = ({
 type props = {
   ID: '';
 };
-const CreateResult: FC<props> = ({ID}) => {
+const Create: FC<props> = ({ID}) => {
   const {theme} = useStateValue()[0];
   const [number, setnumber] = useState<1 | 2 | 3>(1);
   const [selectedProjectID, setselectedProjectID] = useState('');
@@ -165,7 +166,7 @@ const CreateResult: FC<props> = ({ID}) => {
       {/* image container  */}
       <View style={[styles.container, styles.center]}>
         <Image
-          source={require('../../../../assets/images/rankings.png')}
+          source={require('../../../../../assets/images/rankings.png')}
           style={styles.image}
         />
       </View>
@@ -262,11 +263,17 @@ const CreateResult: FC<props> = ({ID}) => {
           />
         )}
       />
+
+      {/* button to submit result  */}
+      <CustomButton
+        text={'Submit'}
+        onPress={() => console.log('Submitting result')}
+      />
     </View>
   );
 };
 
-export default CreateResult;
+export default Create;
 
 const styles = StyleSheet.create({
   container: {

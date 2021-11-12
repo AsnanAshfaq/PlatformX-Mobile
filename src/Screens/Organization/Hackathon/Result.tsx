@@ -8,8 +8,8 @@ import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
-import CreateResult from './CreateResult';
-
+import CreateResult from './Result/Create';
+import ViewResult from './Result/View';
 type props = {
   navigation: any;
   route: any;
@@ -33,7 +33,8 @@ const Result: FC<props> = ({navigation, route}) => {
         onBackPress={() => navigation.goBack()}
       />
 
-      <CreateResult ID={ID} />
+      {/* <CreateResult ID={ID} /> */}
+      <ViewResult ID={ID} />
     </View>
   );
 };

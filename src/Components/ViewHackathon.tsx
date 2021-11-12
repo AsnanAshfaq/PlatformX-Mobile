@@ -412,7 +412,13 @@ const ViewHackathon: FC<props> = ({navigation, route, screen, ID}) => {
                   Prizes
                 </Text>
                 {/* flat list */}
-                <PrizeCard />
+                <View style={{marginVertical: 10}}>
+                  <ScrollView horizontal={true}>
+                    <PrizeCard />
+                    <PrizeCard />
+                    <PrizeCard />
+                  </ScrollView>
+                </View>
               </View>
               <Divider size={'small'} />
               <View style={styles.container}>
