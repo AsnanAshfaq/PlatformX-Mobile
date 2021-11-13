@@ -5,11 +5,11 @@
 
 import React, {FC, useState, useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
-import CustomHeader from '../../../Components/CustomHeader';
-import {Sizes, Width} from '../../../Constants/Size';
-import {useStateValue} from '../../../Store/StateProvider';
-import CreateResult from './Result/Create';
-import ViewResult from './Result/View';
+import CustomHeader from '../../../../Components/CustomHeader';
+import {Sizes, Width} from '../../../../Constants/Size';
+import {useStateValue} from '../../../../Store/StateProvider';
+import CreateResult from './Create';
+import ViewResult from './View';
 type props = {
   navigation: any;
   route: any;
@@ -33,8 +33,8 @@ const Result: FC<props> = ({navigation, route}) => {
         onBackPress={() => navigation.goBack()}
       />
 
-      <CreateResult ID={ID} />
-      {/* <ViewResult ID={ID} /> */}
+      {/* <CreateResult ID={ID} /> */}
+      <ViewResult ID={ID} />
     </View>
   );
 };

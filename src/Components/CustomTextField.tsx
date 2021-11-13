@@ -108,7 +108,7 @@ const CustomTextField: FC<props> = ({
             <Ionicons
               name={Security ? 'eye-outline' : 'eye-off-outline'}
               size={ICON_SIZE}
-              color={theme.TAB_BAR_ACTIVE_COLOR}
+              color={theme.ICON_COLOR}
               style={styles.icon}
             />
           </TouchableWithoutFeedback>

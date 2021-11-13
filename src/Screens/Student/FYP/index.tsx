@@ -8,7 +8,7 @@ import {
   RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import HackathonCard from '../../../Components/StudentHackathonCard';
+import StudentFYPCard from '../../../Components/StudentFYPCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
@@ -17,12 +17,78 @@ import HackathonSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 import {useScrollToTop} from '@react-navigation/native';
 
+const FYPS = [
+  {
+    id: 1,
+    organization: {
+      name: 'Netsol',
+      user: {
+        profile_image: {
+          path:
+            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
+        },
+      },
+    },
+    created_at: new Date().toLocaleDateString(),
+    name: 'Tour Recommender',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate magnam c',
+    category: [
+      'Artificial Intellligence',
+      'Web Application',
+      'Desktop Application',
+    ],
+    learning_outcomes: '',
+    technologies: ['Docker', 'Node', 'Firebase'],
+    team_members: 3,
+  },
+  {
+    id: 2,
+    organization: {
+      name: 'Netsol',
+      user: {
+        profile_image: {
+          path:
+            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
+        },
+      },
+    },
+    created_at: new Date().toLocaleDateString(),
+    name: 'Vehicle Tracker',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate magnam c',
+    category: ['Mobile Application', 'Desktop Application', ' Web Application'],
+    learning_outcomes: '',
+    technologies: ['React', 'Node', 'Firebase'],
+    team_members: 3,
+  },
+  {
+    id: 3,
+    organization: {
+      name: 'Netsol',
+      user: {
+        profile_image: {
+          path:
+            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
+        },
+      },
+    },
+    created_at: new Date().toLocaleDateString(),
+    name: 'Chat App',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate magnam c',
+    category: ['Mobile Application', 'Web Application'],
+    learning_outcomes: '',
+    technologies: ['Docker'],
+    team_members: 2,
+  },
+];
 type props = {
   navigation: any;
 };
 
-const Hackathons: FC<props> = ({navigation}) => {
-  const [Hackathon, setHackathons] = useState([]);
+const FYP: FC<props> = ({navigation}) => {
+  const [fyp, setFyps] = useState<any[]>([]);
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   const [{theme}, dispatch] = useStateValue();
@@ -36,16 +102,18 @@ const Hackathons: FC<props> = ({navigation}) => {
   const ref = useRef<any>();
 
   const getData = async () => {
-    axios
-      .get('/api/hackathons/')
-      .then(response => {
-        setHackathons(response.data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        setIsLoading(false);
-        console.log('Error is', error);
-      });
+    // axios
+    //   .get('/api/hackathons/')
+    //   .then(response => {
+    //     setFyps(response.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch(error => {
+    //     setIsLoading(false);
+    //     console.log('Error is', error);
+    //   });
+    setFyps(FYPS);
+    setIsLoading(false);
   };
 
   const onRefresh = () => {
@@ -69,16 +137,16 @@ const Hackathons: FC<props> = ({navigation}) => {
       query: query,
     });
     try {
-      axios.get(`/api/hackathon/search/?q=${query}`).then(response => {
-        setHackathons(response.data);
-        setIsLoading(false);
-        setSearching(props => {
-          return {
-            isSearching: false,
-            query: props.query,
-          };
-        });
-      });
+      //   axios.get(`/api/hackathon/search/?q=${query}`).then(response => {
+      //     setFyps(response.data);
+      //     setIsLoading(false);
+      //     setSearching(props => {
+      //       return {
+      //         isSearching: false,
+      //         query: props.query,
+      //       };
+      //     });
+      //   });
     } catch (error: any) {
       setSearching(props => {
         return {
@@ -133,7 +201,7 @@ const Hackathons: FC<props> = ({navigation}) => {
   const listHeaderComponent = () => {
     return (
       <CustomSearch
-        placeholder={'Search hackathons'}
+        placeholder={"Search FYP's"}
         isShownInHeader={false}
         showFilterIcon={true}
         handleSearch={handleSearch}
@@ -150,17 +218,11 @@ const Hackathons: FC<props> = ({navigation}) => {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
-      <CustomHeader
-        title={'Hackathons'}
-        navigation={navigation}
-        drawer
-        chat
-        bell
-      />
+      <CustomHeader title={"FYP's"} navigation={navigation} drawer chat bell />
 
       {!IsLoading && (
         <CustomSearch
-          placeholder={'Search hackathons'}
+          placeholder={"Search fyp's"}
           handleSearch={handleSearch}
           applyFilters={applyFilters}
           isShownInHeader={false}
@@ -172,19 +234,19 @@ const Hackathons: FC<props> = ({navigation}) => {
         <>
           <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
-      ) : Hackathon.length > 0 ? (
+      ) : fyp.length > 0 ? (
         <>
           <FlatList
-            data={Hackathon}
+            data={fyp}
             // disableVirtualization
             // ListHeaderComponent={listHeaderComponent}
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             ref={ref}
-            renderItem={({item: hackathon, index}: any) => {
+            renderItem={({item: fyp, index}: any) => {
               return (
-                <HackathonCard
-                  key={hackathon?.id}
-                  hackathonDetail={hackathon}
+                <StudentFYPCard
+                  key={fyp?.id}
+                  fypDetail={fyp}
                   navigation={navigation}
                 />
               );
@@ -203,12 +265,12 @@ const Hackathons: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
         </>
-      ) : !IsLoading && Hackathon.length === 0 ? (
+      ) : !IsLoading && fyp.length === 0 ? (
         <View style={styles.center}>
           <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
-            {Searching.query !== '' && Hackathon.length === 0
+            {Searching.query !== '' && fyp.length === 0
               ? `No result Found for ${Searching.query}`
-              : 'No hackathons yet'}
+              : "No fyp's yet"}
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
             <Text style={[styles.refreshText, {color: theme.GREEN_COLOR}]}>
@@ -240,4 +302,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Hackathons;
+export default FYP;

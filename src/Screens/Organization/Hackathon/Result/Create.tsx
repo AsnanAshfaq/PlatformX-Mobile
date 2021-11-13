@@ -169,8 +169,8 @@ const Create: FC<props> = ({ID}) => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.container, styles.margin]}>
-        <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+      <View style={[styles.container, styles.center, styles.margin]}>
+        <Text style={[styles.heading, {color: theme.DIM_TEXT_COLOR}]}>
           PICK YOUR HACKATHON WINNERS
         </Text>
       </View>
@@ -182,7 +182,12 @@ const Create: FC<props> = ({ID}) => {
         />
       </View>
       {/* button container  */}
-      <View style={[styles.container, styles.margin, {flexDirection: 'row'}]}>
+      <View
+        style={[
+          styles.container,
+          styles.margin,
+          {flexDirection: 'row', marginBottom: 10},
+        ]}>
         <View style={[styles.buttonContainer]}>
           <TouchableOpacity
             style={[
@@ -262,6 +267,7 @@ const Create: FC<props> = ({ID}) => {
           </TouchableOpacity>
         </View>
       </View>
+
       <FlatList
         contentContainerStyle={[styles.scroll]}
         keyExtractor={(item, index) => `${item.id} - ${index}`}
@@ -291,15 +297,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   image: {
-    width: Width * 0.35,
-    height: Width * 0.35,
+    width: Width * 0.4,
+    height: Width * 0.4,
   },
   scroll: {
     marginTop: 10,
     marginHorizontal: Width * 0.04,
   },
   heading: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.85,
   },
   margin: {
     marginHorizontal: Width * 0.04,

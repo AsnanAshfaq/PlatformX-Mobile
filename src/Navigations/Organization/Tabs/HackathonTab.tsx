@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import OverView from '../../../Screens/Organization/Hackathon/View';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Submissions from '../../../Screens/Organization/Hackathon/Submissions';
-import Results from '../../../Screens/Organization/Hackathon/Result';
+import Results from '../../../Screens/Organization/Hackathon/Result/index';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';

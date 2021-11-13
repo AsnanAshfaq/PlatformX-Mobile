@@ -118,14 +118,18 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       <View style={styles.iconsContainer}>
         <View style={styles.iconsRow}>
           <Tag size={1} color={theme.GREEN_COLOR} />
-          {hackathonDetail.theme_tags.map((tag, index) => {
+          {hackathonDetail.theme_tags.map((tag: string, index) => {
             if (index < 2) {
               return (
                 <Text
                   key={index}
-                  style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
+                  style={[
+                    styles.iconText,
+                    {fontSize: Sizes.normal * 1.06, color: theme.TEXT_COLOR},
+                  ]}>
                   {'  '}
-                  {tag}
+                  {tag.charAt(0).toUpperCase() +
+                    tag.slice(1, tag.length).toLowerCase()}
                 </Text>
               );
             }

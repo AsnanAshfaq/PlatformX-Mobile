@@ -63,6 +63,7 @@ const ViewResult: FC<props> = ({ID}) => {
               borderRadius: 40,
               width: Width * 0.14,
               height: Width * 0.14,
+              marginVertical: 5,
             }}
           />
           <Text
@@ -101,6 +102,7 @@ const ViewResult: FC<props> = ({ID}) => {
               borderRadius: 40,
               width: Width * 0.2,
               height: Width * 0.2,
+              marginVertical: 10,
             }}
           />
           <Text style={[{fontSize: Sizes.normal, color: theme.TEXT_COLOR}]}>
@@ -139,6 +141,7 @@ const ViewResult: FC<props> = ({ID}) => {
               borderRadius: 40,
               width: Width * 0.17,
               height: Width * 0.17,
+              marginVertical: 5,
             }}
           />
           <Text
@@ -196,6 +199,7 @@ const ViewResult: FC<props> = ({ID}) => {
               borderRadius: 40,
               width: Width * 0.14,
               height: Width * 0.14,
+              marginVertical: 5,
             }}
           />
           <Text
@@ -234,6 +238,7 @@ const ViewResult: FC<props> = ({ID}) => {
               borderRadius: 40,
               width: Width * 0.2,
               height: Width * 0.2,
+              marginVertical: 10,
             }}
           />
           <Text style={[{fontSize: Sizes.normal, color: theme.TEXT_COLOR}]}>
@@ -272,6 +277,7 @@ const ViewResult: FC<props> = ({ID}) => {
               borderRadius: 40,
               width: Width * 0.17,
               height: Width * 0.17,
+              marginVertical: 5,
             }}
           />
           <Text
@@ -297,6 +303,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: Sizes.normal * 1.25,
+    // fontSize: Sizes.normal * 0.85,
   },
   smallText: {
     fontSize: Sizes.normal * 0.66,
