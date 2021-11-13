@@ -7,6 +7,7 @@ import Notification from './Notification';
 import Settings from './Settings';
 import HackahtonScreens from './Hackathon';
 import WorkshopScreens from './Workshop';
+import FYPScreens from './FYP';
 const Stack = createStackNavigator();
 
 const StudentScreens = () => {
@@ -29,6 +30,7 @@ const StudentScreens = () => {
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="HackahtonScreens" component={HackahtonScreens} />
       <Stack.Screen name="WorkshopScreens" component={WorkshopScreens} />
+      <Stack.Screen name="FYPScreens" component={FYPScreens} />
     </Stack.Navigator>
   );
 };

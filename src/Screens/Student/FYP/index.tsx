@@ -41,6 +41,7 @@ const FYPS = [
     learning_outcomes: '',
     technologies: ['Docker', 'Node', 'Firebase'],
     team_members: 3,
+    days_left: 10,
   },
   {
     id: 2,
@@ -61,6 +62,7 @@ const FYPS = [
     learning_outcomes: '',
     technologies: ['React', 'Node', 'Firebase'],
     team_members: 3,
+    days_left: 8,
   },
   {
     id: 3,
@@ -81,6 +83,7 @@ const FYPS = [
     learning_outcomes: '',
     technologies: ['Docker'],
     team_members: 2,
+    days_left: 20,
   },
 ];
 type props = {

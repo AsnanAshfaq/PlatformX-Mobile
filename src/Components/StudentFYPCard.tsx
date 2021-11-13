@@ -193,7 +193,9 @@ const StudentFYPCard: FC<props> = ({navigation, fypDetail}) => {
                     color: theme.TEXT_COLOR,
                   },
                 ]}>
-                {fypDetail.created_at}
+                {fypDetail.days_left}
+                {fypDetail.days_left !== 1 ? ' days' : 'day'}
+                {' left'}
               </Text>
             </View>
           </View>
@@ -210,8 +212,8 @@ const StudentFYPCard: FC<props> = ({navigation, fypDetail}) => {
           text={'Details'}
           textSize={Sizes.normal * 0.9}
           onPress={() => {
-            navigation.navigate('WorkshopScreens', {
-              screen: 'View_Workshop',
+            navigation.navigate('FYPScreens', {
+              screen: 'View_FYP',
               params: {
                 ID: fypDetail.id,
               },
