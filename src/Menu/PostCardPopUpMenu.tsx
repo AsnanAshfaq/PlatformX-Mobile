@@ -40,7 +40,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
               backgroundColor: theme.POP_UP_MENU_BACKGROUND_COLOR,
               borderWidth: 5,
               borderRadius: 20,
-              width: 150,
+              width: 170,
               borderColor: 'transparent',
               marginTop: 19,
               marginLeft: -14,
@@ -109,14 +109,19 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <MenuOptions
           customStyles={{
             optionsContainer: {
-              backgroundColor: theme.SHADOW_COLOR,
-              borderWidth: 1,
+              backgroundColor: theme.POP_UP_MENU_BACKGROUND_COLOR,
+              borderWidth: 5,
               borderRadius: 20,
-              marginRight: 20,
-              width: 140,
-              marginTop: 24,
-              marginLeft: -10,
+              width: 170,
               borderColor: 'transparent',
+              marginTop: 19,
+              marginLeft: -14,
+              // marginRight: 1,
+              shadowColor: theme.SHADOW_COLOR,
+              // shadowOpacity: 1,
+              // shadowRadius: 20,
+              elevation: 4.5,
+              // marginRight: 30,
             },
             optionWrapper: {
               height: 35,
@@ -124,6 +129,11 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
           }}>
           <MenuOption onSelect={() => console.log('Clicked on save post')}>
             <View style={styles.menuOptionContainer}>
+              <Ionicons
+                name={'download'}
+                color={theme.ICON_COLOR}
+                size={ICON_SIZE * 0.8}
+              />
               <View style={styles.textContainer}>
                 <Text
                   style={[
@@ -139,6 +149,11 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
           </MenuOption>
           <MenuOption onSelect={() => console.log('Clicked on report')}>
             <View style={styles.menuOptionContainer}>
+              <MaterialIcons
+                name={'report'}
+                color={theme.ICON_COLOR}
+                size={ICON_SIZE * 0.8}
+              />
               <View style={styles.textContainer}>
                 <Text
                   style={[

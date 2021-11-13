@@ -94,256 +94,259 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
 
       {!loading && FYPData ? (
         <>
-          <ScrollView style={styles.scroll}>
-            {screen === 'student' && (
-              <View style={styles.container}>
-                <Text style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
-                  Apply now to start working with us on
-                </Text>
-              </View>
-            )}
-            {/* topic container  */}
-            <View style={[styles.container, styles.center]}>
-              <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
-                {FYPData.name}
-              </Text>
-            </View>
-
-            {/* details container  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <Ionicons
-                  name={'ios-bulb-sharp'}
-                  size={ICON_SIZE * 2}
-                  color={theme.GREEN_COLOR}
-                />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Basic Idea
-                </Text>
-              </View>
-              <View style={[styles.center, styles.detailsTextContainer]}>
-                <Text style={[styles.detailsText, {color: theme.TEXT_COLOR}]}>
-                  {FYPData.description}
-                </Text>
-              </View>
-            </View>
-
-            {/* category container  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <Ionicons
-                  name={'grid-outline'}
-                  size={ICON_SIZE * 2}
-                  color={theme.GREEN_COLOR}
-                />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Categories
-                </Text>
-              </View>
-              <View style={[styles.container]}>
-                <Text
-                  style={[
-                    {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
-                  ]}>
-                  {FYPData.name} falls under the following software development
-                  category
-                </Text>
-              </View>
-              {FYPData.category.map((category, index) => (
-                <View
-                  style={[
-                    styles.categoryRowsContainer,
-                    {
-                      marginVertical:
-                        index === FYPData.category.length - 1 ? 15 : 0,
-                    }, // adding margin vertical only to last item
-                  ]}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                    }}>
-                    <View
-                      style={{
-                        paddingRight: 3,
-                        paddingTop: 3,
-                        flex: 0.1,
-                      }}>
-                      <Bullet />
-                    </View>
-                    <View style={{flex: 0.9}}>
-                      <Text
-                        style={[
-                          styles.categoryPointsText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {category}
-                      </Text>
-                    </View>
-                  </View>
+          <ScrollView>
+            <View style={styles.scroll}>
+              {screen === 'student' && (
+                <View style={styles.container}>
+                  <Text
+                    style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
+                    Apply now to start working with us on
+                  </Text>
                 </View>
-              ))}
-            </View>
-
-            {/* technologies container  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <Ionicons
-                  name={'code-slash'}
-                  size={ICON_SIZE * 2}
-                  color={theme.GREEN_COLOR}
-                />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Technologies
-                </Text>
-              </View>
-              <View
-                style={[styles.container, {marginHorizontal: Width * 0.07}]}>
-                <Text
-                  style={[
-                    {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
-                  ]}>
-                  Following technologies will be used for the development of{' '}
+              )}
+              {/* topic container  */}
+              <View style={[styles.container, styles.center]}>
+                <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
                   {FYPData.name}
                 </Text>
               </View>
 
-              {FYPData.technologies.map((tech, index) => (
-                <View
-                  style={[
-                    styles.techRowsContainer,
-                    {
-                      marginVertical:
-                        index === FYPData.category.length - 1 ? 15 : 0,
-                    }, // adding margin vertical only to last item
-                  ]}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                    }}>
-                    <View
-                      style={{
-                        paddingRight: 3,
-                        paddingTop: 3,
-                        flex: 0.1,
-                      }}>
-                      <Bullet />
-                    </View>
-                    <View style={{flex: 0.9}}>
-                      <Text
-                        style={[
-                          styles.techPointsText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {tech}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              ))}
-            </View>
-
-            {/* learning outcomes  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <MaterialCommunityIcons
-                  name={'book-open'}
-                  size={ICON_SIZE * 2}
-                  color={theme.GREEN_COLOR}
-                />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Learning Outcomes
-                </Text>
-              </View>
+              {/* details container  */}
               <View
-                style={[styles.container, {marginHorizontal: Width * 0.07}]}>
-                <Text
-                  style={[
-                    {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
-                  ]}>
-                  {FYPData.name} will help you learn following skills
-                </Text>
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <Ionicons
+                    name={'ios-bulb-sharp'}
+                    size={ICON_SIZE * 2}
+                    color={theme.GREEN_COLOR}
+                  />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Basic Idea
+                  </Text>
+                </View>
+                <View style={[styles.center, styles.detailsTextContainer]}>
+                  <Text style={[styles.detailsText, {color: theme.TEXT_COLOR}]}>
+                    {FYPData.description}
+                  </Text>
+                </View>
               </View>
 
-              {FYPData.learning_outcomes.map((learn, index) => (
-                <View
-                  style={[
-                    styles.techRowsContainer,
-                    {
-                      marginVertical:
-                        index === FYPData.category.length - 1 ? 15 : 0,
-                    }, // adding margin vertical only to last item
-                  ]}>
+              {/* category container  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <Ionicons
+                    name={'grid-outline'}
+                    size={ICON_SIZE * 2}
+                    color={theme.GREEN_COLOR}
+                  />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Categories
+                  </Text>
+                </View>
+                <View style={[styles.container]}>
+                  <Text
+                    style={[
+                      {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
+                    ]}>
+                    {FYPData.name} falls under the following software
+                    development category
+                  </Text>
+                </View>
+                {FYPData.category.map((category, index) => (
                   <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                    }}>
+                    style={[
+                      styles.categoryRowsContainer,
+                      {
+                        marginVertical:
+                          index === FYPData.category.length - 1 ? 15 : 0,
+                      }, // adding margin vertical only to last item
+                    ]}>
                     <View
                       style={{
-                        paddingRight: 3,
-                        paddingTop: 3,
-                        flex: 0.1,
+                        flexDirection: 'row',
+                        flex: 1,
                       }}>
-                      <Bullet />
-                    </View>
-                    <View style={{flex: 0.9}}>
-                      <Text
-                        style={[
-                          styles.techPointsText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {learn}
-                      </Text>
+                      <View
+                        style={{
+                          paddingRight: 3,
+                          paddingTop: 3,
+                          flex: 0.1,
+                        }}>
+                        <Bullet />
+                      </View>
+                      <View style={{flex: 0.9}}>
+                        <Text
+                          style={[
+                            styles.categoryPointsText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {category}
+                        </Text>
+                      </View>
                     </View>
                   </View>
+                ))}
+              </View>
+
+              {/* technologies container  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <Ionicons
+                    name={'code-slash'}
+                    size={ICON_SIZE * 2}
+                    color={theme.GREEN_COLOR}
+                  />
                 </View>
-              ))}
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Technologies
+                  </Text>
+                </View>
+                <View
+                  style={[styles.container, {marginHorizontal: Width * 0.07}]}>
+                  <Text
+                    style={[
+                      {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
+                    ]}>
+                    Following technologies will be used for the development of{' '}
+                    {FYPData.name}
+                  </Text>
+                </View>
+
+                {FYPData.technologies.map((tech, index) => (
+                  <View
+                    style={[
+                      styles.techRowsContainer,
+                      {
+                        marginVertical:
+                          index === FYPData.category.length - 1 ? 15 : 0,
+                      }, // adding margin vertical only to last item
+                    ]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                      }}>
+                      <View
+                        style={{
+                          paddingRight: 3,
+                          paddingTop: 3,
+                          flex: 0.1,
+                        }}>
+                        <Bullet />
+                      </View>
+                      <View style={{flex: 0.9}}>
+                        <Text
+                          style={[
+                            styles.techPointsText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {tech}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+
+              {/* learning outcomes  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <MaterialCommunityIcons
+                    name={'book-open'}
+                    size={ICON_SIZE * 2}
+                    color={theme.GREEN_COLOR}
+                  />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Learning Outcomes
+                  </Text>
+                </View>
+                <View
+                  style={[styles.container, {marginHorizontal: Width * 0.07}]}>
+                  <Text
+                    style={[
+                      {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
+                    ]}>
+                    {FYPData.name} will help you learn following skills
+                  </Text>
+                </View>
+
+                {FYPData.learning_outcomes.map((learn, index) => (
+                  <View
+                    style={[
+                      styles.techRowsContainer,
+                      {
+                        marginVertical:
+                          index === FYPData.category.length - 1 ? 15 : 0,
+                      }, // adding margin vertical only to last item
+                    ]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                      }}>
+                      <View
+                        style={{
+                          paddingRight: 3,
+                          paddingTop: 3,
+                          flex: 0.1,
+                        }}>
+                        <Bullet />
+                      </View>
+                      <View style={{flex: 0.9}}>
+                        <Text
+                          style={[
+                            styles.techPointsText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {learn}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
             </View>
           </ScrollView>
 

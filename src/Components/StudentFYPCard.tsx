@@ -23,12 +23,16 @@ const StudentFYPCard: FC<props> = ({navigation, fypDetail}) => {
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
 
-  const handleFollow = () => {
-    console.log('CLick on follow');
+  const handleReport = () => {
+    console.log('Clicked on report');
   };
 
   const handleShare = () => {
     console.log('Clicked on share');
+  };
+
+  const handleBookmark = () => {
+    console.log('Clicked on bookmark');
   };
   return (
     <View
@@ -76,8 +80,9 @@ const StudentFYPCard: FC<props> = ({navigation, fypDetail}) => {
         <View style={styles.headerIconContainer}>
           <PopUpMenu
             navigation={navigation}
+            handleBookmark={handleBookmark}
             handleShare={handleShare}
-            handleFollow={handleFollow}
+            handleReport={handleReport}
           />
         </View>
       </View>
@@ -121,10 +126,8 @@ const StudentFYPCard: FC<props> = ({navigation, fypDetail}) => {
                       {fypDetail.category.length > 1 && index !== 1
                         ? ','
                         : fypDetail.category.length === 2 && index === 1
-                        ? ' .'
-                        : fypDetail.category.length === 1 &&
-                          index === 0 &&
-                          ' .'}
+                        ? '.'
+                        : fypDetail.category.length === 1 && index === 0 && '.'}
                     </Text>
                   );
                 }
@@ -161,10 +164,10 @@ const StudentFYPCard: FC<props> = ({navigation, fypDetail}) => {
                       {fypDetail.technologies.length > 1 && index !== 1
                         ? ','
                         : fypDetail.technologies.length === 2 && index === 1
-                        ? ' .'
+                        ? '.'
                         : fypDetail.technologies.length === 1 &&
                           index === 0 &&
-                          ' .'}
+                          '.'}
                     </Text>
                   );
                 }
@@ -279,7 +282,7 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 0.75,
   },
   nameContainer: {
-    marginTop: 10,
+    // marginTop: 10,
   },
   nameText: {
     fontSize: Sizes.normal * 1.2,

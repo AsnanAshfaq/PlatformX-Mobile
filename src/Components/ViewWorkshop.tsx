@@ -121,395 +121,406 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
 
       {!loading && WorkshopData ? (
         <>
-          <ScrollView style={styles.scroll}>
-            {screen === 'student' && (
-              <View style={styles.container}>
-                <Text style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
-                  Join us for an awesome workshop on
-                </Text>
-              </View>
-            )}
-            {/* topic container  */}
-            <View style={[styles.container, styles.center]}>
-              <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
-                React Native
-              </Text>
-            </View>
-
-            {/* poster container  */}
-            <View style={[styles.container, styles.center]}>
-              <Image
-                style={styles.poster}
-                source={{
-                  uri:
-                    'https://img.freepik.com/free-psd/building-your-own-home-print-template_23-2148924851.jpg?size=338&ext=jpg',
-                }}
-              />
-            </View>
-
-            {/* details container  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <Foundation
-                  name={'clipboard-notes'}
-                  size={ICON_SIZE * 2}
-                  color={theme.GREEN_COLOR}
-                />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Workshop Details
-                </Text>
-              </View>
-              <View style={[styles.center, styles.detailsTextContainer]}>
-                <Text style={[styles.detailsText, {color: theme.TEXT_COLOR}]}>
-                  {WORKSHOP_DETAILS}
-                </Text>
-              </View>
-            </View>
-
-            {/* takeaways container  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <AntDesign
-                  name={'key'}
-                  size={ICON_SIZE * 1.5}
-                  color={theme.GREEN_COLOR}
-                />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Some Key Take Aways{' '}
-                </Text>
-              </View>
-              <View style={[styles.container]}>
-                <Text
-                  style={[
-                    {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
-                  ]}>
-                  By participating along with us in the workshop, you'll learn:
-                </Text>
-              </View>
-              {TAKE_AWAYS.map((take_away, index) => (
-                <View
-                  style={[
-                    styles.takeAwayRowContainer,
-                    {marginVertical: index === TAKE_AWAYS.length - 1 ? 15 : 0}, // adding margin vertical only to last item
-                  ]}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                    }}>
-                    <View
-                      style={{
-                        paddingRight: 3,
-                        paddingTop: 3,
-                        flex: 0.1,
-                      }}>
-                      <Bullet />
-                    </View>
-                    <View style={{flex: 0.9}}>
-                      <Text
-                        style={[
-                          styles.takeAwayPointsText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {take_away}
-                      </Text>
-                    </View>
-                  </View>
+          <ScrollView>
+            <View style={styles.scroll}>
+              {screen === 'student' && (
+                <View style={styles.container}>
+                  <Text
+                    style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
+                    Join us for an awesome workshop on
+                  </Text>
                 </View>
-              ))}
-            </View>
-
-            {/* schedule  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <Calendar color={theme.GREEN_COLOR} size={2} />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Schedule{' '}
-                </Text>
-              </View>
-              <View style={[styles.container]}>
-                <Text
-                  style={[
-                    {
-                      fontSize: Sizes.normal * 0.65,
-                      fontStyle: 'italic',
-                      color: theme.TEXT_COLOR,
-                    },
-                  ]}>
-                  See you on{' '}
-                </Text>
-              </View>
+              )}
+              {/* topic container  */}
               <View style={[styles.container, styles.center]}>
-                <Text style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
-                  Sunday 23rd December, 20201
+                <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
+                  React Native
                 </Text>
               </View>
+
+              {/* poster container  */}
               <View style={[styles.container, styles.center]}>
-                <Text style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
-                  Total Duration 3 Hours
-                </Text>
-              </View>
-
-              {SCHEDULE.map((schedule, index) => (
-                <View
-                  style={[
-                    styles.scheduleRowContainer,
-                    {marginVertical: index === SCHEDULE.length - 1 ? 10 : 0}, // adding margin vertical only to last item
-                  ]}
-                  key={index}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                    }}>
-                    <View style={styles.schedulePointContainer}>
-                      <Bullet />
-                      <Text
-                        style={[
-                          styles.scheduleTimeText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {schedule.time}
-                      </Text>
-                    </View>
-                    <View style={styles.scheduleLabelContainer}>
-                      <Text
-                        style={[
-                          styles.scheduleLabelText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {schedule.label}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              ))}
-            </View>
-
-            {/* speaker  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <IonIcons
-                  name={'mic'}
-                  size={ICON_SIZE * 1.5}
-                  color={theme.GREEN_COLOR}
+                <Image
+                  style={styles.poster}
+                  source={{
+                    uri:
+                      'https://img.freepik.com/free-psd/building-your-own-home-print-template_23-2148924851.jpg?size=338&ext=jpg',
+                  }}
                 />
               </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Speaker{SPEAKER.length > 1 && 's'}
-                </Text>
-              </View>
-              {SPEAKER.map((speaker, index) => (
-                <View style={[styles.speakerContainer]} key={index}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                    }}>
-                    <View style={[styles.speakerImageContainer]}>
-                      <Image
-                        source={{uri: speaker.image}}
-                        style={styles.speakerImage}
-                      />
-                    </View>
-                    <View style={[styles.speakerNameContainer]}>
-                      <Text
-                        style={[
-                          styles.speakerNameText,
-                          {color: theme.TEXT_COLOR},
-                        ]}>
-                        {speaker.name}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.speakerAboutContainer}>
-                    <Text
-                      style={[
-                        styles.speakerAboutText,
-                        {color: theme.TEXT_COLOR},
-                      ]}>
-                      {speaker.about}
-                    </Text>
-                  </View>
-                  <View
-                    style={[styles.speakerReachTextContainer, styles.center]}>
-                    <Text
-                      style={[
-                        styles.normalText,
-                        {color: theme.DIM_TEXT_COLOR},
-                      ]}>
-                      Reach me at
-                    </Text>
-                  </View>
-                  <View style={[styles.speakerReachIconContainer]}>
-                    {speaker.social_links.map((links, index) => (
-                      <>
-                        {links.tag === 'github' && (
-                          <TouchableWithoutFeedback
-                            onPress={() => Linking.openURL(links.link)}>
-                            <View style={styles.iconMargin}>
-                              <Github size={1.3} />
-                            </View>
-                          </TouchableWithoutFeedback>
-                        )}
-                        {links.tag === 'linkedin' && (
-                          <TouchableWithoutFeedback
-                            onPress={() => Linking.openURL(links.link)}>
-                            <View style={styles.iconMargin}>
-                              <LinkedIn size={1.3} />
-                            </View>
-                          </TouchableWithoutFeedback>
-                        )}
-                        {links.tag === 'twitter' && (
-                          <TouchableWithoutFeedback
-                            onPress={() => Linking.openURL(links.link)}>
-                            <View style={styles.iconMargin}>
-                              <Twitter size={1.3} />
-                            </View>
-                          </TouchableWithoutFeedback>
-                        )}
-                      </>
-                    ))}
-                  </View>
-                </View>
-              ))}
-            </View>
 
-            {/* charges  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <Cash color={theme.GREEN_COLOR} size={1.5} />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Charges{' '}
-                </Text>
-              </View>
+              {/* details container  */}
               <View
-                style={[styles.center, styles.container, {marginBottom: 10}]}>
-                <Text style={[styles.chargesText, {color: theme.TEXT_COLOR}]}>
-                  Rs {commaSeperator(2000)}
-                </Text>
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <Foundation
+                    name={'clipboard-notes'}
+                    size={ICON_SIZE * 2}
+                    color={theme.GREEN_COLOR}
+                  />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Workshop Details
+                  </Text>
+                </View>
+                <View style={[styles.center, styles.detailsTextContainer]}>
+                  <Text style={[styles.detailsText, {color: theme.TEXT_COLOR}]}>
+                    {WORKSHOP_DETAILS}
+                  </Text>
+                </View>
               </View>
-            </View>
 
-            {/* pre-requisites  */}
-            <View
-              style={[
-                styles.center,
-                styles.card,
-                {
-                  backgroundColor: theme.CARD_BACKGROUND_COLOR,
-                  marginBottom: 10,
-                },
-              ]}>
-              <View style={[styles.center, styles.cardIconContainer]}>
-                <MaterialCommunityIcons
-                  name={'notebook'}
-                  size={ICON_SIZE * 1.5}
-                  color={theme.GREEN_COLOR}
-                />
-              </View>
-              <View style={[styles.center, styles.cardHeadingContainer]}>
-                <Text
-                  style={[
-                    styles.cardHeadingText,
-                    {color: theme.DIM_TEXT_COLOR},
-                  ]}>
-                  Prerequisites
-                </Text>
-              </View>
-              <View style={[styles.container]}>
-                <Text
-                  style={[
-                    {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
-                  ]}>
-                  Following are the prerequisites to attend this workshop{' '}
-                </Text>
-              </View>
-              {PREREQUISITES.map((pre, index) => (
-                <View
-                  style={[
-                    styles.takeAwayRowContainer,
-                    {
-                      marginVertical:
-                        index === PREREQUISITES.length - 1 ? 10 : 0,
-                    }, // adding margin vertical only to last item
-                  ]}>
+              {/* takeaways container  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <AntDesign
+                    name={'key'}
+                    size={ICON_SIZE * 1.5}
+                    color={theme.GREEN_COLOR}
+                  />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Some Key Take Aways{' '}
+                  </Text>
+                </View>
+                <View style={[styles.container]}>
+                  <Text
+                    style={[
+                      {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
+                    ]}>
+                    By participating along with us in the workshop, you'll
+                    learn:
+                  </Text>
+                </View>
+                {TAKE_AWAYS.map((take_away, index) => (
                   <View
-                    style={{
-                      flexDirection: 'row',
-                      flex: 1,
-                    }}>
+                    style={[
+                      styles.takeAwayRowContainer,
+                      {
+                        marginVertical:
+                          index === TAKE_AWAYS.length - 1 ? 15 : 0,
+                      }, // adding margin vertical only to last item
+                    ]}>
                     <View
                       style={{
-                        paddingRight: 3,
-                        paddingTop: 3,
-                        flex: 0.1,
+                        flexDirection: 'row',
+                        flex: 1,
                       }}>
-                      <Bullet />
-                    </View>
-                    <View style={{flex: 0.9}}>
-                      <Text
-                        style={[styles.preReqText, {color: theme.TEXT_COLOR}]}>
-                        {pre}
-                      </Text>
+                      <View
+                        style={{
+                          paddingRight: 3,
+                          paddingTop: 3,
+                          flex: 0.1,
+                        }}>
+                        <Bullet />
+                      </View>
+                      <View style={{flex: 0.9}}>
+                        <Text
+                          style={[
+                            styles.takeAwayPointsText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {take_away}
+                        </Text>
+                      </View>
                     </View>
                   </View>
+                ))}
+              </View>
+
+              {/* schedule  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <Calendar color={theme.GREEN_COLOR} size={2} />
                 </View>
-              ))}
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Schedule{' '}
+                  </Text>
+                </View>
+                <View style={[styles.container]}>
+                  <Text
+                    style={[
+                      {
+                        fontSize: Sizes.normal * 0.65,
+                        fontStyle: 'italic',
+                        color: theme.TEXT_COLOR,
+                      },
+                    ]}>
+                    See you on{' '}
+                  </Text>
+                </View>
+                <View style={[styles.container, styles.center]}>
+                  <Text style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
+                    Sunday 23rd December, 20201
+                  </Text>
+                </View>
+                <View style={[styles.container, styles.center]}>
+                  <Text
+                    style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
+                    Total Duration 3 Hours
+                  </Text>
+                </View>
+
+                {SCHEDULE.map((schedule, index) => (
+                  <View
+                    style={[
+                      styles.scheduleRowContainer,
+                      {marginVertical: index === SCHEDULE.length - 1 ? 10 : 0}, // adding margin vertical only to last item
+                    ]}
+                    key={index}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                      }}>
+                      <View style={styles.schedulePointContainer}>
+                        <Bullet />
+                        <Text
+                          style={[
+                            styles.scheduleTimeText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {schedule.time}
+                        </Text>
+                      </View>
+                      <View style={styles.scheduleLabelContainer}>
+                        <Text
+                          style={[
+                            styles.scheduleLabelText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {schedule.label}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+
+              {/* speaker  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <IonIcons
+                    name={'mic'}
+                    size={ICON_SIZE * 1.5}
+                    color={theme.GREEN_COLOR}
+                  />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Speaker{SPEAKER.length > 1 && 's'}
+                  </Text>
+                </View>
+                {SPEAKER.map((speaker, index) => (
+                  <View style={[styles.speakerContainer]} key={index}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                      }}>
+                      <View style={[styles.speakerImageContainer]}>
+                        <Image
+                          source={{uri: speaker.image}}
+                          style={styles.speakerImage}
+                        />
+                      </View>
+                      <View style={[styles.speakerNameContainer]}>
+                        <Text
+                          style={[
+                            styles.speakerNameText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {speaker.name}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.speakerAboutContainer}>
+                      <Text
+                        style={[
+                          styles.speakerAboutText,
+                          {color: theme.TEXT_COLOR},
+                        ]}>
+                        {speaker.about}
+                      </Text>
+                    </View>
+                    <View
+                      style={[styles.speakerReachTextContainer, styles.center]}>
+                      <Text
+                        style={[
+                          styles.normalText,
+                          {color: theme.DIM_TEXT_COLOR},
+                        ]}>
+                        Reach me at
+                      </Text>
+                    </View>
+                    <View style={[styles.speakerReachIconContainer]}>
+                      {speaker.social_links.map((links, index) => (
+                        <>
+                          {links.tag === 'github' && (
+                            <TouchableWithoutFeedback
+                              onPress={() => Linking.openURL(links.link)}>
+                              <View style={styles.iconMargin}>
+                                <Github size={1.3} />
+                              </View>
+                            </TouchableWithoutFeedback>
+                          )}
+                          {links.tag === 'linkedin' && (
+                            <TouchableWithoutFeedback
+                              onPress={() => Linking.openURL(links.link)}>
+                              <View style={styles.iconMargin}>
+                                <LinkedIn size={1.3} />
+                              </View>
+                            </TouchableWithoutFeedback>
+                          )}
+                          {links.tag === 'twitter' && (
+                            <TouchableWithoutFeedback
+                              onPress={() => Linking.openURL(links.link)}>
+                              <View style={styles.iconMargin}>
+                                <Twitter size={1.3} />
+                              </View>
+                            </TouchableWithoutFeedback>
+                          )}
+                        </>
+                      ))}
+                    </View>
+                  </View>
+                ))}
+              </View>
+
+              {/* charges  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <Cash color={theme.GREEN_COLOR} size={1.5} />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Charges{' '}
+                  </Text>
+                </View>
+                <View
+                  style={[styles.center, styles.container, {marginBottom: 10}]}>
+                  <Text style={[styles.chargesText, {color: theme.TEXT_COLOR}]}>
+                    Rs {commaSeperator(2000)}
+                  </Text>
+                </View>
+              </View>
+
+              {/* pre-requisites  */}
+              <View
+                style={[
+                  styles.center,
+                  styles.card,
+                  {
+                    backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                    marginBottom: 10,
+                  },
+                ]}>
+                <View style={[styles.center, styles.cardIconContainer]}>
+                  <MaterialCommunityIcons
+                    name={'notebook'}
+                    size={ICON_SIZE * 1.5}
+                    color={theme.GREEN_COLOR}
+                  />
+                </View>
+                <View style={[styles.center, styles.cardHeadingContainer]}>
+                  <Text
+                    style={[
+                      styles.cardHeadingText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Prerequisites
+                  </Text>
+                </View>
+                <View style={[styles.container]}>
+                  <Text
+                    style={[
+                      {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
+                    ]}>
+                    Following are the prerequisites to attend this workshop{' '}
+                  </Text>
+                </View>
+                {PREREQUISITES.map((pre, index) => (
+                  <View
+                    style={[
+                      styles.takeAwayRowContainer,
+                      {
+                        marginVertical:
+                          index === PREREQUISITES.length - 1 ? 10 : 0,
+                      }, // adding margin vertical only to last item
+                    ]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                      }}>
+                      <View
+                        style={{
+                          paddingRight: 3,
+                          paddingTop: 3,
+                          flex: 0.1,
+                        }}>
+                        <Bullet />
+                      </View>
+                      <View style={{flex: 0.9}}>
+                        <Text
+                          style={[
+                            styles.preReqText,
+                            {color: theme.TEXT_COLOR},
+                          ]}>
+                          {pre}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
             </View>
           </ScrollView>
 

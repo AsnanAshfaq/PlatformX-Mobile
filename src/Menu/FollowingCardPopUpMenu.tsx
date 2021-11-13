@@ -25,7 +25,7 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
           <Ionicons
             name={'ellipsis-vertical'}
             size={ICON_SIZE}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
+            color={theme.ICON_COLOR}
           />
         </View>
       </MenuTrigger>
@@ -34,10 +34,10 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
       <MenuOptions
         customStyles={{
           optionsContainer: {
-            backgroundColor: theme.SHADOW_COLOR,
+            backgroundColor: theme.POP_UP_MENU_BACKGROUND_COLOR,
             borderWidth: 5,
             borderRadius: 20,
-            width: 120,
+            width: 150,
             borderColor: 'transparent',
             marginTop: 20,
             marginLeft: -10,
@@ -49,15 +49,22 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
         }}>
         <MenuOption onSelect={() => Modal()}>
           <View style={styles.menuOptionContainer}>
-            <Text
-              style={[
-                styles.menuOptionText,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              Unfollow
-            </Text>
+            <Ionicons
+              name={'bookmark'}
+              color={theme.ICON_COLOR}
+              size={ICON_SIZE * 0.8}
+            />
+            <View style={styles.textContainer}>
+              <Text
+                style={[
+                  styles.menuOptionText,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                UnFollow
+              </Text>
+            </View>
           </View>
         </MenuOption>
         {/* <MenuOption onSelect={() => handleUnFollow()}>
@@ -75,11 +82,15 @@ export default PopUpMenu;
 const styles = StyleSheet.create({
   menuOptionContainer: {
     paddingHorizontal: 10,
+    flexDirection: 'row',
     // paddingVertical: 20,
     // marginVertical: 20,
   },
   menuOptionText: {
     fontSize: Sizes.normal,
     // fontFamily: 'Raleway-Medium',
+  },
+  textContainer: {
+    marginLeft: 10,
   },
 });

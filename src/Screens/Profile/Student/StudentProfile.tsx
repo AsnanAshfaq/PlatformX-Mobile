@@ -141,6 +141,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
       setPost(postResponse.data);
       setLoading(false);
     } catch (error) {
+      setLoading(false);
       ToastAndroid.show('Error while fetching data', 1500);
     }
   };

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {PROFILE_IMAGE, GREY_IMAGE} from '../Constants/sample';
 import {Height, Sizes, Width} from '../Constants/Size';
-import PopUpMenu from '../Menu/WorkshopCardPopUpMenu';
+import PopUpMenu from '../Menu/StudentWorkshopCardPopUpMenu';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // @ts-ignore

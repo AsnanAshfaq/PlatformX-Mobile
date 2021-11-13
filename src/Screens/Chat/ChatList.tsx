@@ -40,6 +40,7 @@ const Chat: FC<props> = ({navigation}) => {
       setChatList(response.data);
       setIsLoading(false);
     } catch (error: any) {
+      setIsLoading(false);
       ToastAndroid.show(error.data.response.error, 1500);
     }
   };
@@ -115,7 +116,7 @@ const Chat: FC<props> = ({navigation}) => {
               ]}>
               {Searching.query !== '' && ChatList.length === 0
                 ? `No result Found for ${Searching.query}`
-                : 'No posts yet'}
+                : 'No chat yet'}
             </Text>
             <TouchableOpacity onPress={() => setIsLoading(true)}>
               <Text style={[styles.refreshText, {color: theme.GREEN_COLOR}]}>
