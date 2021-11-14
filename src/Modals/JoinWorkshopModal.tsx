@@ -15,6 +15,7 @@ import {hackathonFilterData} from '../Constants/sample';
 import CheckBox from '../Components/CheckBox';
 import {useStateValue} from '../Store/StateProvider';
 import Divider from '../Components/Divider';
+import LottieView from 'lottie-react-native';
 
 type props = {
   isShow: boolean;
@@ -54,7 +55,7 @@ const JoinWorkshopModal: FC<props> = ({isShow, details, toggleModal}) => {
                 color: theme.TEXT_COLOR,
               },
             ]}>
-            See You
+            See You There
           </Text>
         </View>
         <Divider marginHorizontal={Width * 0.04} size={'large'} />
@@ -65,7 +66,14 @@ const JoinWorkshopModal: FC<props> = ({isShow, details, toggleModal}) => {
             be sent to you when it starts.
           </Text>
         </View>
-
+        <View style={styles.animationContainer}>
+          <LottieView
+            source={require('../../assets/lottie/tick.json')}
+            style={styles.animation}
+            autoPlay
+            loop={false}
+          />
+        </View>
         {/* done button  */}
         <View style={styles.applyButtonContainer}>
           <TouchableOpacity
@@ -103,30 +111,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // alignItems: 'center',
     borderColor: 'transparent',
-    marginVertical: Height * 0.34,
+    marginVertical: Height * 0.27,
   },
   headingContainer: {
-    flex: 0.3,
+    flex: 0.1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 3,
   },
   heading: {
-    fontSize: Sizes.normal * 1.2,
+    fontSize: Sizes.normal * 1.25,
   },
   descriptionContainer: {
-    flex: 0.7,
+    flex: 0.4,
     marginHorizontal: Width * 0.04,
     justifyContent: 'center',
     alignItems: 'center',
   },
   descText: {
-    fontSize: Sizes.normal * 0.9,
-    lineHeight: 22,
+    fontSize: Sizes.normal,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  animationContainer: {
+    flex: 0.4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  animation: {
+    width: Width * 0.3,
+    height: Width * 0.3,
   },
   applyButtonContainer: {
-    // minHeight: Height * 0.05,
-    // maxHeight: Height * 0.07
+    // flex: 0.1,
     flexDirection: 'row',
     marginVertical: 10,
     justifyContent: 'center',

@@ -142,7 +142,7 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
           toggleModal={() => {
             setmodal(false);
             // navigate to previous screen
-            navigation.goBack();
+            // navigation.goBack();
           }}
           details={WorkshopData}
         />
