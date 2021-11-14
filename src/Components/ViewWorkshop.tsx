@@ -22,6 +22,7 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import Bullet from './Bullet';
 import {Calendar, Cash, Github, LinkedIn, Twitter} from './Icons';
 import {commaSeperator} from '../Utils/Numbers';
+import JoinWorkshopModal from '../Modals/JoinWorkshopModal';
 type props = {
   navigation: any;
   route: any;
@@ -92,18 +93,32 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
   const [loading, setLoading] = useState(true);
   const [WorkshopData, setWorkshopData] = useState({});
   const [PosterLoading, setPosterLoading] = useState(true);
+  const [modal, setmodal] = useState(false);
   const {theme} = useStateValue()[0];
+
+  const handleJoin = () => {
+    // if workshop is not paid
+    // then show join workshop modal
+    if (true) {
+      setmodal(true);
+      // navigate to workshop screen
+    }
+
+    // else
+    // navigate to pay workshop screen
+  };
 
   useEffect(() => {
     // fetch hackathon data
     axios
-      .get(`/api/hackathon/${ID}`)
+      .get(`/api/workshop/${ID}`)
       .then(result => {
         setWorkshopData(result.data);
         setLoading(false);
       })
       .catch(error => setLoading(false));
   }, [ID]);
+
   return (
     <View
       style={[
@@ -118,6 +133,20 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
         back
         onBackPress={() => navigation.goBack()}
       />
+
+      {/* join workshop modal  */}
+
+      {screen === 'student' && (
+        <JoinWorkshopModal
+          isShow={modal}
+          toggleModal={() => {
+            setmodal(false);
+            // navigate to previous screen
+            navigation.goBack();
+          }}
+          details={WorkshopData}
+        />
+      )}
 
       {!loading && WorkshopData ? (
         <>
@@ -525,10 +554,7 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
           </ScrollView>
 
           {screen === 'student' && (
-            <CustomButton
-              text={'Join Now'}
-              onPress={() => console.log('Participating screen')}
-            />
+            <CustomButton text={'Join Now'} onPress={handleJoin} />
           )}
         </>
       ) : (

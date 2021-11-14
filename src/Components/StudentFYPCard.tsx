@@ -52,7 +52,7 @@ const StudentFYPCard: FC<props> = ({navigation, fypDetail}) => {
               uri: ProfileImageLoading
                 ? PROFILE_IMAGE
                 : fypDetail.organization.user.profile_image
-                ? fypDetail.organization.user.profile_image.path
+                ? BASE_URL + fypDetail.organization.user.profile_image.path
                 : PROFILE_IMAGE,
             }}
             onLoadEnd={() => setProfileImageLoading(false)}

@@ -105,18 +105,15 @@ const FYP: FC<props> = ({navigation}) => {
   const ref = useRef<any>();
 
   const getData = async () => {
-    // axios
-    //   .get('/api/hackathons/')
-    //   .then(response => {
-    //     setFyps(response.data);
-    //     setIsLoading(false);
-    //   })
-    //   .catch(error => {
-    //     setIsLoading(false);
-    //     console.log('Error is', error);
-    //   });
-    setFyps(FYPS);
-    setIsLoading(false);
+    axios
+      .get('/api/fyps/')
+      .then(response => {
+        setFyps(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+      });
   };
 
   const onRefresh = () => {

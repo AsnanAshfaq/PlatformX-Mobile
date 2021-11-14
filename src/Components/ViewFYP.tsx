@@ -64,17 +64,14 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
   const {theme} = useStateValue()[0];
 
   useEffect(() => {
-    // fetch hackathon data
-    setFYPData(FYPS);
-    // axios
-    //   .get(`/api/hackathon/${ID}`)
-    //   .then(result => {
-    //     // setFYPData(result.data);
-    //     setFYPData(FYPS);
-    //     setLoading(false);
-    //   })
-    //   .catch(error => setLoading(false));
-    setLoading(false);
+    // fetching fyp
+    axios
+      .get(`/api/fyp/${ID}`)
+      .then(result => {
+        setFYPData(result.data);
+        setLoading(false);
+      })
+      .catch(error => setLoading(false));
   }, [ID]);
 
   return (
@@ -312,7 +309,7 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                   </Text>
                 </View>
 
-                {FYPData.learning_outcomes.map((learn, index) => (
+                {FYPData.outcomes.map((learn, index) => (
                   <View
                     style={[
                       styles.techRowsContainer,
