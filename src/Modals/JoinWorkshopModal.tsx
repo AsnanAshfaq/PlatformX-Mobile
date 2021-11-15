@@ -11,8 +11,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {hackathonFilterData} from '../Constants/sample';
-import CheckBox from '../Components/CheckBox';
 import {useStateValue} from '../Store/StateProvider';
 import Divider from '../Components/Divider';
 import LottieView from 'lottie-react-native';
@@ -55,7 +53,7 @@ const JoinWorkshopModal: FC<props> = ({isShow, details, toggleModal}) => {
                 color: theme.TEXT_COLOR,
               },
             ]}>
-            See You There
+            See you Again
           </Text>
         </View>
         <Divider marginHorizontal={Width * 0.04} size={'large'} />
@@ -110,11 +108,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     // alignItems: 'center',
+    position: 'absolute',
     borderColor: 'transparent',
-    marginVertical: Height * 0.27,
+    marginVertical: Height * 0.25, //Height * 0.27
+    height: Height * 0.45,
   },
   headingContainer: {
-    flex: 0.1,
+    flex: 0.12,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 3,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 1.25,
   },
   descriptionContainer: {
-    flex: 0.4,
+    flex: 0.38,
     marginHorizontal: Width * 0.04,
     justifyContent: 'center',
     alignItems: 'center',

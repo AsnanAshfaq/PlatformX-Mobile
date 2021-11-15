@@ -135,7 +135,6 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
       />
 
       {/* join workshop modal  */}
-
       {screen === 'student' && (
         <JoinWorkshopModal
           isShow={modal}

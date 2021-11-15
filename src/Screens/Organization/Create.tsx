@@ -87,8 +87,15 @@ const Create: FC<props> = ({navigation}) => {
         />
         <Card
           title={`F.Y.P${"'"}s`}
-          description={`Hackathons are taking over the world! Make yours run better and show the world what gets made at your event.${'\n'}START HOSTING YOUR HACKATHON NOW !!!`}
-          onPress={() => console.log('Pressed on fyps')}
+          description={`Have an idea for a Final Year Project for Computer Science Students? Post your idea, create a coding test and find participants who you want to work with on your project.${'\n'}START YOUR PROJECT NOW`}
+          onPress={() =>
+            navigation.navigate('FYPScreens', {
+              screen: 'Create_Edit_FYP',
+              params: {
+                screen: 'create',
+              },
+            })
+          }
         />
         <Card
           title={'Internship'}

@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState, useCallback} from 'react';
+import React, {FC, useEffect, useState, useRef, useCallback} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   FlatList,
   RefreshControl,
   Keyboard,
+  ToastAndroid,
 } from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
@@ -15,6 +16,8 @@ import {Sizes} from '../../../Constants/Size';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
+import {useScrollToTop} from '@react-navigation/native';
+import OrganizationFYPCard from '../../../Components/OrganizationFYPCard';
 
 type props = {
   navigation: any;
@@ -32,21 +35,17 @@ const FYP: FC<props> = ({navigation}) => {
     isSearching: false,
     query: '',
   });
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     // getData();
-  //   }, []),
-  // );
 
   const getData = async () => {
-    try {
-      axios.get('/api/posts/').then(response => {
-        // setProject(response.data);
+    axios
+      .get('/api/fyp/')
+      .then(response => {
+        setFYP(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
         setIsLoading(false);
       });
-    } catch (error) {
-      console.log('Error is', error);
-    }
   };
 
   const handleSearch = () => {
@@ -57,13 +56,16 @@ const FYP: FC<props> = ({navigation}) => {
     setRefreshing(true);
 
     getData().then(() => {
-      // console.log(Post);
       setRefreshing(false);
     });
   };
   useEffect(() => {
     getData();
   }, [IsLoading]);
+
+  const ref = useRef<any>();
+
+  useScrollToTop(ref);
 
   return (
     <View
@@ -88,8 +90,9 @@ const FYP: FC<props> = ({navigation}) => {
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: FYP, index}: any) => {
-              return <Text>This is the project screen</Text>;
-              // return <PostCard key={FYP?.id} postDetail={FYP} />;
+              return (
+                <OrganizationFYPCard navigation={navigation} fypDetail={FYP} />
+              );
             }}
             // progressViewOffset={10}
             refreshControl={
@@ -106,12 +109,12 @@ const FYP: FC<props> = ({navigation}) => {
             contentOffset={{y: -300, x: 0}}
           />
         </>
-      ) : !IsLoading ? (
+      ) : !IsLoading && FYPS.length === 0 ? (
         <View style={styles.center}>
           <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
             {Searching.query !== '' && FYPS.length === 0
               ? `No result Found for ${Searching.query}`
-              : "No FYP's yet"}
+              : "No fyp's yet"}
           </Text>
           <TouchableOpacity onPress={() => setIsLoading(true)}>
             <Text style={[styles.refreshText, {color: theme.GREEN_COLOR}]}>

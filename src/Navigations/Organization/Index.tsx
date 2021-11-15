@@ -5,6 +5,7 @@ import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit
 import HackathonSubscription from './Subscription';
 import HackahtonScreens from './Hackathon';
 import WorkshopScreens from './Workshop';
+import FYPScreens from './FYP';
 const Stack = createStackNavigator();
 
 const OrganizationScreens = () => {
@@ -23,6 +24,7 @@ const OrganizationScreens = () => {
       <Stack.Screen name="Main" component={OrganizationDrawerScreens} />
       <Stack.Screen name="HackahtonScreens" component={HackahtonScreens} />
       <Stack.Screen name="WorkshopScreens" component={WorkshopScreens} />
+      <Stack.Screen name="FYPScreens" component={FYPScreens} />
       <Stack.Screen
         name={'HackathonSubscription'}
         component={HackathonSubscription}

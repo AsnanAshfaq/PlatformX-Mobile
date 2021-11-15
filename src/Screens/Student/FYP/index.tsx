@@ -242,11 +242,11 @@ const FYP: FC<props> = ({navigation}) => {
             // ListHeaderComponent={listHeaderComponent}
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             ref={ref}
-            renderItem={({item: fyp, index}: any) => {
+            renderItem={({item: Fyp, index}: any) => {
               return (
                 <StudentFYPCard
-                  key={fyp?.id}
-                  fypDetail={fyp}
+                  key={Fyp?.id}
+                  fypDetail={Fyp}
                   navigation={navigation}
                 />
               );

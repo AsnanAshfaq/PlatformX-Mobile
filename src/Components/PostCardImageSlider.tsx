@@ -55,51 +55,47 @@ const PostCarImageSlider: FC<props> = ({postImages}) => {
   const [{theme}, dispatch] = useStateValue();
 
   return (
-    <FlatList
-      data={postImages}
-      showsHorizontalScrollIndicator={false}
-      ref={ref}
-      // style={{flexGrow: 1}}
-      contentContainerStyle={{
-        height: 300,
-        justifyContent: 'center',
-        alignItems: 'center',
-        // flex: 1,
-        marginVertical: 13,
-        // backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-      }}
-      // onContentSizeChange={(w, h) => console.log('Width and height ', w, hinde)}
-      pagingEnabled
-      onScrollEndDrag={e => {
-        // console.log('Height is', Height);
-        // console.log(postImages);
-        // ref.current.
-      }}
-      onScrollBeginDrag={e => {
-        // get the height of the child component
-      }}
-      horizontal
-      keyExtractor={(item, _) => `${item.id}`}
-      renderItem={({item, index, separators}) => <ImageView image={item} />}
-      // onViewableItemsChanged={onViewRef.current}
-    />
+    <>
+      <FlatList
+        data={postImages}
+        ref={ref}
+        // style={{flexGrow: 1}}
+        contentContainerStyle={styles.scroll}
+        pagingEnabled
+        onScrollEndDrag={e => {
+          // console.log('Height is', Height);
+          // console.log(postImages);
+          // ref.current.
+        }}
+        onScrollBeginDrag={e => {
+          // get the height of the child component
+        }}
+        horizontal
+        showsHorizontalScrollIndicator={true}
+        persistentScrollbar={true}
+        keyExtractor={(item, _) => `${item.id}`}
+        renderItem={({item, index, separators}) => <ImageView image={item} />}
+
+        // onViewableItemsChanged={onViewRef.current}
+      />
+
+      {/* indicator  */}
+      {postImages.length > 1 && <View></View>}
+    </>
   );
 };
 
 export default PostCarImageSlider;
 
 const styles = StyleSheet.create({
-  postImageContainer: {
-    // width: Width * 0.961,
-    // minHeight: Height * 0.25,
-    // maxHeight: Height * 0.3,
-    // height: 'auto',
-    marginRight: 4,
-    // marginVertical: 15,
-    // flex: 1,
-    // height: Width * (9 / 16),
-    // justifyContent: 'center',
+  scroll: {
+    height: 300,
+    justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
+    marginVertical: 13,
+  },
+  postImageContainer: {
+    marginRight: 4,
+    alignItems: 'center',
   },
 });

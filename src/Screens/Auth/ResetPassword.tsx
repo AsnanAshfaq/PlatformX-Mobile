@@ -111,7 +111,7 @@ const ResetPassword: FC<props> = ({navigation}) => {
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Ionicons
             name={'chevron-back'}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
+            color={theme.ICON_COLOR}
             size={ICON_SIZE}
           />
         </TouchableWithoutFeedback>

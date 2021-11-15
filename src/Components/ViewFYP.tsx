@@ -369,6 +369,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     marginHorizontal: Width * 0.04,
+    marginBottom: 10,
   },
   container: {
     marginTop: 10,
