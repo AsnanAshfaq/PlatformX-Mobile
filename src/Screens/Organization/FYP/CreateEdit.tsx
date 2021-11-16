@@ -17,7 +17,7 @@ import HelpText from '../../../Components/HelpText';
 import {PlusCircle} from '../../../Components/Icons';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
-import TechnologiesModal from '../../../Modals/TechnologiesModal';
+import TechnologiesModal from '../../../Modals/FYPTechnologiesModal';
 
 type props = {
   navigation: any;

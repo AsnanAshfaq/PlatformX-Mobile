@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
-import {hackathonFilterData} from '../Constants/sample';
 import CheckBox from '../Components/CheckBox';
 import {useStateValue} from '../Store/StateProvider';
 import Divider from '../Components/Divider';
@@ -35,7 +34,7 @@ type props = {
   // Data: Array<any>;
 };
 
-const FilterModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
+const CategoriesModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
   const [selected, setselected] = useState([]);
 
   const [{theme}, dispatch] = useStateValue();
@@ -71,7 +70,7 @@ const FilterModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
                 color: theme.TEXT_COLOR,
               },
             ]}>
-            Technologies{' '}
+            Categories{' '}
           </Text>
         </View>
         <Divider size={'medium'} />
@@ -82,7 +81,6 @@ const FilterModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
           contentContainerStyle={styles.scroll}
           renderItem={({item: category, index}) => (
             <View key={index} style={[styles.container]}>
-              {/* label of the filter  */}
               <View style={styles.checkBoxContainer}>
                 <CheckBox
                   onPress={isChecked => console.log(`${index} is ${isChecked}`)}
@@ -103,7 +101,6 @@ const FilterModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
             </View>
           )}
         />
-
         {/* done button  */}
         <View style={styles.applyButtonContainer}>
           <TouchableOpacity
@@ -156,7 +153,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   tag: {
-    fontSize: Sizes.normal * 0.9,
+    fontSize: Sizes.normal * 0.85,
     marginRight: 30,
     padding: 3,
     flexShrink: 1,
@@ -197,4 +194,4 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal,
   },
 });
-export default FilterModal;
+export default CategoriesModal;
