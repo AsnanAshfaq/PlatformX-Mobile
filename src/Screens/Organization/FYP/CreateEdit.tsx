@@ -10,12 +10,14 @@ import {
   FlatList,
   Platform,
 } from 'react-native';
+import CustomButton from '../../../Components/CustomButton';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomTextField from '../../../Components/CustomTextField2';
 import HelpText from '../../../Components/HelpText';
 import {PlusCircle} from '../../../Components/Icons';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
+import TechnologiesModal from '../../../Modals/TechnologiesModal';
 
 type props = {
   navigation: any;
@@ -32,11 +34,22 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
     techonologies: {value: '', error: ''},
     end_date: {value: new Date().toLocaleDateString(), error: ''},
   });
-  const [categoryModal, setcategoryModal] = useState(false);
   const [learning_outcome, setlearning_outcome] = useState({
     value: '',
     error: '',
   }); // it will be an array
+
+  const [modals, setmodals] = useState({
+    category: false,
+    technology: false,
+  });
+  const [loading, setloading] = useState(false);
+  const handleSave = () => {
+    // setloading(true);
+    // setTimeout(() => {
+    //   setloading(false);
+    // }, 3000);
+  };
   return (
     <View
       style={[
@@ -50,6 +63,20 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
         navigation={navigation}
         back
         onBackPress={() => navigation.goBack()}
+      />
+
+      {/* technologies modal  */}
+      <TechnologiesModal
+        isShow={modals.technology}
+        toggleModal={() =>
+          setmodals(props => {
+            return {
+              ...props,
+              technology: false,
+            };
+          })
+        }
+        onSelect={values => console.log('Values selected are', values)}
       />
 
       <KeyboardAvoidingView
@@ -126,8 +153,20 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   Category
                 </Text>
               </View>
-              <HelpText text={'Select category of the project.'} />
-              <TouchableOpacity onPress={() => setcategoryModal(true)}>
+              <HelpText
+                text={
+                  'Select category of the project (you can also select multiple options).'
+                }
+              />
+              <TouchableOpacity
+                onPress={() =>
+                  setmodals(props => {
+                    return {
+                      ...props,
+                      category: true,
+                    };
+                  })
+                }>
                 <View
                   style={[
                     styles.selectionContainer,
@@ -155,6 +194,29 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   'Select technologies that will be used in the development of the project.'
                 }
               />
+              <TouchableOpacity
+                onPress={() =>
+                  setmodals(props => {
+                    return {
+                      ...props,
+                      technology: true,
+                    };
+                  })
+                }>
+                <View
+                  style={[
+                    styles.selectionContainer,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR, padding: 6},
+                  ]}>
+                  <Text
+                    style={[
+                      styles.selectionText,
+                      {color: theme.DIM_TEXT_COLOR},
+                    ]}>
+                    Choose Technologies
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
             {/* outcomes of the project  */}
             <View style={styles.container}>
@@ -196,6 +258,11 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      <CustomButton
+        text={'Save and Continue'}
+        onPress={handleSave}
+        loading={loading}
+      />
     </View>
   );
 };

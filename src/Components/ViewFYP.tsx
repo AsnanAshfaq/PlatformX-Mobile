@@ -131,10 +131,14 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                     Categories
                   </Text>
                 </View>
-                <View style={[styles.container]}>
+                <View
+                  style={[styles.container, {marginHorizontal: Width * 0.07}]}>
                   <Text
                     style={[
-                      {fontSize: Sizes.normal * 0.65, color: theme.TEXT_COLOR},
+                      {
+                        fontSize: Sizes.normal * 0.65,
+                        color: theme.TEXT_COLOR,
+                      },
                     ]}>
                     {FYPData.name} falls under the following software
                     development category
@@ -216,7 +220,7 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                       styles.techRowsContainer,
                       {
                         marginVertical:
-                          index === FYPData.category.length - 1 ? 15 : 0,
+                          index === FYPData.technologies.length - 1 ? 15 : 0,
                       }, // adding margin vertical only to last item
                     ]}>
                     <View
@@ -285,7 +289,7 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                       styles.techRowsContainer,
                       {
                         marginVertical:
-                          index === FYPData.category.length - 1 ? 15 : 0,
+                          index === FYPData.outcomes.length - 1 ? 15 : 0,
                       }, // adding margin vertical only to last item
                     ]}>
                     <View
