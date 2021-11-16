@@ -27,36 +27,6 @@ type props = {
 };
 const ICON_SIZE = Width * 0.07;
 
-const FYPS = {
-  id: 1,
-  organization: {
-    name: 'Netsol',
-    user: {
-      profile_image: {
-        path:
-          'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
-      },
-    },
-  },
-  created_at: new Date().toLocaleDateString(),
-  name: 'Tour Recommender',
-  description:
-    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit perspiciatis sequi officiis porro fugit temporibus cupiditate commodi ipsum animi veritatis. Debitis modi ad cumque iste exercitationem neque? Impedit, ea ipsam.',
-  category: [
-    'Artificial Intellligence',
-    'Web Application',
-    'Desktop Application',
-  ],
-  learning_outcomes: [
-    'Work with Google Cloud',
-    'Learn how to encrypt messages',
-    "Learn to develop API's",
-  ],
-  technologies: ['Docker', 'Node', 'Firebase'],
-  team_members: 3,
-  days_left: 10,
-};
-
 const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
   const [loading, setLoading] = useState(true);
   const [FYPData, setFYPData] = useState<any>({});

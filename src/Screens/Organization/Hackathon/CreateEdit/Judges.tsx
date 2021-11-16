@@ -17,16 +17,6 @@ import CustomButton from '../../../../Components/CustomButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Camera, Cross, PlusCircle} from '../../../../Components/Icons';
 
-type Props = {};
-
-const JudgingCriteria: FC<Props> = () => {
-  return (
-    <View>
-      <Text>This is the judge form</Text>
-    </View>
-  );
-};
-
 type props = {};
 
 const Judges: FC<props> = () => {
