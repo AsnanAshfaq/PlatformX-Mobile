@@ -104,7 +104,7 @@ const TechnologiesModal: FC<props> = ({
           numColumns={2}
           keyExtractor={(item, index) => `${index}`}
           contentContainerStyle={styles.scroll}
-          renderItem={({item: category, index}) => (
+          renderItem={({item: technology, index}) => (
             <View key={index} style={[styles.container]}>
               <View style={styles.checkBoxContainer}>
                 <CheckBox
@@ -123,6 +123,7 @@ const TechnologiesModal: FC<props> = ({
                     }
                   }}
                   size={20}
+                  isChecked={selected.includes(technology)}
                 />
               </View>
               <View style={styles.textContainer}>
@@ -133,7 +134,7 @@ const TechnologiesModal: FC<props> = ({
                       color: theme.TEXT_COLOR,
                     },
                   ]}>
-                  {category}
+                  {technology}
                 </Text>
               </View>
             </View>

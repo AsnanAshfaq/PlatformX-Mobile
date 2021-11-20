@@ -52,10 +52,6 @@ const CategoriesModal: FC<props> = ({
     // setselected([]);
   };
 
-  useEffect(() => {
-    console.log('I am running');
-    setselected([]);
-  }, []);
   return (
     <Modal
       isVisible={isShow}
@@ -111,6 +107,7 @@ const CategoriesModal: FC<props> = ({
                       setselected(newArray);
                     }
                   }}
+                  isChecked={selected.includes(category)}
                   size={20}
                 />
               </View>

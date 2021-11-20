@@ -19,6 +19,7 @@ import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import TechnologiesModal from '../../../Modals/FYPTechnologiesModal';
 import CategoriesModal from '../../../Modals/FYPCategoriesModal';
+import FormHandler from '../../../Utils/FormHandler';
 type props = {
   navigation: any;
   route: any;
@@ -44,11 +45,33 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
     technology: false,
   });
   const [loading, setloading] = useState(false);
+  const {checkLength, isEmpty} = FormHandler();
+
   const handleSave = () => {
-    // setloading(true);
-    // setTimeout(() => {
-    //   setloading(false);
-    // }, 3000);
+    const isAllInputValid = true;
+    const x = Input;
+
+    // name check
+    if (isEmpty(Input.name.value)) {
+      x['name']['error'] = 'Name is required.';
+    }
+    if (isEmpty(Input.description.value)) {
+      x['description']['error'] = 'Description is required.';
+    }
+
+    if (Input.category.value.length === 0) {
+      x['category']['error'] = 'Category is required';
+    }
+    if (Input.techonologies.value.length === 0) {
+      x['techonologies']['error'] = 'Technology is required';
+    }
+
+    setInput(props => {
+      return {
+        ...x,
+      };
+    });
+    var bodyFormData = new FormData();
   };
   return (
     <View
@@ -146,7 +169,8 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   placeholder={'Enter Project Name'}
                   placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
                   textContentType={'name'}
-                  maxLength={20}
+                  maxLength={30}
+                  showLength
                   error={Input.name.error}
                 />
               </View>
@@ -179,7 +203,7 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   textContentType={'name'}
                   multiLine={true}
                   error={Input.description.error}
-                  maxLength={100}
+                  maxLength={150}
                   showLength
                 />
               </View>
@@ -208,7 +232,15 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                 <View
                   style={[
                     styles.selectionContainer,
-                    {backgroundColor: theme.CARD_BACKGROUND_COLOR, padding: 6},
+                    {
+                      backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                      borderWidth: 1,
+                      borderColor:
+                        Input.category.error !== ''
+                          ? theme.RED_COLOR
+                          : theme.CARD_BACKGROUND_COLOR,
+                      padding: 6,
+                    },
                   ]}>
                   <Text
                     style={[
@@ -219,6 +251,14 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   </Text>
                 </View>
               </TouchableOpacity>
+              {/* error container  */}
+              {Input.category.error !== '' && (
+                <View style={{alignItems: 'center'}}>
+                  <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
+                    {Input.category.error}
+                  </Text>
+                </View>
+              )}
             </View>
             {/* technologies of the project  */}
             <View style={styles.container}>
@@ -244,7 +284,15 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                 <View
                   style={[
                     styles.selectionContainer,
-                    {backgroundColor: theme.CARD_BACKGROUND_COLOR, padding: 6},
+                    {
+                      backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                      borderWidth: 1,
+                      borderColor:
+                        Input.category.error !== ''
+                          ? theme.RED_COLOR
+                          : theme.CARD_BACKGROUND_COLOR,
+                      padding: 6,
+                    },
                   ]}>
                   <Text
                     style={[
@@ -255,6 +303,13 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   </Text>
                 </View>
               </TouchableOpacity>
+              {Input.techonologies.error !== '' && (
+                <View style={{alignItems: 'center'}}>
+                  <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
+                    {Input.techonologies.error}
+                  </Text>
+                </View>
+              )}
             </View>
             {/* outcomes of the project  */}
             <View style={styles.container}>
@@ -341,5 +396,9 @@ const styles = StyleSheet.create({
   },
   selectionText: {
     fontSize: Sizes.normal * 0.95,
+  },
+
+  errorText: {
+    fontSize: Sizes.small,
   },
 });

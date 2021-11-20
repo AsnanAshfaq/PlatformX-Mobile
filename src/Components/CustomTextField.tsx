@@ -114,9 +114,7 @@ const CustomTextField: FC<props> = ({
           </TouchableWithoutFeedback>
         )}
       </View>
-      <Text style={[styles.errorText, {color: theme.GREEN_COLOR}]}>
-        {error}
-      </Text>
+      <Text style={[styles.errorText, {color: theme.RED_COLOR}]}>{error}</Text>
     </>
   );
 };

@@ -72,17 +72,17 @@ const CustomTextField2: FC<props> = ({
   height,
   icon,
   multiLine,
-  showLength,
+  showLength = false,
   defaultValue,
   onChangeText,
   textContentType,
   secureTextEntry,
-  rightIcon,
+  rightIcon = false,
   keyboardType,
   maxLength,
   autoFocus,
   error,
-  code,
+  code = false,
 }) => {
   const [Security, setSecurity] = useState(secureTextEntry);
   const ref = useRef<any>(null);
@@ -125,7 +125,13 @@ const CustomTextField2: FC<props> = ({
         <TextInput
           placeholder={placeholder}
           ref={ref}
-          style={[styles.textField, {color: theme.TEXT_COLOR}]}
+          style={[
+            styles.textField,
+            {
+              width: showLength ? Width * 0.67 : Width * 0.68,
+              color: theme.TEXT_COLOR,
+            },
+          ]}
           value={defaultValue}
           onChangeText={onChangeText}
           placeholderTextColor={placeholderColor}
@@ -137,7 +143,7 @@ const CustomTextField2: FC<props> = ({
           multiline={multiLine ? multiLine : false}
         />
         {showLength && (
-          <View style={{position: 'absolute', right: 7, top: 5}}>
+          <View style={{position: 'absolute', width: 40, right: 3, top: 5}}>
             <Text
               style={{
                 color: theme.DIM_TEXT_COLOR,
@@ -180,7 +186,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textField: {
-    width: Width * 0.68,
     fontSize: Sizes.normal * 0.8,
   },
   iconContainer: {
