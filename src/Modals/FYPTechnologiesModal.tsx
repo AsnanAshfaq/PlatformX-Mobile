@@ -47,18 +47,25 @@ const TECHNOLOGIES = [
 
 type props = {
   isShow: boolean;
+  values: any[];
   toggleModal: () => void;
   onSelect: (values: Array<string>) => void;
   // Data: Array<any>;
 };
 
-const TechnologiesModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
-  const [selected, setselected] = useState([]);
+const TechnologiesModal: FC<props> = ({
+  isShow,
+  values,
+  toggleModal,
+  onSelect,
+}) => {
+  const [selected, setselected] = useState<any[]>(values);
 
   const [{theme}, dispatch] = useStateValue();
 
   const handleSelect = () => {
     // get all the selected technologies
+    onSelect(selected);
   };
   return (
     <Modal
@@ -101,7 +108,20 @@ const TechnologiesModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
             <View key={index} style={[styles.container]}>
               <View style={styles.checkBoxContainer}>
                 <CheckBox
-                  onPress={isChecked => console.log(`${index} is ${isChecked}`)}
+                  onPress={isChecked => {
+                    if (isChecked) {
+                      // add the index value to state
+                      setselected(props => {
+                        return [...props, TECHNOLOGIES[index]];
+                      });
+                    } else {
+                      const value = TECHNOLOGIES[index];
+                      const newArray = selected.filter((v, index) => {
+                        return v !== value;
+                      });
+                      setselected(newArray);
+                    }
+                  }}
                   size={20}
                 />
               </View>

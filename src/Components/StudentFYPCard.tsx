@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     marginTop: 10,
+    marginHorizontal: Width * 0.04,
   },
   descriptionText: {
     fontSize: Sizes.normal * 0.8,

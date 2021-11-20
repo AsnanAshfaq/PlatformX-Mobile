@@ -8,7 +8,6 @@ import {
   Linking,
   ScrollView,
 } from 'react-native';
-
 import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
 import CustomHeader from './CustomHeader';

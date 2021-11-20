@@ -73,185 +73,187 @@ const Judges: FC<props> = () => {
           style={styles.scroll}
           showsVerticalScrollIndicator={false}
           horizontal={false}>
-          {/* name  */}
-          <View style={styles.container}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Name
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={judges.name.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setJudges(props => {
-                    return {
-                      ...props,
-                      name: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter judge name'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={judges.name.error}
-              />
-            </View>
-          </View>
-          {/* email  */}
-          <View style={styles.container}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Email
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={judges.email.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setJudges(props => {
-                    return {
-                      ...props,
-                      name: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter judge email address'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={judges.email.error}
-              />
-            </View>
-          </View>
-          <View style={styles.container}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Image
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={[
-                styles.imageCardContainer,
-                {
-                  backgroundColor: theme.CARD_BACKGROUND_COLOR,
-                  height: judges.image.value === '' ? Height * 0.15 : 'auto',
-                  paddingTop: judges.image.value ? 10 : 0,
-                },
-              ]}
-              activeOpacity={0.5}
-              onPress={() => handleImagePicker()}>
-              <Camera color={theme.GREEN_COLOR} size={1} />
-              <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
-                Upload Image
-              </Text>
-              <View>
-                {judges.image.value !== '' && (
-                  <View style={styles.imageContainer}>
-                    <TouchableOpacity
-                      style={styles.crossContainer}
-                      onPress={() => unSelectImage()}>
-                      <Cross color={theme.GREEN_COLOR} size={0.9} />
-                    </TouchableOpacity>
-                    <Image
-                      source={{uri: judges.image.value}}
-                      style={styles.image}
-                    />
-                  </View>
-                )}
-              </View>
-            </TouchableOpacity>
-            {judges.image.error !== '' && (
-              <View style={{alignItems: 'center'}}>
-                <Text
-                  style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
-                  {judges.image.error}
+          <View style={{marginHorizontal: Width * 0.04}}>
+            {/* name  */}
+            <View style={styles.container}>
+              <View style={styles.headingContainer}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Name
                 </Text>
               </View>
-            )}
-          </View>
-          <View style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flex: 0.7}}>
-                <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>
-                  Judging Criteria
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={judges.name.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setJudges(props => {
+                      return {
+                        ...props,
+                        name: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter judge name'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={judges.name.error}
+                />
+              </View>
+            </View>
+            {/* email  */}
+            <View style={styles.container}>
+              <View style={styles.headingContainer}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Email
                 </Text>
               </View>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={judges.email.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setJudges(props => {
+                      return {
+                        ...props,
+                        name: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter judge email address'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={judges.email.error}
+                />
+              </View>
+            </View>
+            <View style={styles.container}>
+              <View style={styles.headingContainer}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Image
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={[
+                  styles.imageCardContainer,
+                  {
+                    backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                    height: judges.image.value === '' ? Height * 0.15 : 'auto',
+                    paddingTop: judges.image.value ? 10 : 0,
+                  },
+                ]}
+                activeOpacity={0.5}
+                onPress={() => handleImagePicker()}>
+                <Camera color={theme.GREEN_COLOR} size={1} />
+                <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
+                  Upload Image
+                </Text>
+                <View>
+                  {judges.image.value !== '' && (
+                    <View style={styles.imageContainer}>
+                      <TouchableOpacity
+                        style={styles.crossContainer}
+                        onPress={() => unSelectImage()}>
+                        <Cross color={theme.GREEN_COLOR} size={0.9} />
+                      </TouchableOpacity>
+                      <Image
+                        source={{uri: judges.image.value}}
+                        style={styles.image}
+                      />
+                    </View>
+                  )}
+                </View>
+              </TouchableOpacity>
+              {judges.image.error !== '' && (
+                <View style={{alignItems: 'center'}}>
+                  <Text
+                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
+                    {judges.image.error}
+                  </Text>
+                </View>
+              )}
+            </View>
+            <View style={styles.container}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{flex: 0.7}}>
+                  <Text style={[styles.screenName, {color: theme.TEXT_COLOR}]}>
+                    Judging Criteria
+                  </Text>
+                </View>
 
-              <View
-                style={{
-                  flex: 0.2,
-                  alignItems: 'flex-end',
-                  justifyContent: 'center',
-                }}>
-                <PlusCircle color={theme.GREEN_COLOR} size={0.9} />
+                <View
+                  style={{
+                    flex: 0.2,
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                  }}>
+                  <PlusCircle color={theme.GREEN_COLOR} size={0.9} />
+                </View>
               </View>
-            </View>
-            <View style={styles.container}>
-              <View style={styles.headingContainer}>
-                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                  Title
-                </Text>
+              <View style={styles.container}>
+                <View style={styles.headingContainer}>
+                  <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                    Title
+                  </Text>
+                </View>
+                <View style={styles.inputContainer}>
+                  <CustomTextField
+                    defaultValue={criteria.title.value}
+                    keyboardType={'default'}
+                    onChangeText={text =>
+                      setcriteria(props => {
+                        return {
+                          ...props,
+                          title: {
+                            value: text,
+                            error: '',
+                          },
+                        };
+                      })
+                    }
+                    placeholder={'Enter title'}
+                    placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                    textContentType={'name'}
+                    maxLength={30}
+                    error={criteria.title.error}
+                  />
+                </View>
               </View>
-              <View style={styles.inputContainer}>
-                <CustomTextField
-                  defaultValue={criteria.title.value}
-                  keyboardType={'default'}
-                  onChangeText={text =>
-                    setcriteria(props => {
-                      return {
-                        ...props,
-                        title: {
-                          value: text,
-                          error: '',
-                        },
-                      };
-                    })
-                  }
-                  placeholder={'Enter title'}
-                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                  textContentType={'name'}
-                  maxLength={30}
-                  error={criteria.title.error}
-                />
-              </View>
-            </View>
-            <View style={styles.container}>
-              <View style={styles.headingContainer}>
-                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                  Description
-                </Text>
-              </View>
-              <View style={styles.inputContainer}>
-                <CustomTextField
-                  defaultValue={criteria.description.value}
-                  keyboardType={'default'}
-                  onChangeText={text =>
-                    setcriteria(props => {
-                      return {
-                        ...props,
-                        description: {
-                          value: text,
-                          error: '',
-                        },
-                      };
-                    })
-                  }
-                  placeholder={'Enter description'}
-                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                  textContentType={'name'}
-                  maxLength={30}
-                  error={criteria.description.error}
-                />
+              <View style={styles.container}>
+                <View style={styles.headingContainer}>
+                  <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                    Description
+                  </Text>
+                </View>
+                <View style={styles.inputContainer}>
+                  <CustomTextField
+                    defaultValue={criteria.description.value}
+                    keyboardType={'default'}
+                    onChangeText={text =>
+                      setcriteria(props => {
+                        return {
+                          ...props,
+                          description: {
+                            value: text,
+                            error: '',
+                          },
+                        };
+                      })
+                    }
+                    placeholder={'Enter description'}
+                    placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                    textContentType={'name'}
+                    maxLength={30}
+                    error={criteria.description.error}
+                  />
+                </View>
               </View>
             </View>
           </View>
@@ -271,7 +273,6 @@ export default Judges;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
-    marginHorizontal: Width * 0.04,
     marginTop: Height * 0.025,
   },
   screenName: {

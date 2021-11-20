@@ -51,6 +51,7 @@ type props = {
   textContentType: textContentType;
   keyboardType: keyboardType;
   multiLine?: boolean;
+  showLength?: boolean;
   icon?: string;
   secureTextEntry?: boolean;
   rightIcon?: boolean;
@@ -71,6 +72,7 @@ const CustomTextField2: FC<props> = ({
   height,
   icon,
   multiLine,
+  showLength,
   defaultValue,
   onChangeText,
   textContentType,
@@ -134,6 +136,17 @@ const CustomTextField2: FC<props> = ({
           autoFocus={autoFocus}
           multiline={multiLine ? multiLine : false}
         />
+        {showLength && (
+          <View style={{position: 'absolute', right: 7, top: 5}}>
+            <Text
+              style={{
+                color: theme.DIM_TEXT_COLOR,
+                fontSize: Sizes.small * 0.73,
+              }}>
+              {defaultValue.trim().length} / {maxLength}
+            </Text>
+          </View>
+        )}
         {rightIcon && (
           <TouchableWithoutFeedback
             onPress={() => setSecurity(!Security)}

@@ -1,5 +1,5 @@
 /* eslint-disable no-sparse-arrays */
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import CheckBox from '../Components/CheckBox';
 import {useStateValue} from '../Store/StateProvider';
 import Divider from '../Components/Divider';
+
 const CATEGORIES = [
   'Frontend Development',
   'Backend Development',
@@ -29,19 +30,32 @@ const CATEGORIES = [
 
 type props = {
   isShow: boolean;
+  values: any[];
   toggleModal: () => void;
   onSelect: (values: Array<string>) => void;
   // Data: Array<any>;
 };
 
-const CategoriesModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
-  const [selected, setselected] = useState([]);
+const CategoriesModal: FC<props> = ({
+  isShow,
+  values,
+  toggleModal,
+  onSelect,
+}) => {
+  const [selected, setselected] = useState<any[]>(values);
 
   const [{theme}, dispatch] = useStateValue();
 
   const handleSelect = () => {
     // get all the selected technologies
+    onSelect(selected);
+    // setselected([]);
   };
+
+  useEffect(() => {
+    console.log('I am running');
+    setselected([]);
+  }, []);
   return (
     <Modal
       isVisible={isShow}
@@ -83,7 +97,20 @@ const CategoriesModal: FC<props> = ({isShow, toggleModal, onSelect}) => {
             <View key={index} style={[styles.container]}>
               <View style={styles.checkBoxContainer}>
                 <CheckBox
-                  onPress={isChecked => console.log(`${index} is ${isChecked}`)}
+                  onPress={isChecked => {
+                    if (isChecked) {
+                      // add the index value to state
+                      setselected(props => {
+                        return [...props, CATEGORIES[index]];
+                      });
+                    } else {
+                      const value = CATEGORIES[index];
+                      const newArray = selected.filter((v, index) => {
+                        return v !== value;
+                      });
+                      setselected(newArray);
+                    }
+                  }}
                   size={20}
                 />
               </View>

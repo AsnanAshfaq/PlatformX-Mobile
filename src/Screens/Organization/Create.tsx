@@ -21,10 +21,8 @@ type cardProps = {
   onPress: () => void;
 };
 
-const ICON_SIZE = Width * 0.07;
-
 const Card: FC<cardProps> = ({title, description, onPress}) => {
-  const [{theme}, dispatch] = useStateValue();
+  const {theme} = useStateValue()[0];
 
   return (
     <TouchableOpacity
@@ -55,7 +53,7 @@ const Card: FC<cardProps> = ({title, description, onPress}) => {
   );
 };
 const Create: FC<props> = ({navigation}) => {
-  const [{theme}, dispatch] = useStateValue();
+  const {theme} = useStateValue()[0];
   return (
     <View
       style={[styles.parent, {backgroundColor: theme.SCREEN_BACKGROUND_COLOR}]}>
@@ -87,7 +85,7 @@ const Create: FC<props> = ({navigation}) => {
         />
         <Card
           title={`F.Y.P${"'"}s`}
-          description={`Have an idea of Final Year Project for Computer Science Students? Post your idea, make a coding test, find out participants who you want to work with and start collaborating.${'\n'}START YOUR PROJECT NOW`}
+          description={`Have an idea of Final Year Project for Computer Science Students? Post your idea, make a coding test, find out participants who you want to work with and start collaborating.${'\n'}START DEVELOPNG YOUR PROJECT NOW`}
           onPress={() =>
             navigation.navigate('FYPScreens', {
               screen: 'Create_Edit_FYP',
@@ -133,7 +131,7 @@ const styles = StyleSheet.create({
     // justifyContent:'center',
     left: Width * 0.27, //3
     flex: 1,
-    elevation: 14,
+    // elevation: 14,
   },
   cardTitleText: {
     fontSize: Sizes.normal * 1.3,

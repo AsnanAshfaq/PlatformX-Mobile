@@ -86,15 +86,10 @@ const Speaker: FC<props> = () => {
           horizontal={false}>
           {/* name container  */}
           <View style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
-              <View style={[styles.headingContainer, {flex: 0.9}]}>
-                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                  Name{' '}
-                </Text>
-              </View>
-              <View style={{flex: 0.1}}>
-                <PlusCircle color={theme.GREEN_COLOR} />
-              </View>
+            <View style={[styles.headingContainer, {flex: 0.9}]}>
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Name{' '}
+              </Text>
             </View>
             <View style={styles.inputContainer}>
               <CustomTextField
@@ -171,7 +166,7 @@ const Speaker: FC<props> = () => {
                     };
                   })
                 }
-                placeholder={`Enter something about speaker`}
+                placeholder={`Enter speaker's email address`}
                 placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
                 textContentType={'name'}
                 maxLength={30}
@@ -238,7 +233,7 @@ const Speaker: FC<props> = () => {
             </View>
           </View>
 
-          {/* inputs container  */}
+          {/* links input container  */}
           <View style={[styles.container, {flexDirection: 'row'}]}>
             <View style={styles.socialIconContainer}>
               <LinkedIn size={1.5} />

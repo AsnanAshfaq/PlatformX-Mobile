@@ -22,7 +22,8 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import Bullet from './Bullet';
 import {Calendar, Cash, Github, LinkedIn, Twitter} from './Icons';
 import {commaSeperator} from '../Utils/Numbers';
-import JoinWorkshopModal from '../Modals/JoinWorkshopModal';
+import JoinWorkshopModal from '../Modals/WorkshopJoinModal';
+import StartWorkshopModal from '../Modals/WorkshopStartModal';
 type props = {
   navigation: any;
   route: any;
@@ -93,19 +94,39 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
   const [loading, setLoading] = useState(true);
   const [WorkshopData, setWorkshopData] = useState({});
   const [PosterLoading, setPosterLoading] = useState(true);
-  const [modal, setmodal] = useState(false);
+  const [modal, setmodal] = useState({joinModal: false, startModal: false});
   const {theme} = useStateValue()[0];
 
   const handleJoin = () => {
     // if workshop is not paid
     // then show join workshop modal
     if (true) {
-      setmodal(true);
+      setmodal(props => {
+        return {
+          ...props,
+          joinModal: true,
+        };
+      });
       // navigate to workshop screen
     }
 
     // else
     // navigate to pay workshop screen
+  };
+
+  const handleStart = () => {
+    // if date of starting workshop is valid
+    // then start the workshop
+    console.log('Starting workshop');
+    if (true) {
+      setmodal(props => {
+        return {
+          ...props,
+          startModal: true,
+        };
+      });
+      // navigate to workshop screen
+    }
   };
 
   useEffect(() => {
@@ -137,9 +158,32 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
       {/* join workshop modal  */}
       {screen === 'student' && (
         <JoinWorkshopModal
-          isShow={modal}
+          isShow={modal.joinModal}
           toggleModal={() => {
-            setmodal(false);
+            setmodal(props => {
+              return {
+                ...props,
+                joinModal: false,
+              };
+            });
+            // navigate to previous screen
+            // navigation.goBack();
+          }}
+          details={WorkshopData}
+        />
+      )}
+
+      {/* start workshop modal  */}
+      {screen === 'organization' && (
+        <StartWorkshopModal
+          isShow={modal.startModal}
+          toggleModal={() => {
+            setmodal(props => {
+              return {
+                ...props,
+                startModal: false,
+              };
+            });
             // navigate to previous screen
             // navigation.goBack();
           }}
@@ -554,6 +598,10 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
 
           {screen === 'student' && (
             <CustomButton text={'Join Now'} onPress={handleJoin} />
+          )}
+
+          {screen === 'organization' && (
+            <CustomButton text={'Start Now'} onPress={handleStart} />
           )}
         </>
       ) : (

@@ -18,7 +18,7 @@ import {PlusCircle} from '../../../Components/Icons';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import TechnologiesModal from '../../../Modals/FYPTechnologiesModal';
-
+import CategoriesModal from '../../../Modals/FYPCategoriesModal';
 type props = {
   navigation: any;
   route: any;
@@ -30,8 +30,8 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
   const [Input, setInput] = useState({
     name: {value: '', error: ''},
     description: {value: '', error: ''},
-    category: {value: '', error: ''},
-    techonologies: {value: '', error: ''},
+    category: {value: [], error: ''},
+    techonologies: {value: [], error: ''},
     end_date: {value: new Date().toLocaleDateString(), error: ''},
   });
   const [learning_outcome, setlearning_outcome] = useState({
@@ -76,7 +76,43 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
             };
           })
         }
-        onSelect={values => console.log('Values selected are', values)}
+        onSelect={(values: any) => {
+          setInput(props => {
+            return {
+              ...props,
+              techonologies: {
+                value: values,
+                error: '',
+              },
+            };
+          });
+        }}
+        values={Input.techonologies.value}
+      />
+
+      {/* project modal  */}
+      <CategoriesModal
+        isShow={modals.category}
+        toggleModal={() =>
+          setmodals(props => {
+            return {
+              ...props,
+              category: false,
+            };
+          })
+        }
+        onSelect={(values: any) => {
+          setInput(props => {
+            return {
+              ...props,
+              category: {
+                value: values,
+                error: '',
+              },
+            };
+          });
+        }}
+        values={Input.category.value}
       />
 
       <KeyboardAvoidingView
@@ -110,7 +146,7 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   placeholder={'Enter Project Name'}
                   placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
                   textContentType={'name'}
-                  multiLine={true}
+                  maxLength={20}
                   error={Input.name.error}
                 />
               </View>
@@ -143,6 +179,8 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   textContentType={'name'}
                   multiLine={true}
                   error={Input.description.error}
+                  maxLength={100}
+                  showLength
                 />
               </View>
             </View>
@@ -296,10 +334,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    // minHeight: Height * 0.14,
     marginTop: 10,
     marginHorizontal: Width * 0.15,
-    // width: Width * 0.2,
+    paddingVertical: 10,
     borderRadius: 10,
   },
   selectionText: {

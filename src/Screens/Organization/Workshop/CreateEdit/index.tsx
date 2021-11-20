@@ -19,7 +19,7 @@ type props = {
   route: any;
 };
 
-const SCREENS = ['General', 'Speakers', 'Schedule '];
+const SCREENS = ['General', 'Speaker', 'Schedule '];
 const Index: FC<props> = ({navigation, route}) => {
   const {theme} = useStateValue()[0];
   const {screen}: {screen: 'edit' | 'create'} = route.params;
