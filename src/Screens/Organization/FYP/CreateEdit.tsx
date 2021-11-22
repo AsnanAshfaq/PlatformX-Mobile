@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState} from 'react';
 import {
@@ -9,17 +10,23 @@ import {
   TouchableOpacity,
   FlatList,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import CustomButton from '../../../Components/CustomButton';
 import CustomHeader from '../../../Components/CustomHeader';
+import DateTimePicker from '../../../Components/DateTimePicker';
 import CustomTextField from '../../../Components/CustomTextField2';
 import HelpText from '../../../Components/HelpText';
-import {PlusCircle} from '../../../Components/Icons';
+import {Calendar, PlusCircle} from '../../../Components/Icons';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import TechnologiesModal from '../../../Modals/FYPTechnologiesModal';
 import CategoriesModal from '../../../Modals/FYPCategoriesModal';
 import FormHandler from '../../../Utils/FormHandler';
+import Axios from '../../../Utils/Axios';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
+
 type props = {
   navigation: any;
   route: any;
@@ -33,7 +40,7 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
     description: {value: '', error: ''},
     category: {value: [], error: ''},
     techonologies: {value: [], error: ''},
-    end_date: {value: new Date().toLocaleDateString(), error: ''},
+    end_date: {value: new Date(), error: ''},
   });
   const [learning_outcome, setlearning_outcome] = useState({
     value: '',
@@ -43,35 +50,77 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
   const [modals, setmodals] = useState({
     category: false,
     technology: false,
+    date: false,
   });
   const [loading, setloading] = useState(false);
   const {checkLength, isEmpty} = FormHandler();
 
   const handleSave = () => {
-    const isAllInputValid = true;
+    var isAllInputValid = true;
     const x = Input;
 
     // name check
     if (isEmpty(Input.name.value)) {
+      isAllInputValid = false;
       x['name']['error'] = 'Name is required.';
     }
     if (isEmpty(Input.description.value)) {
+      isAllInputValid = false;
       x['description']['error'] = 'Description is required.';
     }
 
     if (Input.category.value.length === 0) {
-      x['category']['error'] = 'Category is required';
+      isAllInputValid = false;
+      x['category']['error'] = 'Category is required.';
     }
     if (Input.techonologies.value.length === 0) {
-      x['techonologies']['error'] = 'Technology is required';
+      isAllInputValid = false;
+      x['techonologies']['error'] = 'Technology is required.';
     }
 
+    if (isEmpty(learning_outcome.value)) {
+      isAllInputValid = false;
+      x['techonologies']['error'] = 'Technology is required.';
+    }
+
+    if (
+      Input.end_date.value.toLocaleDateString() ===
+      new Date().toLocaleDateString()
+    ) {
+      isAllInputValid = false;
+      x['end_date']['error'] = 'Last date cannot be today.';
+    } else if (Input.end_date.value < new Date()) {
+      isAllInputValid = false;
+      x['end_date']['error'] = 'Invalid date.';
+    }
     setInput(props => {
       return {
         ...x,
       };
     });
-    var bodyFormData = new FormData();
+    if (isAllInputValid) {
+      var bodyFormData = new FormData();
+      bodyFormData.append('name', Input.name.value.trim());
+      bodyFormData.append('description', Input.description.value.trim());
+      bodyFormData.append('category', Input.category.value);
+      bodyFormData.append('technologies', Input.techonologies.value);
+      bodyFormData.append('end_date', Input.end_date.value);
+      console.log('Body form data is', bodyFormData);
+      Axios({
+        method: 'post',
+        url: `${BASE_URL}/api/fyp/create/`,
+        data: bodyFormData,
+      })
+        .then(response => {
+          console.log('Response is', response.data);
+          if (response.status === 201) {
+            console.log('FYP has been created');
+          }
+        })
+        .catch(error => {
+          ToastAndroid.show(error.response.data.error, 1500);
+        });
+    }
   };
   return (
     <View
@@ -136,6 +185,43 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
           });
         }}
         values={Input.category.value}
+      />
+
+      {/* date picker modal  */}
+      <DateTimePicker
+        open={modals.date}
+        date={new Date()}
+        mode={'date'}
+        setDate={response => {
+          // hide modal first
+          setmodals(props => {
+            return {
+              ...props,
+              date: false,
+            };
+          });
+
+          //   get type of modal
+          const getDate = new Date(response);
+
+          setInput(props => {
+            return {
+              ...props,
+              end_date: {
+                value: getDate,
+                error: '',
+              },
+            };
+          });
+        }}
+        cancel={() =>
+          setmodals(props => {
+            return {
+              ...props,
+              date: false,
+            };
+          })
+        }
       />
 
       <KeyboardAvoidingView
@@ -259,6 +345,14 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   </Text>
                 </View>
               )}
+              {/* show category container  */}
+              {Input.category.value.length > 0 && (
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                  {Input.category.value.map(item => (
+                    <Text style={{color: theme.TEXT_COLOR}}>{item}</Text>
+                  ))}
+                </View>
+              )}
             </View>
             {/* technologies of the project  */}
             <View style={styles.container}>
@@ -303,6 +397,7 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   </Text>
                 </View>
               </TouchableOpacity>
+              {/* error container  */}
               {Input.techonologies.error !== '' && (
                 <View style={{alignItems: 'center'}}>
                   <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
@@ -310,7 +405,16 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   </Text>
                 </View>
               )}
+              {/* show technology container  */}
+              {Input.techonologies.value.length > 0 && (
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                  {Input.techonologies.value.map(item => (
+                    <Text style={{color: theme.TEXT_COLOR}}>{item}</Text>
+                  ))}
+                </View>
+              )}
             </View>
+
             {/* outcomes of the project  */}
             <View style={styles.container}>
               <View style={{flexDirection: 'row'}}>
@@ -346,6 +450,54 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
                   maxLength={30}
                   error={learning_outcome.error}
                 />
+              </View>
+            </View>
+            {/* last date to apply  */}
+            <View style={styles.container}>
+              <View style={[styles.headingContainer]}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Last Date
+                </Text>
+              </View>
+              <HelpText text={'Specify last date to apply for this project.'} />
+              <View style={styles.center}>
+                <TouchableOpacity
+                  onPress={() =>
+                    setmodals(props => {
+                      return {
+                        ...props,
+                        date: true,
+                      };
+                    })
+                  }
+                  style={[
+                    styles.cardContainer,
+                    {
+                      backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                      borderWidth: 1,
+                      borderColor:
+                        Input.end_date.error !== ''
+                          ? theme.RED_COLOR
+                          : theme.CARD_BACKGROUND_COLOR,
+                      width: Width * 0.65,
+                    },
+                  ]}>
+                  <View style={styles.cardTextContainer}>
+                    <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
+                      {Input.end_date.value.toLocaleDateString()}
+                    </Text>
+                  </View>
+                  <View style={styles.cardIconContainer}>
+                    <Calendar size={0.9} color={theme.GREEN_COLOR} />
+                  </View>
+                </TouchableOpacity>
+                {Input.end_date.error !== '' && (
+                  <View style={{alignItems: 'center'}}>
+                    <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
+                      {Input.end_date.error}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           </View>
@@ -397,7 +549,31 @@ const styles = StyleSheet.create({
   selectionText: {
     fontSize: Sizes.normal * 0.95,
   },
-
+  cardTextContainer: {
+    flex: 0.85,
+    alignItems: 'center',
+  },
+  cardIconContainer: {
+    flex: 0.15,
+    marginLeft: 8,
+  },
+  cardText: {
+    fontSize: Sizes.normal,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardContainer: {
+    borderWidth: 1,
+    borderRadius: 10,
+    marginTop: 10,
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'transparent',
+  },
   errorText: {
     fontSize: Sizes.small,
   },

@@ -6,10 +6,10 @@ import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
 import {Cash, ForwardArrow} from './Icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import PopUpMenu from '../Menu/OrganizationFYPCardPopUpMenu';
+import DeleteFYPModal from '../Modals/FYPDeleteModal';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
-import PopUpMenu from '../Menu/StudentFYPCardPopUpMenu';
 import Divider from './Divider';
 type props = {
   navigation: any;
@@ -22,18 +22,20 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
+  const [modal, setmodal] = useState({
+    delete: false,
+  });
 
-  const handleReport = () => {
-    console.log('Clicked on report');
+  const handleDelete = () => {
+    // console.log('Clicked on report');
+    // open delete modal
+    setmodal({delete: true});
   };
 
-  const handleShare = () => {
+  const handleEdit = () => {
     console.log('Clicked on share');
   };
 
-  const handleBookmark = () => {
-    console.log('Clicked on bookmark');
-  };
   return (
     <View
       style={[
@@ -43,16 +45,36 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
           backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
+      {/* delete modal  */}
+      <DeleteFYPModal
+        id={fypDetail.id}
+        title={fypDetail.name}
+        isShow={modal.delete}
+        toggleModal={() => setmodal({delete: false})}
+      />
+
       <View style={styles.container}>
         {/* content  */}
         <View style={[styles.nameContainer, styles.center]}>
           {/* name of the project  */}
-          <Text style={[styles.nameText, {color: theme.TEXT_COLOR}]}>
-            {fypDetail.name}
-          </Text>
+          <View style={styles.nameTextContainer}>
+            <Text style={[styles.nameText, {color: theme.TEXT_COLOR}]}>
+              {fypDetail.name}
+            </Text>
+          </View>
+
+          {/* menu icon  */}
+          <View style={styles.popUpIconContainer}>
+            <PopUpMenu
+              navigation={navigation}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+            />
+          </View>
         </View>
+
         <View style={[styles.descriptionContainer, styles.center]}>
-          {/* name of the project  */}
+          {/* description of the project  */}
           <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
             {fypDetail.description}
           </Text>
@@ -243,6 +265,16 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     // marginTop: 10,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  nameTextContainer: {
+    flex: 0.92,
+    alignItems: 'center',
+    marginLeft: Width * 0.1,
+  },
+  popUpIconContainer: {
+    flex: 0.08,
   },
   nameText: {
     fontSize: Sizes.normal * 1.2,

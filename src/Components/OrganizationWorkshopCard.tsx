@@ -79,58 +79,21 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
-      {/* header  */}
-      <View style={[styles.headerContainer]}>
-        {/* user image  */}
-        <View style={styles.headerImageContainer}>
-          <Image
-            source={{
-              uri: ProfileImageLoading
-                ? PROFILE_IMAGE
-                : workshopDetail.organization.user.profile_image
-                ? BASE_URL + workshopDetail.organization.user.profile_image.path
-                : PROFILE_IMAGE,
-            }}
-            onLoadEnd={() => setProfileImageLoading(false)}
-            style={styles.userImage}
-          />
-        </View>
-        <View style={styles.headerTextContainer}>
-          <Text
-            style={[
-              styles.username,
-              {
-                color: theme.TEXT_COLOR,
-              },
-            ]}>
-            {workshopDetail.organization.name}
-          </Text>
-          <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
-            {new Date(workshopDetail.created_at).toDateString() ===
-            new Date(workshopDetail.updated_at).toDateString()
-              ? `${new Date(workshopDetail.created_at).toDateString()}`
-              : `Updated at ${new Date(
-                  workshopDetail.updated_at,
-                ).toDateString()}`}
+      <View style={[styles.topicContainer, styles.center]}>
+        {/* name of the project  */}
+        <View style={styles.topicTextContainer}>
+          <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
+            {workshopDetail.topic}
           </Text>
         </View>
-        {/* right icon  */}
-        <View style={styles.headerIconContainer}>
+        {/* menu icon  */}
+        <View style={styles.popUpIconContainer}>
           <PopUpMenu
             navigation={navigation}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
           />
         </View>
-      </View>
-      <Divider width={Width * 0.92} />
-
-      {/* content  */}
-      <View style={[styles.topicContainer, styles.center]}>
-        {/* title  */}
-        <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
-          {workshopDetail.topic}
-        </Text>
       </View>
       {/* workshop poster  */}
       <View style={[styles.posterContainer, styles.center]}>
@@ -258,6 +221,18 @@ const styles = StyleSheet.create({
   },
   topicContainer: {
     marginBottom: 10,
+
+    marginTop: 10,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  topicTextContainer: {
+    flex: 0.92,
+    alignItems: 'center',
+    marginLeft: Width * 0.1,
+  },
+  popUpIconContainer: {
+    flex: 0.08,
   },
   topicText: {
     fontSize: Sizes.normal * 1.2,
@@ -269,6 +244,7 @@ const styles = StyleSheet.create({
   },
   posterContainer: {
     marginHorizontal: 0,
+    marginTop: 10,
   },
   iconContainer: {
     marginVertical: 5,
