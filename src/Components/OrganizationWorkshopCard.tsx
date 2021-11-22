@@ -17,6 +17,7 @@ import {useStateValue} from '../Store/StateProvider';
 import Axios from '../Utils/Axios';
 import Divider from '../Components/Divider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import {Cash, Clock, ForwardArrow, People, Tag} from './Icons';
 import CustomButton from './CustomButton';
 const ICON_SIZE = Width * 0.07;
@@ -120,7 +121,7 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
       </View>
       {/* if workshop is paid */}
       <View style={{marginTop: 10}}>
-        {workshopDetail.is_paid && (
+        {workshopDetail.is_paid ? (
           <View style={styles.iconContainer}>
             <WorkshopCardIcons
               cash
@@ -128,16 +129,30 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
               label={`Rs ${commaSeperator(workshopDetail.charges)}`}
             />
           </View>
+        ) : (
+          <View style={styles.iconContainer}>
+            <WorkshopCardIcons cash name={'cash-outline'} label={`Free`} />
+          </View>
+        )}
+        {/* if the workshop is open to join  */}
+        {workshopDetail.status === 'Open' && workshopDetail.days_left !== 0 ? (
+          <View style={styles.iconContainer}>
+            <WorkshopCardIcons
+              name={'time-outline'}
+              label={`${workshopDetail.days_left}${' '}${
+                workshopDetail.days_left !== 1 ? 'days' : 'day'
+              } left `}
+            />
+          </View>
+        ) : (
+          <View style={styles.iconContainer}>
+            <WorkshopCardIcons
+              name={'information-circle-outline'}
+              label={`Closed `}
+            />
+          </View>
         )}
 
-        <View style={styles.iconContainer}>
-          <WorkshopCardIcons
-            name={'time-outline'}
-            label={`${workshopDetail.days_left}${' '}${
-              workshopDetail.days_left !== 1 ? 'days' : 'day'
-            } left `}
-          />
-        </View>
         <View style={{marginTop: 5, marginHorizontal: Width * 0.04}}>
           <WorkshopCardIcons name={'people-sharp'} label={'0 Participants'} />
         </View>
@@ -256,7 +271,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   iconText: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.9,
     paddingHorizontal: 5,
   },
   detailsButtonContainer: {

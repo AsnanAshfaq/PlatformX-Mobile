@@ -118,22 +118,35 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
       <View style={styles.iconsContainer}>
         <View style={styles.iconsRow}>
           <Tag size={1} color={theme.GREEN_COLOR} />
+
           {hackathonDetail.theme_tags.map((tag: string, index) => {
             if (index < 2) {
               return (
                 <Text
-                  key={index}
                   style={[
                     styles.iconText,
-                    {fontSize: Sizes.normal * 1.06, color: theme.TEXT_COLOR},
+                    {
+                      color: theme.TEXT_COLOR,
+                      marginHorizontal: 0,
+                    },
                   ]}>
-                  {'  '}
-                  {tag.charAt(0).toUpperCase() +
-                    tag.slice(1, tag.length).toLowerCase()}
+                  {tag}
+                  {hackathonDetail.theme_tags.length > 1 && index !== 1
+                    ? ','
+                    : hackathonDetail.theme_tags.length === 2 && index === 1
+                    ? '.'
+                    : hackathonDetail.theme_tags.length === 1 &&
+                      index === 0 &&
+                      '.'}
                 </Text>
               );
             }
           })}
+          {hackathonDetail.theme_tags.length > 2 && (
+            <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
+              . . .
+            </Text>
+          )}
         </View>
         <View style={styles.iconsRow}>
           <Clock size={1.1} color={theme.GREEN_COLOR} />
@@ -252,10 +265,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   titleText: {
-    fontSize: Sizes.normal * 1.3,
+    fontSize: Sizes.normal * 1.2,
   },
   tagLineText: {
-    fontSize: Sizes.normal * 0.9,
+    fontSize: Sizes.normal * 0.8,
     fontStyle: 'italic',
     lineHeight: 20,
   },
@@ -268,7 +281,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   iconText: {
-    fontSize: Sizes.normal * 1.06,
+    fontSize: Sizes.normal * 0.9,
     marginHorizontal: 11,
   },
   bottomContainer: {
