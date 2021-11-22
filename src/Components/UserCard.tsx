@@ -11,11 +11,12 @@ import {Height, Sizes, Width} from '../Constants/Size';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useStateValue} from '../Store/StateProvider';
 import {PROFILE_IMAGE} from '../Constants/sample';
-
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 type props = {
   navigation: any;
   id: any;
-  image: '';
+  image: any;
   name: '';
   username: '';
   onPress: () => void;
@@ -49,7 +50,13 @@ const UserCard: FC<props> = ({
         {/* image container */}
         <View style={styles.imageContainer}>
           <Image
-            source={{uri: ImageLoading ? PROFILE_IMAGE : image}}
+            source={{
+              uri: ImageLoading
+                ? PROFILE_IMAGE
+                : image
+                ? BASE_URL + image.path
+                : PROFILE_IMAGE,
+            }}
             onLoadEnd={() => setImageLoading(false)}
             onError={() => setImageLoading(false)}
             style={styles.image}

@@ -15,6 +15,7 @@ const TabScreens = ({route}) => {
   const [state, dispatch] = useStateValue();
 
   const workshopID = route.params.ID;
+  console.log('Workshop id is', workshopID);
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({

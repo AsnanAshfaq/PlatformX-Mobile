@@ -11,7 +11,6 @@ import {
 import Modal from 'react-native-modal';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Axios from '../Utils/Axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useStateValue} from '../../src/Store/StateProvider';
 import Loading from '..//Components/Loading';
 import Divider from '../Components/Divider';

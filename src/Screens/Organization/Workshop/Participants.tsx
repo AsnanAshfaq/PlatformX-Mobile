@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // TODO:
 // show list of users who are attending the workshop
 
@@ -12,6 +13,7 @@ import {
   RefreshControl,
   ScrollView,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import {useStateValue} from '../../../Store/StateProvider';
 import CustomButton from '../../../Components/CustomButton';
@@ -20,70 +22,47 @@ import axios from '../../../Utils/Axios';
 import UserCard from '../../../Components/UserCard';
 import {Sizes, Width} from '../../../Constants/Size';
 import {commaSeperator} from '../../../Utils/Numbers';
+import UserSkeleton from '../../../Skeleton/UserCardSkeleton';
 
-const ATTENDEES = [
-  {
-    id: 1,
-    image:
-      'https://www.focusedu.org/wp-content/uploads/2018/12/circled-user-male-skin-type-1-2.png',
-    name: 'Asnan Ashfaq',
-    username: '@shanay_ash',
-  },
-  {
-    id: 2,
-    image:
-      'https://www.focusedu.org/wp-content/uploads/2018/12/circled-user-male-skin-type-1-2.png',
-    name: 'Asnan Ashfaq',
-    username: '@shanay_ash',
-  },
-  {
-    id: 3,
-    image:
-      'https://www.focusedu.org/wp-content/uploads/2018/12/circled-user-male-skin-type-1-2.png',
-    name: 'Asnan Ashfaq',
-    username: '@shanay_ash',
-  },
-  {
-    id: 4,
-    image:
-      'https://www.focusedu.org/wp-content/uploads/2018/12/circled-user-male-skin-type-1-2.png',
-    name: 'Asnan Ashfaq',
-    username: '@shanay_ash',
-  },
-];
 type props = {
   navigation: any;
   route: any;
-  ID: any;
   screen: 'student' | 'organization';
 };
 const ICON_SIZE = Width * 0.07;
 
-const Participants: FC<props> = ({navigation, route, screen, ID}) => {
+const Participants: FC<props> = ({navigation, route, screen}) => {
   const [loading, setLoading] = useState(true);
-  const [WorkshopData, setWorkshopData] = useState({});
+  const [participants, setParticipants] = useState([]);
   const [PosterLoading, setPosterLoading] = useState(true);
   const {theme} = useStateValue()[0];
   const [refreshing, setRefreshing] = useState(false);
 
+  const {ID} = route.params;
+
+  const getData = async () => {
+    setLoading(true);
+    axios
+      .get(`/api/workshop/${ID}/participants`)
+      .then(result => {
+        setParticipants(result.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        setLoading(false);
+        ToastAndroid.show(error.response.data.error, 1500);
+      });
+  };
   const onRefresh = () => {
     setRefreshing(true);
     // get data here
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 3000);
+
+    getData().then(() => setRefreshing(false));
   };
   useEffect(() => {
     // fetch workshop participants
-    // axios
-    //   .get(`/api/hackathon/${ID}`)
-    //   .then(result => {
-    //     setWorkshopData(result.data);
-    //     setLoading(false);
-    //   })
-    //   .catch(error => setLoading(false));
-    console.log('Fetching workshop participant');
-  }, [ID]);
+    getData();
+  }, []);
   return (
     <View
       style={[
@@ -100,23 +79,34 @@ const Participants: FC<props> = ({navigation, route, screen, ID}) => {
       />
 
       {/* if there are no attendees  */}
-      {ATTENDEES.length > 0 ? (
+      {!loading && participants.length > 0 ? (
         <>
           <View style={{marginHorizontal: Width * 0.04}}>
             <View style={styles.container}>
               <Text style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
                 See who is attending your workshop. (Attendees{' '}
-                {commaSeperator(ATTENDEES.length)})
+                {commaSeperator(participants.length)})
               </Text>
             </View>
           </View>
 
           <FlatList
             keyExtractor={(item: any, index) => `${item.id}`}
-            data={ATTENDEES}
-            renderItem={({item, index}) => (
-              <UserCard {...item} navigation={navigation} />
-            )}
+            data={participants}
+            renderItem={({item, index}) => {
+              return (
+                <UserCard
+                  navigation={navigation}
+                  name={
+                    item.student.user.first_name + item.student.user.last_name
+                  }
+                  id={item.student.user.id}
+                  username={item.student.user.username}
+                  image={item.student.user.profile_image}
+                  onPress={() => console.log('Pressing on user')}
+                />
+              );
+            }}
             contentContainerStyle={styles.scroll}
             refreshControl={
               <RefreshControl
@@ -130,18 +120,16 @@ const Participants: FC<props> = ({navigation, route, screen, ID}) => {
             }
           />
         </>
-      ) : (
+      ) : participants.length === 0 ? (
         <View style={[styles.center, {flex: 1}]}>
           <Text style={[styles.normalText, {color: theme.DIM_TEXT_COLOR}]}>
             You don't have any attendees yet
           </Text>
         </View>
-      )}
-
-      {/* ()
       ) : (
-        <ListSkeleton repition={5} />
-      )} */}
+        //  show loading
+        <UserSkeleton showSearchSkeleton={false} />
+      )}
     </View>
   );
 };

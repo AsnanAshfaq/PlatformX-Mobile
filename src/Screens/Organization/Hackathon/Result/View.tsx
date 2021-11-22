@@ -16,7 +16,13 @@ const ViewResult: FC<props> = ({ID}) => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.marginVertical, styles.center]}>
+      <View
+        style={[
+          styles.marginVertical,
+          styles.winnerCard,
+          styles.center,
+          {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+        ]}>
         <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
           WINNING PROJECTS
         </Text>
@@ -155,7 +161,16 @@ const ViewResult: FC<props> = ({ID}) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={[styles.center, {marginTop: Height * 0.25}]}>
+      <View
+        style={[
+          styles.marginVertical,
+          styles.winnerCard,
+          styles.center,
+          {
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
+            marginTop: Height * 0.25,
+          },
+        ]}>
         <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>WINNERS</Text>
       </View>
 
@@ -301,9 +316,17 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 10,
   },
+  winnerCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    marginTop: 10,
+    marginHorizontal: Width * 0.15,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
   heading: {
     fontSize: Sizes.normal * 1.25,
-    // fontSize: Sizes.normal * 0.85,
   },
   smallText: {
     fontSize: Sizes.normal * 0.66,

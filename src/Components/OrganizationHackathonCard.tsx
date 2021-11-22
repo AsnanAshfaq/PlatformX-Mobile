@@ -253,12 +253,11 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: Sizes.normal * 1.3,
-    fontFamily: 'Raleway-Light',
   },
   tagLineText: {
     fontSize: Sizes.normal * 0.9,
     fontStyle: 'italic',
-    lineHeight: 24,
+    lineHeight: 20,
   },
   iconsContainer: {
     paddingVertical: 10,
