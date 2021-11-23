@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import CustomHeader from '../../../../Components/CustomHeader';
 import {Height, Sizes, Width} from '../../../../Constants/Size';
@@ -14,6 +16,8 @@ import {useStateValue} from '../../../../Store/StateProvider';
 import General from './General';
 import Schedule from './Schedule';
 import Speaker from './Speaker';
+import Axios from '../../../../Utils/Axios';
+
 type props = {
   navigation: any;
   route: any;
@@ -22,8 +26,76 @@ type props = {
 const SCREENS = ['General', 'Speaker', 'Schedule '];
 const Index: FC<props> = ({navigation, route}) => {
   const {theme} = useStateValue()[0];
-  const {screen}: {screen: 'edit' | 'create'} = route.params;
+  const {method}: {method: 'edit' | 'create'} = route.params;
+  const [ID, setID] = useState('');
+  const [workshopData, setworkshopData] = useState({
+    general: {},
+    speaker: {},
+    schedule: {},
+  });
+
   const [active, setactive] = useState(0);
+
+  // get id of the workshop if screen is edit
+  useEffect(() => {
+    if (method === 'edit') {
+      setID(route.params.ID);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (method === 'edit') {
+      // get workshop data
+      Axios.get(`/api/workshop/${ID}/`)
+        .then(response => {
+          // getting general data
+          var general = {
+            topic: response.data.topic,
+            description: response.data.description,
+            poster: response.data.poster,
+            take_away: response.data.take_away,
+            prerequisites: response.data.prerequisites,
+            is_paid: response.data.is_paid,
+          };
+          // is paid or not
+          if (response.data.is_paid) {
+            general['charges'] = response.data.charges;
+          }
+
+          // getting speaker data
+          var speaker = {
+            name: response.data.name,
+            email: response.data.email,
+            image: response.data.image,
+            about: response.data.about,
+          };
+
+          // getting schedule data
+          var schedule = {
+            event_date: response.data.event_date,
+            start_time: response.data.start_time,
+            end_time: response.data.end_time,
+          };
+
+          setworkshopData(props => {
+            return {
+              schedule: schedule,
+              speaker: speaker,
+              general: general,
+            };
+          });
+
+          // get general data
+        })
+        .catch(error => {
+          if (error.response) {
+            ToastAndroid.show(error.response.data.error, 1500);
+          }
+          return error.response;
+        });
+    }
+  }, [ID]);
+
   return (
     <View
       style={[
@@ -33,7 +105,7 @@ const Index: FC<props> = ({navigation, route}) => {
         },
       ]}>
       <CustomHeader
-        title={'Host Workshop'}
+        title={`${method === 'edit' ? 'Edit Workshop' : 'Host Workshop'}`}
         navigation={navigation}
         back
         onBackPress={() => navigation.goBack()}
@@ -101,9 +173,9 @@ const Index: FC<props> = ({navigation, route}) => {
         />
       </View>
 
-      {active === 0 && <General />}
-      {active === 1 && <Speaker />}
-      {active === 2 && <Schedule />}
+      {active === 0 && <General method={method} data={workshopData.general} />}
+      {active === 1 && <Speaker method={method} />}
+      {active === 2 && <Schedule method={method} />}
     </View>
   );
 };

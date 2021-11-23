@@ -137,9 +137,11 @@ const BreakDowns: FC<Props> = ({}) => {
     </>
   );
 };
-type props = {};
+type props = {
+  method: string;
+};
 
-const Schedule: FC<props> = () => {
+const Schedule: FC<props> = ({method}) => {
   const {theme} = useStateValue()[0];
 
   const [Input, setInput] = useState({
@@ -165,6 +167,7 @@ const Schedule: FC<props> = () => {
       // make api call here
     }
   };
+
   return (
     <View style={styles.parent}>
       <DateTimePicker

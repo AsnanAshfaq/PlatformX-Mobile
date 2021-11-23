@@ -27,8 +27,10 @@ import {
 } from '../../../../Components/Icons';
 import ImagePicker from 'react-native-image-crop-picker';
 
-type props = {};
-const Speaker: FC<props> = () => {
+type props = {
+  method: string;
+};
+const Speaker: FC<props> = ({method}) => {
   const {theme} = useStateValue()[0];
 
   const [Input, setInput] = useState({

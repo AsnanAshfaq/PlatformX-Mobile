@@ -78,7 +78,7 @@ const Create: FC<props> = ({navigation}) => {
             navigation.navigate('WorkshopScreens', {
               screen: 'Create_Edit_Workshop',
               params: {
-                screen: 'edit',
+                method: 'create',
               },
             })
           }

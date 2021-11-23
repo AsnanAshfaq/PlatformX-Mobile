@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
@@ -21,16 +22,21 @@ import {hackathonThemeTags} from '../../../../Constants/sample';
 import HelpText from '../../../../Components/HelpText';
 import {Camera, Cross, PlusCircle} from '../../../../Components/Icons';
 import ImagePicker from 'react-native-image-crop-picker';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
-type props = {};
-const General: FC<props> = () => {
+type props = {
+  method: string;
+  data: any;
+};
+const General: FC<props> = ({method, data}) => {
   const {theme} = useStateValue()[0];
 
   const [Input, setInput] = useState({
     topic: {value: '', error: ''},
     description: {value: '', error: ''},
     poster: {value: '', error: ''},
-    isPaid: true,
+    isPaid: {value: true},
     charges: {value: '', error: ''},
   });
 
@@ -43,6 +49,25 @@ const General: FC<props> = () => {
       // make api call here
     }
   };
+
+  useEffect(() => {
+    if (method === 'edit') {
+      setLoading(true);
+      const x = Input;
+      x['topic']['value'] = data.topic;
+      x['description']['value'] = data.description;
+      x['poster']['value'] = data.poster;
+      x['isPaid']['value'] = data.is_paid;
+      x['charges']['value'] = data.charges;
+
+      setInput(props => {
+        return {
+          ...x,
+        };
+      });
+      setLoading(false);
+    }
+  }, [loading]);
 
   const unSelectImage = () => {
     const x = Input;
@@ -67,240 +92,27 @@ const General: FC<props> = () => {
       });
     });
   };
-  return (
-    <View style={styles.parent}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
-        <ScrollView
-          style={styles.scroll}
-          showsVerticalScrollIndicator={false}
-          horizontal={false}>
-          {/* topic  */}
-          <View style={styles.container}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Topic
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={Input.topic.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      topic: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter Workshop Topic'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={Input.topic.error}
-              />
-            </View>
-          </View>
-          {/* description  */}
-          <View style={styles.container}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Description
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={Input.description.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      description: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter Workshop Description'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                multiLine={true}
-                error={Input.description.error}
-              />
-            </View>
-          </View>
-
-          {/* poster  */}
-          <View style={styles.container}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Poster
-              </Text>
-            </View>
-            <>
-              <TouchableOpacity
-                style={[
-                  styles.imageCardContainer,
-                  {
-                    backgroundColor: theme.CARD_BACKGROUND_COLOR,
-                    height: Input.poster.value === '' ? Height * 0.15 : 'auto',
-                    paddingTop: Input.poster.value ? 10 : 0,
-                    marginHorizontal:
-                      Input.poster.value === '' ? Width * 0.15 : Width * 0.05,
-                  },
-                ]}
-                activeOpacity={0.5}
-                onPress={() => handleImagePicker()}>
-                <Camera color={theme.GREEN_COLOR} size={1} />
-                <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
-                  Upload Image
-                </Text>
-                <View>
-                  {Input.poster.value !== '' && (
-                    <View style={styles.imageContainer}>
-                      <TouchableOpacity
-                        style={styles.crossContainer}
-                        onPress={() => unSelectImage()}>
-                        <Cross color={theme.GREEN_COLOR} size={0.9} />
-                      </TouchableOpacity>
-                      <Image
-                        source={{uri: Input.poster.value}}
-                        style={styles.image}
-                      />
-                    </View>
-                  )}
-                </View>
-              </TouchableOpacity>
-              {Input.poster.error !== '' && (
-                <View style={{alignItems: 'center'}}>
-                  <Text
-                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
-                    {Input.poster.error}
-                  </Text>
-                </View>
-              )}
-            </>
-          </View>
-
-          {/* take away's */}
-          <View style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
-              <View style={[styles.headingContainer, {flex: 0.9}]}>
+  if (!loading) {
+    return (
+      <View style={styles.parent}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}>
+          <ScrollView
+            style={styles.scroll}
+            showsVerticalScrollIndicator={false}
+            horizontal={false}>
+            {/* topic  */}
+            <View style={styles.container}>
+              <View style={styles.headingContainer}>
                 <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                  Take Aways
+                  Topic
                 </Text>
               </View>
-              <View style={{flex: 0.1}}>
-                <PlusCircle color={theme.GREEN_COLOR} />
-              </View>
-            </View>
-            <HelpText
-              text={
-                'Provide some key points that the participants will learn at the end of this workhsop.'
-              }
-            />
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={Input.topic.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      topic: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter a take away'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={Input.topic.error}
-              />
-            </View>
-          </View>
-
-          {/* pre-requistie  */}
-          <View style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
-              <View style={[styles.headingContainer, {flex: 0.9}]}>
-                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                  Prerequisites{' '}
-                </Text>
-              </View>
-              <View style={{flex: 0.1}}>
-                <PlusCircle color={theme.GREEN_COLOR} />
-              </View>
-            </View>
-            <HelpText
-              text={'Specify any prerequisites to attend this workshop.'}
-            />
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={Input.topic.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      topic: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={'Enter a prerequisite'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={Input.topic.error}
-              />
-            </View>
-          </View>
-
-          {/* paid  */}
-          <View style={styles.container}>
-            <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
-              <CheckBox
-                onPress={isChecked =>
-                  setInput(props => {
-                    console.log('Is checked is', isChecked);
-                    return {
-                      ...props,
-                      isPaid: !props.isPaid,
-                    };
-                  })
-                }
-                size={18}
-                disableBuiltInState={true}
-                isChecked={Input.isPaid}
-              />
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Paid
-              </Text>
-            </View>
-            <HelpText text={'Uncheck if you want to host a free workshop.'} />
-            {Input.isPaid && (
-              <View style={[styles.subHeadingContainer]}>
-                <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
-                  <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
-                    Charges
-                  </Text>
-                </View>
+              <View style={styles.inputContainer}>
                 <CustomTextField
-                  defaultValue={Input.charges.value}
-                  keyboardType={'numeric'}
+                  defaultValue={Input.topic.value}
+                  keyboardType={'default'}
                   onChangeText={text =>
                     setInput(props => {
                       return {
@@ -312,27 +124,256 @@ const General: FC<props> = () => {
                       };
                     })
                   }
-                  placeholder={'Rs 0'}
+                  placeholder={'Enter Workshop Topic'}
                   placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                  textContentType={'streetAddressLine2'}
-                  maxLength={3}
-                  error={Input.charges.error}
-                  width={Width * 0.2}
-                  height={Width * 0.13}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={Input.topic.error}
                 />
               </View>
-            )}
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+            </View>
+            {/* description  */}
+            <View style={styles.container}>
+              <View style={styles.headingContainer}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Description
+                </Text>
+              </View>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={Input.description.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        description: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter Workshop Description'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  multiLine={true}
+                  error={Input.description.error}
+                />
+              </View>
+            </View>
 
-      <CustomButton
-        text={'Save and Continue'}
-        onPress={handleSave}
-        loading={loading}
-      />
-    </View>
-  );
+            {/* poster  */}
+            <View style={styles.container}>
+              <View style={styles.headingContainer}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Poster
+                </Text>
+              </View>
+              <>
+                <TouchableOpacity
+                  style={[
+                    styles.imageCardContainer,
+                    {
+                      backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                      height:
+                        Input.poster.value === '' ? Height * 0.15 : 'auto',
+                      paddingTop: Input.poster.value ? 10 : 0,
+                      marginHorizontal:
+                        Input.poster.value === '' ? Width * 0.15 : Width * 0.05,
+                    },
+                  ]}
+                  activeOpacity={0.5}
+                  onPress={() => handleImagePicker()}>
+                  <Camera color={theme.GREEN_COLOR} size={1} />
+                  <Text
+                    style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
+                    Upload Image
+                  </Text>
+                  <View>
+                    {Input.poster.value !== '' && (
+                      <View style={styles.imageContainer}>
+                        <TouchableOpacity
+                          style={styles.crossContainer}
+                          onPress={() => unSelectImage()}>
+                          <Cross color={theme.GREEN_COLOR} size={0.9} />
+                        </TouchableOpacity>
+                        <Image
+                          source={{
+                            uri:
+                              method === 'edit'
+                                ? BASE_URL + Input.poster.value
+                                : Input.poster.value,
+                          }}
+                          style={styles.image}
+                        />
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+                {Input.poster.error !== '' && (
+                  <View style={{alignItems: 'center'}}>
+                    <Text
+                      style={[
+                        styles.errorText,
+                        {color: theme.ERROR_TEXT_COLOR},
+                      ]}>
+                      {Input.poster.error}
+                    </Text>
+                  </View>
+                )}
+              </>
+            </View>
+
+            {/* take away's */}
+            <View style={styles.container}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={[styles.headingContainer, {flex: 0.9}]}>
+                  <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                    Take Aways
+                  </Text>
+                </View>
+                <View style={{flex: 0.1}}>
+                  <PlusCircle color={theme.GREEN_COLOR} />
+                </View>
+              </View>
+              <HelpText
+                text={
+                  'Provide some key points that the participants will learn at the end of this workhsop.'
+                }
+              />
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={Input.topic.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        topic: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter a take away'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={Input.topic.error}
+                />
+              </View>
+            </View>
+
+            {/* pre-requistie  */}
+            <View style={styles.container}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={[styles.headingContainer, {flex: 0.9}]}>
+                  <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                    Prerequisites{' '}
+                  </Text>
+                </View>
+                <View style={{flex: 0.1}}>
+                  <PlusCircle color={theme.GREEN_COLOR} />
+                </View>
+              </View>
+              <HelpText
+                text={'Specify any prerequisites to attend this workshop.'}
+              />
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={Input.topic.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        topic: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Enter a prerequisite'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={Input.topic.error}
+                />
+              </View>
+            </View>
+
+            {/* paid  */}
+            <View style={styles.container}>
+              <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
+                <CheckBox
+                  onPress={isChecked =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        isPaid: {
+                          value: !props.isPaid,
+                        },
+                      };
+                    })
+                  }
+                  size={18}
+                  disableBuiltInState={true}
+                  isChecked={Input.isPaid.value}
+                />
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Paid
+                </Text>
+              </View>
+              <HelpText text={'Uncheck if you want to host a free workshop.'} />
+              {Input.isPaid && (
+                <View style={[styles.subHeadingContainer]}>
+                  <View
+                    style={[styles.headingContainer, {flexDirection: 'row'}]}>
+                    <Text
+                      style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                      Charges
+                    </Text>
+                  </View>
+                  <CustomTextField
+                    defaultValue={Input.charges.value}
+                    keyboardType={'numeric'}
+                    onChangeText={text =>
+                      setInput(props => {
+                        return {
+                          ...props,
+                          charges: {
+                            value: text,
+                            error: '',
+                          },
+                        };
+                      })
+                    }
+                    placeholder={'Rs 0'}
+                    placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                    textContentType={'streetAddressLine2'}
+                    maxLength={3}
+                    error={Input.charges.error}
+                    width={Width * 0.2}
+                    height={Width * 0.13}
+                  />
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+
+        <CustomButton
+          text={'Save and Continue'}
+          onPress={handleSave}
+          loading={loading}
+        />
+      </View>
+    );
+  }
+  return null;
 };
 
 export default General;

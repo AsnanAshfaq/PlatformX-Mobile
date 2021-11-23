@@ -68,7 +68,13 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   };
 
   const handleEdit = () => {
-    console.log('Handling hackathon edit option');
+    navigation.navigate('WorkshopScreens', {
+      screen: 'Create_Edit_Workshop',
+      params: {
+        ID: workshopDetail.id,
+        method: 'edit',
+      },
+    });
   };
 
   return (
