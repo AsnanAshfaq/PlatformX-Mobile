@@ -97,6 +97,7 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
         <View style={styles.popUpIconContainer}>
           <PopUpMenu
             navigation={navigation}
+            editable={workshopDetail.status !== 'Ended'}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
           />

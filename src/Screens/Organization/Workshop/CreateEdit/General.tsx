@@ -39,9 +39,7 @@ const General: FC<props> = ({method, data}) => {
     isPaid: {value: true},
     charges: {value: '', error: ''},
   });
-
   const [loading, setLoading] = useState(false);
-
   const handleSave = () => {
     if (!loading) {
       // setLoading(true);
@@ -67,7 +65,7 @@ const General: FC<props> = ({method, data}) => {
       });
       setLoading(false);
     }
-  }, [loading]);
+  }, [loading, method, data]);
 
   const unSelectImage = () => {
     const x = Input;

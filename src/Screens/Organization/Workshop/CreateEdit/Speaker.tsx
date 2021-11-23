@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
@@ -29,8 +30,9 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 type props = {
   method: string;
+  data: any;
 };
-const Speaker: FC<props> = ({method}) => {
+const Speaker: FC<props> = ({method, data}) => {
   const {theme} = useStateValue()[0];
 
   const [Input, setInput] = useState({
@@ -44,8 +46,25 @@ const Speaker: FC<props> = ({method}) => {
       twitter: {value: '', error: ''},
     },
   });
-
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (method === 'edit') {
+      setLoading(true);
+      const x = Input;
+      x['name']['value'] = data.name;
+      x['email']['value'] = data.email;
+      x['image']['value'] = data.image;
+      x['about']['value'] = data.about;
+
+      setInput(props => {
+        return {
+          ...props,
+          ...x,
+        };
+      });
+      setLoading(false);
+    }
+  }, [loading, method, data]);
 
   const unSelectImage = () => {
     const x = Input;
@@ -77,268 +96,276 @@ const Speaker: FC<props> = ({method}) => {
       // make api call here
     }
   };
-  return (
-    <View style={styles.parent}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
-        <ScrollView
-          style={styles.scroll}
-          showsVerticalScrollIndicator={false}
-          horizontal={false}>
-          {/* name container  */}
-          <View style={styles.container}>
-            <View style={[styles.headingContainer, {flex: 0.9}]}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Name{' '}
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={Input.name.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      name: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={`Enter speaker${"'s"} name`}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={Input.name.error}
-              />
-            </View>
-          </View>
-          {/* about container  */}
-          <View style={styles.container}>
-            <View style={[styles.headingContainer]}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                About{' '}
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={Input.about.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      about: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={`Enter something about speaker`}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={Input.about.error}
-              />
-            </View>
-          </View>
-          {/* email container  */}
-          <View style={styles.container}>
-            <View style={[styles.headingContainer]}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Email{' '}
-              </Text>
-            </View>
-            <View style={styles.inputContainer}>
-              <CustomTextField
-                defaultValue={Input.email.value}
-                keyboardType={'email-address'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      email: {
-                        value: text,
-                        error: '',
-                      },
-                    };
-                  })
-                }
-                placeholder={`Enter speaker's email address`}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'name'}
-                maxLength={30}
-                error={Input.email.error}
-              />
-            </View>
-          </View>
-          {/* image  */}
-          <View style={styles.container}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Image
-              </Text>
-            </View>
-            <>
-              <TouchableOpacity
-                style={[
-                  styles.imageCardContainer,
-                  {
-                    backgroundColor: theme.CARD_BACKGROUND_COLOR,
-                    height: Input.image.value === '' ? Height * 0.15 : 'auto',
-                    paddingTop: Input.image.value ? 10 : 0,
-                  },
-                ]}
-                activeOpacity={0.5}
-                onPress={() => handleImagePicker()}>
-                <Camera color={theme.GREEN_COLOR} size={1} />
-                <Text style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
-                  Upload Image
+
+  if (!loading) {
+    return (
+      <View style={styles.parent}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}>
+          <ScrollView
+            style={styles.scroll}
+            showsVerticalScrollIndicator={false}
+            horizontal={false}>
+            {/* name container  */}
+            <View style={styles.container}>
+              <View style={[styles.headingContainer, {flex: 0.9}]}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Name{' '}
                 </Text>
-                <View>
-                  {Input.image.value !== '' && (
-                    <View style={styles.imageContainer}>
-                      <TouchableOpacity
-                        style={styles.crossContainer}
-                        onPress={() => unSelectImage()}>
-                        <Cross color={theme.GREEN_COLOR} size={0.9} />
-                      </TouchableOpacity>
-                      <Image
-                        source={{uri: Input.image.value}}
-                        style={styles.image}
-                      />
-                    </View>
-                  )}
-                </View>
-              </TouchableOpacity>
-              {Input.image.error !== '' && (
-                <View style={{alignItems: 'center'}}>
+              </View>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={Input.name.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        name: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={`Enter speaker${"'s"} name`}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={Input.name.error}
+                />
+              </View>
+            </View>
+            {/* about container  */}
+            <View style={styles.container}>
+              <View style={[styles.headingContainer]}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  About{' '}
+                </Text>
+              </View>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={Input.about.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        about: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={`Enter something about speaker`}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={Input.about.error}
+                />
+              </View>
+            </View>
+            {/* email container  */}
+            <View style={styles.container}>
+              <View style={[styles.headingContainer]}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Email{' '}
+                </Text>
+              </View>
+              <View style={styles.inputContainer}>
+                <CustomTextField
+                  defaultValue={Input.email.value}
+                  keyboardType={'email-address'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        email: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={`Enter speaker's email address`}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'name'}
+                  maxLength={30}
+                  error={Input.email.error}
+                />
+              </View>
+            </View>
+            {/* image  */}
+            <View style={styles.container}>
+              <View style={styles.headingContainer}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Image
+                </Text>
+              </View>
+              <>
+                <TouchableOpacity
+                  style={[
+                    styles.imageCardContainer,
+                    {
+                      backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                      height: Input.image.value === '' ? Height * 0.15 : 'auto',
+                      paddingTop: Input.image.value ? 10 : 0,
+                    },
+                  ]}
+                  activeOpacity={0.5}
+                  onPress={() => handleImagePicker()}>
+                  <Camera color={theme.GREEN_COLOR} size={1} />
                   <Text
-                    style={[styles.errorText, {color: theme.ERROR_TEXT_COLOR}]}>
-                    {Input.image.error}
+                    style={[styles.imageText, {color: theme.DIM_TEXT_COLOR}]}>
+                    Upload Image
                   </Text>
-                </View>
-              )}
-            </>
-          </View>
-          {/* social links  */}
-          <View style={styles.container}>
-            <View style={[styles.headingContainer]}>
-              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Social links{' '}
-              </Text>
-              <HelpText text={'Provide social links of the speaker.'} />
+                  <View>
+                    {Input.image.value !== '' && (
+                      <View style={styles.imageContainer}>
+                        <TouchableOpacity
+                          style={styles.crossContainer}
+                          onPress={() => unSelectImage()}>
+                          <Cross color={theme.GREEN_COLOR} size={0.9} />
+                        </TouchableOpacity>
+                        <Image
+                          source={{uri: Input.image.value}}
+                          style={styles.image}
+                        />
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+                {Input.image.error !== '' && (
+                  <View style={{alignItems: 'center'}}>
+                    <Text
+                      style={[
+                        styles.errorText,
+                        {color: theme.ERROR_TEXT_COLOR},
+                      ]}>
+                      {Input.image.error}
+                    </Text>
+                  </View>
+                )}
+              </>
             </View>
-          </View>
+            {/* social links  */}
+            <View style={styles.container}>
+              <View style={[styles.headingContainer]}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Social links{' '}
+                </Text>
+                <HelpText text={'Provide social links of the speaker.'} />
+              </View>
+            </View>
 
-          {/* links input container  */}
-          <View style={[styles.container, {flexDirection: 'row'}]}>
-            <View style={styles.socialIconContainer}>
-              <LinkedIn size={1.5} />
-            </View>
-            <View style={styles.socialLinkInputContainer}>
-              <CustomTextField
-                defaultValue={Input.social_links.linked_in.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      social_links: {
-                        ...props.social_links,
-                        linked_in: {
-                          value: text,
-                          error: '',
+            {/* links input container  */}
+            <View style={[styles.container, {flexDirection: 'row'}]}>
+              <View style={styles.socialIconContainer}>
+                <LinkedIn size={1.5} />
+              </View>
+              <View style={styles.socialLinkInputContainer}>
+                <CustomTextField
+                  defaultValue={Input.social_links.linked_in.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        social_links: {
+                          ...props.social_links,
+                          linked_in: {
+                            value: text,
+                            error: '',
+                          },
                         },
-                      },
-                    };
-                  })
-                }
-                placeholder={'LinkedIn Address'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'emailAddress'}
-                error={Input.social_links.linked_in.error}
-                width={Width * 0.5}
-                height={Width * 0.115}
-              />
+                      };
+                    })
+                  }
+                  placeholder={'LinkedIn Address'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'emailAddress'}
+                  error={Input.social_links.linked_in.error}
+                  width={Width * 0.5}
+                  height={Width * 0.115}
+                />
+              </View>
             </View>
-          </View>
-          <View style={[styles.container, {flexDirection: 'row'}]}>
-            <View style={styles.socialIconContainer}>
-              <Twitter size={1.5} />
-            </View>
-            <View style={styles.socialLinkInputContainer}>
-              <CustomTextField
-                defaultValue={Input.social_links.twitter.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      social_links: {
-                        ...props.social_links,
-                        twitter: {
-                          value: text,
-                          error: '',
+            <View style={[styles.container, {flexDirection: 'row'}]}>
+              <View style={styles.socialIconContainer}>
+                <Twitter size={1.5} />
+              </View>
+              <View style={styles.socialLinkInputContainer}>
+                <CustomTextField
+                  defaultValue={Input.social_links.twitter.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        social_links: {
+                          ...props.social_links,
+                          twitter: {
+                            value: text,
+                            error: '',
+                          },
                         },
-                      },
-                    };
-                  })
-                }
-                placeholder={'Twitter Address'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'emailAddress'}
-                error={Input.social_links.twitter.error}
-                width={Width * 0.5}
-                height={Width * 0.115}
-              />
+                      };
+                    })
+                  }
+                  placeholder={'Twitter Address'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'emailAddress'}
+                  error={Input.social_links.twitter.error}
+                  width={Width * 0.5}
+                  height={Width * 0.115}
+                />
+              </View>
             </View>
-          </View>
-          <View style={[styles.container, {flexDirection: 'row', flex: 1}]}>
-            <View style={styles.socialIconContainer}>
-              <Github size={1.5} />
-            </View>
-            <View style={styles.socialLinkInputContainer}>
-              <CustomTextField
-                defaultValue={Input.social_links.github.value}
-                keyboardType={'default'}
-                onChangeText={text =>
-                  setInput(props => {
-                    return {
-                      ...props,
-                      social_links: {
-                        ...props.social_links,
-                        github: {
-                          value: text,
-                          error: '',
+            <View style={[styles.container, {flexDirection: 'row', flex: 1}]}>
+              <View style={styles.socialIconContainer}>
+                <Github size={1.5} />
+              </View>
+              <View style={styles.socialLinkInputContainer}>
+                <CustomTextField
+                  defaultValue={Input.social_links.github.value}
+                  keyboardType={'default'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        social_links: {
+                          ...props.social_links,
+                          github: {
+                            value: text,
+                            error: '',
+                          },
                         },
-                      },
-                    };
-                  })
-                }
-                placeholder={'Github Address'}
-                placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
-                textContentType={'emailAddress'}
-                error={Input.social_links.linked_in.error}
-                width={Width * 0.5}
-                height={Width * 0.115}
-              />
+                      };
+                    })
+                  }
+                  placeholder={'Github Address'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'emailAddress'}
+                  error={Input.social_links.linked_in.error}
+                  width={Width * 0.5}
+                  height={Width * 0.115}
+                />
+              </View>
             </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          </ScrollView>
+        </KeyboardAvoidingView>
 
-      <CustomButton
-        text={'Save and Continue'}
-        onPress={handleSave}
-        loading={loading}
-      />
-    </View>
-  );
+        <CustomButton
+          text={'Save and Continue'}
+          onPress={handleSave}
+          loading={loading}
+        />
+      </View>
+    );
+  }
+  return null;
 };
 
 export default Speaker;

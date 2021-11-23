@@ -35,6 +35,7 @@ const Index: FC<props> = ({navigation, route}) => {
   });
 
   const [active, setactive] = useState(0);
+  const [loading, setloading] = useState(false);
 
   // get id of the workshop if screen is edit
   useEffect(() => {
@@ -48,6 +49,7 @@ const Index: FC<props> = ({navigation, route}) => {
       // get workshop data
       Axios.get(`/api/workshop/${ID}/`)
         .then(response => {
+          setloading(true);
           // getting general data
           var general = {
             topic: response.data.topic,
@@ -64,10 +66,10 @@ const Index: FC<props> = ({navigation, route}) => {
 
           // getting speaker data
           var speaker = {
-            name: response.data.name,
-            email: response.data.email,
-            image: response.data.image,
-            about: response.data.about,
+            name: response.data.speaker.name,
+            email: response.data.speaker.email,
+            image: response.data.speaker.image,
+            about: response.data.speaker.about,
           };
 
           // getting schedule data
@@ -84,7 +86,7 @@ const Index: FC<props> = ({navigation, route}) => {
               general: general,
             };
           });
-
+          setloading(false);
           // get general data
         })
         .catch(error => {
@@ -94,7 +96,7 @@ const Index: FC<props> = ({navigation, route}) => {
           return error.response;
         });
     }
-  }, [ID]);
+  }, [ID, loading]);
 
   return (
     <View
@@ -174,7 +176,7 @@ const Index: FC<props> = ({navigation, route}) => {
       </View>
 
       {active === 0 && <General method={method} data={workshopData.general} />}
-      {active === 1 && <Speaker method={method} />}
+      {active === 1 && <Speaker method={method} data={workshopData.speaker} />}
       {active === 2 && <Schedule method={method} />}
     </View>
   );

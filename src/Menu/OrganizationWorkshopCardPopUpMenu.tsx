@@ -15,10 +15,16 @@ const ICON_SIZE = Width * 0.07;
 
 type prop = {
   navigation: any;
+  editable: boolean;
   handleEdit: () => void;
   handleDelete: () => void;
 };
-const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
+const PopUpMenu: FC<prop> = ({
+  navigation,
+  editable,
+  handleEdit,
+  handleDelete,
+}) => {
   const [{theme}, dispatch] = useStateValue();
   return (
     <Menu>
@@ -43,17 +49,21 @@ const PopUpMenu: FC<prop> = ({navigation, handleEdit, handleDelete}) => {
             height: 35,
           },
         }}>
-        <MenuOption onSelect={() => handleEdit()}>
-          <View style={styles.menuOptionContainer}>
-            {/* icon  */}
-            <Pencil size={0.8} />
-            <View style={styles.textContainer}>
-              <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
-                Edit
-              </Text>
+        {editable && (
+          <MenuOption onSelect={() => handleEdit()}>
+            <View style={styles.menuOptionContainer}>
+              {/* icon  */}
+              <Pencil size={0.8} />
+              <View style={styles.textContainer}>
+                <Text
+                  style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+                  Edit
+                </Text>
+              </View>
             </View>
-          </View>
-        </MenuOption>
+          </MenuOption>
+        )}
+
         <MenuOption onSelect={() => handleDelete()}>
           <View style={styles.menuOptionContainer}>
             {/* icon  */}

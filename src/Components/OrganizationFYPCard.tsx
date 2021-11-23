@@ -195,7 +195,7 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
           textSize={Sizes.normal * 0.9}
           onPress={() => {
             navigation.navigate('FYPScreens', {
-              screen: 'View_FYP',
+              screen: 'FYPTab',
               params: {
                 ID: fypDetail.id,
               },
