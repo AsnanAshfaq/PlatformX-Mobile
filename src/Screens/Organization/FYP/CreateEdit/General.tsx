@@ -27,21 +27,21 @@ import Axios from '../../../../Utils/Axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
-type props = {};
+type props = {
+  movePage: () => void;
+  setFYPID: (id: string) => void;
+};
 
-const General: FC<props> = ({}) => {
+const General: FC<props> = ({movePage, setFYPID}) => {
   const {theme} = useStateValue()[0];
   const [Input, setInput] = useState({
-    name: {value: '', error: ''},
-    description: {value: '', error: ''},
+    name: {value: 'Automated HR System', error: ''},
+    description: {value: 'It is an automated HR system', error: ''},
     category: {value: [], error: ''},
     techonologies: {value: [], error: ''},
     end_date: {value: new Date(), error: ''},
+    learning_outcome: {value: '', error: ''},
   });
-  const [learning_outcome, setlearning_outcome] = useState({
-    value: '',
-    error: '',
-  }); // it will be an array
 
   const [modals, setmodals] = useState({
     category: false,
@@ -54,7 +54,7 @@ const General: FC<props> = ({}) => {
   const handleSave = () => {
     var isAllInputValid = true;
     const x = Input;
-
+    setloading(true);
     // name check
     if (isEmpty(Input.name.value)) {
       isAllInputValid = false;
@@ -65,6 +65,10 @@ const General: FC<props> = ({}) => {
       x['description']['error'] = 'Description is required.';
     }
 
+    if (isEmpty(Input.learning_outcome.value)) {
+      isAllInputValid = false;
+      x['learning_outcome']['error'] = 'Learning outcome is required.';
+    }
     if (Input.category.value.length === 0) {
       isAllInputValid = false;
       x['category']['error'] = 'Category is required.';
@@ -74,7 +78,7 @@ const General: FC<props> = ({}) => {
       x['techonologies']['error'] = 'Technology is required.';
     }
 
-    if (isEmpty(learning_outcome.value)) {
+    if (isEmpty(Input.learning_outcome.value)) {
       isAllInputValid = false;
       x['techonologies']['error'] = 'Technology is required.';
     }
@@ -96,26 +100,43 @@ const General: FC<props> = ({}) => {
     });
     if (isAllInputValid) {
       var bodyFormData = new FormData();
+      var date = Input.end_date.value;
+      const end_date =
+        date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
       bodyFormData.append('name', Input.name.value.trim());
       bodyFormData.append('description', Input.description.value.trim());
       bodyFormData.append('category', Input.category.value);
       bodyFormData.append('technologies', Input.techonologies.value);
       bodyFormData.append('end_date', Input.end_date.value);
       console.log('Body form data is', bodyFormData);
-      Axios({
-        method: 'post',
-        url: `${BASE_URL}/api/fyp/create/`,
-        data: bodyFormData,
+
+      Axios.post('/api/fyp/create/', {
+        name: Input.name.value.trim(),
+        description: Input.description.value.trim(),
+        category: Input.category.value,
+        technologies: Input.techonologies.value,
+        outcomes: Input.learning_outcome.value,
+        end_date: end_date,
       })
         .then(response => {
-          console.log('Response is', response.data);
+          setloading(false);
           if (response.status === 201) {
-            console.log('FYP has been created');
+            ToastAndroid.show(response.data.success, 1500);
+            // go to next page
+            movePage();
+            setFYPID(response.data.id);
           }
         })
         .catch(error => {
-          ToastAndroid.show(error.response.data.error, 1500);
+          setloading(false);
+          if (error.response) {
+            ToastAndroid.show(error.response.data.error, 1500);
+          }
+          return error.response;
         });
+    } else {
+      setloading(false);
     }
   };
   return (
@@ -257,7 +278,7 @@ const General: FC<props> = ({}) => {
                   Description
                 </Text>
               </View>
-              <HelpText text={'Provide description of the project.'} />
+              <HelpText text={'Provide an overview of the project.'} />
               <View style={styles.inputContainer}>
                 <CustomTextField
                   defaultValue={Input.description.value}
@@ -312,7 +333,7 @@ const General: FC<props> = ({}) => {
                       borderWidth: 1,
                       borderColor:
                         Input.category.error !== ''
-                          ? theme.RED_COLOR
+                          ? theme.ERROR_TEXT_COLOR
                           : theme.CARD_BACKGROUND_COLOR,
                       padding: 6,
                     },
@@ -329,14 +350,20 @@ const General: FC<props> = ({}) => {
               {/* error container  */}
               {Input.category.error !== '' && (
                 <View style={{alignItems: 'center'}}>
-                  <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
+                  <Text
+                    style={[{color: theme.ERROR_TEXT_COLOR}, styles.errorText]}>
                     {Input.category.error}
                   </Text>
                 </View>
               )}
               {/* show category container  */}
               {Input.category.value.length > 0 && (
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginVertical: 5,
+                  }}>
                   {Input.category.value.map(item => (
                     <Text style={{color: theme.TEXT_COLOR}}>{item}</Text>
                   ))}
@@ -372,7 +399,7 @@ const General: FC<props> = ({}) => {
                       borderWidth: 1,
                       borderColor:
                         Input.category.error !== ''
-                          ? theme.RED_COLOR
+                          ? theme.ERROR_TEXT_COLOR
                           : theme.CARD_BACKGROUND_COLOR,
                       padding: 6,
                     },
@@ -389,14 +416,20 @@ const General: FC<props> = ({}) => {
               {/* error container  */}
               {Input.techonologies.error !== '' && (
                 <View style={{alignItems: 'center'}}>
-                  <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
+                  <Text
+                    style={[{color: theme.ERROR_TEXT_COLOR}, styles.errorText]}>
                     {Input.techonologies.error}
                   </Text>
                 </View>
               )}
               {/* show technology container  */}
               {Input.techonologies.value.length > 0 && (
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginVertical: 5,
+                  }}>
                   {Input.techonologies.value.map(item => (
                     <Text style={{color: theme.TEXT_COLOR}}>{item}</Text>
                   ))}
@@ -406,30 +439,28 @@ const General: FC<props> = ({}) => {
 
             {/* outcomes of the project  */}
             <View style={styles.container}>
-              <View style={{flexDirection: 'row'}}>
-                <View style={[styles.headingContainer, {flex: 0.9}]}>
-                  <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                    Project Learning Outcomes
-                  </Text>
-                </View>
-                <View style={{flex: 0.1}}>
-                  <PlusCircle color={theme.GREEN_COLOR} />
-                </View>
+              <View style={[styles.headingContainer]}>
+                <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                  Project Learning Outcomes
+                </Text>
               </View>
               <HelpText
                 text={
-                  'Write key points of learning outcomes for the participants.'
+                  'Write major learning outcomes of this project for the participants.'
                 }
               />
               <View style={styles.inputContainer}>
                 <CustomTextField
-                  defaultValue={learning_outcome.value}
+                  defaultValue={Input.learning_outcome.value}
                   keyboardType={'default'}
                   onChangeText={text =>
-                    setlearning_outcome(props => {
+                    setInput(props => {
                       return {
-                        value: text,
-                        error: '',
+                        ...props,
+                        learning_outcome: {
+                          value: text,
+                          error: '',
+                        },
                       };
                     })
                   }
@@ -437,7 +468,7 @@ const General: FC<props> = ({}) => {
                   placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
                   textContentType={'name'}
                   maxLength={30}
-                  error={learning_outcome.error}
+                  error={Input.learning_outcome.error}
                 />
               </View>
             </View>
@@ -466,7 +497,7 @@ const General: FC<props> = ({}) => {
                       borderWidth: 1,
                       borderColor:
                         Input.end_date.error !== ''
-                          ? theme.RED_COLOR
+                          ? theme.ERROR_TEXT_COLOR
                           : theme.CARD_BACKGROUND_COLOR,
                       width: Width * 0.65,
                     },
@@ -482,7 +513,11 @@ const General: FC<props> = ({}) => {
                 </TouchableOpacity>
                 {Input.end_date.error !== '' && (
                   <View style={{alignItems: 'center'}}>
-                    <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
+                    <Text
+                      style={[
+                        {color: theme.ERROR_TEXT_COLOR},
+                        styles.errorText,
+                      ]}>
                       {Input.end_date.error}
                     </Text>
                   </View>

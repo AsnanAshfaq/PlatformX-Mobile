@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import CustomHeader from '../../../../Components/CustomHeader';
 import {Height, Sizes, Width} from '../../../../Constants/Size';
@@ -24,6 +25,10 @@ const Index: FC<props> = ({navigation, route}) => {
   const {theme} = useStateValue()[0];
   const {screen}: {screen: 'edit' | 'create'} = route.params;
   const [active, setactive] = useState(0);
+  const [FYPID, setFYPID] = useState('');
+
+  const movePage = () => setactive(1);
+  const goToMainScreen = () => navigation.goBack();
   return (
     <View
       style={[
@@ -72,7 +77,18 @@ const Index: FC<props> = ({navigation, route}) => {
                     marginHorizontal: 10,
                   },
                 ]}>
-                <TouchableOpacity onPress={() => setactive(index)}>
+                <TouchableOpacity
+                  onPress={() => {
+                    // if the active index is 1 and user wants to go to general screen, RESTRICT IT
+                    if (screen === 'create' && index === 0 && FYPID !== '') {
+                      ToastAndroid.show(
+                        'Go to FYP tab on main screen to edit',
+                        1500,
+                      );
+                    } else {
+                      setactive(index);
+                    }
+                  }}>
                   <Text
                     style={[
                       styles.screenName,
@@ -100,8 +116,10 @@ const Index: FC<props> = ({navigation, route}) => {
           )}
         />
       </View>
-      {active === 0 && <General />}
-      {active === 1 && <Test />}
+      {active === 0 && (
+        <General movePage={movePage} setFYPID={id => setFYPID(id)} />
+      )}
+      {active === 1 && <Test FYPID={FYPID} goToMainScreen={goToMainScreen} />}
     </View>
   );
 };

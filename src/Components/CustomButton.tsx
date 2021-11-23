@@ -37,6 +37,7 @@ const CustomButton: FC<props> = ({
           },
         ]}
         activeOpacity={0.5}
+        disabled={loading}
         onPress={onPress}>
         {loading ? (
           <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />

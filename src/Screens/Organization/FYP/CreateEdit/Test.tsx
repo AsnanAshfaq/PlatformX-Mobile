@@ -27,9 +27,12 @@ import Axios from '../../../../Utils/Axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
-type props = {};
+type props = {
+  FYPID: string;
+  goToMainScreen: () => void;
+};
 
-const Test: FC<props> = ({}) => {
+const Test: FC<props> = ({FYPID, goToMainScreen}) => {
   const {theme} = useStateValue()[0];
   const [Input, setInput] = useState({
     name: {value: '', error: ''},
@@ -46,6 +49,7 @@ const Test: FC<props> = ({}) => {
   const handleSave = () => {
     var isAllInputValid = true;
     const x = Input;
+    setloading(true);
 
     // name check
     if (isEmpty(Input.name.value)) {
@@ -73,28 +77,34 @@ const Test: FC<props> = ({}) => {
       };
     });
     if (isAllInputValid) {
-      var bodyFormData = new FormData();
-      bodyFormData.append('name', Input.name.value.trim());
-      bodyFormData.append('description', Input.description.value.trim());
-      bodyFormData.append('end_date', Input.end_date.value);
-      console.log('Body form data is', bodyFormData);
-      Axios({
-        method: 'post',
-        url: `${BASE_URL}/api/test/create/`,
-        data: bodyFormData,
-        headers: {'Content-Type': 'application/json'},
+      var date = Input.end_date.value;
+      const end_date =
+        date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
+      Axios.post('/api/test/create/', {
+        name: Input.name.value.trim(),
+        description: Input.description.value.trim(),
+        end_date: end_date,
+        fyp_id: FYPID,
       })
         .then(response => {
-          console.log('Response is', response.data);
+          setloading(false);
           if (response.status === 201) {
-            console.log('FYP has been created');
+            ToastAndroid.show(response.data.success, 1500);
+            // navigate to main screen
+            goToMainScreen();
           }
         })
         .catch(error => {
+          setloading(false);
+
           if (error.response) {
             ToastAndroid.show(error.response.data.error, 1500);
           }
+          return error.response;
         });
+    } else {
+      setloading(false);
     }
   };
   return (
@@ -246,7 +256,7 @@ const Test: FC<props> = ({}) => {
                       borderWidth: 1,
                       borderColor:
                         Input.end_date.error !== ''
-                          ? theme.RED_COLOR
+                          ? theme.ERROR_TEXT_COLOR
                           : theme.CARD_BACKGROUND_COLOR,
                       width: Width * 0.65,
                     },
@@ -262,7 +272,11 @@ const Test: FC<props> = ({}) => {
                 </TouchableOpacity>
                 {Input.end_date.error !== '' && (
                   <View style={{alignItems: 'center'}}>
-                    <Text style={[{color: theme.RED_COLOR}, styles.errorText]}>
+                    <Text
+                      style={[
+                        {color: theme.ERROR_TEXT_COLOR},
+                        styles.errorText,
+                      ]}>
                       {Input.end_date.error}
                     </Text>
                   </View>
