@@ -63,7 +63,7 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
           <ScrollView>
             <View style={styles.scroll}>
               {screen === 'student' && (
-                <View style={styles.container}>
+                <View style={styles.container} key={Math.random()}>
                   <Text
                     style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
                     Apply now to start working with us on
@@ -71,7 +71,9 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                 </View>
               )}
               {/* topic container  */}
-              <View style={[styles.container, styles.center]}>
+              <View
+                style={[styles.container, styles.center]}
+                key={Math.random()}>
                 <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
                   {FYPData.name}
                 </Text>
@@ -83,7 +85,8 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                   styles.center,
                   styles.card,
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
+                ]}
+                key={Math.random()}>
                 <View style={[styles.center, styles.cardIconContainer]}>
                   <Ionicons
                     name={'ios-bulb-sharp'}
@@ -113,7 +116,8 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                   styles.center,
                   styles.card,
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
+                ]}
+                key={Math.random()}>
                 <View style={[styles.center, styles.cardIconContainer]}>
                   <Ionicons
                     name={'grid-outline'}
@@ -130,8 +134,7 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                     Categories
                   </Text>
                 </View>
-                <View
-                  style={[styles.container, {marginHorizontal: Width * 0.07}]}>
+                <View style={[styles.container, {marginLeft: 2}]}>
                   <Text
                     style={[
                       {
@@ -185,7 +188,8 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                   styles.center,
                   styles.card,
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
+                ]}
+                key={Math.random()}>
                 <View style={[styles.center, styles.cardIconContainer]}>
                   <Ionicons
                     name={'code-slash'}
@@ -255,7 +259,8 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                   styles.center,
                   styles.card,
                   {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
+                ]}
+                key={Math.random()}>
                 <View style={[styles.center, styles.cardIconContainer]}>
                   <MaterialCommunityIcons
                     name={'book-open'}
@@ -282,40 +287,11 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                   </Text>
                 </View>
 
-                {FYPData.outcomes.map((learn, index) => (
-                  <View
-                    style={[
-                      styles.techRowsContainer,
-                      {
-                        marginVertical:
-                          index === FYPData.outcomes.length - 1 ? 15 : 0,
-                      }, // adding margin vertical only to last item
-                    ]}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        flex: 1,
-                      }}>
-                      <View
-                        style={{
-                          paddingRight: 3,
-                          paddingTop: 3,
-                          flex: 0.1,
-                        }}>
-                        <Bullet />
-                      </View>
-                      <View style={{flex: 0.9}}>
-                        <Text
-                          style={[
-                            styles.techPointsText,
-                            {color: theme.TEXT_COLOR},
-                          ]}>
-                          {learn}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                ))}
+                <View style={[styles.center, styles.detailsTextContainer]}>
+                  <Text style={[styles.detailsText, {color: theme.TEXT_COLOR}]}>
+                    {FYPData.outcomes}
+                  </Text>
+                </View>
               </View>
             </View>
           </ScrollView>

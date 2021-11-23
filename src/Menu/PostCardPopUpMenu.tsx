@@ -37,7 +37,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <MenuOptions
           customStyles={{
             optionsContainer: {
-              backgroundColor: theme.POP_UP_MENU_BACKGROUND_COLOR,
+              backgroundColor: theme.POP_UP_BACKGROUND_COLOR,
               borderWidth: 5,
               borderRadius: 20,
               width: 170,
@@ -109,7 +109,7 @@ const PopUpMenu: FC<prop> = ({navigation, isEditable, post, deleteModal}) => {
         <MenuOptions
           customStyles={{
             optionsContainer: {
-              backgroundColor: theme.POP_UP_MENU_BACKGROUND_COLOR,
+              backgroundColor: theme.POP_UP_BACKGROUND_COLOR,
               borderWidth: 5,
               borderRadius: 20,
               width: 170,

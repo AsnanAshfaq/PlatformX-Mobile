@@ -34,7 +34,7 @@ const PopUpMenu: FC<prop> = ({Modal}) => {
       <MenuOptions
         customStyles={{
           optionsContainer: {
-            backgroundColor: theme.POP_UP_MENU_BACKGROUND_COLOR,
+            backgroundColor: theme.POP_UP_BACKGROUND_COLOR,
             borderWidth: 5,
             borderRadius: 20,
             width: 150,
