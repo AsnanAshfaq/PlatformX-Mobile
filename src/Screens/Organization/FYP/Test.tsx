@@ -19,12 +19,10 @@ const ViewTest: FC<props> = ({navigation, route}) => {
     Axios.get(`/api/test/${ID}/`)
       .then(response => {
         settest(response.data);
-        console.log(response.data);
         setloading(false);
       })
       .catch(error => {
         setloading(false);
-        console.log('Error is', error.response.data);
         if (error.response) {
           ToastAndroid.show(error.response.data.error, 1500);
         }
@@ -32,11 +30,6 @@ const ViewTest: FC<props> = ({navigation, route}) => {
       });
   }, [ID]);
 
-  if (loading) {
-    <View>
-      <Text>Loading</Text>
-    </View>;
-  }
   return (
     <View
       style={[
@@ -51,28 +44,38 @@ const ViewTest: FC<props> = ({navigation, route}) => {
         title={'Problem Statement'}
         onBackPress={() => navigation.goBack()}
       />
-      <ScrollView>
-        <View style={styles.scrollContainer}>
-          {/* title of the problem  */}
-          <View style={styles.nameContainer}>
-            <Text style={[styles.nameText, {color: theme.TEXT_COLOR}]}>
-              {test.name}
-            </Text>
+      {!loading && test ? (
+        <ScrollView>
+          <View style={styles.scrollContainer}>
+            {/* title of the problem  */}
+            <View style={styles.nameContainer}>
+              <Text style={[styles.nameText, {color: theme.TEXT_COLOR}]}>
+                {test.name}
+              </Text>
+            </View>
+            <View style={styles.descriptionContainer}>
+              <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
+                {test.description}
+              </Text>
+            </View>
+            {/* created at  */}
+            <View style={styles.created_atContainer}>
+              <Text
+                style={[styles.created_atText, {color: theme.DIM_TEXT_COLOR}]}>
+                Created at {new Date(test.created_at).toDateString()}
+              </Text>
+            </View>
           </View>
-          <View style={styles.descriptionContainer}>
-            <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
-              {test.description}
-            </Text>
-          </View>
-          {/* created at  */}
-          <View style={styles.created_atContainer}>
-            <Text
-              style={[styles.created_atText, {color: theme.DIM_TEXT_COLOR}]}>
-              Created at {new Date(test.created_at).toDateString()}
-            </Text>
-          </View>
+        </ScrollView>
+      ) : loading ? (
+        <Text>Loading</Text>
+      ) : (
+        <View style={[styles.center, {flex: 1}]}>
+          <Text style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
+            No Test found
+          </Text>
         </View>
-      </ScrollView>
+      )}
     </View>
   );
 };
@@ -83,6 +86,10 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
   },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   scrollContainer: {
     alignItems: 'center',
   },
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   nameText: {
-    fontSize: Sizes.normal * 1.1,
+    fontSize: Sizes.large,
   },
   descriptionContainer: {
     marginHorizontal: Width * 0.04,
@@ -101,6 +108,9 @@ const styles = StyleSheet.create({
   },
   created_atContainer: {
     marginVertical: 10,
+  },
+  normalText: {
+    fontSize: Sizes.normal,
   },
   created_atText: {},
 });
