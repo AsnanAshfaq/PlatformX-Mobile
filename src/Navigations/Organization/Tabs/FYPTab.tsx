@@ -25,13 +25,13 @@ const TabScreens = ({route}) => {
           const ICON_SIZE = focused ? Width * 0.063 : Width * 0.06;
           if (route.name === 'Overview') {
             iconName = focused ? 'book' : 'book-outline';
-          } else if (route.name === 'Test') {
+          } else if (route.name === 'Problem') {
             iconName = focused ? 'question-circle' : 'question';
           } else if (route.name === 'Submissions') {
             iconName = focused ? 'file-account' : 'file-account-outline';
           }
 
-          if (route.name === 'Test') {
+          if (route.name === 'Problem') {
             return (
               <FontAwesome5 name={iconName} size={ICON_SIZE} color={color} />
             );
@@ -98,7 +98,7 @@ const TabScreens = ({route}) => {
         component={OverView}
         initialParams={{ID: fypID}}
       />
-      <Tab.Screen name="Test" component={Test} initialParams={{ID: fypID}} />
+      <Tab.Screen name="Problem" component={Test} initialParams={{ID: fypID}} />
       <Tab.Screen
         name="Submissions"
         component={Submission}
