@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Linking,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 
 import {useStateValue} from '../Store/StateProvider';
@@ -24,6 +26,9 @@ import {Calendar, Cash, Github, LinkedIn, Twitter} from './Icons';
 import {commaSeperator} from '../Utils/Numbers';
 import JoinWorkshopModal from '../Modals/WorkshopJoinModal';
 import StartWorkshopModal from '../Modals/WorkshopStartModal';
+import {BACKGROUND_IMAGE} from '../Constants/sample';
+// @ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 type props = {
   navigation: any;
   route: any;
@@ -92,8 +97,9 @@ const PREREQUISITES = [
 
 const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
   const [loading, setLoading] = useState(true);
-  const [WorkshopData, setWorkshopData] = useState({});
+  const [WorkshopData, setWorkshopData] = useState<any>();
   const [PosterLoading, setPosterLoading] = useState(true);
+  const [PosterAspectRatio, setPosterAspectRatio] = useState(0);
   const [modal, setmodal] = useState({joinModal: false, startModal: false});
   const {theme} = useStateValue()[0];
 
@@ -132,13 +138,18 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
   useEffect(() => {
     // fetch hackathon data
     axios
-      .get(`/api/workshop/${ID}`)
+      .get(`/api/workshop/${ID}/`)
       .then(result => {
         setWorkshopData(result.data);
         setLoading(false);
       })
-      .catch(error => setLoading(false));
-  }, [ID]);
+      .catch(error => {
+        setLoading(false);
+        if (error.response) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+      });
+  }, []);
 
   return (
     <View
@@ -206,18 +217,37 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
               {/* topic container  */}
               <View style={[styles.container, styles.center]}>
                 <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
-                  React Native
+                  {WorkshopData.topic}
                 </Text>
               </View>
 
               {/* poster container  */}
               <View style={[styles.container, styles.center]}>
                 <Image
-                  style={styles.poster}
+                  style={[
+                    styles.poster,
+                    {
+                      width: Width * 0.78,
+                      height: Width * PosterAspectRatio * 0.78,
+                    },
+                  ]}
                   source={{
-                    uri:
-                      'https://img.freepik.com/free-psd/building-your-own-home-print-template_23-2148924851.jpg?size=338&ext=jpg',
+                    uri: PosterLoading
+                      ? BACKGROUND_IMAGE
+                      : BASE_URL + WorkshopData.poster,
                   }}
+                  onLoadEnd={() => {
+                    Image.getSize(
+                      BASE_URL + WorkshopData.poster,
+                      (width, heigth) => {
+                        // calculate aspect ratio of image
+                        setPosterAspectRatio(heigth / width);
+                        setPosterLoading(false);
+                      },
+                    );
+                  }}
+                  onError={() => setPosterLoading(false)}
+                  resizeMode={'contain'}
                 />
               </View>
 
@@ -246,7 +276,7 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
                 </View>
                 <View style={[styles.center, styles.detailsTextContainer]}>
                   <Text style={[styles.detailsText, {color: theme.TEXT_COLOR}]}>
-                    {WORKSHOP_DETAILS}
+                    {WorkshopData.description}
                   </Text>
                 </View>
               </View>
@@ -283,13 +313,13 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
                     learn:
                   </Text>
                 </View>
-                {TAKE_AWAYS.map((take_away, index) => (
+                {WorkshopData.take_away.map((take_away, index) => (
                   <View
                     style={[
                       styles.takeAwayRowContainer,
                       {
                         marginVertical:
-                          index === TAKE_AWAYS.length - 1 ? 15 : 0,
+                          index === WorkshopData.take_away.length - 1 ? 15 : 0,
                       }, // adding margin vertical only to last item
                     ]}>
                     <View
@@ -498,31 +528,38 @@ const ViewWorkshop: FC<props> = ({navigation, route, screen, ID}) => {
               </View>
 
               {/* charges  */}
-              <View
-                style={[
-                  styles.center,
-                  styles.card,
-                  {backgroundColor: theme.CARD_BACKGROUND_COLOR},
-                ]}>
-                <View style={[styles.center, styles.cardIconContainer]}>
-                  <Cash color={theme.GREEN_COLOR} size={1.5} />
-                </View>
-                <View style={[styles.center, styles.cardHeadingContainer]}>
-                  <Text
-                    style={[
-                      styles.cardHeadingText,
-                      {color: theme.DIM_TEXT_COLOR},
-                    ]}>
-                    Charges{' '}
-                  </Text>
-                </View>
+              {WorkshopData.is_paid && (
                 <View
-                  style={[styles.center, styles.container, {marginBottom: 10}]}>
-                  <Text style={[styles.chargesText, {color: theme.TEXT_COLOR}]}>
-                    Rs {commaSeperator(2000)}
-                  </Text>
+                  style={[
+                    styles.center,
+                    styles.card,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                  ]}>
+                  <View style={[styles.center, styles.cardIconContainer]}>
+                    <Cash color={theme.GREEN_COLOR} size={1.5} />
+                  </View>
+                  <View style={[styles.center, styles.cardHeadingContainer]}>
+                    <Text
+                      style={[
+                        styles.cardHeadingText,
+                        {color: theme.DIM_TEXT_COLOR},
+                      ]}>
+                      Charges{' '}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      styles.center,
+                      styles.container,
+                      {marginBottom: 10},
+                    ]}>
+                    <Text
+                      style={[styles.chargesText, {color: theme.TEXT_COLOR}]}>
+                      Rs {commaSeperator(WorkshopData.charges)}
+                    </Text>
+                  </View>
                 </View>
-              </View>
+              )}
 
               {/* pre-requisites  */}
               <View
@@ -637,8 +674,6 @@ const styles = StyleSheet.create({
     fontSize: Sizes.large * 1.2,
   },
   poster: {
-    width: Width * 0.8,
-    height: Width,
     borderRadius: 20,
   },
   card: {

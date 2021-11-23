@@ -119,34 +119,36 @@ const HackathonCard: FC<props> = ({navigation, hackathonDetail}) => {
         <View style={styles.iconsRow}>
           <Tag size={1} color={theme.GREEN_COLOR} />
 
-          {hackathonDetail.theme_tags.map((tag: string, index) => {
-            if (index < 2) {
-              return (
-                <Text
-                  style={[
-                    styles.iconText,
-                    {
-                      color: theme.TEXT_COLOR,
-                      marginHorizontal: 0,
-                    },
-                  ]}>
-                  {tag}
-                  {hackathonDetail.theme_tags.length > 1 && index !== 1
-                    ? ','
-                    : hackathonDetail.theme_tags.length === 2 && index === 1
-                    ? '.'
-                    : hackathonDetail.theme_tags.length === 1 &&
-                      index === 0 &&
-                      '.'}
-                </Text>
-              );
-            }
-          })}
-          {hackathonDetail.theme_tags.length > 2 && (
-            <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
-              . . .
-            </Text>
-          )}
+          <View style={styles.themeContainer}>
+            {hackathonDetail.theme_tags.map((tag: string, index) => {
+              if (index < 2) {
+                return (
+                  <Text
+                    style={[
+                      styles.iconText,
+                      {
+                        color: theme.TEXT_COLOR,
+                        marginHorizontal: 0,
+                      },
+                    ]}>
+                    {tag.trim()}
+                    {hackathonDetail.theme_tags.length > 1 && index !== 1
+                      ? ', '
+                      : hackathonDetail.theme_tags.length === 2 && index === 1
+                      ? '.'
+                      : hackathonDetail.theme_tags.length === 1 &&
+                        index === 0 &&
+                        '.'}
+                  </Text>
+                );
+              }
+            })}
+            {hackathonDetail.theme_tags.length > 2 && (
+              <Text style={[styles.iconText, {color: theme.TEXT_COLOR}]}>
+                . . .
+              </Text>
+            )}
+          </View>
         </View>
         <View style={styles.iconsRow}>
           <Clock size={1.1} color={theme.GREEN_COLOR} />
@@ -271,6 +273,10 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 0.8,
     fontStyle: 'italic',
     lineHeight: 20,
+  },
+  themeContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 23,
   },
   iconsContainer: {
     paddingVertical: 10,

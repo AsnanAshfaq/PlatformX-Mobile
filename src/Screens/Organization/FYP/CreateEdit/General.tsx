@@ -12,29 +12,25 @@ import {
   Platform,
   ToastAndroid,
 } from 'react-native';
-import CustomButton from '../../../Components/CustomButton';
-import CustomHeader from '../../../Components/CustomHeader';
-import DateTimePicker from '../../../Components/DateTimePicker';
-import CustomTextField from '../../../Components/CustomTextField2';
-import HelpText from '../../../Components/HelpText';
-import {Calendar, PlusCircle} from '../../../Components/Icons';
-import {Height, Sizes, Width} from '../../../Constants/Size';
-import {useStateValue} from '../../../Store/StateProvider';
-import TechnologiesModal from '../../../Modals/FYPTechnologiesModal';
-import CategoriesModal from '../../../Modals/FYPCategoriesModal';
-import FormHandler from '../../../Utils/FormHandler';
-import Axios from '../../../Utils/Axios';
+import CustomButton from '../../../../Components/CustomButton';
+import CustomHeader from '../../../../Components/CustomHeader';
+import DateTimePicker from '../../../../Components/DateTimePicker';
+import CustomTextField from '../../../../Components/CustomTextField2';
+import HelpText from '../../../../Components/HelpText';
+import {Calendar, PlusCircle} from '../../../../Components/Icons';
+import {Height, Sizes, Width} from '../../../../Constants/Size';
+import {useStateValue} from '../../../../Store/StateProvider';
+import TechnologiesModal from '../../../../Modals/FYPTechnologiesModal';
+import CategoriesModal from '../../../../Modals/FYPCategoriesModal';
+import FormHandler from '../../../../Utils/FormHandler';
+import Axios from '../../../../Utils/Axios';
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 
-type props = {
-  navigation: any;
-  route: any;
-};
+type props = {};
 
-const CreateEdit: FC<props> = ({navigation, route}) => {
+const General: FC<props> = ({}) => {
   const {theme} = useStateValue()[0];
-  const {screen}: {screen: 'edit' | 'create'} = route.params;
   const [Input, setInput] = useState({
     name: {value: '', error: ''},
     description: {value: '', error: ''},
@@ -130,13 +126,6 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
-      <CustomHeader
-        title={'Host FYP'}
-        navigation={navigation}
-        back
-        onBackPress={() => navigation.goBack()}
-      />
-
       {/* technologies modal  */}
       <TechnologiesModal
         isShow={modals.technology}
@@ -512,7 +501,7 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
   );
 };
 
-export default CreateEdit;
+export default General;
 
 const styles = StyleSheet.create({
   parent: {
