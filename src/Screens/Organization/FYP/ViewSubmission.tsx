@@ -110,6 +110,11 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
 
   const handleSourceCodeDownload = () => {};
   const handleOutputeDownload = () => {};
+
+  const formDate = (date: string) => {
+    var d = date.slice(0, 10) + 'T' + date.slice(12, 19);
+    return new Date(d).toLocaleString();
+  };
   return (
     <View
       style={[
@@ -204,7 +209,7 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
                 />
                 <LabelKey
                   label={'Submission Date'}
-                  Key={submission.data.date}
+                  Key={formDate(submission.data.date)}
                 />
               </View>
             </View>
