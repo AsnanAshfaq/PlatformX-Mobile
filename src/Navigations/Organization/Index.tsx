@@ -6,6 +6,7 @@ import HackathonSubscription from './Subscription';
 import HackahtonScreens from './Hackathon';
 import WorkshopScreens from './Workshop';
 import FYPScreens from './FYP';
+import Settings from './Settings';
 const Stack = createStackNavigator();
 
 const OrganizationScreens = () => {
@@ -29,6 +30,7 @@ const OrganizationScreens = () => {
         name={'HackathonSubscription'}
         component={HackathonSubscription}
       />
+      <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>
   );
 };

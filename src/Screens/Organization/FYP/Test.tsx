@@ -1,5 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, useEffect, useState} from 'react';
-import {StyleSheet, ScrollView, Text, View, ToastAndroid} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
@@ -15,8 +23,7 @@ const ViewTest: FC<props> = ({navigation, route}) => {
   const [test, settest] = useState<any>();
   const {ID} = route.params;
 
-  useEffect(() => {
-    //   get test of the fyp
+  const getData = async () => {
     Axios.get(`/api/test/${ID}/`)
       .then(response => {
         settest(response.data);
@@ -30,7 +37,11 @@ const ViewTest: FC<props> = ({navigation, route}) => {
         }
         return error.response;
       });
-  }, [ID]);
+  };
+  useEffect(() => {
+    //   get test of the fyp
+    getData();
+  }, [loading]);
 
   return (
     <View
@@ -76,8 +87,13 @@ const ViewTest: FC<props> = ({navigation, route}) => {
       ) : (
         <View style={[styles.center, {flex: 1}]}>
           <Text style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
-            You have not created any test.
+            No test yet.
           </Text>
+          <TouchableOpacity onPress={() => setloading(true)}>
+            <Text style={[styles.normalText, {color: theme.GREEN_COLOR}]}>
+              Refresh
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>

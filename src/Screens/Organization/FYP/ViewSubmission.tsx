@@ -104,7 +104,7 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [loading]);
 
   const handleViewProfile = () => {};
 
@@ -165,7 +165,7 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
                   text={'View Profile'}
                   onPress={handleViewProfile}
                   width={Width * 0.35}
-                  height={35}
+                  height={40}
                 />
               </View>
             </View>
@@ -266,6 +266,11 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
           <Text style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
             Couldn't get the submission
           </Text>
+          <TouchableOpacity onPress={() => setloading(true)}>
+            <Text style={[styles.normalText, {color: theme.GREEN_COLOR}]}>
+              Refresh
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>

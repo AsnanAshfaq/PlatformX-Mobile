@@ -1,9 +1,10 @@
 import React, {FC, useState} from 'react';
-import {StyleSheet, Text, View, Switch} from 'react-native';
+import {StyleSheet, Text, View, Switch, TouchableOpacity} from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import Axios from '../../../Utils/Axios';
@@ -15,53 +16,47 @@ type cardProps = {
   onPress: () => void;
 };
 
+const ICON_SIZE = Width * 0.07;
+
 const Card: FC<cardProps> = ({IconComponent, title, description, onPress}) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [{theme}, dispatch] = useStateValue();
 
   return (
-    <View
-      style={[
-        styles.cardParent,
-        {
-          shadowColor: theme.SHADOW_COLOR,
-          backgroundColor: theme.CARD_BACKGROUND_COLOR,
-        },
-      ]}>
-      <View style={{flex: 0.2, alignItems: 'center'}}>
-        <IconComponent />
+    <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
+      <View
+        style={[
+          styles.cardParent,
+          styles.container,
+          {
+            backgroundColor: theme.CARD_BACKGROUND_COLOR,
+          },
+        ]}>
+        <View style={{flex: 0.2, alignItems: 'center'}}>
+          <IconComponent />
+        </View>
+        <View style={{flex: 0.7}}>
+          <Text style={[styles.cardTitleText, {color: theme.TEXT_COLOR}]}>
+            {title}
+          </Text>
+          <Text style={[styles.cardDescText, {color: theme.DIM_TEXT_COLOR}]}>
+            {description}
+          </Text>
+        </View>
       </View>
-      <View style={{flex: 0.7}}>
-        <Text style={[styles.cardTitleText, {color: theme.TEXT_COLOR}]}>
-          {title}
-        </Text>
-        <Text style={[styles.cardDescText, {color: theme.TEXT_COLOR}]}>
-          {description}
-        </Text>
-      </View>
-      <View style={{flex: 0.1}}>
-        <Switch
-          trackColor={{false: '#767577', true: theme.TEXT_COLOR}}
-          thumbColor={isEnabled ? theme.SHADOW_COLOR : '#f4f3f4'}
-          onValueChange={value => {
-            onPress();
-            setIsEnabled(value);
-          }}
-          value={isEnabled}
-        />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 type props = {
   navigation: any;
 };
-
-const ICON_SIZE = Width * 0.08;
-
 const Index: FC<props> = ({navigation}) => {
   const [{theme}, dispatch] = useStateValue();
+
+  const handleThemePress = () => {
+    navigation.navigate('Theme');
+  };
   return (
     <View
       style={[
@@ -79,7 +74,7 @@ const Index: FC<props> = ({navigation}) => {
       />
       {/* account settings  */}
 
-      <Card
+      {/* <Card
         IconComponent={() => (
           <MaterialCommunityIcons
             name={'shield-account'}
@@ -97,35 +92,31 @@ const Index: FC<props> = ({navigation}) => {
               console.log(error.response.data.error);
             })
         }
-      />
+      /> */}
       {/* theme settings  */}
       <Card
         IconComponent={() => (
-          <MaterialCommunityIcons
-            name={'theme-light-dark'}
+          <FontAwesome
+            name={'paint-brush'}
             size={ICON_SIZE}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
+            color={theme.GREEN_COLOR}
             // style={styles.iconPadding}
           />
         )}
-        title={'Theme'}
-        description={'Change theme. Light/Dark'}
-        onPress={() => {
-          // dispatch({type: 'TOGGLE_THEME'});
-        }}
+        title={'Themes'}
+        description={
+          'Customize theme of the application based on your preference.'
+        }
+        onPress={handleThemePress}
       />
 
       {/* notification settings  */}
       <Card
         IconComponent={() => (
-          <Entypo
-            name={'bell'}
-            size={ICON_SIZE}
-            color={theme.TAB_BAR_ACTIVE_COLOR}
-          />
+          <Entypo name={'bell'} size={ICON_SIZE} color={theme.GREEN_COLOR} />
         )}
         title={'Notifications'}
-        description={'Turn notifications on/off'}
+        description={'Manage your mail notifications.'}
         onPress={() => console.log('Setting notifications on/off')}
       />
     </View>
@@ -138,25 +129,21 @@ const styles = StyleSheet.create({
   parent: {
     flex: 1,
   },
+  container: {
+    marginVertical: 10,
+  },
   cardParent: {
     width: Width * 0.9,
-    // height: Height * 0.0,
-    paddingVertical: 20,
+    paddingVertical: 10,
     marginHorizontal: Width * 0.04,
-    marginVertical: Width * 0.01,
     flexDirection: 'row',
-    // justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
-    shadowOpacity: 1,
-    shadowRadius: 25,
-    shadowOffset: {width: 10, height: 12},
-    elevation: 30,
+    borderRadius: 10,
   },
   cardTitleText: {
-    fontSize: Sizes.large,
+    fontSize: Sizes.normal * 1.1,
   },
   cardDescText: {
-    fontSize: Sizes.normal * 0.9,
+    fontSize: Sizes.normal * 0.85,
   },
 });

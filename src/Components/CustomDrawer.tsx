@@ -164,7 +164,7 @@ const OrganizationDrawer: FC<props> = ({navigation}) => {
       id: 3,
       label: 'Settings',
       icon_name: 'ios-settings-sharp',
-      onPress: () => console.log('Pressed on Settings'),
+      onPress: () => navigation.navigate('Settings'),
     },
     {
       id: 4,

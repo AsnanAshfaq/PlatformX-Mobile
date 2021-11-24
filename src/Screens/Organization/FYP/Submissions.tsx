@@ -214,7 +214,7 @@ const Submissions: FC<props> = ({navigation, route}) => {
   useEffect(() => {
     //   get test of the fyp
     getData();
-  }, []);
+  }, [loading]);
 
   const handleCardPress = id => {
     navigation.navigate('View_Submission', {
@@ -288,6 +288,11 @@ const Submissions: FC<props> = ({navigation, route}) => {
           <Text style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
             No Submissions yet.
           </Text>
+          <TouchableOpacity onPress={() => setloading(true)}>
+            <Text style={[styles.normalText, {color: theme.GREEN_COLOR}]}>
+              Refresh
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>

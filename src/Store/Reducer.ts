@@ -1,7 +1,7 @@
 import {darkColors, lightColors} from '../Constants/Colors';
 export const initialState = {
   theme: darkColors,
-  isLightTheme: false,
+  themeName: 'dark',
   userType: '',
   user: {},
   isSignedIn: false,
@@ -9,11 +9,14 @@ export const initialState = {
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case 'TOGGLE_THEME':
+    case 'CHANGE_THEME':
       return {
         ...state,
-        isLightTheme: !state.isLightTheme,
-        theme: state.isLightTheme ? darkColors : lightColors,
+        themeName: action.payload,
+        theme:
+          action.payload === 'light'
+            ? lightColors
+            : action.payload === 'dark' && darkColors,
       };
 
     case 'SET_USER':
