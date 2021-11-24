@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  RefreshControl,
 } from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import Loading from '../../../Components/Loading';
@@ -109,7 +110,10 @@ const SubmissionCard: FC<Props> = ({
                 Status
               </Text>
             </View>
-            <View>
+            <View
+              style={{
+                marginLeft: data.result.status.name !== 'accepted' ? 13 : 0,
+              }}>
               <Text
                 style={[
                   styles.valueText,
@@ -147,7 +151,7 @@ const SubmissionCard: FC<Props> = ({
             </View>
             <View>
               <Text style={[styles.valueText, {color: theme.GREEN_COLOR}]}>
-                {data.result.memory} KB's
+                {data.result.memory} KBs
               </Text>
             </View>
           </View>
@@ -189,23 +193,35 @@ const Submissions: FC<props> = ({navigation, route}) => {
   const [{theme}, dispatch] = useStateValue();
   const [loading, setloading] = useState(true);
   const [submission, setsubmission] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const {ID} = route.params;
 
-  useEffect(() => {
-    //   get test of the fyp
-    Axios.get(`/api/submission/${ID}/`)
+  const getData = async () => {
+    Axios.get(`/api/submissions/${ID}/`)
       .then(response => {
         setsubmission(response.data);
-        console.log(response.data);
         setloading(false);
       })
       .catch(error => {
         setloading(false);
         return error.response;
       });
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    getData().then(() => setRefreshing(false));
+  };
+  useEffect(() => {
+    //   get test of the fyp
+    getData();
   }, []);
 
-  const handleCardPress = () => {};
+  const handleCardPress = id => {
+    navigation.navigate('View_Submission', {
+      fypID: ID,
+      projectID: id,
+    });
+  };
   return (
     <View
       style={[
@@ -234,18 +250,30 @@ const Submissions: FC<props> = ({navigation, route}) => {
             contentContainerStyle={styles.scroll}
             keyExtractor={(item, index) => index.toString()}
             data={submission}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={[theme.REFRESH_COLOR]}
+                progressBackgroundColor={theme.REFRESHING_BACKGROUND_COLOR}
+                progressViewOffset={20}
+                size={Sizes.large}
+              />
+            }
             renderItem={({item}: any) => {
               return (
                 <SubmissionCard
                   submissionID={item.api_submission_id}
                   image={item.student.user.profile_image}
                   name={
-                    item.student.user.first_name + item.student.user.last_name
+                    item.student.user.first_name +
+                    ' ' +
+                    item.student.user.last_name
                   }
                   username={item.student.user.username}
                   data={item.data}
                   created_at={item.created_at}
-                  handlePress={handleCardPress}
+                  handlePress={() => handleCardPress(item.id)}
                 />
               );
             }}

@@ -25,19 +25,13 @@ const TabScreens = ({route}) => {
           if (route.name === 'Overview') {
             iconName = focused ? 'book' : 'book-outline';
           } else if (route.name === 'Submissions') {
-            iconName = focused ? 'file-account' : 'file-account-outline';
+            iconName = focused ? 'codesquare' : 'codesquareo';
           } else if (route.name === 'Result') {
             iconName = focused ? 'checkcircle' : 'checkcircleo';
           }
 
           if (route.name === 'Submissions') {
-            return (
-              <MaterialCommunityIcons
-                name={iconName}
-                size={ICON_SIZE}
-                color={color}
-              />
-            );
+            return <AntDesign name={iconName} size={ICON_SIZE} color={color} />;
           }
           if (route.name === 'Result') {
             return (
