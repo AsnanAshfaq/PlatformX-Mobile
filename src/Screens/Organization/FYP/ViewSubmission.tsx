@@ -7,6 +7,8 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  ToastAndroid,
+  Linking,
 } from 'react-native';
 import CustomHeader from '../../../Components/CustomHeader';
 import Loading from '../../../Components/Loading';
@@ -19,6 +21,7 @@ import {BASE_URL} from 'react-native-dotenv';
 import CustomButton from '../../../Components/CustomButton';
 import Divider from '../../../Components/Divider';
 import {CodeDownload} from '../../../Components/Icons';
+import RNFetchBlob from 'rn-fetch-blob';
 
 type Props = {
   label: string;
@@ -54,27 +57,34 @@ const LabelKey: FC<Props> = ({label, Key, accepted = false}) => {
   );
 };
 
-const DownloadContainer: FC<{onPress}> = ({onPress}) => {
+const DownloadContainer: FC<{loading; onPress}> = ({loading, onPress}) => {
   const [{theme}, dispatch] = useStateValue();
 
   return (
     <View style={styles.center}>
       <TouchableOpacity
         onPress={onPress}
+        disabled={loading}
         style={[
           styles.cardContainer,
           {
             backgroundColor: theme.CARD_BACKGROUND_COLOR,
           },
         ]}>
-        <View style={styles.cardTextContainer}>
-          <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
-            Download
-          </Text>
-        </View>
-        <View style={styles.cardIconContainer}>
-          <CodeDownload size={1} color={theme.GREEN_COLOR} />
-        </View>
+        {loading ? (
+          <Loading size={'small'} />
+        ) : (
+          <>
+            <View style={styles.cardTextContainer}>
+              <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
+                Download
+              </Text>
+            </View>
+            <View style={styles.cardIconContainer}>
+              <CodeDownload size={1} color={theme.GREEN_COLOR} />
+            </View>
+          </>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -88,6 +98,10 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
   const [loading, setloading] = useState(true);
   const [submission, setsubmission] = useState<any>();
   const [ImageLoading, setImageLoading] = useState(true);
+  const [fileLoading, setfileLoading] = useState({
+    sourceCode: false,
+    output: false,
+  });
 
   const {fypID, projectID} = route.params;
 
@@ -108,8 +122,60 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
 
   const handleViewProfile = () => {};
 
-  const handleSourceCodeDownload = () => {};
-  const handleOutputeDownload = () => {};
+  const handleSourceCodeDownload = (path: string) => {
+    let dirs = RNFetchBlob.fs.dirs;
+
+    setfileLoading({
+      sourceCode: true,
+      output: false,
+    });
+    RNFetchBlob.config({
+      fileCache: true,
+      // by adding this option, the temp files will have a file extension
+      appendExt: 'txt',
+      path: dirs.DocumentDir + `/${submission.api_submission_id}.txt`,
+    })
+      .fetch('GET', path, {
+        //some headers ..
+      })
+      .then(res => {
+        // the temp file path with file extension `png`
+        ToastAndroid.show('File has been saved to path' + res.path(), 1500);
+      })
+      .then(() => {
+        setfileLoading({
+          sourceCode: false,
+          output: false,
+        });
+      });
+  };
+  const handleOutputeDownload = (path: string) => {
+    let dirs = RNFetchBlob.fs.dirs;
+
+    setfileLoading({
+      sourceCode: false,
+      output: true,
+    });
+    RNFetchBlob.config({
+      fileCache: true,
+      // by adding this option, the temp files will have a file extension
+      appendExt: 'txt',
+      path: dirs.DocumentDir + `/${submission.api_submission_id}.txt`,
+    })
+      .fetch('GET', path, {
+        //some headers ..
+      })
+      .then(res => {
+        // the temp file path with file extension `png`
+        ToastAndroid.show('File has been saved to path' + res.path(), 1500);
+      })
+      .then(() => {
+        setfileLoading({
+          sourceCode: false,
+          output: false,
+        });
+      });
+  };
 
   const formDate = (date: string) => {
     var d = date.slice(0, 10) + 'T' + date.slice(12, 19);
@@ -243,7 +309,29 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
               </View>
 
               {/* download container */}
-              <DownloadContainer onPress={handleSourceCodeDownload} />
+              <DownloadContainer
+                onPress={() =>
+                  handleSourceCodeDownload(
+                    submission.data.result.streams.source.uri,
+                  )
+                }
+                loading={fileLoading.sourceCode}
+              />
+
+              <View style={styles.container}>
+                <Text style={[styles.keyText, {color: theme.TEXT_COLOR}]}>
+                  Link to Download Souce Code
+                </Text>
+                <View style={[styles.container, styles.center]}>
+                  <Text
+                    style={[styles.smallText, {color: theme.ERROR_TEXT_COLOR}]}
+                    onPress={() =>
+                      Linking.openURL(submission.data.result.streams.source.uri)
+                    }>
+                    {submission.data.result.streams.source.uri}
+                  </Text>
+                </View>
+              </View>
             </View>
 
             <View style={[styles.container, styles.margin]}>
@@ -258,7 +346,29 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
               </View>
 
               {/* download container */}
-              <DownloadContainer onPress={handleOutputeDownload} />
+              <DownloadContainer
+                onPress={() =>
+                  handleOutputeDownload(
+                    submission.data.result.streams.output.uri,
+                  )
+                }
+                loading={fileLoading.output}
+              />
+
+              <View style={styles.container}>
+                <Text style={[styles.keyText, {color: theme.TEXT_COLOR}]}>
+                  Link to Download Output
+                </Text>
+                <View style={[styles.container, styles.center]}>
+                  <Text
+                    style={[styles.smallText, {color: theme.ERROR_TEXT_COLOR}]}
+                    onPress={() =>
+                      Linking.openURL(submission.data.result.streams.output.uri)
+                    }>
+                    {submission.data.result.streams.output.uri}
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
         </ScrollView>
