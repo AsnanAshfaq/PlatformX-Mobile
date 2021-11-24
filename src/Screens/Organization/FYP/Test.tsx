@@ -4,6 +4,7 @@ import CustomHeader from '../../../Components/CustomHeader';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import Axios from '../../../Utils/Axios';
+import Loading from '../../../Components/Loading';
 type props = {
   navigation: any;
   route: any;
@@ -19,12 +20,13 @@ const ViewTest: FC<props> = ({navigation, route}) => {
     Axios.get(`/api/test/${ID}/`)
       .then(response => {
         settest(response.data);
+        console.log(response.data);
         setloading(false);
       })
       .catch(error => {
         setloading(false);
         if (error.response) {
-          ToastAndroid.show(error.response.data.error, 1500);
+          // ToastAndroid.show(error.response.data.error, 1500);
         }
         return error.response;
       });
@@ -68,11 +70,13 @@ const ViewTest: FC<props> = ({navigation, route}) => {
           </View>
         </ScrollView>
       ) : loading ? (
-        <Text>Loading</Text>
+        <View style={[styles.center, {flex: 1}]}>
+          <Loading size={'large'} />
+        </View>
       ) : (
         <View style={[styles.center, {flex: 1}]}>
           <Text style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
-            No Test found
+            You have not created any test.
           </Text>
         </View>
       )}
@@ -91,10 +95,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scrollContainer: {
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   nameContainer: {
     marginVertical: 10,
+    alignItems: 'center',
   },
   nameText: {
     fontSize: Sizes.large,
@@ -108,9 +113,12 @@ const styles = StyleSheet.create({
   },
   created_atContainer: {
     marginVertical: 10,
+    marginHorizontal: Width * 0.04,
   },
   normalText: {
     fontSize: Sizes.normal,
   },
-  created_atText: {},
+  created_atText: {
+    fontSize: Sizes.normal * 0.8,
+  },
 });

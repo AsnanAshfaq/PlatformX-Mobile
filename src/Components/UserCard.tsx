@@ -80,7 +80,7 @@ const UserCard: FC<props> = ({
                 color: theme.DIM_TEXT_COLOR,
               },
             ]}>
-            {username}
+            @{username}
           </Text>
         </View>
       </View>

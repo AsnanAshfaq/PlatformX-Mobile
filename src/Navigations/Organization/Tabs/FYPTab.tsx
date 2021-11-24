@@ -28,7 +28,7 @@ const TabScreens = ({route}) => {
           } else if (route.name === 'Problem') {
             iconName = focused ? 'question-circle' : 'question';
           } else if (route.name === 'Submissions') {
-            iconName = focused ? 'file-account' : 'file-account-outline';
+            iconName = focused ? 'codesquare' : 'codesquareo';
           }
 
           if (route.name === 'Problem') {
@@ -37,13 +37,7 @@ const TabScreens = ({route}) => {
             );
           }
           if (route.name === 'Submissions') {
-            return (
-              <MaterialCommunityIcons
-                name={iconName}
-                size={ICON_SIZE}
-                color={color}
-              />
-            );
+            return <AntDesign name={iconName} size={ICON_SIZE} color={color} />;
           }
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={ICON_SIZE} color={color} />;
