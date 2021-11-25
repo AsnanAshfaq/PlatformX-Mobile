@@ -15,7 +15,7 @@ import HelpText from '../../../Components/HelpText';
 import {PlusCircle} from '../../../Components/Icons';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
-
+import CheckBox from '../../../Components/CheckBox';
 type props = {
   navigation: any;
   route: any;
@@ -33,6 +33,8 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
     duration: {value: 1, error: ''},
     end_date: {value: new Date(), error: ''},
     learning_outcome: {value: '', error: ''},
+    isPaid: {value: true},
+    stipend: {value: 0, error: ''},
   });
 
   return (
@@ -225,6 +227,65 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
               />
             </View>
           </View>
+
+          {/* paid  */}
+
+          <View style={styles.container}>
+            <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
+              <CheckBox
+                onPress={isChecked =>
+                  setInput(props => {
+                    return {
+                      ...props,
+                      isPaid: {
+                        value: !props.isPaid,
+                      },
+                    };
+                  })
+                }
+                size={18}
+                disableBuiltInState={true}
+                isChecked={Input.isPaid.value}
+              />
+              <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
+                Paid
+              </Text>
+            </View>
+            <HelpText
+              text={'Uncheck if you want to host a non-paid internship.'}
+            />
+            {Input.isPaid && (
+              <View style={[styles.subHeadingContainer]}>
+                <View style={[styles.headingContainer, {flexDirection: 'row'}]}>
+                  <Text style={[styles.subHeading, {color: theme.TEXT_COLOR}]}>
+                    Stipend
+                  </Text>
+                </View>
+                <CustomTextField
+                  defaultValue={Input.stipend.value}
+                  keyboardType={'numeric'}
+                  onChangeText={text =>
+                    setInput(props => {
+                      return {
+                        ...props,
+                        charges: {
+                          value: text,
+                          error: '',
+                        },
+                      };
+                    })
+                  }
+                  placeholder={'Rs 0'}
+                  placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
+                  textContentType={'streetAddressLine2'}
+                  maxLength={5}
+                  error={Input.stipend.error}
+                  width={Width * 0.2}
+                  height={Width * 0.13}
+                />
+              </View>
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -260,5 +321,12 @@ const styles = StyleSheet.create({
   },
   normalText: {
     fontSize: Sizes.normal,
+  },
+  subHeadingContainer: {
+    marginTop: 5,
+    marginLeft: 10,
+  },
+  subHeading: {
+    fontSize: Sizes.normal * 0.9,
   },
 });
