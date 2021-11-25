@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect, Children} from 'react';
+import React, {FC, useState, useEffect, createRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -21,6 +21,8 @@ import Divider from './Divider';
 import {Cash, ForwardArrow} from './Icons';
 import {commaSeperator} from '../Utils/Numbers';
 import CustomButton from './CustomButton';
+import LinkedInModal from 'react-native-linkedin';
+import LinkedInSignInModal from '../Modals/LinkedInSignInModal';
 type props = {
   navigation: any;
   workshopDetail: any;
@@ -63,7 +65,9 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   const [WokrshopPosterLoading, setWokrshopPosterLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
+  const linkedInref = createRef<LinkedInModal>();
 
+  const [linkedInModal, setlinkedInModal] = useState(false);
   const handleBookmark = () => {
     console.log('Handling workshop bookmark');
   };
@@ -73,28 +77,55 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   };
 
   const handleShare = () => {
+    // Axios({
+    //   method: 'post',
+    //   url: `${BASE_URL}/api/workshop/share/create/`,
+    //   data: {
+    //     workshop: workshopDetail.id,
+    //   },
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then(result => {
+    //     if (result.status === 201) {
+    //       ToastAndroid.show(result.data.success, 1500);
+    //     } else {
+    //       ToastAndroid.show(result.data.error, 1500);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     if (error.response) {
+    //       ToastAndroid.show(error.response.data.error, 1500);
+    //     }
+    //     return Promise.reject();
+    //   });
+    // open linked
+    // navigate to linkedIn screen
+    // navigation.navigate('LinkedInSignIn');
+    setlinkedInModal(true);
+  };
+
+  const makeLinkedInPost = (token: any) => {
     Axios({
       method: 'post',
-      url: `${BASE_URL}/api/workshop/share/create/`,
+      url: `${BASE_URL}/user/bot/linkedIn/`,
       data: {
-        workshop: workshopDetail.id,
-      },
-      headers: {
-        'Content-Type': 'application/json',
+        token: token,
       },
     })
-      .then(result => {
-        if (result.status === 201) {
-          ToastAndroid.show(result.data.success, 1500);
-        } else {
-          ToastAndroid.show(result.data.error, 1500);
+      .then(response => {
+        if (response.status === 201) {
+          ToastAndroid.show(response.data.success, 1500);
+          setlinkedInModal(false);
         }
       })
       .catch(error => {
         if (error.response) {
-          ToastAndroid.show(error.response.data.error, 1500);
+          ToastAndroid.show(error.response.data.success, 1500);
         }
-        return Promise.reject();
+        setlinkedInModal(false);
+        return error.response;
       });
   };
 
@@ -107,6 +138,17 @@ const WorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
+      {/* linked In Modal  */}
+      {/* {linkedInModal && (
+        <LinkedInModal
+          ref={linkedInref}
+          clientID={LINKEDIN_CLIENT_ID}
+          clientSecret={LINKEDIN_CLIENT_SECRET}
+          redirectUri={'https://www.google.com/'}
+          shouldGetAccessToken
+          onSuccess={({access_token}) => makeLinkedInPost(access_token)}
+        />
+      )} */}
       {/* header  */}
       <View style={[styles.headerContainer]}>
         {/* user image  */}

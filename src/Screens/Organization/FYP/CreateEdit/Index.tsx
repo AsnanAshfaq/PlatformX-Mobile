@@ -23,7 +23,7 @@ type props = {
 const SCREENS = ['General', 'Test'];
 const Index: FC<props> = ({navigation, route}) => {
   const {theme} = useStateValue()[0];
-  const {screen}: {screen: 'edit' | 'create'} = route.params;
+  const {method}: {method: 'edit' | 'create'} = route.params;
   const [active, setactive] = useState(0);
   const [FYPID, setFYPID] = useState('');
 
@@ -80,7 +80,7 @@ const Index: FC<props> = ({navigation, route}) => {
                 <TouchableOpacity
                   onPress={() => {
                     // if the active index is 1 and user wants to go to general screen, RESTRICT IT
-                    if (screen === 'create' && index === 0 && FYPID !== '') {
+                    if (method === 'create' && index === 0 && FYPID !== '') {
                       ToastAndroid.show(
                         'Go to FYP tab on main screen to edit',
                         1500,

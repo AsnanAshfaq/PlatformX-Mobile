@@ -90,15 +90,22 @@ const Create: FC<props> = ({navigation}) => {
             navigation.navigate('FYPScreens', {
               screen: 'Create_Edit_FYP',
               params: {
-                screen: 'create',
+                method: 'create',
               },
             })
           }
         />
         <Card
           title={'Internship'}
-          description={`Hackathons are taking over the world! Make yours run better and show the world what gets made at your event.${'\n'}START HOSTING YOUR HACKATHON NOW !!!`}
-          onPress={() => console.log('Pressed on internship')}
+          description={`Internships are a great way to start exploring talent among the freshly experienced developers.${'\n'}START HOSTING YOUR INTERNSHIP NOW  !!!`}
+          onPress={() =>
+            navigation.navigate('InternshipScreens', {
+              screen: 'Create_Edit_Internship',
+              params: {
+                method: 'create',
+              },
+            })
+          }
         />
       </ScrollView>
     </View>
@@ -111,6 +118,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     paddingTop: Height * 0.02515,
+    marginBottom: 10,
   },
   cardContainer: {
     marginHorizontal: Width * 0.06,
@@ -135,7 +143,6 @@ const styles = StyleSheet.create({
   },
   cardTitleText: {
     fontSize: Sizes.normal * 1.3,
-    fontFamily: 'Poppins-Bold',
   },
   cardDescriptionContainer: {
     // flex: 1,

@@ -123,58 +123,10 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
   const handleViewProfile = () => {};
 
   const handleSourceCodeDownload = (path: string) => {
-    let dirs = RNFetchBlob.fs.dirs;
-
-    setfileLoading({
-      sourceCode: true,
-      output: false,
-    });
-    RNFetchBlob.config({
-      fileCache: true,
-      // by adding this option, the temp files will have a file extension
-      appendExt: 'txt',
-      path: dirs.DocumentDir + `/${submission.api_submission_id}.txt`,
-    })
-      .fetch('GET', path, {
-        //some headers ..
-      })
-      .then(res => {
-        // the temp file path with file extension `png`
-        ToastAndroid.show('File has been saved to path' + res.path(), 1500);
-      })
-      .then(() => {
-        setfileLoading({
-          sourceCode: false,
-          output: false,
-        });
-      });
+    Linking.openURL(path);
   };
   const handleOutputeDownload = (path: string) => {
-    let dirs = RNFetchBlob.fs.dirs;
-
-    setfileLoading({
-      sourceCode: false,
-      output: true,
-    });
-    RNFetchBlob.config({
-      fileCache: true,
-      // by adding this option, the temp files will have a file extension
-      appendExt: 'txt',
-      path: dirs.DocumentDir + `/${submission.api_submission_id}.txt`,
-    })
-      .fetch('GET', path, {
-        //some headers ..
-      })
-      .then(res => {
-        // the temp file path with file extension `png`
-        ToastAndroid.show('File has been saved to path' + res.path(), 1500);
-      })
-      .then(() => {
-        setfileLoading({
-          sourceCode: false,
-          output: false,
-        });
-      });
+    Linking.openURL(path);
   };
 
   const formDate = (date: string) => {
@@ -317,21 +269,6 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
                 }
                 loading={fileLoading.sourceCode}
               />
-
-              <View style={styles.container}>
-                <Text style={[styles.keyText, {color: theme.TEXT_COLOR}]}>
-                  Link to Download Souce Code
-                </Text>
-                <View style={[styles.container, styles.center]}>
-                  <Text
-                    style={[styles.smallText, {color: theme.ERROR_TEXT_COLOR}]}
-                    onPress={() =>
-                      Linking.openURL(submission.data.result.streams.source.uri)
-                    }>
-                    {submission.data.result.streams.source.uri}
-                  </Text>
-                </View>
-              </View>
             </View>
 
             <View style={[styles.container, styles.margin]}>
@@ -354,21 +291,6 @@ const ViewSubmission: FC<props> = ({navigation, route}) => {
                 }
                 loading={fileLoading.output}
               />
-
-              <View style={styles.container}>
-                <Text style={[styles.keyText, {color: theme.TEXT_COLOR}]}>
-                  Link to Download Output
-                </Text>
-                <View style={[styles.container, styles.center]}>
-                  <Text
-                    style={[styles.smallText, {color: theme.ERROR_TEXT_COLOR}]}
-                    onPress={() =>
-                      Linking.openURL(submission.data.result.streams.output.uri)
-                    }>
-                    {submission.data.result.streams.output.uri}
-                  </Text>
-                </View>
-              </View>
             </View>
           </View>
         </ScrollView>

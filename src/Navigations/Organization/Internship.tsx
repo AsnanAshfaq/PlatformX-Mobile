@@ -10,7 +10,6 @@ const InternshipScreens = () => {
     <Stack.Navigator
       screenOptions={{header: () => null}}
       initialRouteName={'Create_Edit_Internship'}>
-      {/* <Stack.Screen name={'TabScreen'} component={Internship} /> */}
       <Stack.Screen
         name={'Create_Edit_Internship'}
         component={CreateEditInternship}

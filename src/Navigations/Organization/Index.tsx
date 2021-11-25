@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import OrganizationDrawerScreens from './Drawer';
-import CreateEditHackathon from '../../Screens/Organization/Hackathon/CreateEdit/index';
+import InternshipScreens from './Internship';
 import HackathonSubscription from './Subscription';
 import HackahtonScreens from './Hackathon';
 import WorkshopScreens from './Workshop';
@@ -25,6 +25,7 @@ const OrganizationScreens = () => {
       <Stack.Screen name="Main" component={OrganizationDrawerScreens} />
       <Stack.Screen name="HackahtonScreens" component={HackahtonScreens} />
       <Stack.Screen name="WorkshopScreens" component={WorkshopScreens} />
+      <Stack.Screen name="InternshipScreens" component={InternshipScreens} />
       <Stack.Screen name="FYPScreens" component={FYPScreens} />
       <Stack.Screen
         name={'HackathonSubscription'}

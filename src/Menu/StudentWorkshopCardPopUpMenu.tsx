@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useStateValue} from '../Store/StateProvider';
+import {LinkedIn} from '../Components/Icons';
 
 const ICON_SIZE = Width * 0.07;
 
@@ -83,20 +84,16 @@ const PopUpMenu: FC<prop> = ({
         </MenuOption>
         <MenuOption onSelect={() => handleShare()}>
           <View style={styles.menuOptionContainer}>
-            <MaterialCommunityIcons
-              name={'share-outline'}
-              color={theme.ICON_COLOR}
-              size={ICON_SIZE * 0.8}
-            />
+            <LinkedIn />
             <View style={styles.textContainer}>
               <Text
                 style={[
-                  styles.menuOptionText,
                   {
+                    fontSize: Sizes.normal * 0.9,
                     color: theme.TEXT_COLOR,
                   },
                 ]}>
-                Share
+                Share on LinkedIn
               </Text>
             </View>
           </View>

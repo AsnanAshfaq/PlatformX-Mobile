@@ -59,17 +59,17 @@ const PopUpMenu: FC<prop> = ({
             </Text>
           </View>
         </MenuOption>
+        <MenuOption onSelect={() => handleShare()}>
+          <View style={styles.menuOptionContainer}>
+            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
+              Share on LinkedIn
+            </Text>
+          </View>
+        </MenuOption>
         <MenuOption onSelect={() => handleReport()}>
           <View style={styles.menuOptionContainer}>
             <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
               Report
-            </Text>
-          </View>
-        </MenuOption>
-        <MenuOption onSelect={() => handleShare()}>
-          <View style={styles.menuOptionContainer}>
-            <Text style={[styles.menuOptionText, {color: theme.TEXT_COLOR}]}>
-              Share
             </Text>
           </View>
         </MenuOption>

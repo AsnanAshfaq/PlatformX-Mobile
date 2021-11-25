@@ -5,7 +5,10 @@ type props = {
   navigation: any;
   internshipDetail: any;
 };
-const InternshipCard: FC<props> = ({navigation, internshipDetail}) => {
+const OrganizationInternshipCard: FC<props> = ({
+  navigation,
+  internshipDetail,
+}) => {
   return (
     <View>
       <Text></Text>
@@ -13,6 +16,6 @@ const InternshipCard: FC<props> = ({navigation, internshipDetail}) => {
   );
 };
 
-export default InternshipCard;
+export default OrganizationInternshipCard;
 
 const styles = StyleSheet.create({});
