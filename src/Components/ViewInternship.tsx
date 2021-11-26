@@ -306,17 +306,17 @@ const ViewInternship: FC<props> = ({navigation, route, screen, ID}) => {
                   style={[styles.container, styles.center, {marginBottom: 10}]}>
                   <Text
                     style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
-                    Total Duration {internshipData.duration}
+                    Total Duration {internshipData.duration} Months
                   </Text>
                 </View>
               </View>
             </View>
           </ScrollView>
 
-          {screen === 'student' && (
+          {screen === 'student' && internshipData.status === 'Open' && (
             <CustomButton
               text={'Apply Now'}
-              onPress={() => console.log('Participating screen')}
+              onPress={() => navigation.navigate('Apply_Now')}
             />
           )}
         </>
@@ -393,81 +393,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     lineHeight: 20,
     flexShrink: 1,
-  },
-  techRowsContainer: {
-    marginHorizontal: Width * 0.065,
-    marginTop: 10,
-    flexDirection: 'row',
-  },
-  techPointsText: {
-    fontSize: Sizes.normal * 0.8,
-    fontWeight: 'bold',
-    lineHeight: 20,
-    flexShrink: 1,
-  },
-  scheduleRowContainer: {
-    marginHorizontal: Width * 0.065,
-    marginTop: 10,
-    flexDirection: 'row',
-  },
-  scheduleTimeText: {
-    fontSize: Sizes.normal * 0.85,
-    lineHeight: 18,
-    flexShrink: 1,
-    fontWeight: 'bold',
-  },
-  scheduleLabelText: {
-    fontWeight: 'bold',
-  },
-  schedulePointContainer: {
-    paddingRight: 3,
-    paddingTop: 3,
-    flex: 0.35,
-    flexDirection: 'row',
-  },
-  scheduleLabelContainer: {
-    flex: 0.65,
-    alignItems: 'flex-start',
-  },
-  speakerContainer: {
-    marginHorizontal: Width * 0.065,
-    marginTop: 10,
-    flex: 1,
-    flexDirection: 'column',
-  },
-  speakerImageContainer: {
-    flex: 0.25,
-  },
-  speakerNameContainer: {
-    flex: 0.75,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  speakerImage: {
-    width: Width * 0.15,
-    height: Width * 0.15,
-    borderRadius: 14,
-    borderColor: 'transparent',
-  },
-  speakerNameText: {
-    fontSize: Sizes.normal * 0.95,
-  },
-  speakerAboutContainer: {
-    marginVertical: 10,
-  },
-  speakerAboutText: {
-    fontSize: Sizes.normal * 0.8,
-    lineHeight: 22,
-    textAlign: 'left',
-  },
-  speakerReachTextContainer: {
-    marginVertical: 10,
-  },
-  speakerReachIconContainer: {
-    marginHorizontal: Width * 0.065,
-    marginVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
   iconMargin: {
     marginHorizontal: Width * 0.04,

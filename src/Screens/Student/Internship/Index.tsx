@@ -8,7 +8,7 @@ import {
   RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import HackathonCard from '../../../Components/OrganizationHackathonCard';
+import InternshipCard from '../../../Components/InternshipCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
@@ -22,7 +22,7 @@ type props = {
 };
 
 const Internship: FC<props> = ({navigation}) => {
-  const [Internships, setInterships] = useState([]);
+  const [internships, setInterships] = useState([]);
   const [Refreshing, setRefreshing] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   const [{theme}, dispatch] = useStateValue();
@@ -36,18 +36,20 @@ const Internship: FC<props> = ({navigation}) => {
   const ref = useRef<any>();
 
   const getData = async () => {
-    // axios
-    //   .get('/api/hackathon/')
-    //   .then(response => {
-    //     setHackathons(response.data);
-    //     setIsLoading(false);
-    //   })
-    //   .catch(error => {
-    //     setIsLoading(false);
-    //     console.log('Error is', error);
-    //   });
-    setIsLoading(false);
-    console.log('Getting data for Internships');
+    axios
+      .get('/api/internships/')
+      .then(response => {
+        setInterships(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+
+        if (error.response) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        return error.response;
+      });
   };
 
   const onRefresh = () => {
@@ -127,19 +129,20 @@ const Internship: FC<props> = ({navigation}) => {
         <>
           <HackathonSkeleton showSearchSkeleton={!Searching.isSearching} />
         </>
-      ) : Internships.length > 0 ? (
+      ) : internships.length > 0 ? (
         <>
           <FlatList
-            data={Internships}
+            data={internships}
             // disableVirtualization
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             ref={ref}
-            renderItem={({item: hackathon, index}: any) => {
+            renderItem={({item: internship, index}: any) => {
               return (
-                <HackathonCard
-                  key={hackathon?.id}
-                  hackathonDetail={hackathon}
+                <InternshipCard
+                  key={internship?.id}
+                  internshipDetail={internship}
                   navigation={navigation}
+                  source={'student'}
                 />
               );
             }}
@@ -157,10 +160,10 @@ const Internship: FC<props> = ({navigation}) => {
             // contentOffset={{y: -300, x: 0}}
           />
         </>
-      ) : !IsLoading && Internships.length === 0 ? (
+      ) : !IsLoading && internships.length === 0 ? (
         <View style={styles.center}>
           <Text style={[styles.noMoreText, {color: theme.TEXT_COLOR}]}>
-            {Searching.query !== '' && Internships.length === 0
+            {Searching.query !== '' && internships.length === 0
               ? `No result Found for ${Searching.query}`
               : 'No internships yet'}
           </Text>

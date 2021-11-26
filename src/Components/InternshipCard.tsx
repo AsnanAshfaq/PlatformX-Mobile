@@ -8,32 +8,39 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
-import PopUpMenu from '../Menu/OrganizationWorkshopCardPopUpMenu';
+import ORGPopUpMenu from '../Menu/OrganizationInternshipCardPopUpMenu';
+import STDPopMenu from '../Menu/StudentInternshipCardPopUpMenu';
 import {GREY_IMAGE, PROFILE_IMAGE} from '../Constants/sample';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
-import Axios from '../Utils/Axios';
-import Divider from '../Components/Divider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Cash, Clock, ForwardArrow, People, Tag} from './Icons';
 import CustomButton from './CustomButton';
+import Divider from '../Components/Divider';
 const ICON_SIZE = Width * 0.07;
 
 type cardProps = {
   name: string;
   label: string | number;
   cash?: boolean;
+  duration?: boolean;
 };
-const InternshipCardIcons: FC<cardProps> = ({name, label, cash}) => {
+const InternshipCardIcons: FC<cardProps> = ({name, label, cash, duration}) => {
   const {theme} = useStateValue()[0];
 
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
       {cash ? (
         <Cash size={1} color={theme.GREEN_COLOR} />
+      ) : duration ? (
+        <MaterialCommunityIcons
+          name={name}
+          size={ICON_SIZE}
+          color={theme.GREEN_COLOR}
+        />
       ) : (
         <Ionicons name={name} size={ICON_SIZE} color={theme.GREEN_COLOR} />
       )}
@@ -55,9 +62,11 @@ const InternshipCardIcons: FC<cardProps> = ({name, label, cash}) => {
 type props = {
   navigation: any;
   internshipDetail: any;
+  source: 'student' | 'organization';
 };
-const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
+const InternshipCard: FC<props> = ({navigation, internshipDetail, source}) => {
   const [{theme}, dispatch] = useStateValue();
+  const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
 
   const handleDelete = () => {
     console.log('Handling workshop delete');
@@ -73,6 +82,32 @@ const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
     });
   };
 
+  const handleBookmark = () => {
+    console.log('Handling workshop delete');
+  };
+
+  const handleReport = () => {};
+
+  const handleShare = () => {};
+
+  const handleDetails = () => {
+    if (source === 'organization') {
+      navigation.navigate('InternshipScreens', {
+        screen: 'InternshipTab',
+        params: {
+          ID: internshipDetail.id,
+        },
+      });
+    } else {
+      navigation.navigate('InternshipScreens', {
+        screen: 'View_Internship',
+        params: {
+          ID: internshipDetail.id,
+        },
+      });
+    }
+  };
+
   return (
     <View
       style={[
@@ -82,21 +117,83 @@ const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
           backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
-      <View style={[styles.topicContainer, styles.center]}>
-        {/* name of the project  */}
-        <View style={styles.topicTextContainer}>
-          <Text style={[styles.topicText, {color: theme.TEXT_COLOR}]}>
-            {internshipDetail.topic}
-          </Text>
+      {source === 'student' && (
+        <View style={[styles.headerContainer]}>
+          {/* user image  */}
+          <View style={styles.headerImageContainer}>
+            <Image
+              source={{
+                uri: ProfileImageLoading
+                  ? PROFILE_IMAGE
+                  : internshipDetail.organization.user.profile_image
+                  ? BASE_URL +
+                    internshipDetail.organization.user.profile_image.path
+                  : PROFILE_IMAGE,
+              }}
+              onLoadEnd={() => setProfileImageLoading(false)}
+              style={styles.userImage}
+            />
+          </View>
+          <View style={styles.headerTextContainer}>
+            <Text
+              style={[
+                styles.username,
+                {
+                  color: theme.TEXT_COLOR,
+                },
+              ]}>
+              {internshipDetail.organization.name}
+            </Text>
+            <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
+              {new Date(internshipDetail.created_at).toDateString() ===
+              new Date(internshipDetail.updated_at).toDateString()
+                ? `${new Date(internshipDetail.created_at).toDateString()}`
+                : `Updated at ${new Date(
+                    internshipDetail.updated_at,
+                  ).toDateString()}`}
+            </Text>
+          </View>
+          {/* right icon  */}
+          <View style={styles.headerIconContainer}>
+            <STDPopMenu
+              navigation={navigation}
+              handleShare={handleShare}
+              handleBookmark={handleBookmark}
+              handleReport={handleReport}
+            />
+          </View>
         </View>
-        {/* menu icon  */}
-        <View style={styles.popUpIconContainer}>
-          <PopUpMenu
-            navigation={navigation}
-            editable={internshipDetail.status !== 'Ended'}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-          />
+      )}
+      <Divider width={Width * 0.92} />
+
+      <View style={styles.container}>
+        {/* content  */}
+        <View style={[styles.nameContainer, styles.center]}>
+          {/* name of the project  */}
+          <View style={styles.nameTextContainer}>
+            <Text style={[styles.nameText, {color: theme.TEXT_COLOR}]}>
+              Looking for {internshipDetail.name}
+            </Text>
+          </View>
+
+          {/* menu icon  */}
+          <View style={styles.popUpIconContainer}>
+            {source === 'organization' && (
+              <ORGPopUpMenu
+                navigation={navigation}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+                editable={internshipDetail.status !== 'Ended'}
+              />
+            )}
+          </View>
+        </View>
+
+        <View style={[styles.descriptionContainer, styles.center]}>
+          {/* description of the project  */}
+          <Text style={[styles.descriptionText, {color: theme.TEXT_COLOR}]}>
+            {internshipDetail.description}
+          </Text>
         </View>
       </View>
       {/* workshop poster  */}
@@ -108,7 +205,7 @@ const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
             <InternshipCardIcons
               cash
               name={'cash-outline'}
-              label={`Rs ${commaSeperator(internshipDetail.charges)}`}
+              label={`Stipend Rs ${commaSeperator(internshipDetail.stipend)}`}
             />
           </View>
         ) : (
@@ -116,7 +213,7 @@ const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
             <InternshipCardIcons cash name={'cash-outline'} label={`Free`} />
           </View>
         )}
-        {/* if the workshop is open to join  */}
+        {/* if the intenrship is open to apply  */}
         {internshipDetail.status === 'Open' &&
         internshipDetail.days_left !== 0 ? (
           <View style={styles.iconContainer}>
@@ -137,7 +234,11 @@ const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
         )}
 
         <View style={{marginTop: 5, marginHorizontal: Width * 0.04}}>
-          <InternshipCardIcons name={'people-sharp'} label={'0 Participants'} />
+          <InternshipCardIcons
+            name={'briefcase-clock-outline'}
+            duration
+            label={`Duration ${internshipDetail.duration} Months`}
+          />
         </View>
       </View>
       {/* apply now button  */}
@@ -150,14 +251,7 @@ const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
           }
           text={'Details'}
           textSize={Sizes.normal * 0.9}
-          onPress={() => {
-            navigation.navigate('WorkshopScreens', {
-              screen: 'WorkshopTab',
-              params: {
-                ID: internshipDetail.id,
-              },
-            });
-          }}
+          onPress={handleDetails}
           width={Width * 0.3}
           height={Height * 0.055}
         />
@@ -166,25 +260,19 @@ const StudentInternshipCard: FC<props> = ({navigation, internshipDetail}) => {
   );
 };
 
-export default StudentInternshipCard;
+export default InternshipCard;
 
 const styles = StyleSheet.create({
   parent: {
     marginHorizontal: Width * 0.04,
     marginVertical: Width * 0.03,
-    // marginVertical: Width * 0.01,
-    // minHeight: Height * 0.35,
-    // maxHeight: Height * 0.8,
     borderRadius: 10,
     shadowOpacity: 1,
     shadowRadius: 25,
     shadowOffset: {width: 10, height: 12},
     elevation: 5,
   },
-  center: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   headerContainer: {
     minHeight: Height * 0.08,
     maxHeight: Height * 0.15,
@@ -217,28 +305,38 @@ const styles = StyleSheet.create({
   date: {
     fontSize: Sizes.normal * 0.75,
   },
-  topicContainer: {
-    marginBottom: 10,
-
-    marginTop: 10,
-    flex: 1,
-    flexDirection: 'row',
-  },
-  topicTextContainer: {
-    flex: 0.92,
+  center: {
+    justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: Width * 0.1,
+  },
+  container: {
+    marginVertical: 10,
   },
   popUpIconContainer: {
     flex: 0.08,
   },
-  topicText: {
+  nameContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  nameTextContainer: {
+    flex: 0.92,
+    alignItems: 'center',
+    marginLeft: Width * 0.1,
+  },
+  nameText: {
     fontSize: Sizes.normal * 1.2,
-    fontFamily: 'OpenSans-Bold',
+    flexShrink: 1,
+    textAlign: 'center',
+  },
+  descriptionContainer: {
+    marginTop: 10,
+    marginHorizontal: Width * 0.04,
   },
   descriptionText: {
-    fontSize: Sizes.normal,
-    lineHeight: 24,
+    fontSize: Sizes.normal * 0.8,
+    lineHeight: 20,
+    textAlign: 'center',
   },
   posterContainer: {
     marginHorizontal: 0,

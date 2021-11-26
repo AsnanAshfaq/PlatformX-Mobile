@@ -8,7 +8,7 @@ import {
   RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import InternshipCard from '../../../Components/OrganizationInternshipCard';
+import InternshipCard from '../../../Components/InternshipCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
@@ -35,7 +35,7 @@ const Internship: FC<props> = ({navigation}) => {
 
   const getData = async () => {
     axios
-      .get('/api/internships/')
+      .get('/api/internship/')
       .then(response => {
         setInterships(response.data);
         setIsLoading(false);
@@ -130,6 +130,7 @@ const Internship: FC<props> = ({navigation}) => {
                   key={internship?.id}
                   internshipDetail={internship}
                   navigation={navigation}
+                  source={'organization'}
                 />
               );
             }}

@@ -8,6 +8,7 @@ import Settings from './Settings';
 import HackahtonScreens from './Hackathon';
 import WorkshopScreens from './Workshop';
 import FYPScreens from './FYP';
+import InternshipScreens from './Internship';
 import LinkedInSignIn from '../../Screens/Student/LinkedInSignIn';
 const Stack = createStackNavigator();
 
@@ -32,6 +33,7 @@ const StudentScreens = () => {
       <Stack.Screen name="HackahtonScreens" component={HackahtonScreens} />
       <Stack.Screen name="WorkshopScreens" component={WorkshopScreens} />
       <Stack.Screen name="FYPScreens" component={FYPScreens} />
+      <Stack.Screen name="InternshipScreens" component={InternshipScreens} />
       <Stack.Screen name="LinkedInSignIn" component={FYPScreens} />
     </Stack.Navigator>
   );

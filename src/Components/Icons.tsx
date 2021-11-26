@@ -220,4 +220,16 @@ export const CodeDownload: FC<props> = ({size, color}) => {
     />
   );
 };
+
+export const FileUpload: FC<props> = ({size, color}) => {
+  const {theme} = useStateValue()[0];
+  return (
+    <Ionicons
+      name={'ios-cloud-upload-outline'}
+      color={color ? color : theme.ICON_COLOR}
+      size={size ? size * ICON_SIZE : ICON_SIZE * 0.7}
+    />
+  );
+};
+
 const styles = StyleSheet.create({});
