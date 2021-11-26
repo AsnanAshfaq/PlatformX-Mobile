@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 const TabScreens = ({route}) => {
   const [state, dispatch] = useStateValue();
 
-  const internshipID = route.params.params.ID;
+  const internshipID = route.params.ID;
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -90,7 +90,12 @@ const TabScreens = ({route}) => {
         },
       }}
       backBehavior="none">
-      <Tab.Screen name="Overview" component={OverView} />
+      <Tab.Screen
+        name="Overview"
+        component={OverView}
+        initialParams={{ID: internshipID}}
+        options={{unmountOnBlur: true}}
+      />
       {/* <Tab.Screen
         name="Submissions"
         component={Submissions}

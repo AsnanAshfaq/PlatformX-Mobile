@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import ViewInternshipComponent from '../../../Components/ViewInternship';
 
-const ViewInternship = () => {
+type props = {
+  route: any;
+  navigation: any;
+};
+const ViewInternship: FC<props> = ({route, navigation}) => {
+  const {ID} = route.params;
+
   return (
-    <View>
-      <Text></Text>
-    </View>
+    <ViewInternshipComponent
+      navigation={navigation}
+      ID={ID}
+      route={route}
+      screen={'organization'}
+    />
   );
 };
 
