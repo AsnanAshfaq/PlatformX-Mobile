@@ -34,18 +34,19 @@ const Internship: FC<props> = ({navigation}) => {
   });
 
   const getData = async () => {
-    // axios
-    //   .get('/api/hackathon/')
-    //   .then(response => {
-    //     setHackathons(response.data);
-    //     setIsLoading(false);
-    //   })
-    //   .catch(error => {
-    //     setIsLoading(false);
-    //     console.log('Error is', error);
-    //   });
-    setIsLoading(false);
-    console.log('Getting data for Internships');
+    axios
+      .get('/api/internships/')
+      .then(response => {
+        setInterships(response.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        setIsLoading(false);
+        if (error.response) {
+          ToastAndroid.show(error.response, 1500);
+        }
+        return error.response;
+      });
   };
 
   const onRefresh = () => {

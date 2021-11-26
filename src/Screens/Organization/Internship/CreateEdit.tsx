@@ -16,6 +16,7 @@ import {PlusCircle} from '../../../Components/Icons';
 import {Height, Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import CheckBox from '../../../Components/CheckBox';
+import CustomButton from '../../../Components/CustomButton';
 type props = {
   navigation: any;
   route: any;
@@ -36,6 +37,11 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
     isPaid: {value: true},
     stipend: {value: 0, error: ''},
   });
+  const [loading, setloading] = useState(false);
+
+  const handleSave = () => {
+    console.log('Handling save');
+  };
 
   return (
     <View
@@ -288,6 +294,7 @@ const CreateEdit: FC<props> = ({navigation, route}) => {
           </View>
         </View>
       </ScrollView>
+      <CustomButton text={'Save'} onPress={handleSave} loading={loading} />
     </View>
   );
 };

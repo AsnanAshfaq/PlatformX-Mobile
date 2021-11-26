@@ -58,7 +58,6 @@ const WorkshopCardIcons: FC<cardProps> = ({name, label, cash}) => {
 };
 
 const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
-  const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
   const [WokrshopPosterLoading, setWokrshopPosterLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
@@ -258,7 +257,6 @@ const styles = StyleSheet.create({
   },
   topicText: {
     fontSize: Sizes.normal * 1.2,
-    fontFamily: 'OpenSans-Bold',
   },
   descriptionText: {
     fontSize: Sizes.normal,
