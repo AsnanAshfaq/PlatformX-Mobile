@@ -107,14 +107,10 @@ const ViewInternship: FC<props> = ({navigation, route, screen, ID}) => {
                 ]}
                 key={Math.random()}>
                 <View style={[styles.center, styles.cardIconContainer]}>
-                  {/* <Ionicons
+                  <Ionicons
                     name={'grid-outline'}
                     size={ICON_SIZE * 2}
                     color={theme.GREEN_COLOR}
-                  /> */}
-                  <Image
-                    source={require('../../assets/images/skills_icon.png')}
-                    style={{width: 80, height: 80}}
                   />
                 </View>
                 <View style={[styles.center, styles.cardHeadingContainer]}>

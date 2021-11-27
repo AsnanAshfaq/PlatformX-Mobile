@@ -263,6 +263,12 @@ const Applicants: FC<props> = ({navigation, route}) => {
     getData();
   }, [loading]);
 
+  const handlePress = (id: string) => {
+    navigation.navigate('Schedule_Meeting', {
+      ID: id,
+    });
+  };
+
   return (
     <View
       style={[
@@ -305,7 +311,7 @@ const Applicants: FC<props> = ({navigation, route}) => {
               return (
                 <ApplicantCard
                   {...item}
-                  handlePress={() => console.log('Pressed')}
+                  handlePress={() => handlePress(item.id)}
                 />
               );
             }}
