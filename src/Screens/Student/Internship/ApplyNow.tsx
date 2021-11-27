@@ -20,6 +20,8 @@ import FormHandler from '../../../Utils/FormHandler';
 import FilePickerManager from 'react-native-file-picker';
 import DocumentPicker from 'react-native-document-picker';
 import axios from '../../../Utils/Axios';
+//@ts-ignore
+import {BASE_URL} from 'react-native-dotenv';
 
 type Props = {
   value: any;
@@ -145,26 +147,24 @@ const ApplyNow: FC<props> = ({route, navigation}) => {
       console.log('Safe to make api call');
 
       const bodyData = new FormData();
-      const data = {
-        github: Input.github.value.trim(),
-        linked_in: Input.linkedin.value.trim(),
-        cv: Input.cv.value.uri,
-      };
+      // const data = {
+      //   github: Input.github.value.trim(),
+      //   linked_in: Input.linkedin.value.trim(),
+      //   cv: Input.cv.value.uri,
+      // };
 
       bodyData.append('github', Input.github.value.trim());
       bodyData.append('linked_in', Input.linkedin.value.trim());
-      bodyData.append('cv', Input.cv.value);
+      bodyData.append('cv', Input.cv.value.uri);
       if (!isEmpty(Input.portfolio.value)) {
         bodyData.append('portfolio', Input.portfolio.value.trim());
-        data['portfolio'] = Input.portfolio.value.trim();
+        // data['portfolio'] = Input.portfolio.value.trim();
       }
-
       axios({
         method: 'post',
-        url: `/api/internship/${ID}/apply/`,
-        // data: data,
-        body: bodyData,
-        header: {'Content-Type': 'application/form-data'}, //multipart/form-data
+        url: `${BASE_URL}/api/internship/${ID}/apply/`,
+        data: bodyData,
+        headers: {'Content-Type': 'multipart/form-data'},
       })
         .then(respose => {
           if (respose.status === 201) {
