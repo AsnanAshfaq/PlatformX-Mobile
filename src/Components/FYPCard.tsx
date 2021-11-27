@@ -6,19 +6,21 @@ import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
 import {Cash, ForwardArrow} from './Icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import PopUpMenu from '../Menu/OrganizationFYPCardPopUpMenu';
+import ORGPopUpMenu from '../Menu/OrganizationFYPCardPopUpMenu';
+import STDPopMenu from '../Menu/StudentFYPCardPopUpMenu';
 import DeleteFYPModal from '../Modals/FYPDeleteModal';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import Divider from './Divider';
 type props = {
   navigation: any;
+  source: 'student' | 'organization';
   fypDetail: any;
 };
 
 const ICON_SIZE = Width * 0.07;
 
-const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
+const FYPCard: FC<props> = ({navigation, source, fypDetail}) => {
   const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
   const [{theme}, dispatch] = useStateValue();
@@ -36,6 +38,27 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
     console.log('Clicked on share');
   };
 
+  const handleBookmark = () => {};
+  const handleReport = () => {};
+  const handleShare = () => {};
+
+  const handleDetails = () => {
+    if (source === 'organization') {
+      navigation.navigate('FYPScreens', {
+        screen: 'FYPTab',
+        params: {
+          ID: fypDetail.id,
+        },
+      });
+    } else if (source === 'student') {
+      navigation.navigate('FYPScreens', {
+        screen: 'View_FYP',
+        params: {
+          ID: fypDetail.id,
+        },
+      });
+    }
+  };
   return (
     <View
       style={[
@@ -52,6 +75,55 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
         isShow={modal.delete}
         toggleModal={() => setmodal({delete: false})}
       />
+      {source === 'student' && (
+        <>
+          <View style={[styles.headerContainer]}>
+            {/* user image  */}
+            <View style={styles.headerImageContainer}>
+              <Image
+                source={{
+                  uri: ProfileImageLoading
+                    ? PROFILE_IMAGE
+                    : fypDetail.organization.user.profile_image
+                    ? BASE_URL + fypDetail.organization.user.profile_image.path
+                    : PROFILE_IMAGE,
+                }}
+                onLoadEnd={() => setProfileImageLoading(false)}
+                style={styles.userImage}
+              />
+            </View>
+            <View style={styles.headerTextContainer}>
+              <Text
+                style={[
+                  styles.username,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                {fypDetail.organization.name}
+              </Text>
+              <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
+                {new Date(fypDetail.created_at).toDateString() ===
+                new Date(fypDetail.updated_at).toDateString()
+                  ? `${new Date(fypDetail.created_at).toDateString()}`
+                  : `Updated at ${new Date(
+                      fypDetail.updated_at,
+                    ).toDateString()}`}
+              </Text>
+            </View>
+            {/* right icon  */}
+            <View style={styles.headerIconContainer}>
+              <STDPopMenu
+                navigation={navigation}
+                handleBookmark={handleBookmark}
+                handleShare={handleShare}
+                handleReport={handleReport}
+              />
+            </View>
+          </View>
+          <Divider width={Width * 0.92} />
+        </>
+      )}
 
       <View style={styles.container}>
         {/* content  */}
@@ -64,13 +136,15 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
           </View>
 
           {/* menu icon  */}
-          <View style={styles.popUpIconContainer}>
-            <PopUpMenu
-              navigation={navigation}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit}
-            />
-          </View>
+          {source === 'organization' && (
+            <View style={styles.popUpIconContainer}>
+              <ORGPopUpMenu
+                navigation={navigation}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+              />
+            </View>
+          )}
         </View>
 
         <View style={[styles.descriptionContainer, styles.center]}>
@@ -193,14 +267,7 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
           }
           text={'Details'}
           textSize={Sizes.normal * 0.9}
-          onPress={() => {
-            navigation.navigate('FYPScreens', {
-              screen: 'FYPTab',
-              params: {
-                ID: fypDetail.id,
-              },
-            });
-          }}
+          onPress={handleDetails}
           width={Width * 0.3}
           height={Height * 0.055}
         />
@@ -209,7 +276,7 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
   );
 };
 
-export default OrganizationFYPCard;
+export default FYPCard;
 
 const styles = StyleSheet.create({
   parent: {

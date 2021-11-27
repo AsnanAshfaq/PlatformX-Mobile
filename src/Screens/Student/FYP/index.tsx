@@ -8,7 +8,7 @@ import {
   RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import StudentFYPCard from '../../../Components/StudentFYPCard';
+import FYPCard from '../../../Components/FYPCard';
 import CustomHeader from '../../../Components/CustomHeader';
 import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
@@ -17,75 +17,6 @@ import HackathonSkeleton from '../../../Skeleton/HackathonCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 import {useScrollToTop} from '@react-navigation/native';
 
-const FYPS = [
-  {
-    id: 1,
-    organization: {
-      name: 'Netsol',
-      user: {
-        profile_image: {
-          path:
-            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
-        },
-      },
-    },
-    created_at: new Date().toLocaleDateString(),
-    name: 'Tour Recommender',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate magnam c',
-    category: [
-      'Artificial Intellligence',
-      'Web Application',
-      'Desktop Application',
-    ],
-    learning_outcomes: '',
-    technologies: ['Docker', 'Node', 'Firebase'],
-    team_members: 3,
-    days_left: 10,
-  },
-  {
-    id: 2,
-    organization: {
-      name: 'Netsol',
-      user: {
-        profile_image: {
-          path:
-            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
-        },
-      },
-    },
-    created_at: new Date().toLocaleDateString(),
-    name: 'Vehicle Tracker',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate magnam c',
-    category: ['Mobile Application', 'Desktop Application', ' Web Application'],
-    learning_outcomes: '',
-    technologies: ['React', 'Node', 'Firebase'],
-    team_members: 3,
-    days_left: 8,
-  },
-  {
-    id: 3,
-    organization: {
-      name: 'Netsol',
-      user: {
-        profile_image: {
-          path:
-            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
-        },
-      },
-    },
-    created_at: new Date().toLocaleDateString(),
-    name: 'Chat App',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate magnam c',
-    category: ['Mobile Application', 'Web Application'],
-    learning_outcomes: '',
-    technologies: ['Docker'],
-    team_members: 2,
-    days_left: 20,
-  },
-];
 type props = {
   navigation: any;
 };
@@ -244,8 +175,9 @@ const FYP: FC<props> = ({navigation}) => {
             ref={ref}
             renderItem={({item: Fyp, index}: any) => {
               return (
-                <StudentFYPCard
+                <FYPCard
                   key={Fyp?.id}
+                  source={'student'}
                   fypDetail={Fyp}
                   navigation={navigation}
                 />

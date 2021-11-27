@@ -17,7 +17,7 @@ import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import PostSkeleton from '../../../Skeleton/PostCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 import {useScrollToTop} from '@react-navigation/native';
-import OrganizationFYPCard from '../../../Components/OrganizationFYPCard';
+import FYPCard from '../../../Components/FYPCard';
 
 type props = {
   navigation: any;
@@ -91,7 +91,11 @@ const FYP: FC<props> = ({navigation}) => {
             keyExtractor={(item: any, index) => `${item.id}-${index}`}
             renderItem={({item: FYP, index}: any) => {
               return (
-                <OrganizationFYPCard navigation={navigation} fypDetail={FYP} />
+                <FYPCard
+                  navigation={navigation}
+                  fypDetail={FYP}
+                  source={'organization'}
+                />
               );
             }}
             // progressViewOffset={10}
