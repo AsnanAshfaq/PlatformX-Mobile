@@ -257,7 +257,7 @@ const ApplyNow: FC<props> = ({navigation}) => {
           <View>
             <Text style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
               Note: An email will be sent to you if you get shortlisted for the
-              interview
+              interview.
             </Text>
           </View>
         </View>

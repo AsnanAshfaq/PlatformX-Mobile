@@ -66,6 +66,8 @@ type Props = {
   portfolio: '';
   created_at: any;
   handlePress: () => void;
+  handleCVDownload: () => void;
+  handleResumeDownload: () => void;
 };
 const ApplicantCard: FC<Props> = ({
   image,
@@ -76,160 +78,158 @@ const ApplicantCard: FC<Props> = ({
   linked_in,
   portfolio,
   handlePress,
+  handleCVDownload,
+  handleResumeDownload,
 }) => {
   const {theme} = useStateValue()[0];
   const [ImageLoading, setImageLoading] = useState(true);
 
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={handlePress}>
-      <View
-        style={[
-          styles.cardContainer,
-          {
-            backgroundColor: theme.CARD_BACKGROUND_COLOR,
-          },
-        ]}>
-        {/* image container */}
-        <View style={{flexDirection: 'row'}}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={{
-                uri: ImageLoading
-                  ? PROFILE_IMAGE
-                  : image
-                  ? image
-                  : PROFILE_IMAGE,
-              }}
-              onLoadEnd={() => setImageLoading(false)}
-              onError={() => setImageLoading(false)}
-              style={styles.image}
-            />
-          </View>
-          {/* name and user name container  */}
-          <View style={styles.nameContainer}>
-            <Text
-              style={[
-                styles.fullname,
-                {
-                  color: theme.TEXT_COLOR,
-                },
-              ]}>
-              {name}
-            </Text>
-            <Text
-              style={[
-                styles.username,
-                {
-                  color: theme.DIM_TEXT_COLOR,
-                },
-              ]}>
-              @{username}
-            </Text>
-          </View>
+    <View
+      style={[
+        styles.cardContainer,
+        {
+          backgroundColor: theme.CARD_BACKGROUND_COLOR,
+        },
+      ]}>
+      {/* image container */}
+      <View style={{flexDirection: 'row'}}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={{
+              uri: ImageLoading ? PROFILE_IMAGE : image ? image : PROFILE_IMAGE,
+            }}
+            onLoadEnd={() => setImageLoading(false)}
+            onError={() => setImageLoading(false)}
+            style={styles.image}
+          />
         </View>
-
-        {/* divier  */}
-        <Divider width={Width * 0.85} marginHorizontal={2} />
-        {/* show data details  */}
-        <View style={{flexDirection: 'row', marginTop: 5}}>
-          <View style={{flex: 0.38}}>
-            <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>
-              Links
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <View style={{marginHorizontal: 10}}>
-              <TouchableWithoutFeedback onPress={() => Linking.openURL(github)}>
-                <Github color={theme.GREEN_COLOR} size={0.8} />
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={{marginHorizontal: 10}}>
-              <TouchableWithoutFeedback onPress={() => Linking.openURL(github)}>
-                <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
-              </TouchableWithoutFeedback>
-            </View>
-
-            {portfolio !== null && portfolio !== '' && (
-              <View style={{marginHorizontal: 10}}>
-                <MaterialCommunityIcons
-                  name={'web'}
-                  color={theme.GREEN_COLOR}
-                  size={Width * 0.07 * 0.8}
-                />
-              </View>
-            )}
-          </View>
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-          <View style={{flex: 0.4}}>
-            <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>
-              CV
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 0,
-            }}>
-            <CodeDownload color={theme.GREEN_COLOR} size={0.9} />
-            <Text
-              style={{
+        {/* name and user name container  */}
+        <View style={styles.nameContainer}>
+          <Text
+            style={[
+              styles.fullname,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            {name}
+          </Text>
+          <Text
+            style={[
+              styles.username,
+              {
                 color: theme.DIM_TEXT_COLOR,
-                fontSize: Sizes.small * 0.7,
-                marginLeft: 5,
-              }}>
-              (Download)
-            </Text>
-          </View>
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-          <View style={{flex: 0.4}}>
-            <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>
-              Resume
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 0,
-            }}>
-            <CodeDownload color={theme.GREEN_COLOR} size={0.9} />
-            <Text
-              style={{
-                color: theme.DIM_TEXT_COLOR,
-                fontSize: Sizes.small * 0.7,
-                marginLeft: 5,
-              }}>
-              (Download)
-            </Text>
-          </View>
-        </View>
-
-        <View style={[styles.buttonContainer]}>
-          <View style={styles.uploadDateTextContainer}>
-            <Text
-              style={[styles.uploadedDateText, {color: theme.DIM_TEXT_COLOR}]}>
-              Applied on {new Date(created_at).toLocaleDateString()}
-            </Text>
-          </View>
-          <View style={styles.button}>
-            <CustomButton
-              text={'Schedule Meeting'}
-              textSize={Sizes.normal * 0.75}
-              onPress={handlePress}
-              width={Width * 0.35}
-              height={Height * 0.05}
-            />
-          </View>
+              },
+            ]}>
+            @{username}
+          </Text>
         </View>
       </View>
-    </TouchableOpacity>
+
+      {/* divier  */}
+      <Divider width={Width * 0.85} marginHorizontal={2} />
+      {/* show data details  */}
+      <View style={{flexDirection: 'row', marginTop: 5}}>
+        <View style={{flex: 0.38}}>
+          <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>
+            Links
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <View style={{marginHorizontal: 10}}>
+            <TouchableWithoutFeedback onPress={() => Linking.openURL(github)}>
+              <Github color={theme.GREEN_COLOR} size={0.8} />
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={{marginHorizontal: 10}}>
+            <TouchableWithoutFeedback onPress={() => Linking.openURL(github)}>
+              <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
+            </TouchableWithoutFeedback>
+          </View>
+
+          {portfolio !== null && portfolio !== '' && (
+            <View style={{marginHorizontal: 10}}>
+              <MaterialCommunityIcons
+                name={'web'}
+                color={theme.GREEN_COLOR}
+                size={Width * 0.07 * 0.8}
+              />
+            </View>
+          )}
+        </View>
+      </View>
+      <View style={{flexDirection: 'row', marginTop: 10}}>
+        <View style={{flex: 0.4}}>
+          <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>CV</Text>
+        </View>
+        <TouchableOpacity>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 0,
+            }}>
+            <CodeDownload color={theme.GREEN_COLOR} size={0.9} />
+            <Text
+              style={{
+                color: theme.DIM_TEXT_COLOR,
+                fontSize: Sizes.small * 0.7,
+                marginLeft: 5,
+              }}>
+              (Download)
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row', marginTop: 10}}>
+        <View style={{flex: 0.4}}>
+          <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>
+            Resume
+          </Text>
+        </View>
+        <TouchableOpacity>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 0,
+            }}>
+            <CodeDownload color={theme.GREEN_COLOR} size={0.9} />
+            <Text
+              style={{
+                color: theme.DIM_TEXT_COLOR,
+                fontSize: Sizes.small * 0.7,
+                marginLeft: 5,
+              }}>
+              (Download)
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <View style={[styles.buttonContainer]}>
+        <View style={styles.uploadDateTextContainer}>
+          <Text
+            style={[styles.uploadedDateText, {color: theme.DIM_TEXT_COLOR}]}>
+            Applied on {new Date(created_at).toLocaleDateString()}
+          </Text>
+        </View>
+        <View style={styles.button}>
+          <CustomButton
+            text={'Schedule Meeting'}
+            textSize={Sizes.normal * 0.75}
+            onPress={handlePress}
+            width={Width * 0.35}
+            height={Height * 0.05}
+          />
+        </View>
+      </View>
+    </View>
   );
 };
 type props = {
@@ -263,6 +263,10 @@ const Applicants: FC<props> = ({navigation, route}) => {
     getData();
   }, [loading]);
 
+  const handleCVDownload = () => {};
+
+  const handleResumeDownload = () => {};
+
   const handlePress = (id: string) => {
     navigation.navigate('Schedule_Meeting', {
       ID: id,
@@ -278,7 +282,7 @@ const Applicants: FC<props> = ({navigation, route}) => {
         },
       ]}>
       <CustomHeader
-        title={'Applicant'}
+        title={'Applicants'}
         navigation={navigation}
         back
         onBackPress={() => navigation.goBack()}
@@ -312,6 +316,8 @@ const Applicants: FC<props> = ({navigation, route}) => {
                 <ApplicantCard
                   {...item}
                   handlePress={() => handlePress(item.id)}
+                  handleCVDownload={handleCVDownload}
+                  handleResumeDownload={handleResumeDownload}
                 />
               );
             }}
