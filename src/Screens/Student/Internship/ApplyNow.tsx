@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import React, {FC, useState} from 'react';
 import {
   StyleSheet,
@@ -5,6 +6,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import CustomButton from '../../../Components/CustomButton';
 import CustomHeader from '../../../Components/CustomHeader';
@@ -16,12 +18,15 @@ import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import FormHandler from '../../../Utils/FormHandler';
 import FilePickerManager from 'react-native-file-picker';
+import DocumentPicker from 'react-native-document-picker';
+import axios from '../../../Utils/Axios';
 
 type Props = {
+  value: any;
   error: string;
   onPress: () => void;
 };
-const UploadComponent: FC<Props> = ({error, onPress}) => {
+const UploadComponent: FC<Props> = ({value, error, onPress}) => {
   const {theme} = useStateValue()[0];
   return (
     <>
@@ -40,7 +45,11 @@ const UploadComponent: FC<Props> = ({error, onPress}) => {
           ]}>
           <View style={styles.cardTextContainer}>
             <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
-              Upload
+              {value !== ''
+                ? value.length > 10
+                  ? `File ${value.slice(0, 10)}...`
+                  : `File ${value}`
+                : 'Upload'}
             </Text>
           </View>
           <View style={styles.cardIconContainer}>
@@ -48,6 +57,7 @@ const UploadComponent: FC<Props> = ({error, onPress}) => {
           </View>
         </TouchableOpacity>
       </View>
+
       {error !== '' && (
         <View style={{alignItems: 'center'}}>
           <Text style={[{color: theme.ERROR_TEXT_COLOR}, styles.smallText]}>
@@ -58,25 +68,39 @@ const UploadComponent: FC<Props> = ({error, onPress}) => {
       <View style={styles.center}>
         <Text
           style={{color: theme.DIM_TEXT_COLOR, fontSize: Sizes.small * 0.75}}>
-          File can only be of the type .pdf, .doc or .docx
+          File can only be of the type .pdf
         </Text>
       </View>
     </>
   );
 };
 type props = {
+  route: any;
   navigation: any;
 };
-const ApplyNow: FC<props> = ({navigation}) => {
+const ApplyNow: FC<props> = ({route, navigation}) => {
   const [loading, setLoading] = useState(false);
   const {theme} = useStateValue()[0];
   const [Input, setInput] = useState({
     github: {value: 'https://github.com/AsnanAshfaq', error: ''},
     linkedin: {value: 'https://www.linkedin.com/feed/', error: ''},
     portfolio: {value: '', error: ''},
-    cv: {value: '', error: ''},
-    resume: {value: '', error: ''},
+    cv: {
+      value: {
+        name: '',
+        uri: '',
+      },
+      error: '',
+    },
+    resume: {
+      value: {
+        name: '',
+        uri: '',
+      },
+      error: '',
+    },
   });
+  const {ID} = route.params;
 
   const {isLinkValid, isEmpty} = FormHandler();
 
@@ -85,6 +109,7 @@ const ApplyNow: FC<props> = ({navigation}) => {
     const x = Input;
     if (isEmpty(Input.github.value)) {
       x['github']['error'] = 'This field is required.';
+
       isAllInputValid = false;
     } else if (!isLinkValid(Input.github.value)) {
       x['github']['error'] = 'Link is not valid.';
@@ -98,31 +123,112 @@ const ApplyNow: FC<props> = ({navigation}) => {
       isAllInputValid = false;
     }
 
-    if (isEmpty(Input.cv.value)) {
+    if (isEmpty(Input.cv.value.name)) {
       x['cv']['error'] = 'CV is required.';
+      isAllInputValid = false;
+    }
+
+    if (
+      !isEmpty(Input.portfolio.value) &&
+      !isLinkValid(Input.portfolio.value)
+    ) {
+      x['portfolio']['error'] = 'Link is not valid.';
+      isAllInputValid = false;
     }
 
     setInput(props => {
       return {...x};
     });
-  };
 
-  const handleCVUpload = () => {
-    FilePickerManager.showFilePicker(response => {
-      console.log('Response = ', response);
+    if (isAllInputValid) {
+      setLoading(true);
+      console.log('Safe to make api call');
 
-      if (response.didCancel) {
-        console.log('User cancelled file picker');
-      } else if (response.error) {
-        console.log('FilePickerManager Error: ', response.error);
-      } else {
-        // this.setState({
-        //   file: response,
-        // });
+      const bodyData = new FormData();
+      bodyData.append('github', Input.github.value.trim());
+      bodyData.append('linked_in', Input.linkedin.value.trim());
+      bodyData.append('cv', Input.cv.value.uri);
+      if (!isEmpty(Input.portfolio.value)) {
+        bodyData.append('portfolio', Input.portfolio.value.trim());
       }
-    });
+
+      const data = {
+        github: Input.github.value.trim(),
+        linked_in: Input.linkedin.value.trim(),
+        cv: Input.cv.value.uri,
+      };
+
+      if (!isEmpty(Input.portfolio.value)) {
+        data['portfolio'] = Input.portfolio.value.trim();
+      }
+
+      axios({
+        method: 'post',
+        url: `/api/internship/${ID}/apply/`,
+        data: data,
+        header: {'Content-Type': 'application/form-data'}, //multipart/form-data
+      })
+        .then(respose => {
+          if (respose.status === 201) {
+            ToastAndroid.show(respose.data.success, 1500);
+            navigation.pop(2);
+          }
+        })
+        .catch(error => {
+          if (error.response) {
+            ToastAndroid.show(error.response.data.error, 1500);
+          }
+          return error.response;
+        });
+      setLoading(false);
+      // make api call
+    } else {
+      setLoading(false);
+    }
   };
-  const handleResumeUpload = () => {};
+
+  const handleFileUpload = async (Key: string) => {
+    // Pick a single file
+    const x = Input;
+    try {
+      const res: any = await DocumentPicker.pick({
+        type: [
+          DocumentPicker.types.pdf,
+          DocumentPicker.types.doc,
+          DocumentPicker.types.docx,
+        ],
+      });
+      if (res[0].type === 'application/pdf') {
+        // file type is valid
+
+        x[Key]['value']['name'] = res[0].name;
+        x[Key]['value']['uri'] = res[0];
+        x[Key]['error'] = '';
+        setInput(props => {
+          return {
+            ...props,
+            ...x,
+          };
+        });
+      } else {
+        x[Key]['value'] = '';
+        x[Key]['error'] = 'Invalid file type.';
+        setInput(props => {
+          return {
+            ...props,
+            ...x,
+          };
+        });
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  };
+
   return (
     <View
       style={[
@@ -150,7 +256,7 @@ const ApplyNow: FC<props> = ({navigation}) => {
             <View style={styles.inputContainer}>
               <CustomTextField
                 defaultValue={Input.github.value}
-                keyboardType={'number-pad'}
+                keyboardType={'default'}
                 onChangeText={text =>
                   setInput(props => {
                     return {
@@ -180,7 +286,7 @@ const ApplyNow: FC<props> = ({navigation}) => {
             <View style={styles.inputContainer}>
               <CustomTextField
                 defaultValue={Input.linkedin.value}
-                keyboardType={'number-pad'}
+                keyboardType={'default'}
                 onChangeText={text =>
                   setInput(props => {
                     return {
@@ -209,7 +315,11 @@ const ApplyNow: FC<props> = ({navigation}) => {
                 <Text style={{color: theme.ERROR_TEXT_COLOR}}>*</Text>
               </Text>
             </View>
-            <UploadComponent error={Input.cv.error} onPress={handleCVUpload} />
+            <UploadComponent
+              error={Input.cv.error}
+              value={Input.cv.value.name}
+              onPress={() => handleFileUpload('cv')}
+            />
           </View>
 
           {/* resume  container*/}
@@ -220,8 +330,9 @@ const ApplyNow: FC<props> = ({navigation}) => {
               </Text>
             </View>
             <UploadComponent
+              value={Input.resume.value.name}
               error={Input.resume.error}
-              onPress={handleResumeUpload}
+              onPress={() => handleFileUpload('resume')}
             />
           </View>
 
@@ -235,7 +346,7 @@ const ApplyNow: FC<props> = ({navigation}) => {
             <View style={styles.inputContainer}>
               <CustomTextField
                 defaultValue={Input.portfolio.value}
-                keyboardType={'number-pad'}
+                keyboardType={'default'}
                 onChangeText={text =>
                   setInput(props => {
                     return {

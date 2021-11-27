@@ -312,7 +312,11 @@ const ViewInternship: FC<props> = ({navigation, route, screen, ID}) => {
           {screen === 'student' && internshipData.status === 'Open' && (
             <CustomButton
               text={'Apply Now'}
-              onPress={() => navigation.navigate('Apply_Now')}
+              onPress={() =>
+                navigation.navigate('Apply_Now', {
+                  ID: internshipData.id,
+                })
+              }
             />
           )}
         </>
