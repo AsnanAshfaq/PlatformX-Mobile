@@ -13,7 +13,7 @@ import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
 import {Sizes} from '../../../Constants/Size';
 import {ToastAndroid} from 'react-native';
-import WorkshopCard from '../../../Components/OrganizationWorkshopCard';
+import WorkshopCard from '../../../Components/WorkshopCard';
 import WorkshopSkeleton from '../../../Skeleton/WorkshopCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 type props = {
@@ -170,6 +170,7 @@ const Workshop: FC<props> = ({navigation}) => {
                 <WorkshopCard
                   navigation={navigation}
                   workshopDetail={workshop}
+                  source={'organization'}
                 />
               );
             }}

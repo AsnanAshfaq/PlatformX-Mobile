@@ -145,27 +145,25 @@ const ApplyNow: FC<props> = ({route, navigation}) => {
       console.log('Safe to make api call');
 
       const bodyData = new FormData();
-      bodyData.append('github', Input.github.value.trim());
-      bodyData.append('linked_in', Input.linkedin.value.trim());
-      bodyData.append('cv', Input.cv.value.uri);
-      if (!isEmpty(Input.portfolio.value)) {
-        bodyData.append('portfolio', Input.portfolio.value.trim());
-      }
-
       const data = {
         github: Input.github.value.trim(),
         linked_in: Input.linkedin.value.trim(),
         cv: Input.cv.value.uri,
       };
 
+      bodyData.append('github', Input.github.value.trim());
+      bodyData.append('linked_in', Input.linkedin.value.trim());
+      bodyData.append('cv', Input.cv.value);
       if (!isEmpty(Input.portfolio.value)) {
+        bodyData.append('portfolio', Input.portfolio.value.trim());
         data['portfolio'] = Input.portfolio.value.trim();
       }
 
       axios({
         method: 'post',
         url: `/api/internship/${ID}/apply/`,
-        data: data,
+        // data: data,
+        body: bodyData,
         header: {'Content-Type': 'application/form-data'}, //multipart/form-data
       })
         .then(respose => {

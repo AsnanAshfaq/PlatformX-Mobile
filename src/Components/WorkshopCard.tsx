@@ -8,12 +8,13 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {Height, Sizes, Width} from '../Constants/Size';
-import PopUpMenu from '../Menu/OrganizationWorkshopCardPopUpMenu';
+import ORGPopUpMenu from '../Menu/OrganizationWorkshopCardPopUpMenu';
 import {GREY_IMAGE, PROFILE_IMAGE} from '../Constants/sample';
 // @ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import {commaSeperator} from '../Utils/Numbers';
 import {useStateValue} from '../Store/StateProvider';
+import STDPopMenu from '../Menu/StudentWorkshopCardPopUpMenu';
 import Axios from '../Utils/Axios';
 import Divider from '../Components/Divider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,11 +22,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import {Cash, Clock, ForwardArrow, People, Tag} from './Icons';
 import CustomButton from './CustomButton';
 const ICON_SIZE = Width * 0.07;
-
-type props = {
-  navigation: any;
-  workshopDetail: any;
-};
 
 type cardProps = {
   name: string;
@@ -57,9 +53,16 @@ const WorkshopCardIcons: FC<cardProps> = ({name, label, cash}) => {
   );
 };
 
-const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
+type props = {
+  navigation: any;
+  source: 'student' | 'organization';
+  workshopDetail: any;
+};
+const WorkshopCard: FC<props> = ({navigation, source, workshopDetail}) => {
   const [WokrshopPosterLoading, setWokrshopPosterLoading] = useState(true);
   const [ImageAspectRatio, setImageAspectRatio] = useState(0);
+  const [ProfileImageLoading, setProfileImageLoading] = useState(true); // org. image
+
   const [{theme}, dispatch] = useStateValue();
 
   const handleDelete = () => {
@@ -76,6 +79,28 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
     });
   };
 
+  const handleBookmark = () => {};
+  const handleReport = () => {};
+  const handleShare = () => {};
+
+  const handleDetails = () => {
+    if (source === 'organization') {
+      navigation.navigate('WorkshopScreens', {
+        screen: 'WorkshopTab',
+        params: {
+          ID: workshopDetail.id,
+        },
+      });
+    } else if (source === 'student') {
+      navigation.navigate('WorkshopScreens', {
+        screen: 'View_Workshop',
+        params: {
+          ID: workshopDetail.id,
+        },
+      });
+    }
+  };
+
   return (
     <View
       style={[
@@ -85,6 +110,58 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           backgroundColor: theme.CARD_BACKGROUND_COLOR,
         },
       ]}>
+      {source === 'student' && (
+        <>
+          {/* header  */}
+          <View style={[styles.headerContainer]}>
+            {/* user image  */}
+            <View style={styles.headerImageContainer}>
+              <Image
+                source={{
+                  uri: ProfileImageLoading
+                    ? PROFILE_IMAGE
+                    : workshopDetail.organization.user.profile_image
+                    ? BASE_URL +
+                      workshopDetail.organization.user.profile_image.path
+                    : PROFILE_IMAGE,
+                }}
+                onLoadEnd={() => setProfileImageLoading(false)}
+                style={styles.userImage}
+              />
+            </View>
+            <View style={styles.headerTextContainer}>
+              <Text
+                style={[
+                  styles.username,
+                  {
+                    color: theme.TEXT_COLOR,
+                  },
+                ]}>
+                {workshopDetail.organization.name}
+              </Text>
+              <Text style={[styles.date, {color: theme.TEXT_COLOR}]}>
+                {new Date(workshopDetail.created_at).toDateString() ===
+                new Date(workshopDetail.updated_at).toDateString()
+                  ? `${new Date(workshopDetail.created_at).toDateString()}`
+                  : `Updated at ${new Date(
+                      workshopDetail.updated_at,
+                    ).toDateString()}`}
+              </Text>
+            </View>
+            {/* right icon  */}
+            <View style={styles.headerIconContainer}>
+              <STDPopMenu
+                navigation={navigation}
+                handleShare={handleShare}
+                handleBookmark={handleBookmark}
+                handleReport={handleReport}
+              />
+            </View>
+          </View>
+          <Divider width={Width * 0.92} />
+        </>
+      )}
+      {/* content  */}
       <View style={[styles.topicContainer, styles.center]}>
         {/* name of the project  */}
         <View style={styles.topicTextContainer}>
@@ -93,14 +170,16 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           </Text>
         </View>
         {/* menu icon  */}
-        <View style={styles.popUpIconContainer}>
-          <PopUpMenu
-            navigation={navigation}
-            editable={workshopDetail.status !== 'Ended'}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-          />
-        </View>
+        {source === 'organization' && (
+          <View style={styles.popUpIconContainer}>
+            <ORGPopUpMenu
+              navigation={navigation}
+              editable={workshopDetail.status !== 'Ended'}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+            />
+          </View>
+        )}
       </View>
       {/* workshop poster  */}
       <View style={[styles.posterContainer, styles.center]}>
@@ -173,14 +252,7 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
           }
           text={'Details'}
           textSize={Sizes.normal * 0.9}
-          onPress={() => {
-            navigation.navigate('WorkshopScreens', {
-              screen: 'WorkshopTab',
-              params: {
-                ID: workshopDetail.id,
-              },
-            });
-          }}
+          onPress={handleDetails}
           width={Width * 0.3}
           height={Height * 0.055}
         />
@@ -189,7 +261,7 @@ const OrganizationWorkshopCard: FC<props> = ({navigation, workshopDetail}) => {
   );
 };
 
-export default OrganizationWorkshopCard;
+export default WorkshopCard;
 
 const styles = StyleSheet.create({
   parent: {

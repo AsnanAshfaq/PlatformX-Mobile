@@ -13,7 +13,7 @@ import CustomSearch from '../../../Components/Search';
 import axios from '../../../Utils/Axios';
 import {Sizes} from '../../../Constants/Size';
 import {ToastAndroid} from 'react-native';
-import WorkshopCard from '../../../Components/StudentWorkshopCard';
+import WorkshopCard from '../../../Components/WorkshopCard';
 import WorkshopSkeleton from '../../../Skeleton/WorkshopCardSkeleton';
 import {useStateValue} from '../../../Store/StateProvider';
 import {useScrollToTop} from '@react-navigation/native';
@@ -182,6 +182,7 @@ const Workshop: FC<props> = ({navigation}) => {
                 <WorkshopCard
                   navigation={navigation}
                   workshopDetail={workshop}
+                  source={'student'}
                 />
               );
             }}
