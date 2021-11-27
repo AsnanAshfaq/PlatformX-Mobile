@@ -17,30 +17,50 @@ import {useStateValue} from '../../../Store/StateProvider';
 import FormHandler from '../../../Utils/FormHandler';
 
 type Props = {
+  error: string;
   onPress: () => void;
 };
-const UploadComponent: FC<Props> = ({onPress}) => {
+const UploadComponent: FC<Props> = ({error, onPress}) => {
   const {theme} = useStateValue()[0];
   return (
-    <View style={styles.center}>
-      <TouchableOpacity
-        onPress={onPress}
-        style={[
-          styles.cardContainer,
-          {
-            backgroundColor: theme.CARD_BACKGROUND_COLOR,
-          },
-        ]}>
-        <View style={styles.cardTextContainer}>
-          <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
-            Upload
+    <>
+      <View style={styles.center}>
+        <TouchableOpacity
+          onPress={onPress}
+          style={[
+            styles.cardContainer,
+            {
+              backgroundColor: theme.CARD_BACKGROUND_COLOR,
+              borderColor:
+                error !== ''
+                  ? theme.ERROR_TEXT_COLOR
+                  : theme.CARD_BACKGROUND_COLOR,
+            },
+          ]}>
+          <View style={styles.cardTextContainer}>
+            <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
+              Upload
+            </Text>
+          </View>
+          <View style={styles.cardIconContainer}>
+            <FileUpload size={1} color={theme.GREEN_COLOR} />
+          </View>
+        </TouchableOpacity>
+      </View>
+      {error !== '' && (
+        <View style={{alignItems: 'center'}}>
+          <Text style={[{color: theme.ERROR_TEXT_COLOR}, styles.smallText]}>
+            {error}
           </Text>
         </View>
-        <View style={styles.cardIconContainer}>
-          <FileUpload size={1} color={theme.GREEN_COLOR} />
-        </View>
-      </TouchableOpacity>
-    </View>
+      )}
+      <View style={styles.center}>
+        <Text
+          style={{color: theme.DIM_TEXT_COLOR, fontSize: Sizes.small * 0.75}}>
+          File can only be of the type .pdf, .doc or .docx
+        </Text>
+      </View>
+    </>
   );
 };
 type props = {
@@ -50,18 +70,40 @@ const ApplyNow: FC<props> = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const {theme} = useStateValue()[0];
   const [Input, setInput] = useState({
-    github: {value: '', error: ''},
-    linkedin: {value: '', error: ''},
+    github: {value: 'https://github.com/AsnanAshfaq', error: ''},
+    linkedin: {value: 'https://www.linkedin.com/feed/', error: ''},
     portfolio: {value: '', error: ''},
+    cv: {value: '', error: ''},
+    resume: {value: '', error: ''},
   });
 
   const {isLinkValid, isEmpty} = FormHandler();
 
   const handleApply = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    var isAllInputValid = true;
+    const x = Input;
+    if (isEmpty(Input.github.value)) {
+      x['github']['error'] = 'This field is required.';
+      isAllInputValid = false;
+    } else if (!isLinkValid(Input.github.value)) {
+      x['github']['error'] = 'Link is not valid.';
+      isAllInputValid = false;
+    }
+    if (isEmpty(Input.linkedin.value)) {
+      x['linkedin']['error'] = 'This field is required.';
+      isAllInputValid = false;
+    } else if (!isLinkValid(Input.linkedin.value)) {
+      x['linkedin']['error'] = 'Link is not valid.';
+      isAllInputValid = false;
+    }
+
+    if (isEmpty(Input.cv.value)) {
+      x['cv']['error'] = 'CV is required.';
+    }
+
+    setInput(props => {
+      return {...x};
+    });
   };
 
   const handleCVUpload = () => {};
@@ -86,7 +128,7 @@ const ApplyNow: FC<props> = ({navigation}) => {
           <View style={styles.container}>
             <View style={styles.headingContainer}>
               <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                Github
+                Github <Text style={{color: theme.ERROR_TEXT_COLOR}}>*</Text>
               </Text>
             </View>
             <HelpText text={'Provide your Github URL.'} />
@@ -116,7 +158,7 @@ const ApplyNow: FC<props> = ({navigation}) => {
           <View>
             <View>
               <Text style={[styles.heading, {color: theme.TEXT_COLOR}]}>
-                LinkedIn
+                LinkedIn <Text style={{color: theme.ERROR_TEXT_COLOR}}>*</Text>
               </Text>
             </View>
             <HelpText text={'Provide your LinkedIn URL.'} />
@@ -148,10 +190,11 @@ const ApplyNow: FC<props> = ({navigation}) => {
           <View>
             <View>
               <Text style={[styles.headingText, {color: theme.TEXT_COLOR}]}>
-                CV
+                Curriculum Vitae (CV){' '}
+                <Text style={{color: theme.ERROR_TEXT_COLOR}}>*</Text>
               </Text>
             </View>
-            <UploadComponent onPress={handleCVUpload} />
+            <UploadComponent error={Input.cv.error} onPress={handleCVUpload} />
           </View>
 
           {/* resume  container*/}
@@ -161,7 +204,10 @@ const ApplyNow: FC<props> = ({navigation}) => {
                 Resume
               </Text>
             </View>
-            <UploadComponent onPress={handleResumeUpload} />
+            <UploadComponent
+              error={Input.resume.error}
+              onPress={handleResumeUpload}
+            />
           </View>
 
           <View style={styles.container}>
