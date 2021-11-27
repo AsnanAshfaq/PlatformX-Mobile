@@ -49,8 +49,8 @@ const UploadComponent: FC<Props> = ({value, error, onPress}) => {
             <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
               {value !== ''
                 ? value.length > 10
-                  ? `File ${value.slice(0, 10)}...`
-                  : `File ${value}`
+                  ? `${value.slice(0, 10)}...`
+                  : `${value}`
                 : 'Upload'}
             </Text>
           </View>
@@ -109,6 +109,8 @@ const ApplyNow: FC<props> = ({route, navigation}) => {
   const handleApply = () => {
     var isAllInputValid = true;
     const x = Input;
+    setLoading(true);
+
     if (isEmpty(Input.github.value)) {
       x['github']['error'] = 'This field is required.';
 
@@ -158,7 +160,10 @@ const ApplyNow: FC<props> = ({route, navigation}) => {
       bodyData.append('cv', Input.cv.value.uri);
       if (!isEmpty(Input.portfolio.value)) {
         bodyData.append('portfolio', Input.portfolio.value.trim());
-        // data['portfolio'] = Input.portfolio.value.trim();
+      }
+
+      if (!isEmpty(Input.resume.value.name)) {
+        bodyData.append('resume', Input.resume.value.uri);
       }
       axios({
         method: 'post',

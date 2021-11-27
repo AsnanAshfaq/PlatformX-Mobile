@@ -1,4 +1,5 @@
-import React, {FC, useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {FC, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,15 +19,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 //@ts-ignore
 import {BASE_URL} from 'react-native-dotenv';
 import DateTimePicker from '../../../Components/DateTimePicker';
-
+import Loading from '../../../Components/Loading';
 import {
   Calendar,
   CodeDownload,
   Github,
   LinkedIn,
 } from '../../../Components/Icons';
-import Loading from '../../../Components/Loading';
 import Divider from '../../../Components/Divider';
+import Axios from '../../../Utils/Axios';
 
 const DownloadContainer: FC<{loading; onPress; label}> = ({
   loading,
@@ -64,14 +65,7 @@ const DownloadContainer: FC<{loading; onPress; label}> = ({
     </View>
   );
 };
-const SAMPLE_DATA = {
-  name: 'Asnan',
-  username: 'shanay_ash',
-  image: 'https://avatars.githubusercontent.com/u/65377376?v=4',
-  github: 'https://github.com/AsnanAshfaq',
-  linked_in: 'https://www.linkedin.com/in/asnan-ashfaq/',
-  portfolio: '',
-};
+
 type props = {
   navigation: any;
   route: any;
@@ -81,7 +75,7 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
   const [loading, setloading] = useState(false);
   const [data, setData] = useState<any>();
   const [ImageLoading, setImageLoading] = useState(true);
-  const {ID} = route.params;
+  const {internship_id, user_id} = route.params;
   const [fileLoading, setfileLoading] = useState({
     cv: false,
     resume: false,
@@ -109,7 +103,29 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
     setTimeout(() => {
       setscheduleLoading(false);
     }, 3000);
+
+    // console.log('ID is', ID);
+
+    // useEffect(() => {
+    // }, [input])
   };
+
+  const getData = async () => {
+    Axios.get(`/api/internship/${internship_id}/applicant/${user_id}`)
+      .then(response => {
+        setData(response.data);
+        setloading(false);
+        console.log('Got the data');
+      })
+      .catch(error => {
+        setloading(false);
+        return error.response;
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, [loading]);
   return (
     <View
       style={[
@@ -162,148 +178,168 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
           })
         }
       />
-      <ScrollView>
-        <View style={{marginBottom: 10}}>
-          <View style={styles.center}>
-            <View style={styles.container}>
-              <Image
-                source={{
-                  uri: ImageLoading ? PROFILE_IMAGE : SAMPLE_DATA.image,
-                  //   ? BASE_URL + submission.student.user.profile_image.path
-                  //   : PROFILE_IMAGE,
-                }}
-                onLoadEnd={() => setImageLoading(false)}
-                onError={() => setImageLoading(false)}
-                style={styles.image}
-              />
-            </View>
-
-            {/* name and username container  */}
-            <View style={styles.container}>
-              <Text style={[styles.fullname, {color: theme.TEXT_COLOR}]}>
-                {SAMPLE_DATA.name}
-              </Text>
-            </View>
-            <View style={styles.container}>
-              <Text style={[styles.username, {color: theme.DIM_TEXT_COLOR}]}>
-                @{SAMPLE_DATA.username}
-              </Text>
-            </View>
-
-            <View style={[styles.container, styles.rowContainer]}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View style={{marginHorizontal: 10}}>
-                  <TouchableWithoutFeedback
-                    onPress={() => Linking.openURL(SAMPLE_DATA.github)}>
-                    <Github color={theme.GREEN_COLOR} size={0.8} />
-                  </TouchableWithoutFeedback>
-                </View>
-                <View style={{marginHorizontal: 10}}>
-                  <TouchableWithoutFeedback
-                    onPress={() => Linking.openURL(SAMPLE_DATA.linked_in)}>
-                    <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
-                  </TouchableWithoutFeedback>
+      {!loading ? (
+        <>
+          <ScrollView>
+            <View style={{marginBottom: 10}}>
+              <View style={styles.center}>
+                <View style={styles.container}>
+                  <Image
+                    source={{
+                      uri: ImageLoading
+                        ? PROFILE_IMAGE
+                        : data.student.user.profile_image
+                        ? BASE_URL + data.student.user.profile_image.path
+                        : PROFILE_IMAGE,
+                      //   ? BASE_URL + submission.student.user.profile_image.path
+                      //   : PROFILE_IMAGE,
+                    }}
+                    onLoadEnd={() => setImageLoading(false)}
+                    onError={() => setImageLoading(false)}
+                    style={styles.image}
+                  />
                 </View>
 
-                {SAMPLE_DATA.portfolio !== null &&
-                  SAMPLE_DATA.portfolio !== '' && (
-                    <View style={{marginHorizontal: 10}}>
-                      <MaterialCommunityIcons
-                        name={'web'}
-                        color={theme.GREEN_COLOR}
-                        size={Width * 0.07 * 0.8}
-                      />
-                    </View>
-                  )}
-              </View>
-            </View>
-
-            {/* cv and resume container  */}
-            <View style={[styles.rowContainer]}>
-              <DownloadContainer
-                label={'CV'}
-                onPress={handleCVDownload}
-                loading={fileLoading.cv}
-              />
-              <DownloadContainer
-                label={'Resume'}
-                onPress={handleResumeDownload}
-                loading={fileLoading.resume}
-              />
-            </View>
-            {/* profile container  */}
-            <View style={styles.container}>
-              <CustomButton
-                text={'View Profile'}
-                onPress={handleViewProfile}
-                width={Width * 0.35}
-                height={40}
-              />
-            </View>
-            <Divider width={Width * 0.95} marginHorizontal={Width * 0.035} />
-
-            {/* set date an time container  */}
-          </View>
-          <View style={[styles.container, styles.margin]}>
-            <View style={styles.headingContainer}>
-              <Text style={[styles.headingText, {color: theme.TEXT_COLOR}]}>
-                Schedule
-              </Text>
-            </View>
-          </View>
-          <View style={styles.container}>
-            <View style={styles.center}>
-              <TouchableOpacity
-                onPress={() =>
-                  setmodal(props => {
-                    return {
-                      isShown: true,
-                      mode: 'datetime',
-                      value: props.value,
-                    };
-                  })
-                }
-                style={[
-                  styles.cardContainer,
-                  {
-                    backgroundColor: theme.CARD_BACKGROUND_COLOR,
-                    width: Width * 0.65,
-                  },
-                ]}>
-                <View style={styles.cardTextContainer}>
-                  <Text style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
-                    {modal.value.toDateString() +
+                {/* name and username container  */}
+                <View style={styles.container}>
+                  <Text style={[styles.fullname, {color: theme.TEXT_COLOR}]}>
+                    {data.student.user.first_name +
                       ' ' +
-                      modal.value.toTimeString().slice(0, 8)}
+                      data.student.user.last_name}
                   </Text>
                 </View>
-                <View style={styles.cardIconContainer}>
-                  <Calendar size={0.9} color={theme.GREEN_COLOR} />
+                <View style={styles.container}>
+                  <Text
+                    style={[styles.username, {color: theme.DIM_TEXT_COLOR}]}>
+                    @{data.student.user.username}
+                  </Text>
                 </View>
-              </TouchableOpacity>
+
+                <View style={[styles.container, styles.rowContainer]}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <View style={{marginHorizontal: 10}}>
+                      <TouchableWithoutFeedback
+                        onPress={() => Linking.openURL(data.github)}>
+                        <Github color={theme.GREEN_COLOR} size={0.8} />
+                      </TouchableWithoutFeedback>
+                    </View>
+                    <View style={{marginHorizontal: 10}}>
+                      <TouchableWithoutFeedback
+                        onPress={() => Linking.openURL(data.linked_in)}>
+                        <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
+                      </TouchableWithoutFeedback>
+                    </View>
+
+                    {data.portfolio !== null && data.portfolio !== '' && (
+                      <View style={{marginHorizontal: 10}}>
+                        <MaterialCommunityIcons
+                          name={'web'}
+                          color={theme.GREEN_COLOR}
+                          size={Width * 0.07 * 0.8}
+                        />
+                      </View>
+                    )}
+                  </View>
+                </View>
+
+                {/* cv and resume container  */}
+                <View style={[styles.rowContainer]}>
+                  <DownloadContainer
+                    label={'CV'}
+                    onPress={handleCVDownload}
+                    loading={fileLoading.cv}
+                  />
+                  {data.resume !== null && (
+                    <DownloadContainer
+                      label={'Resume'}
+                      onPress={handleResumeDownload}
+                      loading={fileLoading.resume}
+                    />
+                  )}
+                </View>
+                {/* profile container  */}
+                <View style={styles.container}>
+                  <CustomButton
+                    text={'View Profile'}
+                    onPress={handleViewProfile}
+                    width={Width * 0.35}
+                    height={40}
+                  />
+                </View>
+                <Divider
+                  width={Width * 0.95}
+                  marginHorizontal={Width * 0.035}
+                />
+
+                {/* set date an time container  */}
+              </View>
+              <View style={[styles.container, styles.margin]}>
+                <View style={styles.headingContainer}>
+                  <Text style={[styles.headingText, {color: theme.TEXT_COLOR}]}>
+                    Schedule
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.container}>
+                <View style={styles.center}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      setmodal(props => {
+                        return {
+                          isShown: true,
+                          mode: 'datetime',
+                          value: props.value,
+                        };
+                      })
+                    }
+                    style={[
+                      styles.cardContainer,
+                      {
+                        backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                        width: Width * 0.65,
+                      },
+                    ]}>
+                    <View style={styles.cardTextContainer}>
+                      <Text
+                        style={[styles.cardText, {color: theme.TEXT_COLOR}]}>
+                        {modal.value.toDateString() +
+                          ' ' +
+                          modal.value.toTimeString().slice(0, 8)}
+                      </Text>
+                    </View>
+                    <View style={styles.cardIconContainer}>
+                      <Calendar size={0.9} color={theme.GREEN_COLOR} />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* note container  */}
+              <View style={[styles.container, styles.margin]}>
+                <Text
+                  style={{color: theme.DIM_TEXT_COLOR, fontSize: Sizes.small}}>
+                  An email will be send to the applicant contianing meeting link
+                  and other instructions.
+                </Text>
+              </View>
             </View>
-          </View>
-
-          {/* note container  */}
-          <View style={[styles.container, styles.margin]}>
-            <Text style={{color: theme.DIM_TEXT_COLOR, fontSize: Sizes.small}}>
-              An email will be send to the applicant contianing meeting link and
-              other instructions.
-            </Text>
-          </View>
+          </ScrollView>
+          {/* schedule button container   */}
+          <CustomButton
+            text={'Schedule'}
+            onPress={handleSchedule}
+            loading={scheduleLoading}
+          />
+        </>
+      ) : (
+        <View style={[styles.center, {flex: 1}]}>
+          <Loading size={'large'} />
         </View>
-      </ScrollView>
-
-      {/* schedule button container   */}
-      <CustomButton
-        text={'Schedule'}
-        onPress={handleSchedule}
-        loading={scheduleLoading}
-      />
+      )}
     </View>
   );
 };

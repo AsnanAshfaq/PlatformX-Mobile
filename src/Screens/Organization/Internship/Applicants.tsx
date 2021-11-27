@@ -25,58 +25,27 @@ import {PROFILE_IMAGE} from '../../../Constants/sample';
 import Divider from '../../../Components/Divider';
 import {CodeDownload, Github, LinkedIn} from '../../../Components/Icons';
 
-const SAMPLE_DATA = [
-  {
-    id: 1,
-    image: 'https://avatars.githubusercontent.com/u/65377376?v=4',
-    name: 'Asnan Ashfaq',
-    username: 'shanay_ash',
-    github: 'https://github.com/AsnanAshfaq',
-    linked_in: 'https://www.linkedin.com/in/asnan-ashfaq/',
-    portfolio: '',
-    created_at: new Date(),
-  },
-  {
-    id: 2,
-    image: 'https://avatars.githubusercontent.com/u/65377376?v=4',
-    name: 'Asnan Ashfaq',
-    username: 'shanay_ash',
-    github: 'https://github.com/AsnanAshfaq',
-    linked_in: 'https://www.linkedin.com/in/asnan-ashfaq/',
-    portfolio: '',
-    created_at: new Date(),
-  },
-  {
-    id: 3,
-    image: 'https://avatars.githubusercontent.com/u/65377376?v=4',
-    name: 'Asnan Ashfaq',
-    username: 'shanay_ash',
-    github: 'https://github.com/AsnanAshfaq',
-    linked_in: 'https://www.linkedin.com/in/asnan-ashfaq/',
-    portfolio: '',
-    created_at: new Date(),
-  },
-];
 type Props = {
-  name: '';
-  username: '';
-  image: any;
+  student: any;
   github: '';
   linked_in: '';
   portfolio: '';
+  resume: any;
   created_at: any;
   handlePress: () => void;
   handleCVDownload: () => void;
   handleResumeDownload: () => void;
 };
 const ApplicantCard: FC<Props> = ({
-  image,
-  name,
-  username,
+  // image,
+  // name,
+  // username,
+  student,
   created_at,
   github,
   linked_in,
   portfolio,
+  resume,
   handlePress,
   handleCVDownload,
   handleResumeDownload,
@@ -97,7 +66,11 @@ const ApplicantCard: FC<Props> = ({
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: ImageLoading ? PROFILE_IMAGE : image ? image : PROFILE_IMAGE,
+              uri: ImageLoading
+                ? PROFILE_IMAGE
+                : student.user.profile_image
+                ? BASE_URL + student.user.profile_image.path
+                : PROFILE_IMAGE,
             }}
             onLoadEnd={() => setImageLoading(false)}
             onError={() => setImageLoading(false)}
@@ -113,7 +86,7 @@ const ApplicantCard: FC<Props> = ({
                 color: theme.TEXT_COLOR,
               },
             ]}>
-            {name}
+            {student.user.first_name + ' ' + student.user.last_name}
           </Text>
           <Text
             style={[
@@ -122,7 +95,7 @@ const ApplicantCard: FC<Props> = ({
                 color: theme.DIM_TEXT_COLOR,
               },
             ]}>
-            @{username}
+            @{student.user.username}
           </Text>
         </View>
       </View>
@@ -147,7 +120,8 @@ const ApplicantCard: FC<Props> = ({
             </TouchableWithoutFeedback>
           </View>
           <View style={{marginHorizontal: 10}}>
-            <TouchableWithoutFeedback onPress={() => Linking.openURL(github)}>
+            <TouchableWithoutFeedback
+              onPress={() => Linking.openURL(linked_in)}>
               <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
             </TouchableWithoutFeedback>
           </View>
@@ -186,31 +160,33 @@ const ApplicantCard: FC<Props> = ({
           </View>
         </TouchableOpacity>
       </View>
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={{flex: 0.4}}>
-          <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>
-            Resume
-          </Text>
-        </View>
-        <TouchableOpacity>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginHorizontal: 0,
-            }}>
-            <CodeDownload color={theme.GREEN_COLOR} size={0.9} />
-            <Text
-              style={{
-                color: theme.DIM_TEXT_COLOR,
-                fontSize: Sizes.small * 0.7,
-                marginLeft: 5,
-              }}>
-              (Download)
+      {resume !== null && (
+        <View style={{flexDirection: 'row', marginTop: 10}}>
+          <View style={{flex: 0.4}}>
+            <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>
+              Resume
             </Text>
           </View>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 0,
+              }}>
+              <CodeDownload color={theme.GREEN_COLOR} size={0.9} />
+              <Text
+                style={{
+                  color: theme.DIM_TEXT_COLOR,
+                  fontSize: Sizes.small * 0.7,
+                  marginLeft: 5,
+                }}>
+                (Download)
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <View style={[styles.buttonContainer]}>
         <View style={styles.uploadDateTextContainer}>
@@ -239,12 +215,12 @@ type props = {
 const Applicants: FC<props> = ({navigation, route}) => {
   const [{theme}, dispatch] = useStateValue();
   const [loading, setloading] = useState(true);
-  const [applicants, setapplicants] = useState(SAMPLE_DATA);
+  const [applicants, setapplicants] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const {ID} = route.params;
 
   const getData = async () => {
-    Axios.get(`/api/submissions/${ID}/`)
+    Axios.get(`/api/internship/${ID}/applicants/`)
       .then(response => {
         setapplicants(response.data);
         setloading(false);
@@ -269,7 +245,8 @@ const Applicants: FC<props> = ({navigation, route}) => {
 
   const handlePress = (id: string) => {
     navigation.navigate('Schedule_Meeting', {
-      ID: id,
+      internship_id: ID,
+      user_id: id,
     });
   };
 
@@ -300,7 +277,7 @@ const Applicants: FC<props> = ({navigation, route}) => {
           <FlatList
             contentContainerStyle={styles.scroll}
             keyExtractor={(item, index) => index.toString()}
-            data={SAMPLE_DATA}
+            data={applicants}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -315,7 +292,8 @@ const Applicants: FC<props> = ({navigation, route}) => {
               return (
                 <ApplicantCard
                   {...item}
-                  handlePress={() => handlePress(item.id)}
+                  student={item.student}
+                  handlePress={() => handlePress(item.student.uuid)}
                   handleCVDownload={handleCVDownload}
                   handleResumeDownload={handleResumeDownload}
                 />
