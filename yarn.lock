@@ -6542,6 +6542,11 @@
   "resolved" "https://registry.npmjs.org/react-native-fast-image/-/react-native-fast-image-8.3.4.tgz"
   "version" "8.3.4"
 
+"react-native-file-picker@^0.0.21":
+  "integrity" "sha512-qsvdqYmDjjgPFNlabBXFNU+h1Yndl35aEsGlnPVV070qRYuCOaDx6VQYHLBqMequppb98Gb82zIGjvekbILMXQ=="
+  "resolved" "https://registry.npmjs.org/react-native-file-picker/-/react-native-file-picker-0.0.21.tgz"
+  "version" "0.0.21"
+
 "react-native-floating-action@^1.21.0":
   "integrity" "sha512-ozd/iaJunrEYc4eGUWkP+4UI8yoIL0nQsToI3hnJRste/3LPhBkyu0eG3RTjc6aFY+q++JpRmgO469Ck8jJOwg=="
   "resolved" "https://registry.npmjs.org/react-native-floating-action/-/react-native-floating-action-1.21.0.tgz"

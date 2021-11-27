@@ -1,11 +1,9 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import OverView from '../../../Screens/Organization/Internship/View';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Submissions from '../../../Screens/Organization/Hackathon/Submissions';
-import Results from '../../../Screens/Organization/Hackathon/Result/index';
+import Applicants from '../../../Screens/Organization/Internship/Applicants';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
@@ -24,22 +22,13 @@ const TabScreens = ({route}) => {
           const ICON_SIZE = focused ? Width * 0.063 : Width * 0.06;
           if (route.name === 'Overview') {
             iconName = focused ? 'book' : 'book-outline';
-          } else if (route.name === 'Submissions') {
-            iconName = focused ? 'codesquare' : 'codesquareo';
-          } else if (route.name === 'Result') {
-            iconName = focused ? 'checkcircle' : 'checkcircleo';
+          } else if (route.name === 'Applicants') {
+            iconName = focused ? 'file-text' : 'file-text-o';
           }
 
-          if (route.name === 'Submissions') {
-            return <AntDesign name={iconName} size={ICON_SIZE} color={color} />;
-          }
-          if (route.name === 'Result') {
+          if (route.name === 'Applicants') {
             return (
-              <AntDesign
-                name={iconName}
-                size={focused ? ICON_SIZE * 0.9 : ICON_SIZE * 0.85}
-                color={color}
-              />
+              <FontAwesome name={iconName} size={ICON_SIZE} color={color} />
             );
           }
           // You can return any component that you like here!
@@ -96,18 +85,12 @@ const TabScreens = ({route}) => {
         initialParams={{ID: internshipID}}
         options={{unmountOnBlur: true}}
       />
-      {/* <Tab.Screen
-        name="Submissions"
-        component={Submissions}
+      <Tab.Screen
+        name="Applicants"
+        component={Applicants}
         initialParams={{ID: internshipID}}
         options={{unmountOnBlur: true}}
       />
-      <Tab.Screen
-        name="Result"
-        component={Results}
-        initialParams={{ID: internshipID}}
-        options={{unmountOnBlur: true}}
-      /> */}
     </Tab.Navigator>
   );
 };

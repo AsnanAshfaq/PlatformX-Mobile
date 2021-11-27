@@ -1,6 +1,7 @@
 package com.platformx;
 import com.facebook.react.bridge.JSIModulePackage; // <- add
 import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
+import com.filepicker.FilePickerPackage; // import package
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -47,7 +48,7 @@ public class MainApplication extends Application implements ReactApplication {
     return mReactNativeHost;
   }
 
-  @Override
+  @Override  
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);

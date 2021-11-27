@@ -15,6 +15,7 @@ import Loading from '../../../Components/Loading';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
 import FormHandler from '../../../Utils/FormHandler';
+import FilePickerManager from 'react-native-file-picker';
 
 type Props = {
   error: string;
@@ -106,7 +107,21 @@ const ApplyNow: FC<props> = ({navigation}) => {
     });
   };
 
-  const handleCVUpload = () => {};
+  const handleCVUpload = () => {
+    FilePickerManager.showFilePicker(response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled file picker');
+      } else if (response.error) {
+        console.log('FilePickerManager Error: ', response.error);
+      } else {
+        // this.setState({
+        //   file: response,
+        // });
+      }
+    });
+  };
   const handleResumeUpload = () => {};
   return (
     <View
@@ -238,6 +253,12 @@ const ApplyNow: FC<props> = ({navigation}) => {
                 error={Input.portfolio.error}
               />
             </View>
+          </View>
+          <View>
+            <Text style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
+              Note: An email will be sent to you if you get shortlisted for the
+              interview
+            </Text>
           </View>
         </View>
       </ScrollView>

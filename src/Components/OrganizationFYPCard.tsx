@@ -176,7 +176,7 @@ const OrganizationFYPCard: FC<props> = ({navigation, fypDetail}) => {
                   },
                 ]}>
                 {fypDetail.days_left}
-                {fypDetail.days_left !== 1 ? ' days' : 'day'}
+                {fypDetail.days_left !== 1 ? ' days' : ' day'}
                 {' left'}
               </Text>
             </View>
