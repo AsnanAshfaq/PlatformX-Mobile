@@ -4,7 +4,7 @@ import {PROFILE_IMAGE} from '../Constants/sample';
 import {Height, Sizes, Width} from '../Constants/Size';
 import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
-import {Cash, ForwardArrow} from './Icons';
+import {Cash, ForwardArrow, Tick} from './Icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ORGPopUpMenu from '../Menu/OrganizationFYPCardPopUpMenu';
 import STDPopMenu from '../Menu/StudentFYPCardPopUpMenu';
@@ -55,6 +55,8 @@ const FYPCard: FC<props> = ({navigation, source, fypDetail}) => {
         screen: 'View_FYP',
         params: {
           ID: fypDetail.id,
+          screen: 'student',
+          is_applied: fypDetail.is_applied,
         },
       });
     }
@@ -234,26 +236,49 @@ const FYPCard: FC<props> = ({navigation, source, fypDetail}) => {
           </View>
         </View>
         {/* date container  */}
+
         <View style={styles.iconContainer}>
           <View style={{flex: 1, flexDirection: 'row'}}>
-            <Ionicons
-              size={ICON_SIZE * 0.9}
-              color={theme.GREEN_COLOR}
-              name={'time-outline'}
-            />
-            <View style={styles.iconTextContainer}>
-              <Text
-                style={[
-                  styles.iconText,
-                  {
-                    color: theme.TEXT_COLOR,
-                  },
-                ]}>
-                {fypDetail.days_left}
-                {fypDetail.days_left !== 1 ? ' days' : ' day'}
-                {' left'}
-              </Text>
-            </View>
+            {fypDetail.is_applied ? (
+              <>
+                <Tick size={0.9} color={theme.GREEN_COLOR} />
+                <View style={styles.iconTextContainer}>
+                  <Text
+                    style={[
+                      styles.iconText,
+                      {
+                        color: theme.TEXT_COLOR,
+                      },
+                    ]}>
+                    Applied
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <Ionicons
+                  size={ICON_SIZE * 0.9}
+                  color={theme.GREEN_COLOR}
+                  name={'time-outline'}
+                />
+                <View style={styles.iconTextContainer}>
+                  <Text
+                    style={[
+                      styles.iconText,
+                      {
+                        color: theme.TEXT_COLOR,
+                      },
+                    ]}>
+                    {fypDetail.days_left !== 0 && fypDetail.days_left}
+                    {fypDetail.days_left > 1
+                      ? ' days left'
+                      : fypDetail.days_left === 1
+                      ? ' day left'
+                      : fypDetail.days_left === 0 && 'Last Day to apply'}
+                  </Text>
+                </View>
+              </>
+            )}
           </View>
         </View>
       </View>

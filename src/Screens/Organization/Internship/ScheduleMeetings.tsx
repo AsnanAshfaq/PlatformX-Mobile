@@ -72,8 +72,8 @@ type props = {
 };
 const ScheduleMeetings: FC<props> = ({navigation, route}) => {
   const [{theme}, dispatch] = useStateValue();
-  const [loading, setloading] = useState(false);
-  const [data, setData] = useState<any>();
+  const [loading, setloading] = useState(true);
+  const [userdata, setUserData] = useState<any>();
   const [ImageLoading, setImageLoading] = useState(true);
   const {internship_id, user_id} = route.params;
   const [fileLoading, setfileLoading] = useState({
@@ -95,27 +95,26 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
     //   navigate to user profile
   };
 
-  const handleCVDownload = () => {};
-  const handleResumeDownload = () => {};
+  const handleCVDownload = (url: string) => {
+    Linking.openURL(BASE_URL + url);
+  };
+
+  const handleResumeDownload = (url: string) => {
+    Linking.openURL(BASE_URL + url);
+  };
 
   const handleSchedule = () => {
     setscheduleLoading(true);
     setTimeout(() => {
       setscheduleLoading(false);
     }, 3000);
-
-    // console.log('ID is', ID);
-
-    // useEffect(() => {
-    // }, [input])
   };
 
   const getData = async () => {
     Axios.get(`/api/internship/${internship_id}/applicant/${user_id}`)
       .then(response => {
-        setData(response.data);
+        setUserData(response.data);
         setloading(false);
-        console.log('Got the data');
       })
       .catch(error => {
         setloading(false);
@@ -155,12 +154,6 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
             };
           });
 
-          //   get type of modal
-          const {mode} = modal;
-          const getDate = new Date(response).toLocaleDateString();
-          const getTime = new Date(response).toLocaleTimeString();
-          console.log('Response is', response);
-          //   console.log('Date is', getDate, ' and time is', getTime);
           setmodal(props => {
             return {
               ...props,
@@ -188,11 +181,9 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
                     source={{
                       uri: ImageLoading
                         ? PROFILE_IMAGE
-                        : data.student.user.profile_image
-                        ? BASE_URL + data.student.user.profile_image.path
+                        : userdata.student.user.profile_image
+                        ? BASE_URL + userdata.student.user.profile_image.path
                         : PROFILE_IMAGE,
-                      //   ? BASE_URL + submission.student.user.profile_image.path
-                      //   : PROFILE_IMAGE,
                     }}
                     onLoadEnd={() => setImageLoading(false)}
                     onError={() => setImageLoading(false)}
@@ -203,15 +194,15 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
                 {/* name and username container  */}
                 <View style={styles.container}>
                   <Text style={[styles.fullname, {color: theme.TEXT_COLOR}]}>
-                    {data.student.user.first_name +
+                    {userdata.student.user.first_name +
                       ' ' +
-                      data.student.user.last_name}
+                      userdata.student.user.last_name}
                   </Text>
                 </View>
                 <View style={styles.container}>
                   <Text
                     style={[styles.username, {color: theme.DIM_TEXT_COLOR}]}>
-                    @{data.student.user.username}
+                    @{userdata.student.user.username}
                   </Text>
                 </View>
 
@@ -223,18 +214,18 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
                     }}>
                     <View style={{marginHorizontal: 10}}>
                       <TouchableWithoutFeedback
-                        onPress={() => Linking.openURL(data.github)}>
+                        onPress={() => Linking.openURL(userdata.github)}>
                         <Github color={theme.GREEN_COLOR} size={0.8} />
                       </TouchableWithoutFeedback>
                     </View>
                     <View style={{marginHorizontal: 10}}>
                       <TouchableWithoutFeedback
-                        onPress={() => Linking.openURL(data.linked_in)}>
+                        onPress={() => Linking.openURL(userdata.linked_in)}>
                         <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
                       </TouchableWithoutFeedback>
                     </View>
 
-                    {data.portfolio !== null && data.portfolio !== '' && (
+                    {userdata.portfolio !== null && userdata.portfolio !== '' && (
                       <View style={{marginHorizontal: 10}}>
                         <MaterialCommunityIcons
                           name={'web'}
@@ -250,13 +241,13 @@ const ScheduleMeetings: FC<props> = ({navigation, route}) => {
                 <View style={[styles.rowContainer]}>
                   <DownloadContainer
                     label={'CV'}
-                    onPress={handleCVDownload}
+                    onPress={() => handleCVDownload(userdata.cv)}
                     loading={fileLoading.cv}
                   />
-                  {data.resume !== null && (
+                  {userdata.resume !== null && (
                     <DownloadContainer
                       label={'Resume'}
-                      onPress={handleResumeDownload}
+                      onPress={() => handleResumeDownload(userdata.resume)}
                       loading={fileLoading.resume}
                     />
                   )}

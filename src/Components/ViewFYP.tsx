@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, useState, useEffect} from 'react';
 import {
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Linking,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import {useStateValue} from '../Store/StateProvider';
 import CustomButton from './CustomButton';
@@ -18,30 +20,62 @@ import ListSkeleton from '../Skeleton/ListSkeleton';
 import {Height, Sizes, Width} from '../Constants/Size';
 import Bullet from './Bullet';
 import {commaSeperator} from '../Utils/Numbers';
+import {Calendar} from './Icons';
 type props = {
   navigation: any;
   route: any;
   ID: any;
   screen: 'student' | 'organization';
+  is_applied?: boolean;
 };
 const ICON_SIZE = Width * 0.07;
 
-const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
+const ViewFYP: FC<props> = ({
+  navigation,
+  route,
+  screen,
+  ID,
+  is_applied = false,
+}) => {
   const [loading, setLoading] = useState(true);
   const [FYPData, setFYPData] = useState<any>({});
   const [PosterLoading, setPosterLoading] = useState(true);
+  const [submit, setsubmit] = useState(false);
   const {theme} = useStateValue()[0];
 
-  useEffect(() => {
-    // fetching fyp
+  is_applied = route.params.is_applied ? route.params.is_applied : false;
+
+  const getData = async () => {
+    setLoading(true);
     axios
-      .get(`/api/fyp/${ID}`)
+      .get(`/api/fyp/${ID}/`)
       .then(result => {
         setFYPData(result.data);
         setLoading(false);
       })
       .catch(error => setLoading(false));
-  }, [ID]);
+  };
+  useEffect(() => {
+    // fetching fyp
+    getData();
+  }, []);
+
+  const viewDetails = () => {};
+
+  const applyNow = () => {
+    // apply for fyp
+    setsubmit(true);
+    axios
+      .post(`/api/fyp/${ID}/apply/`)
+      .then(response => {
+        if (response.status === 201) {
+          ToastAndroid.show(response.data.success, 1500);
+          navigation.goBack();
+        }
+        setsubmit(false);
+      })
+      .catch(error => setsubmit(false));
+  };
 
   return (
     <View
@@ -62,7 +96,7 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
         <>
           <ScrollView>
             <View style={styles.scroll}>
-              {screen === 'student' && (
+              {screen === 'student' && !is_applied && (
                 <View style={styles.container} key={Math.random()}>
                   <Text
                     style={[styles.smallText, {color: theme.DIM_TEXT_COLOR}]}>
@@ -293,13 +327,42 @@ const ViewFYP: FC<props> = ({navigation, route, screen, ID}) => {
                   </Text>
                 </View>
               </View>
+
+              {!is_applied && (
+                <View
+                  style={[
+                    styles.center,
+                    styles.card,
+                    {backgroundColor: theme.CARD_BACKGROUND_COLOR},
+                  ]}>
+                  <View style={[styles.center, styles.cardIconContainer]}>
+                    <Calendar color={theme.GREEN_COLOR} size={2} />
+                  </View>
+                  <View style={[styles.center, styles.cardHeadingContainer]}>
+                    <Text
+                      style={[
+                        styles.cardHeadingText,
+                        {color: theme.DIM_TEXT_COLOR},
+                      ]}>
+                      Deadline{' '}
+                    </Text>
+                  </View>
+                  <View style={[styles.container, styles.center]}>
+                    <Text
+                      style={[styles.normalText, {color: theme.TEXT_COLOR}]}>
+                      {new Date(FYPData.end_date).toLocaleDateString()}
+                    </Text>
+                  </View>
+                </View>
+              )}
             </View>
           </ScrollView>
 
           {screen === 'student' && (
             <CustomButton
-              text={'Apply Now'}
-              onPress={() => console.log('Participating screen')}
+              text={is_applied ? 'View Details' : 'Apply Now'}
+              onPress={() => (!is_applied ? applyNow() : viewDetails())}
+              loading={submit}
             />
           )}
         </>

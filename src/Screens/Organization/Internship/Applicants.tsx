@@ -116,13 +116,17 @@ const ApplicantCard: FC<Props> = ({
           }}>
           <View style={{marginHorizontal: 10}}>
             <TouchableWithoutFeedback onPress={() => Linking.openURL(github)}>
-              <Github color={theme.GREEN_COLOR} size={0.8} />
+              <View>
+                <Github color={theme.GREEN_COLOR} size={0.8} />
+              </View>
             </TouchableWithoutFeedback>
           </View>
           <View style={{marginHorizontal: 10}}>
             <TouchableWithoutFeedback
               onPress={() => Linking.openURL(linked_in)}>
-              <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
+              <View>
+                <LinkedIn color={theme.GREEN_COLOR} size={0.8} />
+              </View>
             </TouchableWithoutFeedback>
           </View>
 
@@ -141,7 +145,7 @@ const ApplicantCard: FC<Props> = ({
         <View style={{flex: 0.4}}>
           <Text style={[styles.labelText, {color: theme.TEXT_COLOR}]}>CV</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleCVDownload}>
           <View
             style={{
               flexDirection: 'row',
@@ -167,7 +171,7 @@ const ApplicantCard: FC<Props> = ({
               Resume
             </Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleResumeDownload}>
             <View
               style={{
                 flexDirection: 'row',
@@ -239,9 +243,13 @@ const Applicants: FC<props> = ({navigation, route}) => {
     getData();
   }, [loading]);
 
-  const handleCVDownload = () => {};
+  const handleCVDownload = (url: string) => {
+    Linking.openURL(BASE_URL + url);
+  };
 
-  const handleResumeDownload = () => {};
+  const handleResumeDownload = (url: string) => {
+    Linking.openURL(BASE_URL + url);
+  };
 
   const handlePress = (id: string) => {
     navigation.navigate('Schedule_Meeting', {
@@ -294,8 +302,8 @@ const Applicants: FC<props> = ({navigation, route}) => {
                   {...item}
                   student={item.student}
                   handlePress={() => handlePress(item.student.uuid)}
-                  handleCVDownload={handleCVDownload}
-                  handleResumeDownload={handleResumeDownload}
+                  handleCVDownload={() => handleCVDownload(item.cv)}
+                  handleResumeDownload={() => handleResumeDownload(item.resume)}
                 />
               );
             }}
