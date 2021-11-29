@@ -57,18 +57,24 @@ const StudentDrawer: FC<props> = ({navigation}) => {
     },
     {
       id: 2,
+      label: 'Read Articiles',
+      icon_name: 'book',
+      onPress: () => navigation.navigate('Articles'),
+    },
+    {
+      id: 3,
       label: 'Saved',
       icon_name: 'bookmarks',
       onPress: () => console.log('Pressed on Bookmarks'),
     },
     {
-      id: 3,
+      id: 4,
       label: 'Settings',
       icon_name: 'ios-settings-sharp',
       onPress: () => navigation.navigate('Settings'),
     },
     {
-      id: 4,
+      id: 5,
       label: 'Sign Out',
       icon_name: 'md-log-out-outline',
       onPress: () => {

@@ -44,7 +44,7 @@ const UserInfo = ({icon, label, value}) => {
 
   return (
     <View style={styles.userInfoContainer}>
-      <Ionicons name={icon} size={ICON_SIZE} color={state.theme.ICON_COLOR} />
+      <Ionicons name={icon} size={ICON_SIZE} color={state.theme.GREEN_COLOR} />
       <Text style={[styles.label, {color: state.theme.TEXT_COLOR}]}>
         {'  '}
         {label}
@@ -71,11 +71,11 @@ const Card: FC<cardProps> = ({label, value, onPress}) => {
       style={[
         styles.keyValueContainer,
         {
-          borderColor: theme.SHADOW_COLOR,
-          borderRightWidth: label === 'Posts' ? 2 : 0,
-          borderRightColor: label === 'Posts' ? theme.SHADOW_COLOR : '',
-          borderLeftWidth: label === 'Following' ? 2 : 0,
-          borderLeftColor: label === 'Following' ? theme.SHADOW_COLOR : '',
+          borderColor: theme.DIVIDER_COLOR,
+          borderRightWidth: label === 'Posts' ? 1.2 : 0,
+          borderRightColor: label === 'Posts' ? theme.DIVIDER_COLOR : '',
+          borderLeftWidth: label === 'Following' ? 1.2 : 0,
+          borderLeftColor: label === 'Following' ? theme.DIVIDER_COLOR : '',
         },
       ]}>
       <TouchableOpacity onPress={onPress}>
@@ -133,17 +133,24 @@ const StudentProfile: FC<props> = ({navigation}) => {
   };
 
   const getUserDetails = async () => {
-    try {
-      const userResponse = await axios.get('/user/');
-      setProfileData(userResponse.data);
-      //  get user posts
-      const postResponse = await axios.get('/api/post/');
-      setPost(postResponse.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      ToastAndroid.show('Error while fetching data', 1500);
-    }
+    axios
+      .get('/user/')
+      .then(response => {
+        setProfileData(response.data);
+      })
+      .then(() => {
+        axios.get('/api/post/').then(postResponse => {
+          setPost(postResponse.data);
+          setLoading(false);
+        });
+      })
+      .catch(error => {
+        setLoading(false);
+        if (error.response) {
+          ToastAndroid.show(error.response.data.error, 1500);
+        }
+        return null;
+      });
   };
 
   const onRefresh = () => {
@@ -170,7 +177,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
     // get user data from data base
     getUserDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loading]);
 
   if (!loading) {
     return (
@@ -371,7 +378,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
           <TouchableOpacity
             style={[
               styles.viewButtonContainer,
-              {backgroundColor: state.theme.SHADOW_COLOR},
+              {backgroundColor: state.theme.GREEN_COLOR},
             ]}
             onPress={() =>
               navigation.navigate('Edit_Profile', {user: ProfileData})
@@ -387,7 +394,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           {/* activities button  */}
-          <View style={styles.activitiesContainer}>
+          {/* <View style={styles.activitiesContainer}>
             <TouchableOpacity
               style={[
                 styles.activitiesButtonContainer,
@@ -401,7 +408,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                 My Activities
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
           {/* if user has posted something then show my post section*/}
           {Post.length !== 0 ? (
             <View ref={myPostRef}>
@@ -435,8 +442,11 @@ const StudentProfile: FC<props> = ({navigation}) => {
           ) : (
             <View style={styles.noPostContainer}>
               <Text
-                style={[styles.noPostText, {color: state.theme.TEXT_COLOR}]}>
-                No posts yet :)
+                style={[
+                  styles.noPostText,
+                  {color: state.theme.DIM_TEXT_COLOR},
+                ]}>
+                You have not posted anything yet.
               </Text>
             </View>
           )}
@@ -489,14 +499,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   name: {
-    fontSize: Sizes.normal * 1.5,
+    fontSize: Sizes.normal * 1.2,
   },
   user_name: {
-    fontSize: Sizes.normal * 1.1,
+    fontSize: Sizes.normal * 0.8,
     marginVertical: 5,
   },
   bio: {
-    fontSize: Sizes.small * 1.1,
+    fontSize: Sizes.normal * 0.8,
     marginVertical: 5,
   },
   card: {
@@ -525,10 +535,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   label: {
-    fontSize: Sizes.normal * 1.1,
+    fontSize: Sizes.normal * 0.9,
   },
   value: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.85,
   },
   viewButtonContainer: {
     // width: Width * 0.8,
@@ -546,24 +556,24 @@ const styles = StyleSheet.create({
     fontSize: Sizes.normal * 1.1,
     paddingVertical: 2,
   },
-  activitiesContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-  },
-  activitiesButtonContainer: {
-    marginHorizontal: Width * 0.04,
-    // width: Width * 0.3,
-    marginVertical: 5,
-    padding: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: 'transparent',
-  },
-  activityButtonText: {
-    fontSize: Sizes.normal,
-    paddingVertical: 2,
-  },
+  // activitiesContainer: {
+  //   justifyContent: 'flex-end',
+  //   alignItems: 'flex-end',
+  // },
+  // activitiesButtonContainer: {
+  //   marginHorizontal: Width * 0.04,
+  //   // width: Width * 0.3,
+  //   marginVertical: 5,
+  //   padding: 5,
+  //   paddingHorizontal: 10,
+  //   borderWidth: 1,
+  //   borderRadius: 10,
+  //   borderColor: 'transparent',
+  // },
+  // activityButtonText: {
+  //   fontSize: Sizes.normal,
+  //   paddingVertical: 2,
+  // },
   myPostContainer: {
     paddingVertical: 5,
     marginHorizontal: Width * 0.05,
@@ -578,7 +588,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   noPostText: {
-    fontSize: Sizes.normal * 1.1,
+    fontSize: Sizes.normal * 0.8,
   },
 });
 

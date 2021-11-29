@@ -29,8 +29,9 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
+import CustomButton from '../../../Components/CustomButton';
 import CustomHeader from '../../../Components/CustomHeader';
-import CustomTextField from '../../../Components/CustomTextField';
+import CustomTextField from '../../../Components/CustomTextField2';
 import Loading from '../../../Components/Loading';
 import {Sizes, Width} from '../../../Constants/Size';
 import {useStateValue} from '../../../Store/StateProvider';
@@ -87,6 +88,7 @@ const CommonView: FC<Props> = ({
           textContentType={'name'}
           keyboardType={keyboardType}
           error={error}
+          placeholderColor={theme.PLACE_HOLDER_TEXT_COLOR}
         />
       </View>
     </>
@@ -146,6 +148,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
   });
 
   const [IsLoading, seIsLoading] = useState(false);
+  const [editing, setediting] = useState(false);
   const [state, dispatch] = useStateValue();
   const {theme} = state;
   // get some handlers
@@ -173,7 +176,7 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
     let isInputValid = true;
     // check for urls
 
-    seIsLoading(true);
+    setediting(true);
 
     const checkURLS = (value: string, key: string) => {
       if (!isEmpty(value) && !isLinkValid(value)) {
@@ -316,9 +319,9 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
           });
         }
       }
-      seIsLoading(false);
+      setediting(false);
     } else {
-      seIsLoading(false);
+      setediting(false);
     }
   };
 
@@ -460,32 +463,18 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
         />
         {/* joined date contianer */}
         <View style={styles.joinedDateContainer}>
-          <Text style={[styles.joinedDateText, {color: theme.TEXT_COLOR}]}>
+          <Text style={[styles.joinedDateText, {color: theme.DIM_TEXT_COLOR}]}>
             {' '}
             JOINED PLATFORMX ON {new Date(user.date_joined).toDateString()}
           </Text>
         </View>
       </ScrollView>
 
-      <View style={styles.editButtonContainer}>
-        <TouchableOpacity
-          style={[
-            styles.editButton,
-            {
-              backgroundColor: theme.GREEN_COLOR,
-            },
-          ]}
-          activeOpacity={0.5}
-          onPress={() => handleEditProfile()}>
-          {IsLoading ? (
-            <Loading size={'small'} color={theme.SCREEN_BACKGROUND_COLOR} />
-          ) : (
-            <Text style={[styles.editButtonText, {color: theme.TEXT_COLOR}]}>
-              Edit Profile
-            </Text>
-          )}
-        </TouchableOpacity>
-      </View>
+      <CustomButton
+        text={'Edit Profile'}
+        onPress={handleEditProfile}
+        loading={editing}
+      />
     </View>
   );
 };
@@ -509,7 +498,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heading: {
-    fontSize: Sizes.large * 1.3,
+    fontSize: Sizes.normal * 1.3,
     // fontFamily: 'Cindyrella',
   },
   labelContainer: {
@@ -519,16 +508,18 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   label: {
-    fontSize: Sizes.normal * 1.15,
+    fontSize: Sizes.normal,
   },
   joinedDateContainer: {
     // marginHorizontal: Width * 0.02,
     // marginVertical: 10,
     // width: Width * 0.95,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 5,
   },
   joinedDateText: {
-    fontSize: Sizes.normal,
+    fontSize: Sizes.normal * 0.8,
   },
   editButtonContainer: {
     height: Width * 0.14,
