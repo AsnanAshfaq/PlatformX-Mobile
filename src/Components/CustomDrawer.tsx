@@ -57,7 +57,7 @@ const StudentDrawer: FC<props> = ({navigation}) => {
     },
     {
       id: 2,
-      label: 'Read Articiles',
+      label: 'Read Articles',
       icon_name: 'book',
       onPress: () => navigation.navigate('Articles'),
     },

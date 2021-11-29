@@ -34,6 +34,7 @@ import CustomHeader from '../../../Components/CustomHeader';
 import CustomTextField from '../../../Components/CustomTextField2';
 import Loading from '../../../Components/Loading';
 import {Sizes, Width} from '../../../Constants/Size';
+import InterestModal from '../../../Modals/InterestsModal';
 import {useStateValue} from '../../../Store/StateProvider';
 import axios from '../../../Utils/Axios';
 import FormHandler from '../../../Utils/FormHandler';
@@ -106,7 +107,7 @@ const Header: FC<headerProps> = ({heading}) => {
         styles.headingContainer,
         {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
-          borderBottomColor: theme.SHADOW_COLOR,
+          borderBottomColor: theme.DIVIDER_COLOR,
         },
       ]}>
       <Text
@@ -138,13 +139,18 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
     dateOfBirth: {value: user?.student?.date_of_birth, error: ''},
     phoneNumber: {value: user?.student?.phone_number, error: ''},
     skills: {value: '', error: ''},
-    interest: {value: '', error: ''},
+    interest: {value: [], error: ''},
     livesIn: {value: user?.student?.lives_in, error: ''},
     education: {value: user?.student?.education, error: ''},
     linkedIn: {value: user?.student?.linked_in, error: ''},
     github: {value: user?.student?.github, error: ''},
     twitter: {value: user?.student?.twitter, error: ''},
     portfolio: {value: user?.student?.portfolio, error: ''},
+  });
+
+  const [modal, setmodal] = useState({
+    skills: false,
+    interest: false,
   });
 
   const [IsLoading, seIsLoading] = useState(false);
@@ -333,6 +339,31 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
           backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
         },
       ]}>
+      {/* show modal  */}
+
+      <InterestModal
+        isShow={modal.interest}
+        toggleModal={() =>
+          setmodal(props => {
+            return {
+              ...props,
+              interest: false,
+            };
+          })
+        }
+        values={Input.interest.value}
+        onSelect={value =>
+          setInput(props => {
+            return {
+              ...props,
+              interest: {
+                value: value,
+                error: '',
+              },
+            };
+          })
+        }
+      />
       <CustomHeader
         title={'Edit Profile'}
         navigation={navigation}
@@ -400,14 +431,61 @@ const ViewProfile: FC<props> = ({navigation, route}) => {
           onInputChange={text => handleInputChange('skills', text)}
           error={Input.skills.error}
         />
-        <CommonView
+        {/* <CommonView
           label={'Interest'}
           inputValue={Input.interest.value}
           keyboardType={'default'}
           placeholder={'Enter Interests'}
           onInputChange={text => handleInputChange('interest', text)}
           error={Input.interest.error}
-        />
+        /> */}
+        <View
+          style={[
+            styles.labelContainer,
+            {
+              backgroundColor: theme.SCREEN_BACKGROUND_COLOR,
+              borderBottomColor: theme.SHADOW_COLOR,
+            },
+          ]}>
+          <Text
+            style={[
+              styles.label,
+              {
+                color: theme.TEXT_COLOR,
+              },
+            ]}>
+            Interest
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={() =>
+            setmodal(props => {
+              return {
+                ...props,
+                interest: true,
+              };
+            })
+          }>
+          <View
+            style={[
+              styles.selectionContainer,
+              {
+                backgroundColor: theme.CARD_BACKGROUND_COLOR,
+                borderWidth: 1,
+                borderColor:
+                  Input.interest.error !== ''
+                    ? theme.ERROR_TEXT_COLOR
+                    : theme.CARD_BACKGROUND_COLOR,
+                padding: 6,
+              },
+            ]}>
+            <Text style={[styles.selectionText, {color: theme.DIM_TEXT_COLOR}]}>
+              Choose Interests
+            </Text>
+          </View>
+        </TouchableOpacity>
+
         <CommonView
           label={'Lives In'}
           inputValue={Input.livesIn.value}
@@ -506,6 +584,29 @@ const styles = StyleSheet.create({
     // marginVertical: 10,
     width: Width * 0.95,
     padding: 5,
+  },
+  selectionContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    marginTop: 10,
+    marginHorizontal: Width * 0.15,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  selectionText: {
+    fontSize: Sizes.normal * 0.95,
+  },
+  cardTextContainer: {
+    flex: 0.85,
+    alignItems: 'center',
+  },
+  cardIconContainer: {
+    flex: 0.15,
+    marginLeft: 8,
+  },
+  cardText: {
+    fontSize: Sizes.normal,
   },
   label: {
     fontSize: Sizes.normal,

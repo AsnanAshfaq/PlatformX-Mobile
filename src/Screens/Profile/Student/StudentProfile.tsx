@@ -137,8 +137,6 @@ const StudentProfile: FC<props> = ({navigation}) => {
       .get('/user/')
       .then(response => {
         setProfileData(response.data);
-      })
-      .then(() => {
         axios.get('/api/post/').then(postResponse => {
           setPost(postResponse.data);
           setLoading(false);
@@ -418,7 +416,7 @@ const StudentProfile: FC<props> = ({navigation}) => {
                   <View
                     style={[
                       styles.myPostContainer,
-                      {borderBottomColor: state.theme.SHADOW_COLOR},
+                      {borderBottomColor: state.theme.DIM_TEXT_COLOR},
                     ]}>
                     <Text
                       style={[
@@ -581,7 +579,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   myPostText: {
-    fontSize: Sizes.large,
+    fontSize: Sizes.normal * 1.1,
   },
   noPostContainer: {
     alignItems: 'center',
